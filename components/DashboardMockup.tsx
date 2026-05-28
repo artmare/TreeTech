@@ -65,7 +65,7 @@ export function DashboardMockup() {
             </div>
             <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-4 font-mono text-xs leading-6 text-slate-300">
               <div className="mb-2 flex items-center gap-2 text-cyan-200"><Code2 className="h-4 w-4" /> automation.ts</div>
-              <p><span className="text-blue-300">if</span> (lead.score &gt; 80) route.to('sales')</p>
+              <p><span className="text-blue-300">if</span> (lead.score &gt; 80) route.to(&apos;sales&apos;)</p>
               <p><span className="text-blue-300">await</span> crm.sync(profile)</p>
               <p><span className="text-blue-300">return</span> launch.sequence()</p>
             </div>
