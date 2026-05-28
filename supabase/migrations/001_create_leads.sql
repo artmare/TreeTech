@@ -16,6 +16,19 @@ alter table public.leads enable row level security;
 
 revoke all on table public.leads from anon;
 revoke all on table public.leads from authenticated;
+grant insert on table public.leads to anon;
+
+create policy "Allow website lead inserts"
+  on public.leads
+  for insert
+  to anon
+  with check (
+    source = 'website'
+    and status = 'new'
+    and char_length(name) between 2 and 160
+    and position('@' in email) > 1
+    and char_length(message) between 12 and 4000
+  );
 
 create index if not exists leads_created_at_idx on public.leads (created_at desc);
 create index if not exists leads_status_idx on public.leads (status);
