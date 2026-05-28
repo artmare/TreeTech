@@ -1,9 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import type { ReactNode } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 
-export function AnimatedSection({ children, className = '' }: { children: ReactNode; className?: string }) {
+type AnimatedSectionProps = ComponentPropsWithoutRef<'section'>;
+
+export function AnimatedSection({ children, className = '', ...props }: AnimatedSectionProps) {
   return (
     <motion.section
       className={className}
@@ -11,6 +13,7 @@ export function AnimatedSection({ children, className = '' }: { children: ReactN
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-90px' }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      {...props}
     >
       {children}
     </motion.section>
