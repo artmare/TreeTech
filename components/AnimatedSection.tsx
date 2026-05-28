@@ -1,9 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import type { ComponentPropsWithoutRef } from 'react';
+import { motion, type HTMLMotionProps } from 'framer-motion';
 
-type AnimatedSectionProps = ComponentPropsWithoutRef<'section'>;
+type AnimatedSectionProps = HTMLMotionProps<'section'>;
 
 export function AnimatedSection({ children, className = '', ...props }: AnimatedSectionProps) {
   return (
