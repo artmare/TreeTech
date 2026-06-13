@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "Über uns",
+    "services": "Leistungen",
+    "portfolio": "Portfolio",
+    "contact": "Kontakt",
+    "menu": "Menü öffnen",
+    "close": "Menü schließen",
+    "language": "Sprache wechseln"
+  },
+  "footer": {
+    "tagline": "Websites für Betriebe, die online seriös auftreten und besser angefragt werden möchten.",
+    "cta": "Sprechen wir über Ihren Webauftritt.",
+    "copyright": "Alle Rechte vorbehalten."
+  },
+  "contactForm": {
+    "name": "Name",
+    "email": "E-Mail",
+    "company": "Firma oder Betrieb",
+    "budget": "Gewünschter Rahmen",
+    "message": "Worum geht es?",
+    "submit": "Anfrage abschicken",
+    "submitting": "Wird gesendet",
+    "success": "Danke, Ihre Anfrage ist angekommen. Wir melden uns zeitnah.",
+    "error": "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es noch einmal oder schreiben Sie direkt per E-Mail.",
+    "budgetPlaceholder": "Bitte auswählen",
+    "namePlaceholder": "Max Mustermann",
+    "emailPlaceholder": "name@betrieb.at",
+    "companyPlaceholder": "Name Ihres Unternehmens",
+    "messagePlaceholder": "Kurzbeschreibung: Was soll die Website leisten, und bis wann soll sie online sein?",
+    "budgets": {
+      "landing": "Landing Page ab 299€",
+      "website": "Website ab 499€",
+      "business": "Business Website ab 799€",
+      "custom": "Individuelles Projekt"
+    },
+    "errors": {
+      "name": "Bitte geben Sie Ihren Namen ein.",
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "budget": "Bitte wählen Sie einen Rahmen aus.",
+      "message": "Bitte beschreiben Sie Ihr Projekt in mindestens 20 Zeichen."
+    }
+  }
+}

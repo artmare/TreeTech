@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "contact": "Contact",
+    "menu": "Open menu",
+    "close": "Close menu",
+    "language": "Switch language"
+  },
+  "footer": {
+    "tagline": "Websites for businesses that want to look credible online and receive better inquiries.",
+    "cta": "Let’s talk about your web presence.",
+    "copyright": "All rights reserved."
+  },
+  "contactForm": {
+    "name": "Name",
+    "email": "Email",
+    "company": "Company",
+    "budget": "Project range",
+    "message": "What is the project about?",
+    "submit": "Send inquiry",
+    "submitting": "Sending",
+    "success": "Thank you, your inquiry has arrived. We will get back to you shortly.",
+    "error": "The inquiry could not be sent. Please try again or contact us directly by email.",
+    "budgetPlaceholder": "Please select",
+    "namePlaceholder": "Alex Miller",
+    "emailPlaceholder": "name@company.at",
+    "companyPlaceholder": "Your company name",
+    "messagePlaceholder": "Short brief: what should the website achieve, and when should it go live?",
+    "budgets": {
+      "landing": "Landing page from 299€",
+      "website": "Website from 499€",
+      "business": "Business website from 799€",
+      "custom": "Custom project"
+    },
+    "errors": {
+      "name": "Please enter your name.",
+      "email": "Please enter a valid email address.",
+      "budget": "Please choose a project range.",
+      "message": "Please describe your project in at least 20 characters."
+    }
+  }
+}
