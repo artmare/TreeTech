@@ -30,42 +30,33 @@ export function OfferCard({
   return (
     <article
       className={cn(
-        'relative flex h-full flex-col overflow-hidden rounded-[8px] border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl',
+        'group lift-card relative flex h-full flex-col overflow-hidden rounded-[8px] border bg-white p-6 shadow-sm',
         offer.highlighted
-          ? 'border-primary shadow-[0_18px_48px_rgba(15,95,69,0.14)]'
+          ? 'border-primary shadow-[0_26px_70px_rgba(13,107,79,0.17)]'
           : 'border-border'
       )}
     >
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,#0d6b4f,#c8ff5f,#0ea5e9)] opacity-0 transition group-hover:opacity-100" />
       {offer.highlighted ? (
-        <div className="absolute right-4 top-4 rounded-[8px] bg-[#f2b84b] px-3 py-1 text-xs font-bold uppercase text-[#1f1704]">
+        <div className="absolute right-4 top-4 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase text-[#16200b]">
           {recommendedLabel}
         </div>
       ) : null}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h3 className="text-xl font-semibold text-foreground">{offer.name[locale]}</h3>
-          <p className="mt-3 text-sm leading-6 text-muted">{offer.description[locale]}</p>
+      <div className="flex min-h-36 flex-col justify-between">
+        <div className="pr-20">
+          <h3 className="text-2xl font-semibold text-foreground">{offer.name[locale]}</h3>
+          <p className="mt-4 text-sm leading-7 text-muted">{offer.description[locale]}</p>
         </div>
-        <div
-          className={cn(
-            'rounded-[8px] px-3 py-2 text-right',
-            offer.highlighted ? 'bg-[#0f5f45] text-white' : 'bg-[#eef7f1] text-foreground'
-          )}
-        >
+        <div className="mt-6">
           <p
             className={cn(
-              'text-xs font-semibold uppercase',
-              offer.highlighted ? 'text-white/70' : 'text-primary'
+              'text-xs font-bold uppercase tracking-[0.14em]',
+              offer.highlighted ? 'text-primary' : 'text-muted'
             )}
           >
             {fromLabel}
           </p>
-          <p
-            className={cn(
-              'text-xl font-semibold',
-              offer.highlighted ? 'text-white' : 'text-foreground'
-            )}
-          >
+          <p className="mt-1 text-4xl font-semibold tracking-normal text-foreground">
             {offer.price}
           </p>
         </div>
@@ -84,10 +75,10 @@ export function OfferCard({
       <Link
         href="/contact"
         className={cn(
-          'mt-6 inline-flex min-h-11 items-center justify-center rounded-[8px] px-4 py-3 text-sm font-semibold transition',
+          'mt-6 inline-flex min-h-12 items-center justify-center rounded-[8px] px-4 py-3 text-sm font-semibold transition',
           offer.highlighted
-            ? 'bg-primary !text-white hover:bg-[#0a4f38]'
-            : 'border border-border bg-white text-foreground hover:border-primary hover:text-primary'
+            ? 'bg-[#0a1210] !text-white hover:bg-primary'
+            : 'border border-border bg-white text-foreground hover:border-primary hover:bg-[#f6f8f4] hover:text-primary'
         )}
       >
         {ctaLabel}

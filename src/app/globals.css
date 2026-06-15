@@ -13,14 +13,14 @@
 }
 
 :root {
-  --background: #f7f8f4;
-  --foreground: #111815;
+  --background: #f6f8f4;
+  --foreground: #0a1210;
   --surface: #ffffff;
-  --muted: #5b6761;
-  --border: #dfe6df;
-  --primary: #0f5f45;
+  --muted: #5a6864;
+  --border: #dce4dc;
+  --primary: #0d6b4f;
   --primary-foreground: #ffffff;
-  --accent: #f2b84b;
+  --accent: #c8ff5f;
 }
 
 * {
@@ -35,17 +35,20 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    linear-gradient(115deg, rgba(242, 184, 75, 0.08) 0%, transparent 34rem),
-    linear-gradient(245deg, rgba(91, 122, 148, 0.08) 0%, transparent 36rem),
-    linear-gradient(180deg, #f7f8f4 0%, #eef3ee 52%, #f8faf8 100%);
+    linear-gradient(120deg, rgba(200, 255, 95, 0.16) 0%, transparent 28rem),
+    linear-gradient(240deg, rgba(14, 165, 233, 0.12) 0%, transparent 34rem),
+    linear-gradient(180deg, #f6f8f4 0%, #eef4ef 46%, #fbfcf8 100%);
   color: var(--foreground);
   font-family: var(--font-sans);
   letter-spacing: 0;
 }
 
 a {
-  color: inherit;
   text-decoration: none;
+}
+
+a:not([class]) {
+  color: inherit;
 }
 
 button,
@@ -70,4 +73,70 @@ textarea {
 
 .text-pretty {
   text-wrap: pretty;
+}
+
+.premium-panel {
+  border: 1px solid rgba(10, 18, 16, 0.08);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 28px 90px rgba(10, 18, 16, 0.1);
+  backdrop-filter: blur(22px);
+}
+
+.dark-band {
+  background:
+    linear-gradient(135deg, rgba(14, 107, 79, 0.96), rgba(10, 18, 16, 0.98)),
+    #0a1210;
+}
+
+.saas-grid {
+  background-image:
+    linear-gradient(rgba(10, 18, 16, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10, 18, 16, 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.dark-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 54px 54px;
+}
+
+.software-panel {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06)),
+    rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.24);
+  backdrop-filter: blur(22px);
+}
+
+.lift-card {
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease,
+    background-color 220ms ease;
+}
+
+.lift-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 80px rgba(10, 18, 16, 0.13);
+}
+
+@keyframes flow-line {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.flow-line::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgba(200, 255, 95, 0.84), transparent);
+  animation: flow-line 3.8s ease-in-out infinite;
 }

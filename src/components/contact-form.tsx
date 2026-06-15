@@ -62,14 +62,14 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="rounded-[8px] border border-border bg-white p-5 shadow-sm sm:p-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="rounded-[8px] border border-border bg-white/92 p-5 shadow-[0_28px_90px_rgba(10,18,16,0.11)] backdrop-blur sm:p-6">
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label={t('name')} error={errors.name?.message}>
           <input
             {...register('name')}
             autoComplete="name"
             placeholder={t('namePlaceholder')}
-            className="h-12 w-full rounded-[8px] border border-border bg-white px-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10"
+            className="h-12 w-full rounded-[8px] border border-border bg-[#f7faf6] px-3 text-sm outline-none transition focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
           />
         </Field>
         <Field label={t('email')} error={errors.email?.message}>
@@ -78,7 +78,7 @@ export function ContactForm() {
             type="email"
             autoComplete="email"
             placeholder={t('emailPlaceholder')}
-            className="h-12 w-full rounded-[8px] border border-border bg-white px-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10"
+            className="h-12 w-full rounded-[8px] border border-border bg-[#f7faf6] px-3 text-sm outline-none transition focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
           />
         </Field>
       </div>
@@ -89,13 +89,13 @@ export function ContactForm() {
             {...register('company')}
             autoComplete="organization"
             placeholder={t('companyPlaceholder')}
-            className="h-12 w-full rounded-[8px] border border-border bg-white px-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10"
+            className="h-12 w-full rounded-[8px] border border-border bg-[#f7faf6] px-3 text-sm outline-none transition focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
           />
         </Field>
         <Field label={t('budget')} error={errors.budget?.message}>
           <select
             {...register('budget')}
-            className="h-12 w-full rounded-[8px] border border-border bg-white px-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10"
+            className="h-12 w-full rounded-[8px] border border-border bg-[#f7faf6] px-3 text-sm outline-none transition focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
           >
             <option value="">{t('budgetPlaceholder')}</option>
             {budgetValues.map((budget) => (
@@ -112,7 +112,7 @@ export function ContactForm() {
           {...register('message')}
           rows={6}
           placeholder={t('messagePlaceholder')}
-          className="w-full resize-none rounded-[8px] border border-border bg-white px-3 py-3 text-sm leading-6 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10"
+          className="w-full resize-none rounded-[8px] border border-border bg-[#f7faf6] px-3 py-3 text-sm leading-6 outline-none transition focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
         />
       </Field>
 
@@ -122,7 +122,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[8px] bg-primary px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(15,95,69,0.2)] transition hover:bg-[#0a4f38] disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[8px] bg-[#0a1210] px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_42px_rgba(10,18,16,0.24)] transition hover:-translate-y-0.5 hover:bg-primary disabled:cursor-not-allowed disabled:opacity-70"
         >
           <Send className="h-4 w-4" aria-hidden="true" />
           <span>{isSubmitting ? t('submitting') : t('submit')}</span>

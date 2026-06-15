@@ -1,30 +1,32 @@
-import {getTranslations} from 'next-intl/server';
+'use client';
 
+import {useTranslations} from 'next-intl';
+
+import {LogoMark} from '@/components/logo-mark';
 import {siteConfig} from '@/content/site';
-import type {Locale} from '@/i18n/routing';
-import {Link} from '@/i18n/navigation';
+import {Link, usePathname} from '@/i18n/navigation';
+import {isDemoSitePath} from '@/lib/demo-routes';
 
-type SiteFooterProps = {
-  locale: Locale;
-};
+export function SiteFooter() {
+  const t = useTranslations('footer');
+  const nav = useTranslations('nav');
+  const pathname = usePathname();
 
-export async function SiteFooter({locale}: SiteFooterProps) {
-  const t = await getTranslations({locale, namespace: 'footer'});
-  const nav = await getTranslations({locale, namespace: 'nav'});
+  if (isDemoSitePath(pathname)) {
+    return null;
+  }
 
   return (
-    <footer className="border-t border-border bg-[#101815] text-white">
-      <div className="mx-auto grid w-full max-w-7xl gap-10 px-5 py-12 sm:px-6 lg:grid-cols-[1.2fr_0.8fr] lg:px-8">
+    <footer className="border-t border-white/10 bg-[#0a1210] text-white">
+      <div className="dark-grid mx-auto grid w-full max-w-7xl gap-10 px-5 py-12 sm:px-6 lg:grid-cols-[1.2fr_0.8fr] lg:px-8">
         <div>
           <Link href="/" className="inline-flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-white text-base font-bold text-primary">
-              TT
-            </span>
+            <LogoMark className="h-10 w-10" />
             <span className="text-lg font-semibold">{siteConfig.name}</span>
           </Link>
           <p className="mt-5 max-w-md text-sm leading-7 text-white/70">{t('tagline')}</p>
           <p className="mt-8 text-sm text-white/60">
-            © {new Date().getFullYear()} TreeTech. {t('copyright')}
+            &copy; {new Date().getFullYear()} TreeTech. {t('copyright')}
           </p>
         </div>
         <div className="grid gap-5 sm:grid-cols-2">

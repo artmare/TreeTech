@@ -1,3 +1,4 @@
+import {Building2, Globe2, MousePointerClick} from 'lucide-react';
 import type {Metadata} from 'next';
 import {setRequestLocale} from 'next-intl/server';
 
@@ -12,6 +13,19 @@ import {createPageMetadata} from '@/lib/seo';
 type PageProps = {
   params: Promise<{locale: string}>;
 };
+
+const portfolioStats = {
+  de: [
+    {icon: Building2, value: '5', label: 'Branchen-Cases'},
+    {icon: Globe2, value: 'DE/EN', label: 'zweisprachig'},
+    {icon: MousePointerClick, value: 'CTA', label: 'anfrageorientiert'}
+  ],
+  en: [
+    {icon: Building2, value: '5', label: 'industry cases'},
+    {icon: Globe2, value: 'DE/EN', label: 'bilingual'},
+    {icon: MousePointerClick, value: 'CTA', label: 'inquiry-focused'}
+  ]
+} satisfies Record<Locale, Array<{icon: typeof Building2; value: string; label: string}>>;
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const locale = (await params).locale as Locale;
@@ -32,17 +46,30 @@ export default async function PortfolioPage({params}: PageProps) {
 
   return (
     <>
-      <section className="py-20 sm:py-24">
-        <Container>
+      <section className="dark-band relative overflow-hidden py-20 text-white sm:py-24">
+        <div className="dark-grid absolute inset-0 opacity-35" />
+        <Container className="relative">
           <SectionHeading
             eyebrow={content.common.eyebrow}
             title={content.portfolio.title}
             lead={content.portfolio.lead}
+            className="[&_h2]:text-white [&_p]:text-white/72 [&_p:first-child]:border-white/15 [&_p:first-child]:bg-white/10 [&_p:first-child]:text-accent"
           />
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {portfolioStats[locale].map((stat, index) => (
+              <FadeIn key={stat.label} delay={index * 0.08}>
+                <article className="rounded-[8px] border border-white/10 bg-white/[0.07] p-5">
+                  <stat.icon className="h-5 w-5 text-accent" aria-hidden="true" />
+                  <p className="mt-4 text-3xl font-semibold text-white">{stat.value}</p>
+                  <p className="mt-1 text-sm text-white/60">{stat.label}</p>
+                </article>
+              </FadeIn>
+            ))}
+          </div>
         </Container>
       </section>
 
-      <section className="pb-20">
+      <section className="py-16">
         <Container>
           <div className="grid gap-5 lg:grid-cols-2">
             {portfolioProjects.map((project, index) => (

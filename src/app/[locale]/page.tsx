@@ -1,24 +1,73 @@
-import {CheckCircle2} from 'lucide-react';
+import {BarChart3, Gauge, LayoutDashboard, MonitorSmartphone, ShieldCheck, Sparkles} from 'lucide-react';
 import type {Metadata} from 'next';
+import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
+import {notFound} from 'next/navigation';
 
-import {FadeIn, SoftScaleIn} from '@/components/motion/fade-in';
+import {FadeIn} from '@/components/motion/fade-in';
 import {OfferCard} from '@/components/offer-card';
 import {PortfolioCard} from '@/components/portfolio-card';
-import {ProjectPreview} from '@/components/project-preview';
 import {ButtonLink} from '@/components/ui/button-link';
 import {Container} from '@/components/ui/container';
 import {SectionHeading} from '@/components/ui/section-heading';
 import {offers, portfolioProjects, processSteps, siteContent} from '@/content/site';
-import type {Locale} from '@/i18n/routing';
+import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
 
 type PageProps = {
   params: Promise<{locale: string}>;
 };
 
+const outcomeCards = {
+  de: [
+    {
+      icon: LayoutDashboard,
+      title: 'Klarer Angebots-Funnel',
+      text: 'Besucher erkennen sofort, was Sie anbieten, für wen es passt und welchen nächsten Schritt sie setzen sollen.'
+    },
+    {
+      icon: Gauge,
+      title: 'Premium-Speedgefühl',
+      text: 'Schnelle Seiten, ruhige Animationen und saubere Responsive-Layouts sorgen für Vertrauen auf jedem Gerät.'
+    },
+    {
+      icon: BarChart3,
+      title: 'Mehr Anfragequalität',
+      text: 'Struktur, Copy und CTAs sind so aufgebaut, dass bessere Anfragen statt nur mehr Klicks entstehen.'
+    }
+  ],
+  en: [
+    {
+      icon: LayoutDashboard,
+      title: 'Clear offer funnel',
+      text: 'Visitors understand what you offer, who it is for, and what next step they should take.'
+    },
+    {
+      icon: Gauge,
+      title: 'Premium speed feel',
+      text: 'Fast pages, calm animation, and clean responsive layouts create trust on every device.'
+    },
+    {
+      icon: BarChart3,
+      title: 'Better inquiry quality',
+      text: 'Structure, copy, and CTAs are designed to create better inquiries, not just more clicks.'
+    }
+  ]
+} satisfies Record<Locale, Array<{icon: typeof LayoutDashboard; title: string; text: string}>>;
+
+const workflowLabels = {
+  de: ['Positionierung', 'Struktur', 'Designsystem', 'Launch'],
+  en: ['Positioning', 'Structure', 'Design system', 'Launch']
+} satisfies Record<Locale, string[]>;
+
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
-  const locale = (await params).locale as Locale;
+  const rawLocale = (await params).locale;
+
+  if (!hasLocale(routing.locales, rawLocale)) {
+    return {};
+  }
+
+  const locale = rawLocale;
   const content = siteContent[locale];
 
   return createPageMetadata({
@@ -29,59 +78,59 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
 }
 
 export default async function HomePage({params}: PageProps) {
-  const locale = (await params).locale as Locale;
+  const rawLocale = (await params).locale;
+
+  if (!hasLocale(routing.locales, rawLocale)) {
+    notFound();
+  }
+
+  const locale = rawLocale;
   setRequestLocale(locale);
   const content = siteContent[locale];
-  const heroProject = portfolioProjects[2];
+  const salesStats = [
+    [content.home.metricOne, content.home.metricOneLabel],
+    [content.home.metricTwo, content.home.metricTwoLabel],
+    [content.home.metricThree, content.home.metricThreeLabel]
+  ];
+  const proofCards = [
+    {icon: ShieldCheck, text: content.home.heroTrust[0]},
+    {icon: MonitorSmartphone, text: content.home.heroTrust[1]},
+    {icon: Sparkles, text: content.home.heroTrust[2]}
+  ];
 
   return (
     <>
-      <section className="relative min-h-[calc(100svh-136px)] overflow-hidden bg-[#111815] text-white">
-        <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(17,24,21,0.98)_0%,rgba(17,24,21,0.88)_42%,rgba(15,95,69,0.48)_100%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-[linear-gradient(0deg,#f7f8f4_0%,rgba(247,248,244,0)_100%)]" />
-        <div className="absolute -right-28 top-16 hidden w-[48rem] rotate-2 opacity-60 lg:block">
-          <ProjectPreview project={heroProject} size="large" />
-        </div>
-        <div className="absolute bottom-10 right-10 hidden w-80 -rotate-3 opacity-75 xl:block">
-          <ProjectPreview project={portfolioProjects[0]} />
-        </div>
-        <Container className="relative z-10 flex min-h-[calc(100svh-136px)] items-center py-16">
-          <FadeIn className="max-w-3xl">
-            <p className="inline-flex rounded-[8px] border border-white/20 bg-white/10 px-3 py-2 text-sm font-semibold text-white">
+      <section className="dark-band relative isolate overflow-hidden text-white">
+        <div className="dark-grid absolute inset-0 opacity-40" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+        <Container className="relative min-h-[calc(100svh-76px)] py-16 lg:py-20">
+          <FadeIn className="max-w-5xl">
+            <p className="inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-semibold text-accent">
               {content.home.heroBadge}
             </p>
-            <h1 className="mt-6 text-balance text-5xl font-semibold leading-[1.05] text-white sm:text-6xl lg:text-7xl">
+            <h1 className="mt-6 max-w-5xl text-balance text-5xl font-semibold leading-[1.02] text-white sm:text-6xl lg:text-7xl">
               {content.home.heroTitle}
             </h1>
-            <p className="mt-6 max-w-2xl text-pretty text-lg leading-8 text-white/75 sm:text-xl">
+            <p className="mt-6 max-w-2xl text-pretty text-lg leading-8 text-white/72 sm:text-xl">
               {content.home.heroLead}
             </p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {content.home.heroTrust.map((item) => (
-                <span
-                  key={item}
-                  className="inline-flex items-center gap-2 rounded-[8px] border border-white/15 bg-white/10 px-3 py-2 text-sm font-semibold text-white/80"
-                >
-                  <CheckCircle2 className="h-4 w-4 text-[#f2b84b]" aria-hidden="true" />
-                  {item}
-                </span>
-              ))}
-            </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/contact">{content.common.primaryCta}</ButtonLink>
-              <ButtonLink href="/portfolio" variant="secondary" className="border-white/25 bg-white/10 text-white hover:bg-white hover:text-foreground">
+              <ButtonLink href="/contact" variant="accent">
+                {content.common.primaryCta}
+              </ButtonLink>
+              <ButtonLink
+                href="/portfolio"
+                variant="secondary"
+                className="!border-white !bg-white !text-[#0a1210] hover:!bg-accent [&_svg]:!text-[#0a1210]"
+              >
                 {content.common.secondaryCta}
               </ButtonLink>
             </div>
-            <div className="mt-10 grid max-w-2xl grid-cols-3 gap-4 border-t border-white/15 pt-6">
-              {[
-                [content.home.metricOne, content.home.metricOneLabel],
-                [content.home.metricTwo, content.home.metricTwoLabel],
-                [content.home.metricThree, content.home.metricThreeLabel]
-              ].map(([value, label]) => (
-                <div key={value}>
-                  <p className="text-xl font-semibold text-white sm:text-2xl">{value}</p>
-                  <p className="mt-1 text-xs leading-5 text-white/60 sm:text-sm">{label}</p>
+            <div className="mt-10 grid max-w-3xl gap-3 sm:grid-cols-3">
+              {salesStats.map(([value, label]) => (
+                <div key={value} className="rounded-[8px] border border-white/10 bg-white/[0.07] p-4">
+                  <p className="text-2xl font-semibold text-white">{value}</p>
+                  <p className="mt-1 text-sm leading-5 text-white/58">{label}</p>
                 </div>
               ))}
             </div>
@@ -89,33 +138,48 @@ export default async function HomePage({params}: PageProps) {
         </Container>
       </section>
 
-      <section className="py-14">
+      <section className="relative z-10 py-14">
         <Container>
-          <SoftScaleIn className="grid gap-6 rounded-[8px] border border-border bg-white p-6 shadow-sm md:grid-cols-[0.8fr_1.2fr] md:p-8">
-            <h2 className="text-2xl font-semibold text-foreground">
-              {content.home.proofTitle}
-            </h2>
-            <div>
-              <p className="text-base leading-8 text-muted">{content.home.proofCopy}</p>
-              <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                {content.home.heroTrust.map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-[8px] border border-border bg-[#f7f8f4] px-3 py-3 text-sm font-semibold text-foreground"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </SoftScaleIn>
+          <div className="grid gap-4 md:grid-cols-3">
+            {proofCards.map((card, index) => (
+              <FadeIn key={card.text} delay={index * 0.08}>
+                <article className="lift-card h-full rounded-[8px] border border-border bg-white p-5 shadow-sm">
+                  <card.icon className="h-5 w-5 text-primary" aria-hidden="true" />
+                  <p className="mt-4 text-sm font-semibold leading-6 text-foreground">{card.text}</p>
+                </article>
+              </FadeIn>
+            ))}
+          </div>
         </Container>
       </section>
 
       <section className="py-16">
         <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <SectionHeading
+              eyebrow={content.common.eyebrow}
+              title={content.home.proofTitle}
+              lead={content.home.proofCopy}
+            />
+            <div className="grid gap-4 md:grid-cols-3">
+              {outcomeCards[locale].map((card, index) => (
+                <FadeIn key={card.title} delay={index * 0.08}>
+                  <article className="lift-card h-full rounded-[8px] border border-border bg-white p-5 shadow-sm">
+                    <card.icon className="h-6 w-6 text-primary" aria-hidden="true" />
+                    <h3 className="mt-5 text-lg font-semibold text-foreground">{card.title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-muted">{card.text}</p>
+                  </article>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="bg-white py-16">
+        <Container>
           <SectionHeading
-            eyebrow={content.common.eyebrow}
+            eyebrow={content.common.nextStep}
             title={content.home.servicesTitle}
             lead={content.home.servicesLead}
           />
@@ -136,14 +200,16 @@ export default async function HomePage({params}: PageProps) {
         </Container>
       </section>
 
-      <section className="bg-white py-16">
-        <Container>
+      <section className="dark-band relative overflow-hidden py-16 text-white">
+        <div className="dark-grid absolute inset-0 opacity-35" />
+        <Container className="relative">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <SectionHeading
               title={content.home.portfolioTitle}
               lead={content.home.portfolioLead}
+              className="[&_h2]:text-white [&_p]:text-white/70"
             />
-            <ButtonLink href="/portfolio" variant="secondary" className="md:mb-1">
+            <ButtonLink href="/portfolio" variant="secondary" className="!border-white !bg-white !text-[#0a1210] hover:!bg-accent md:mb-1 [&_svg]:!text-[#0a1210]">
               {content.common.secondaryCta}
             </ButtonLink>
           </div>
@@ -171,12 +237,28 @@ export default async function HomePage({params}: PageProps) {
           <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {processSteps.map((step, index) => (
               <FadeIn key={step.title[locale]} delay={index * 0.08}>
-                <article className="h-full rounded-[8px] border border-border bg-white p-5 shadow-sm">
+                <article className="lift-card h-full rounded-[8px] border border-border bg-white p-5 shadow-sm">
+                  <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#0a1210] text-sm font-bold text-white">
+                    {index + 1}
+                  </div>
                   <h3 className="text-lg font-semibold text-foreground">{step.title[locale]}</h3>
                   <p className="mt-3 text-sm leading-7 text-muted">{step.description[locale]}</p>
                 </article>
               </FadeIn>
             ))}
+          </div>
+          <div className="mt-10 grid gap-3 rounded-[8px] border border-border bg-white p-4 shadow-sm md:grid-cols-4">
+            {workflowLabels[locale].map((label, index) => (
+              <div key={label} className="flex items-center gap-3 text-sm font-semibold text-foreground">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/[0.1] text-primary">
+                  {index + 1}
+                </span>
+                <span>{label}</span>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 flex justify-center">
+            <ButtonLink href="/contact">{content.common.startProject}</ButtonLink>
           </div>
         </Container>
       </section>

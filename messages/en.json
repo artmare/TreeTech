@@ -30,9 +30,9 @@
     "companyPlaceholder": "Your company name",
     "messagePlaceholder": "Short brief: what should the website achieve, and when should it go live?",
     "budgets": {
-      "landing": "Landing page from 299€",
-      "website": "Website from 499€",
-      "business": "Business website from 799€",
+      "landing": "Landing page from 200€",
+      "website": "Website from 450€",
+      "business": "Business website from 599€",
       "custom": "Custom project"
     },
     "errors": {

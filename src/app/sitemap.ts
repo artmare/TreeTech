@@ -1,5 +1,6 @@
 import type {MetadataRoute} from 'next';
 
+import {demoSites} from '@/content/demo-sites';
 import {portfolioProjects, siteConfig} from '@/content/site';
 import {routing} from '@/i18n/routing';
 
@@ -8,7 +9,8 @@ const staticPaths = ['', '/about', '/services', '/portfolio', '/contact'];
 export default function sitemap(): MetadataRoute.Sitemap {
   const paths = [
     ...staticPaths,
-    ...portfolioProjects.map((project) => `/portfolio/${project.slug}`)
+    ...portfolioProjects.map((project) => `/portfolio/${project.slug}`),
+    ...demoSites.map((site) => `/portfolio/${site.slug}/site`)
   ];
 
   return routing.locales.flatMap((locale) =>

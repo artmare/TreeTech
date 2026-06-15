@@ -12,6 +12,7 @@ Production-ready multilingual website for TreeTech, a modern web studio for Aust
 - React Hook Form
 - Zod
 - Resend-ready contact API route
+- Supabase/Postgres contact request storage
 
 ## Routes
 
@@ -22,7 +23,19 @@ German is the default language and all public pages are locale-prefixed.
 - `/de/services` and `/en/services`
 - `/de/portfolio` and `/en/portfolio`
 - `/de/portfolio/[slug]` and `/en/portfolio/[slug]`
+- `/de/portfolio/[slug]/site` and `/en/portfolio/[slug]/site`
 - `/de/contact` and `/en/contact`
+
+## Portfolio Demo Site Storage
+
+The five demo websites are stored as typed content in `src/content/demo-sites.ts`
+and rendered through one reusable route at `/[locale]/portfolio/[slug]/site`.
+This is the best fit for portfolio demo sites because it keeps German and English
+copy versioned together, avoids duplicated page code, needs no database or CMS,
+and lets Vercel statically generate every demo page.
+
+For real client websites, keep each client site in its own GitHub repository and
+Vercel project, then store only the portfolio metadata and live URL in TreeTech.
 
 ## Requirements
 
@@ -54,11 +67,36 @@ Copy `.env.example` to `.env.local` for local development and configure the same
 | Variable | Required | Scope | Description |
 | --- | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Yes | Public | Canonical production URL used for SEO metadata, sitemap, and alternate links. Example: `https://treetech.at`. |
+| `NEXT_PUBLIC_SUPABASE_URL` | Yes for contact storage | Public | Supabase project URL, for example `https://your-project-ref.supabase.co`. Used by `/api/contact` when `SUPABASE_URL` is not set. |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Yes for publishable-key contact storage | Public | Supabase publishable key. The SQL grants `INSERT` only, with no public read access to contact requests. |
+| `SUPABASE_URL` | Optional | Server | Server-only Supabase URL override. |
+| `SUPABASE_PUBLISHABLE_KEY` | Optional | Server | Server-only publishable key override. |
+| `SUPABASE_SECRET_KEY` | Recommended for private server writes | Server | Supabase secret API key used only by `/api/contact`. Prefer this for production if available. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Optional fallback | Server | Legacy Supabase service role key. Used only if `SUPABASE_SECRET_KEY` is not set. |
 | `RESEND_API_KEY` | Required for email delivery | Server | Resend API key used by `/api/contact`. If omitted, form submissions validate and return success but no email is sent. |
 | `CONTACT_TO_EMAIL` | Required for email delivery | Server | Recipient address for project inquiries. |
 | `CONTACT_FROM_EMAIL` | Required for email delivery | Server | Verified sender address in Resend. Example: `TreeTech <kontakt@treetech.at>`. |
 
-Never expose `RESEND_API_KEY` with a `NEXT_PUBLIC_` prefix.
+Never expose `SUPABASE_SECRET_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, or `RESEND_API_KEY` with a `NEXT_PUBLIC_` prefix.
+
+## Contact Request Storage
+
+The contact form stores every real inquiry in Supabase before attempting email delivery.
+This keeps inquiries persistent on Vercel and other serverless hosts where local files are not durable.
+
+Create the table once in Supabase:
+
+1. Open your Supabase project.
+2. Go to SQL Editor.
+3. Run the SQL in `supabase/contact_requests.sql`.
+4. Add these variables to `.env.local` and to Vercel Project Settings:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+   - optionally `SUPABASE_SECRET_KEY` for private server writes
+
+The table is named `public.contact_requests`. Row Level Security is enabled. The SQL allows public `INSERT` only so the contact form can create rows with a publishable key, but it does not create public `SELECT`, `UPDATE`, or `DELETE` policies.
+
+If Supabase storage is not configured or the table insert fails, `/api/contact` returns an error instead of silently accepting the form. Resend remains optional. If email delivery is configured and a secret/service key is available, the saved row is updated with `resend_email_id`.
 
 ## Vercel Deployment
 
@@ -75,7 +113,8 @@ Never expose `RESEND_API_KEY` with a `NEXT_PUBLIC_` prefix.
    - Production
    - Preview
    - Development, if you use `vercel env pull`
-6. Deploy.
+6. Run `supabase/contact_requests.sql` in the Supabase SQL Editor before accepting real contact requests.
+7. Deploy.
 
 Vercel automatically creates preview deployments for non-production branches and production deployments from the production branch.
 
@@ -110,6 +149,8 @@ vercel deploy --prod
 
 The contact form posts to `src/app/api/contact/route.ts`.
 
+The endpoint first stores the inquiry in `public.contact_requests`, then sends email through Resend if configured.
+
 For real email delivery:
 
 1. Verify the sending domain or sender address in Resend.
@@ -117,7 +158,7 @@ For real email delivery:
 3. Set `CONTACT_TO_EMAIL` to the recipient inbox.
 4. Set `CONTACT_FROM_EMAIL` to a verified Resend sender.
 
-Without Resend configuration, the endpoint still validates payloads and returns success. This keeps preview deployments usable before email is connected.
+Without Resend configuration, the endpoint still stores the inquiry and returns success. Supabase storage must be configured for real submissions.
 
 ## SEO Notes
 
@@ -140,6 +181,7 @@ After deploying:
 
 - Visit `/de` and `/en`.
 - Submit a contact form test with a safe internal email address.
+- Confirm the row appears in Supabase table `contact_requests`.
 - Check Vercel Function logs for `/api/contact`.
 - Confirm canonical URLs use the production domain.
 - Confirm Resend receives or sends the contact email.

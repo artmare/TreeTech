@@ -5,8 +5,10 @@ import {Globe2, Menu, X} from 'lucide-react';
 import {useLocale, useTranslations} from 'next-intl';
 import {useState} from 'react';
 
+import {LogoMark} from '@/components/logo-mark';
 import type {Locale} from '@/i18n/routing';
 import {Link, usePathname} from '@/i18n/navigation';
+import {isDemoSitePath} from '@/lib/demo-routes';
 import {cn} from '@/lib/utils';
 
 const navItems = [
@@ -28,13 +30,15 @@ export function SiteHeader({locale}: SiteHeaderProps) {
   const [open, setOpen] = useState(false);
   const nextLocale = activeLocale === 'de' ? 'en' : 'de';
 
+  if (isDemoSitePath(pathname)) {
+    return null;
+  }
+
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-background/90 backdrop-blur-xl">
-      <div className="mx-auto flex h-[72px] w-full max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-white/70 bg-[#f6f8f4]/84 backdrop-blur-xl">
+      <div className="mx-auto flex h-[76px] w-full max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-3" aria-label="TreeTech">
-          <span className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-primary text-base font-bold text-white">
-            TT
-          </span>
+          <LogoMark className="h-11 w-11 drop-shadow-[0_14px_24px_rgba(15,95,69,0.22)]" />
           <span className="grid leading-tight">
             <span className="text-lg font-semibold text-foreground">TreeTech</span>
             <span className="hidden text-[11px] font-semibold uppercase text-muted sm:block">
@@ -53,7 +57,7 @@ export function SiteHeader({locale}: SiteHeaderProps) {
                 key={item.key}
                 href={item.href}
                 className={cn(
-                  'rounded-[8px] px-3 py-2 text-sm font-medium text-muted transition hover:bg-white hover:text-foreground',
+                  'rounded-full px-3 py-2 text-sm font-semibold text-muted transition hover:bg-white hover:text-foreground',
                   active && 'bg-white text-foreground shadow-sm'
                 )}
               >
@@ -67,7 +71,7 @@ export function SiteHeader({locale}: SiteHeaderProps) {
           <Link
             href={pathname}
             locale={nextLocale}
-            className="hidden min-h-10 items-center gap-2 rounded-[8px] border border-border bg-white px-3 py-2 text-sm font-semibold text-foreground transition hover:border-primary sm:inline-flex"
+            className="hidden min-h-10 items-center gap-2 rounded-full border border-border bg-white/90 px-3 py-2 text-sm font-semibold text-foreground transition hover:border-primary hover:text-primary sm:inline-flex"
             aria-label={t('language')}
           >
             <Globe2 className="h-4 w-4" aria-hidden="true" />
@@ -75,13 +79,13 @@ export function SiteHeader({locale}: SiteHeaderProps) {
           </Link>
           <Link
             href="/contact"
-            className="hidden min-h-10 items-center justify-center rounded-[8px] bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0a4f38] sm:inline-flex"
+            className="hidden min-h-11 items-center justify-center rounded-[8px] bg-[#0a1210] px-4 py-2 text-sm font-semibold !text-white shadow-[0_14px_32px_rgba(10,18,16,0.22)] transition hover:-translate-y-0.5 hover:bg-primary sm:inline-flex"
           >
             {t('contact')}
           </Link>
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-[8px] border border-border bg-white text-foreground lg:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-[8px] border border-border bg-white text-foreground shadow-sm lg:hidden"
             onClick={() => setOpen((value) => !value)}
             aria-label={open ? t('close') : t('menu')}
             aria-expanded={open}
@@ -97,7 +101,7 @@ export function SiteHeader({locale}: SiteHeaderProps) {
             initial={{height: 0, opacity: 0}}
             animate={{height: 'auto', opacity: 1}}
             exit={{height: 0, opacity: 0}}
-            className="overflow-hidden border-t border-border bg-background lg:hidden"
+            className="overflow-hidden border-t border-border bg-[#f6f8f4] lg:hidden"
           >
             <nav className="mx-auto grid max-w-7xl gap-2 px-5 py-4 sm:px-6" aria-label="Mobile navigation">
               {navItems.map((item) => (

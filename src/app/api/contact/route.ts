@@ -2,6 +2,11 @@ import {NextResponse} from 'next/server';
 import {Resend} from 'resend';
 
 import {serverContactSchema} from '@/lib/contact';
+import {
+  ContactStorageError,
+  markContactRequestEmailSent,
+  saveContactRequest
+} from '@/lib/contact-storage';
 
 let resendClient: Resend | null = null;
 
@@ -34,11 +39,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ok: true});
   }
 
+  let storedRequestId: string;
+
+  try {
+    const storedRequest = await saveContactRequest(data, request);
+    storedRequestId = storedRequest.id;
+  } catch (error) {
+    console.error(
+      'Contact request storage failed:',
+      error instanceof Error ? error.message : error
+    );
+
+    return NextResponse.json(
+      {ok: false, message: 'Contact request could not be saved.'},
+      {status: error instanceof ContactStorageError ? 503 : 500}
+    );
+  }
+
   const resend = getResend();
   const to = process.env.CONTACT_TO_EMAIL;
 
   if (resend && to) {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: process.env.CONTACT_FROM_EMAIL || 'TreeTech <kontakt@treetech.at>',
       to,
       replyTo: data.email,
@@ -60,9 +82,13 @@ export async function POST(request: Request) {
         <p>${escapeHtml(data.message).replaceAll('\n', '<br />')}</p>
       `
     });
+
+    if (result.data?.id) {
+      await markContactRequestEmailSent(storedRequestId, result.data.id);
+    }
   }
 
-  return NextResponse.json({ok: true});
+  return NextResponse.json({ok: true, id: storedRequestId});
 }
 
 function escapeHtml(value: string) {

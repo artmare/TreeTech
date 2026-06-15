@@ -30,9 +30,9 @@
     "companyPlaceholder": "Name Ihres Unternehmens",
     "messagePlaceholder": "Kurzbeschreibung: Was soll die Website leisten, und bis wann soll sie online sein?",
     "budgets": {
-      "landing": "Landing Page ab 299€",
-      "website": "Website ab 499€",
-      "business": "Business Website ab 799€",
+      "landing": "Landing Page ab 200€",
+      "website": "Website ab 450€",
+      "business": "Business Website ab 599€",
       "custom": "Individuelles Projekt"
     },
     "errors": {

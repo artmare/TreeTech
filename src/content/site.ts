@@ -45,14 +45,14 @@ export const offers: Offer[] = [
       de: 'Landing Page',
       en: 'Landing page'
     },
-    price: '299€',
+    price: '200€',
     description: {
-      de: 'Eine fokussierte Seite für ein Angebot, eine Aktion oder einen neuen Standort. Ideal, wenn schnell ein professioneller Auftritt online gehen soll.',
-      en: 'A focused page for an offer, campaign, or new location. Ideal when a professional presence needs to go live quickly.'
+      de: 'Eine fokussierte Conversion-Seite für ein Angebot, eine Aktion oder einen neuen Standort. Ideal, wenn schnell ein professioneller Auftritt online gehen soll.',
+      en: 'A focused conversion page for an offer, campaign, or new location. Ideal when a professional presence needs to go live quickly.'
     },
     features: {
-      de: ['Klarer Seitenaufbau', 'Mobile Umsetzung', 'Kontakt-CTA', 'SEO-Grundlagen'],
-      en: ['Clear page structure', 'Mobile implementation', 'Contact CTA', 'SEO essentials']
+      de: ['Conversion-orientierter Seitenaufbau', 'Mobile Umsetzung', 'Kontakt-CTA', 'SEO-Grundlagen'],
+      en: ['Conversion-oriented page structure', 'Mobile implementation', 'Contact CTA', 'SEO essentials']
     }
   },
   {
@@ -60,14 +60,14 @@ export const offers: Offer[] = [
       de: 'Website',
       en: 'Website'
     },
-    price: '499€',
+    price: '450€',
     description: {
-      de: 'Ein kompakter Webauftritt für Betriebe, Ordinationen und Dienstleister, die online seriös auftreten und mehr Anfragen erhalten möchten.',
-      en: 'A compact website for companies, clinics, and service providers that need a credible online presence and more inquiries.'
+      de: 'Ein kompakter Webauftritt für Betriebe, Ordinationen und Dienstleister, die online seriös auftreten, Leistungen klar erklären und mehr Anfragen erhalten möchten.',
+      en: 'A compact website for companies, clinics, and service providers that need credibility, clear service communication, and better inquiries.'
     },
     features: {
-      de: ['Bis zu 5 Seiten', 'Struktur für zwei Sprachen', 'Performance-Basis', 'Saubere Inhaltsführung'],
-      en: ['Up to 5 pages', 'Two-language structure', 'Performance foundation', 'Clean content flow']
+      de: ['Bis zu 5 Seiten', 'Struktur für zwei Sprachen', 'Performance-Basis', 'Saubere Anfrageführung'],
+      en: ['Up to 5 pages', 'Two-language structure', 'Performance foundation', 'Clean inquiry flow']
     },
     highlighted: true
   },
@@ -76,7 +76,7 @@ export const offers: Offer[] = [
       de: 'Business Website',
       en: 'Business website'
     },
-    price: '799€',
+    price: '599€',
     description: {
       de: 'Ein hochwertiger Auftritt für Unternehmen mit mehreren Leistungen, Referenzen, Formularen und klarer Verkaufslogik.',
       en: 'A premium presence for businesses with multiple services, references, forms, and a clear conversion strategy.'
@@ -136,13 +136,13 @@ export const siteContent = {
     metadata: {
       homeTitle: 'TreeTech | Premium Websites für österreichische Unternehmen',
       homeDescription:
-        'TreeTech erstellt moderne, mehrsprachige Websites und Landing Pages für Betriebe in Österreich. Klare Pakete ab 299€.',
+        'TreeTech erstellt moderne, mehrsprachige Websites und Landing Pages für Betriebe in Österreich. Klare Pakete ab 200€.',
       aboutTitle: 'Über TreeTech | Webstudio für Österreich',
       aboutDescription:
         'TreeTech ist ein modernes Webstudio für österreichische Betriebe, die online seriös auftreten und mehr qualifizierte Anfragen erhalten möchten.',
       servicesTitle: 'Leistungen & Preise | TreeTech',
       servicesDescription:
-        'Landing Pages ab 299€, Websites ab 499€ und Business Websites ab 799€ für Betriebe, Ordinationen, Kanzleien und Dienstleister in Österreich.',
+        'Landing Pages ab 200€, Websites ab 450€ und Business Websites ab 599€ für Betriebe, Ordinationen, Kanzleien und Dienstleister in Österreich.',
       portfolioTitle: 'Portfolio | TreeTech Webstudio',
       portfolioDescription:
         'Beispielprojekte für österreichische Branchen: Ordination, Kanzlei, Hotel, Immobilien und Fitnessstudio.',
@@ -165,14 +165,14 @@ export const siteContent = {
       nextStep: 'Nächster Schritt'
     },
     home: {
-      heroTitle: 'Websites, die österreichische Unternehmen seriös verkaufen.',
+      heroTitle: 'Ein moderner Webauftritt, der aus Besuchern echte Anfragen macht.',
       heroLead:
-        'TreeTech entwickelt klare, schnelle und mehrsprachige Webauftritte für Betriebe in Österreich. Damit Besucher rasch verstehen, warum sie gerade bei Ihnen anfragen sollen.',
-      heroBadge: 'Landing Page ab 299€',
+        'TreeTech baut schnelle, mehrsprachige Websites für österreichische B2B- und Dienstleistungsbetriebe. Klarer Nutzen, starke Vertrauenssignale und ein Anfrageweg, der nicht versteckt ist.',
+      heroBadge: 'Landing Page ab 200€',
       heroTrust: [
-        'Fixe Einstiegspakete',
-        'SEO- und Performance-Basis',
-        'Deutsch & Englisch mitgedacht'
+        'Productized Website-Pakete',
+        'SEO-, Speed- und Conversion-Basis',
+        'Deutsch & Englisch von Beginn an'
       ],
       metricOne: '3 Pakete',
       metricOneLabel: 'klar kalkulierbar',
@@ -180,16 +180,16 @@ export const siteContent = {
       metricTwoLabel: 'DE & EN',
       metricThree: '5 Branchen',
       metricThreeLabel: 'realistische Beispiele',
-      proofTitle: 'Für Betriebe, die nicht nach Baukasten aussehen möchten.',
+      proofTitle: 'Für Betriebe, die online wie ein Marktführer wirken möchten.',
       proofCopy:
-        'Vom ersten Eindruck bis zur Anfrage ist jede Seite darauf ausgelegt, Vertrauen aufzubauen, Leistungen verständlich zu machen und Kontaktbarrieren zu senken.',
-      servicesTitle: 'Klare Pakete, ohne Agentur-Nebel.',
+        'Vom ersten Eindruck bis zur Anfrage ist jede Seite darauf ausgelegt, Vertrauen aufzubauen, Leistungen sofort verständlich zu machen und Kontaktbarrieren zu senken.',
+      servicesTitle: 'Website-Pakete mit klarer Business-Logik.',
       servicesLead:
         'Sie wählen einen passenden Einstieg. Wenn Ihr Projekt mehr braucht, erweitern wir den Umfang sauber und nachvollziehbar.',
-      portfolioTitle: 'Beispiele, die nach echter Arbeit aussehen.',
+      portfolioTitle: 'Demo-Cases, die wie echte Kundengewinne wirken.',
       portfolioLead:
         'Fünf realistische Branchen-Cases zeigen, wie ein professioneller Auftritt für österreichische Unternehmen wirken kann.',
-      processTitle: 'Ein Ablauf, der schnell bleibt und trotzdem sauber ist.',
+      processTitle: 'Ein Launch-Prozess wie bei einem guten SaaS-Produkt.',
       processLead:
         'Sie bekommen keine lose Sammlung hübscher Sektionen, sondern einen nachvollziehbaren Weg von Positionierung bis Go-live.'
     },
@@ -255,13 +255,13 @@ export const siteContent = {
     metadata: {
       homeTitle: 'TreeTech | Premium websites for Austrian businesses',
       homeDescription:
-        'TreeTech builds modern multilingual websites and landing pages for Austrian businesses. Clear packages from 299€.',
+        'TreeTech builds modern multilingual websites and landing pages for Austrian businesses. Clear packages from 200€.',
       aboutTitle: 'About TreeTech | Web studio for Austria',
       aboutDescription:
         'TreeTech is a modern web studio for Austrian businesses that want to look credible online and receive better inquiries.',
       servicesTitle: 'Services & pricing | TreeTech',
       servicesDescription:
-        'Landing pages from 299€, websites from 499€, and business websites from 799€ for Austrian companies, clinics, law firms, and service providers.',
+        'Landing pages from 200€, websites from 450€, and business websites from 599€ for Austrian companies, clinics, law firms, and service providers.',
       portfolioTitle: 'Portfolio | TreeTech web studio',
       portfolioDescription:
         'Sample projects for Austrian industries: dental clinic, law firm, hotel, real estate, and fitness studio.',
@@ -284,14 +284,14 @@ export const siteContent = {
       nextStep: 'Next step'
     },
     home: {
-      heroTitle: 'Websites that help Austrian businesses sell with confidence.',
+      heroTitle: 'A modern web presence that turns visitors into real inquiries.',
       heroLead:
-        'TreeTech creates clear, fast, multilingual websites for businesses in Austria. Visitors understand what you offer, why it matters, and how to get in touch.',
-      heroBadge: 'Landing page from 299€',
+        'TreeTech builds fast, multilingual websites for Austrian B2B and service businesses. Clear value, strong trust signals, and an inquiry path that is never hidden.',
+      heroBadge: 'Landing page from 200€',
       heroTrust: [
-        'Clear starter packages',
-        'SEO and performance foundation',
-        'German & English planned in'
+        'Productized website packages',
+        'SEO, speed, and conversion foundation',
+        'German & English from day one'
       ],
       metricOne: '3 packages',
       metricOneLabel: 'easy to plan',
@@ -299,16 +299,16 @@ export const siteContent = {
       metricTwoLabel: 'DE & EN',
       metricThree: '5 industries',
       metricThreeLabel: 'realistic cases',
-      proofTitle: 'For companies that should not look like a template.',
+      proofTitle: 'For businesses that want to look like the market leader online.',
       proofCopy:
-        'From first impression to inquiry, every page is designed to build trust, explain services clearly, and make contact feel easy.',
-      servicesTitle: 'Clear packages without agency fog.',
+        'From first impression to inquiry, every page is designed to build trust, explain services instantly, and make contact feel easy.',
+      servicesTitle: 'Website packages with clear business logic.',
       servicesLead:
         'Choose the right starting point. If your project needs more, we expand the scope clearly and transparently.',
-      portfolioTitle: 'Examples that feel like real client work.',
+      portfolioTitle: 'Demo cases that feel like real client wins.',
       portfolioLead:
         'Five realistic industry cases show how a professional website can work for Austrian businesses.',
-      processTitle: 'A process that stays fast without getting messy.',
+      processTitle: 'A launch process shaped like a good SaaS product.',
       processLead:
         'You get a clear path from positioning to launch, not a loose collection of nice-looking sections.'
     },

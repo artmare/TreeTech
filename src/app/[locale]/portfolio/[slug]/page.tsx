@@ -1,18 +1,15 @@
+import {ArrowLeft, CheckCircle2, ExternalLink, Target, TrendingUp, Wrench} from 'lucide-react';
 import type {Metadata} from 'next';
 import {setRequestLocale} from 'next-intl/server';
-import {ArrowLeft, CheckCircle2} from 'lucide-react';
 import {notFound} from 'next/navigation';
 
 import {FadeIn} from '@/components/motion/fade-in';
 import {ProjectPreview} from '@/components/project-preview';
 import {ButtonLink} from '@/components/ui/button-link';
 import {Container} from '@/components/ui/container';
+import {demoSiteLabels} from '@/content/demo-sites';
+import {getProjectBySlug, portfolioProjects, siteContent} from '@/content/site';
 import {Link} from '@/i18n/navigation';
-import {
-  getProjectBySlug,
-  portfolioProjects,
-  siteContent
-} from '@/content/site';
 import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
 
@@ -48,19 +45,27 @@ export default async function PortfolioDetailPage({params}: PageProps) {
   const locale = rawLocale as Locale;
   setRequestLocale(locale);
   const content = siteContent[locale];
+  const demoLabels = demoSiteLabels[locale];
   const project = getProjectBySlug(slug);
 
   if (!project) {
     notFound();
   }
 
+  const storyCards = [
+    {label: content.portfolio.problem, text: project.problem[locale], icon: Target},
+    {label: content.portfolio.solution, text: project.solution[locale], icon: Wrench},
+    {label: content.portfolio.result, text: project.metric[locale], icon: TrendingUp}
+  ];
+
   return (
     <>
-      <section className="py-10 sm:py-14">
-        <Container>
+      <section className="dark-band relative overflow-hidden py-10 text-white sm:py-14">
+        <div className="dark-grid absolute inset-0 opacity-30" />
+        <Container className="relative">
           <Link
             href="/portfolio"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-primary"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-white/70 transition hover:text-white"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             <span>{content.common.backToPortfolio}</span>
@@ -68,27 +73,36 @@ export default async function PortfolioDetailPage({params}: PageProps) {
         </Container>
       </section>
 
-      <section className="pb-16">
-        <Container>
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <section className="dark-band relative overflow-hidden pb-16 text-white">
+        <div className="dark-grid absolute inset-0 opacity-30" />
+        <Container className="relative">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <FadeIn>
-              <p className="text-sm font-semibold uppercase text-primary">
+              <p className="inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-semibold text-accent">
                 {project.industry[locale]}
               </p>
-              <h1 className="mt-4 text-balance text-4xl font-semibold leading-tight text-foreground sm:text-6xl">
+              <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.03] text-white sm:text-7xl">
                 {project.name}
               </h1>
-              <p className="mt-6 text-pretty text-lg leading-8 text-muted">
+              <p className="mt-6 text-pretty text-lg leading-8 text-white/72 sm:text-xl">
                 {project.description[locale]}
               </p>
-              <div className="mt-8 grid grid-cols-2 gap-4 border-t border-border pt-6">
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <ButtonLink href={`/portfolio/${project.slug}/site`} variant="accent">
+                  {demoLabels.viewDemo}
+                </ButtonLink>
+                <ButtonLink href="/contact" variant="secondary" className="!border-white/20 !bg-white/10 !text-white hover:!bg-white hover:!text-foreground">
+                  {content.common.primaryCta}
+                </ButtonLink>
+              </div>
+              <div className="mt-8 grid grid-cols-2 gap-4 border-t border-white/12 pt-6">
                 <div>
-                  <p className="text-sm text-muted">{content.portfolio.location}</p>
-                  <p className="mt-1 font-semibold text-foreground">{project.location}</p>
+                  <p className="text-sm text-white/55">{content.portfolio.location}</p>
+                  <p className="mt-1 font-semibold text-white">{project.location}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted">{content.portfolio.year}</p>
-                  <p className="mt-1 font-semibold text-foreground">{project.year}</p>
+                  <p className="text-sm text-white/55">{content.portfolio.year}</p>
+                  <p className="mt-1 font-semibold text-white">{project.year}</p>
                 </div>
               </div>
             </FadeIn>
@@ -99,38 +113,25 @@ export default async function PortfolioDetailPage({params}: PageProps) {
         </Container>
       </section>
 
-      <section className="bg-white py-16">
+      <section className="py-16">
         <Container>
           <div className="grid gap-5 lg:grid-cols-3">
-            <FadeIn>
-              <article className="h-full rounded-[8px] border border-border bg-background p-6">
-                <p className="text-sm font-semibold uppercase text-primary">
-                  {content.portfolio.problem}
-                </p>
-                <p className="mt-4 text-base leading-8 text-muted">{project.problem[locale]}</p>
-              </article>
-            </FadeIn>
-            <FadeIn delay={0.08}>
-              <article className="h-full rounded-[8px] border border-border bg-background p-6">
-                <p className="text-sm font-semibold uppercase text-primary">
-                  {content.portfolio.solution}
-                </p>
-                <p className="mt-4 text-base leading-8 text-muted">{project.solution[locale]}</p>
-              </article>
-            </FadeIn>
-            <FadeIn delay={0.16}>
-              <article className="h-full rounded-[8px] border border-border bg-background p-6">
-                <p className="text-sm font-semibold uppercase text-primary">
-                  {content.portfolio.result}
-                </p>
-                <p className="mt-4 text-base leading-8 text-muted">{project.metric[locale]}</p>
-              </article>
-            </FadeIn>
+            {storyCards.map((card, index) => (
+              <FadeIn key={card.label} delay={index * 0.08}>
+                <article className="lift-card h-full rounded-[8px] border border-border bg-white p-6 shadow-sm">
+                  <card.icon className="h-6 w-6 text-primary" aria-hidden="true" />
+                  <p className="mt-5 text-sm font-bold uppercase tracking-[0.14em] text-primary">
+                    {card.label}
+                  </p>
+                  <p className="mt-4 text-base leading-8 text-muted">{card.text}</p>
+                </article>
+              </FadeIn>
+            ))}
           </div>
         </Container>
       </section>
 
-      <section className="py-16">
+      <section className="bg-white py-16">
         <Container>
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
             <FadeIn>
@@ -148,7 +149,7 @@ export default async function PortfolioDetailPage({params}: PageProps) {
               <div className="grid gap-3 sm:grid-cols-2">
                 {project.features[locale].map((feature, index) => (
                   <FadeIn key={feature} delay={index * 0.06}>
-                    <div className="flex h-full gap-3 rounded-[8px] border border-border bg-white p-4 shadow-sm">
+                    <div className="flex h-full gap-3 rounded-[8px] border border-border bg-background p-4 shadow-sm">
                       <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
                       <p className="text-sm leading-6 text-muted">{feature}</p>
                     </div>
@@ -160,19 +161,31 @@ export default async function PortfolioDetailPage({params}: PageProps) {
         </Container>
       </section>
 
-      <section className="pb-20">
+      <section className="py-20">
         <Container>
-          <FadeIn className="rounded-[8px] bg-[#111815] p-6 text-white sm:p-8 lg:p-10">
-            <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+          <FadeIn className="dark-band relative overflow-hidden rounded-[8px] p-6 text-white shadow-[0_24px_80px_rgba(10,18,16,0.2)] sm:p-8 lg:p-10">
+            <div className="dark-grid absolute inset-0 opacity-30" />
+            <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
-                <p className="text-sm font-semibold uppercase text-white/60">
+                <p className="text-sm font-bold uppercase tracking-[0.14em] text-accent">
                   {content.portfolio.ctaTitle}
                 </p>
                 <h2 className="mt-3 text-balance text-3xl font-semibold">
                   {project.cta[locale]}
                 </h2>
               </div>
-              <ButtonLink href="/contact">{content.common.primaryCta}</ButtonLink>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <ButtonLink href={`/portfolio/${project.slug}/site`} variant="accent">
+                  {demoLabels.viewDemo}
+                </ButtonLink>
+                <Link
+                  href="/contact"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[8px] border border-white/20 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-white hover:text-foreground"
+                >
+                  <span>{content.common.primaryCta}</span>
+                  <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </div>
             </div>
           </FadeIn>
         </Container>
