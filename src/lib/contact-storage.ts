@@ -34,6 +34,7 @@ export async function saveContactRequest(
   request: Request
 ): Promise<StoredContactRequest> {
   const config = getSupabaseStorageConfig();
+  const id = crypto.randomUUID();
 
   if (!config) {
     throw new ContactStorageError('Supabase contact request storage is not configured.');
@@ -45,9 +46,10 @@ export async function saveContactRequest(
       apikey: config.key,
       Authorization: `Bearer ${config.key}`,
       'Content-Type': 'application/json',
-      Prefer: 'return=representation'
+      Prefer: 'return=minimal'
     },
     body: JSON.stringify({
+      id,
       name: data.name,
       email: data.email,
       company: data.company || null,
@@ -61,13 +63,6 @@ export async function saveContactRequest(
   if (!response.ok) {
     const details = await response.text().catch(() => response.statusText);
     throw new ContactStorageError(`Supabase contact request insert failed: ${details}`);
-  }
-
-  const rows = (await response.json().catch(() => [])) as Array<{id?: string}>;
-  const id = rows[0]?.id;
-
-  if (!id) {
-    throw new ContactStorageError('Supabase contact request insert did not return an id.');
   }
 
   return {id};

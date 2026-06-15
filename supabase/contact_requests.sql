@@ -25,7 +25,7 @@ drop policy if exists "Public contact request inserts are allowed." on public.co
 create policy "Public contact request inserts are allowed."
   on public.contact_requests
   for insert
-  to anon, authenticated
+  to public
   with check (true);
 
 create index if not exists contact_requests_created_at_idx
