@@ -61,7 +61,7 @@ export async function POST(request: Request) {
 
   if (resend && to) {
     const result = await resend.emails.send({
-      from: process.env.CONTACT_FROM_EMAIL || 'TreeTech <kontakt@treetech.at>',
+      from: process.env.CONTACT_FROM_EMAIL || 'TreeTech <karnaukhovartem02@gmail.com>',
       to,
       replyTo: data.email,
       subject: `TreeTech Anfrage: ${data.budget}`,

@@ -75,7 +75,7 @@ Copy `.env.example` to `.env.local` for local development and configure the same
 | `SUPABASE_SERVICE_ROLE_KEY` | Optional fallback | Server | Legacy Supabase service role key. Used only if `SUPABASE_SECRET_KEY` is not set. |
 | `RESEND_API_KEY` | Required for email delivery | Server | Resend API key used by `/api/contact`. If omitted, form submissions validate and return success but no email is sent. |
 | `CONTACT_TO_EMAIL` | Required for email delivery | Server | Recipient address for project inquiries. |
-| `CONTACT_FROM_EMAIL` | Required for email delivery | Server | Verified sender address in Resend. Example: `TreeTech <kontakt@treetech.at>`. |
+| `CONTACT_FROM_EMAIL` | Required for email delivery | Server | Verified sender address in Resend. Example: `TreeTech <karnaukhovartem02@gmail.com>`. |
 
 Never expose `SUPABASE_SECRET_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, or `RESEND_API_KEY` with a `NEXT_PUBLIC_` prefix.
 
