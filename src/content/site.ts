@@ -3,7 +3,8 @@ import type {Locale} from '@/i18n/routing';
 export const siteConfig = {
   name: 'TreeTech',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://treetech.at',
-  email: 'karnaukhovartem02@gmail.com'
+  email: 'karnaukhovartem02@gmail.com',
+  googleSiteVerification: 't71POC8XUpAOQfOQ7hv6y83UIMxijMKSZ_KSlEO3MPM'
 };
 
 export type LocalizedText = Record<Locale, string>;

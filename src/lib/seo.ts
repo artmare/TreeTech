@@ -50,6 +50,9 @@ export function createPageMetadata({
     robots: {
       index: true,
       follow: true
+    },
+    verification: {
+      google: siteConfig.googleSiteVerification
     }
   };
 }
