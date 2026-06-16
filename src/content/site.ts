@@ -4,7 +4,7 @@ export const siteConfig = {
   name: 'TreeTech',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://treetech.at',
   email: 'karnaukhovartem02@gmail.com',
-  googleSiteVerification: 't71POC8XUpAOQfOQ7hv6y83UIMxijMKSZ_KSlEO3MPM'
+  googleSiteVerification: 'PdjQivxgyQpk4Qxzy2-3pMhBPW2pZreWQYBlrry2Gyw'
 };
 
 export type LocalizedText = Record<Locale, string>;
