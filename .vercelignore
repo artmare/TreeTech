@@ -1,0 +1,11 @@
+.codex
+.git
+.next
+.env
+.env*.local
+leadgen_bot
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
