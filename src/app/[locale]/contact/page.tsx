@@ -16,12 +16,12 @@ type PageProps = {
 const contactSignals = {
   de: [
     {icon: ShieldCheck, text: 'Ehrliche Einschätzung statt Verkaufsdruck'},
-    {icon: MessageSquareText, text: 'Klarer Vorschlag für Paket und Umfang'},
+    {icon: MessageSquareText, text: 'Klarer Vorschlag für Prozess, System und nächsten Schritt'},
     {icon: Timer, text: 'Antwort in der Regel innerhalb eines Werktags'}
   ],
   en: [
     {icon: ShieldCheck, text: 'Honest assessment without sales pressure'},
-    {icon: MessageSquareText, text: 'Clear suggestion for package and scope'},
+    {icon: MessageSquareText, text: 'Clear suggestion for process, system, and next step'},
     {icon: Timer, text: 'Replies usually within one business day'}
   ]
 } satisfies Record<Locale, Array<{icon: typeof ShieldCheck; text: string}>>;
@@ -44,30 +44,31 @@ export default async function ContactPage({params}: PageProps) {
   const content = siteContent[locale];
 
   return (
-    <section className="relative overflow-hidden py-20 sm:py-24">
+    <section className="dark-band scanline relative overflow-hidden py-20 text-white sm:py-24">
       <div className="saas-grid absolute inset-0 opacity-45" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_90%_10%,rgba(214,255,99,0.14),transparent_26rem)]" />
       <Container className="relative">
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
           <FadeIn>
-            <p className="inline-flex rounded-full border border-primary/[0.15] bg-primary/[0.08] px-3 py-2 text-sm font-semibold text-primary">
+            <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 font-mono text-sm text-accent">
               {content.common.nextStep}
             </p>
-            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.04] text-foreground sm:text-7xl">
+            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.04] text-white sm:text-7xl">
               {content.contact.title}
             </h1>
-            <p className="mt-6 text-pretty text-lg leading-8 text-muted sm:text-xl">
+            <p className="mt-6 text-pretty text-lg leading-8 text-white/72 sm:text-xl">
               {content.contact.lead}
             </p>
 
             <div className="mt-8 grid gap-3">
-              <div className="flex gap-3 rounded-[8px] border border-border bg-white p-4 shadow-sm">
-                <Mail className="mt-0.5 h-5 w-5 text-primary" aria-hidden="true" />
+              <div className="terminal-card flex gap-3 rounded-[1.25rem] p-4">
+                <Mail className="mt-0.5 h-5 w-5 text-accent" aria-hidden="true" />
                 <a href={`mailto:${siteConfig.email}`} className="text-sm font-semibold text-foreground">
                   {siteConfig.email}
                 </a>
               </div>
-              <div className="flex gap-3 rounded-[8px] border border-border bg-white p-4 shadow-sm">
-                <MapPin className="mt-0.5 h-5 w-5 text-primary" aria-hidden="true" />
+              <div className="terminal-card flex gap-3 rounded-[1.25rem] p-4">
+                <MapPin className="mt-0.5 h-5 w-5 text-accent" aria-hidden="true" />
                 <p className="text-sm leading-6 text-muted">{content.contact.details}</p>
               </div>
             </div>
@@ -75,8 +76,8 @@ export default async function ContactPage({params}: PageProps) {
             <div className="mt-8 grid gap-3">
               {contactSignals[locale].map((signal, index) => (
                 <FadeIn key={signal.text} delay={index * 0.06}>
-                  <div className="flex gap-3 rounded-[8px] border border-border bg-white/78 p-4 shadow-sm backdrop-blur">
-                    <signal.icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+                  <div className="terminal-card flex gap-3 rounded-[1.25rem] p-4">
+                    <signal.icon className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
                     <p className="text-sm font-semibold leading-6 text-foreground">{signal.text}</p>
                   </div>
                 </FadeIn>
@@ -85,8 +86,9 @@ export default async function ContactPage({params}: PageProps) {
           </FadeIn>
 
           <FadeIn delay={0.1}>
-            <div>
-              <h2 className="mb-4 text-2xl font-semibold text-foreground">
+            <div className="relative">
+              <div className="absolute -inset-3 rounded-[2rem] bg-accent/10 blur-2xl" aria-hidden="true" />
+              <h2 className="relative mb-4 text-2xl font-semibold text-white">
                 {content.contact.formTitle}
               </h2>
               <ContactForm />

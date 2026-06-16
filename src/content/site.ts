@@ -10,8 +10,8 @@ export type LocalizedText = Record<Locale, string>;
 export type LocalizedList = Record<Locale, string[]>;
 
 type Offer = {
+  chapter: string;
   name: LocalizedText;
-  price: string;
   description: LocalizedText;
   features: LocalizedList;
   highlighted?: boolean;
@@ -41,49 +41,79 @@ export type PortfolioProject = {
 
 export const offers: Offer[] = [
   {
+    chapter: '01',
     name: {
-      de: 'Landing Page',
-      en: 'Landing page'
+      de: 'AI Automation & Business Process Automation',
+      en: 'AI Automation & Business Process Automation'
     },
-    price: '200€',
     description: {
-      de: 'Eine fokussierte Conversion-Seite für ein Angebot, eine Aktion oder einen neuen Standort. Ideal, wenn schnell ein professioneller Auftritt online gehen soll.',
-      en: 'A focused conversion page for an offer, campaign, or new location. Ideal when a professional presence needs to go live quickly.'
+      de: 'Wir automatisieren wiederkehrende Abläufe mit künstlicher Intelligenz, damit Teams weniger manuell abarbeiten und schneller reagieren können.',
+      en: 'We automate recurring business processes with AI so teams spend less time on manual work and react faster.'
     },
     features: {
-      de: ['Conversion-orientierter Seitenaufbau', 'Mobile Umsetzung', 'Kontakt-CTA', 'SEO-Grundlagen'],
-      en: ['Conversion-oriented page structure', 'Mobile implementation', 'Contact CTA', 'SEO essentials']
-    }
-  },
-  {
-    name: {
-      de: 'Website',
-      en: 'Website'
-    },
-    price: '450€',
-    description: {
-      de: 'Ein kompakter Webauftritt für Betriebe, Ordinationen und Dienstleister, die online seriös auftreten, Leistungen klar erklären und mehr Anfragen erhalten möchten.',
-      en: 'A compact website for companies, clinics, and service providers that need credibility, clear service communication, and better inquiries.'
-    },
-    features: {
-      de: ['Bis zu 5 Seiten', 'Struktur für zwei Sprachen', 'Performance-Basis', 'Saubere Anfrageführung'],
-      en: ['Up to 5 pages', 'Two-language structure', 'Performance foundation', 'Clean inquiry flow']
+      de: ['Automatische E-Mail-Verarbeitung', 'Rechnungs- und Dokumentengenerierung', 'CRM-Automatisierung', 'Chatbots und AI-Assistenten', 'Integration verschiedener Services'],
+      en: ['Automatic email processing', 'Invoice and document generation', 'CRM automation', 'Chatbots and AI assistants', 'Integration of different services']
     },
     highlighted: true
   },
   {
+    chapter: '02',
     name: {
-      de: 'Business Website',
-      en: 'Business website'
+      de: 'Web Development',
+      en: 'Web Development'
     },
-    price: '599€',
     description: {
-      de: 'Ein hochwertiger Auftritt für Unternehmen mit mehreren Leistungen, Referenzen, Formularen und klarer Verkaufslogik.',
-      en: 'A premium presence for businesses with multiple services, references, forms, and a clear conversion strategy.'
+      de: 'Wir entwickeln Websites, die seriös wirken, sauber performen und Besucher klar zu Anfrage, Buchung oder Kauf führen.',
+      en: 'We develop websites that feel credible, perform cleanly, and guide visitors toward inquiry, booking, or purchase.'
     },
     features: {
-      de: ['Individuelle Sektionen', 'SEO-Metadaten', 'Kontaktformular', 'Launch-Begleitung'],
-      en: ['Custom sections', 'SEO metadata', 'Contact form', 'Launch support']
+      de: ['Landingpages', 'Corporate Websites', 'Mehrseitige Websites', 'Online-Shops', 'Restaurantseiten mit Online-Reservierung', 'Individuelle Weblösungen'],
+      en: ['Landing pages', 'Corporate websites', 'Multi-page websites', 'Online shops', 'Restaurant websites with online booking', 'Custom web solutions']
+    }
+  },
+  {
+    chapter: '03',
+    name: {
+      de: 'Custom Web Applications',
+      en: 'Custom Web Applications'
+    },
+    description: {
+      de: 'Wir bauen Web-Software, die echte operative Arbeit abbildet: übersichtlich, sicher und passend zu bestehenden Prozessen.',
+      en: 'We build web software for real operational work: clear, secure, and shaped around existing business processes.'
+    },
+    features: {
+      de: ['CRM-Systeme', 'ERP-Systeme', 'Kundenportale', 'Interne Unternehmenssysteme', 'SaaS-Plattformen', 'Individuelle Business-Tools'],
+      en: ['CRM systems', 'ERP systems', 'Customer portals', 'Internal company systems', 'SaaS platforms', 'Custom business tools']
+    }
+  },
+  {
+    chapter: '04',
+    name: {
+      de: 'AI Integration for Business',
+      en: 'AI Integration for Business'
+    },
+    description: {
+      de: 'Wir integrieren AI dort, wo sie im Alltag wirklich Nutzen bringt: Beratung, Support, Datenanalyse, Vertrieb und operative Entscheidungen.',
+      en: 'We integrate AI where it creates real daily value: consulting, support, data analysis, sales, marketing, and operations.'
+    },
+    features: {
+      de: ['AI-Berater', 'AI-Kundensupport', 'AI-Datenanalyse', 'AI für Vertrieb und Marketing', 'AI zur Optimierung operativer Abläufe'],
+      en: ['AI consultants', 'AI customer support', 'AI data analysis', 'AI for sales and marketing', 'AI for operational optimization']
+    }
+  },
+  {
+    chapter: '05',
+    name: {
+      de: 'Business Digitalization & Workflow Optimization',
+      en: 'Business Digitalization & Workflow Optimization'
+    },
+    description: {
+      de: 'Wir übersetzen analoge und unklare Prozesse in digitale Workflows, die nachvollziehbar, messbar und für Teams leichter steuerbar sind.',
+      en: 'We turn analog and unclear processes into digital workflows that are easier to manage, measure, and scale.'
+    },
+    features: {
+      de: ['Prozesse digitalisieren', 'Manuelle Arbeit reduzieren', 'Team-Effizienz erhöhen', 'CRM, ERP und andere Systeme verbinden', 'Workflows sauber dokumentieren'],
+      en: ['Digitalize processes', 'Reduce manual work', 'Improve team efficiency', 'Connect CRM, ERP, and other systems', 'Document workflows clearly']
     }
   }
 ];
@@ -91,22 +121,22 @@ export const offers: Offer[] = [
 export const processSteps: ProcessStep[] = [
   {
     title: {
-      de: '1. Klarheit',
-      en: '1. Clarity'
+      de: '1. Analyse',
+      en: '1. Audit'
     },
     description: {
-      de: 'Wir klären Angebot, Zielgruppe, Standortbezug und die wichtigste Anfrage auf der Website.',
-      en: 'We clarify the offer, audience, local context, and the most important inquiry path.'
+      de: 'Wir verstehen Abläufe, Tools, manuelle Arbeit, Zielgruppen und die Stellen, an denen Automatisierung wirklich Sinn macht.',
+      en: 'We understand workflows, tools, manual work, audiences, and the places where automation actually makes sense.'
     }
   },
   {
     title: {
-      de: '2. Konzept',
-      en: '2. Concept'
+      de: '2. Systemplan',
+      en: '2. System plan'
     },
     description: {
-      de: 'Aus Struktur, Text und visueller Richtung entsteht ein stimmiger Entwurf mit klarem roten Faden.',
-      en: 'Structure, copy, and visual direction become a coherent concept with a clear narrative.'
+      de: 'Aus Anforderungen, Datenflüssen und Interface-Ideen entsteht ein klarer Plan für Website, App, AI-Flow oder Integration.',
+      en: 'Requirements, data flows, and interface ideas become a clear plan for the website, app, AI flow, or integration.'
     }
   },
   {
@@ -115,8 +145,8 @@ export const processSteps: ProcessStep[] = [
       en: '3. Build'
     },
     description: {
-      de: 'Wir entwickeln responsiv, schnell und so, dass Inhalte später nachvollziehbar gepflegt werden können.',
-      en: 'We build responsively, quickly, and in a way that keeps content maintainable after launch.'
+      de: 'Wir entwickeln responsiv, performant und so, dass Inhalte, Automationen und Schnittstellen nachvollziehbar wartbar bleiben.',
+      en: 'We build responsively and performantly, keeping content, automations, and integrations maintainable.'
     }
   },
   {
@@ -125,8 +155,8 @@ export const processSteps: ProcessStep[] = [
       en: '4. Launch'
     },
     description: {
-      de: 'Vor dem Go-live prüfen wir Darstellung, Formulare, Metadaten und die wichtigsten Nutzerwege.',
-      en: 'Before launch, we check rendering, forms, metadata, and the most important user journeys.'
+      de: 'Vor dem Go-live prüfen wir Formulare, Daten, Schnittstellen, Berechtigungen, Metadaten und die wichtigsten Nutzerwege.',
+      en: 'Before launch, we check forms, data, integrations, permissions, metadata, and the most important user journeys.'
     }
   }
 ];
@@ -134,96 +164,96 @@ export const processSteps: ProcessStep[] = [
 export const siteContent = {
   de: {
     metadata: {
-      homeTitle: 'TreeTech | Premium Websites für österreichische Unternehmen',
+      homeTitle: 'TreeTech | AI-Automation, Webentwicklung und Business-Software',
       homeDescription:
-        'TreeTech erstellt moderne, mehrsprachige Websites und Landing Pages für Betriebe in Österreich. Klare Pakete ab 200€.',
-      aboutTitle: 'Über TreeTech | Webstudio für Österreich',
+        'TreeTech baut AI-Automatisierungen, Websites, Web-Apps und digitale Workflows für österreichische Unternehmen.',
+      aboutTitle: 'Über TreeTech | Digitalstudio für österreichische Betriebe',
       aboutDescription:
-        'TreeTech ist ein modernes Webstudio für österreichische Betriebe, die online seriös auftreten und mehr qualifizierte Anfragen erhalten möchten.',
-      servicesTitle: 'Leistungen & Preise | TreeTech',
+        'TreeTech ist ein modernes Digitalstudio für Betriebe, die Prozesse automatisieren, Web-Software bauen und digital besser arbeiten möchten.',
+      servicesTitle: 'Leistungen | TreeTech',
       servicesDescription:
-        'Landing Pages ab 200€, Websites ab 450€ und Business Websites ab 599€ für Betriebe, Ordinationen, Kanzleien und Dienstleister in Österreich.',
+        'AI-Automation, Webentwicklung, Custom Web Applications, AI-Integration und Workflow-Optimierung für österreichische Unternehmen.',
       portfolioTitle: 'Portfolio | TreeTech Webstudio',
       portfolioDescription:
         'Beispielprojekte für österreichische Branchen: Ordination, Kanzlei, Hotel, Immobilien und Fitnessstudio.',
       contactTitle: 'Kontakt | TreeTech',
       contactDescription:
-        'Starten Sie Ihr Website-Projekt mit TreeTech. Wir melden uns mit einer klaren Einschätzung und einem passenden nächsten Schritt.'
+        'Starten Sie Ihr Digitalprojekt mit TreeTech. Wir melden uns mit einer klaren Einschätzung und einem passenden nächsten Schritt.'
     },
     common: {
-      eyebrow: 'Webstudio für Österreich',
+      eyebrow: 'AI · Web · Automatisierung',
       primaryCta: 'Projekt anfragen',
       secondaryCta: 'Referenzen ansehen',
       viewProject: 'Case ansehen',
-      startProject: 'Website starten',
+      startProject: 'Projekt starten',
       learnMore: 'Mehr erfahren',
-      requestPackage: 'Paket anfragen',
-      recommended: 'Beliebt',
-      from: 'ab',
-      included: 'Enthalten',
+      requestPackage: 'Projekt besprechen',
+      recommended: 'Kernleistung',
+      from: 'Kapitel',
+      included: 'Was wir umsetzen',
       backToPortfolio: 'Zurück zum Portfolio',
       nextStep: 'Nächster Schritt'
     },
     home: {
-      heroTitle: 'Ein moderner Webauftritt, der aus Besuchern echte Anfragen macht.',
+      heroTitle: 'AI-Automation, Websites und Business-Software für Unternehmen, die schneller arbeiten wollen.',
       heroLead:
-        'TreeTech baut schnelle, mehrsprachige Websites für österreichische B2B- und Dienstleistungsbetriebe. Klarer Nutzen, starke Vertrauenssignale und ein Anfrageweg, der nicht versteckt ist.',
-      heroBadge: 'Landing Page ab 200€',
+        'TreeTech verbindet Webentwicklung, künstliche Intelligenz und Prozessverständnis. Wir bauen digitale Systeme, die Anfragen bringen, Arbeit reduzieren und bestehende Tools sauber verbinden.',
+      heroBadge: '> booting TreeTech systems',
       heroTrust: [
-        'Productized Website-Pakete',
-        'SEO-, Speed- und Conversion-Basis',
-        'Deutsch & Englisch von Beginn an'
+        'AI-Automation für wiederkehrende Aufgaben',
+        'Websites und Web-Apps mit klarer Business-Logik',
+        'CRM-, ERP- und Service-Integrationen'
       ],
-      metricOne: '3 Pakete',
-      metricOneLabel: 'klar kalkulierbar',
-      metricTwo: '2 Sprachen',
-      metricTwoLabel: 'DE & EN',
-      metricThree: '5 Branchen',
-      metricThreeLabel: 'realistische Beispiele',
-      proofTitle: 'Für Betriebe, die online wie ein Marktführer wirken möchten.',
+      metricOne: '5 Bereiche',
+      metricOneLabel: 'AI, Web, Apps, Integration, Workflows',
+      metricTwo: 'DE/EN',
+      metricTwoLabel: 'mehrsprachig gedacht',
+      metricThree: 'B2B',
+      metricThreeLabel: 'für österreichische Betriebe',
+      proofTitle: 'Für Betriebe, die weniger manuell arbeiten und digital professioneller verkaufen möchten.',
       proofCopy:
-        'Vom ersten Eindruck bis zur Anfrage ist jede Seite darauf ausgelegt, Vertrauen aufzubauen, Leistungen sofort verständlich zu machen und Kontaktbarrieren zu senken.',
-      servicesTitle: 'Website-Pakete mit klarer Business-Logik.',
+        'Wir denken nicht nur in schönen Screens. Jede Lösung bekommt einen Zweck: schneller reagieren, Prozesse entlasten, Kundinnen und Kunden besser führen und Daten sauberer nutzen.',
+      servicesTitle: 'Was wir bauen.',
       servicesLead:
-        'Sie wählen einen passenden Einstieg. Wenn Ihr Projekt mehr braucht, erweitern wir den Umfang sauber und nachvollziehbar.',
+        'Von AI-Automation bis Custom Web Applications: TreeTech baut digitale Systeme, die im Alltag eines Unternehmens wirklich verwendet werden.',
       portfolioTitle: 'Demo-Cases, die wie echte Kundengewinne wirken.',
       portfolioLead:
         'Fünf realistische Branchen-Cases zeigen, wie ein professioneller Auftritt für österreichische Unternehmen wirken kann.',
-      processTitle: 'Ein Launch-Prozess wie bei einem guten SaaS-Produkt.',
+      processTitle: 'Ein Prozess wie ein sauberer System-Launch.',
       processLead:
-        'Sie bekommen keine lose Sammlung hübscher Sektionen, sondern einen nachvollziehbaren Weg von Positionierung bis Go-live.'
+        'Wir starten mit Abläufen, Zielen und Daten. Danach entstehen Struktur, Interface, Automatisierung und Launch in klaren Schritten.'
     },
     about: {
-      title: 'Ein schlankes Webstudio mit Sinn für österreichische Betriebe.',
+      title: 'Ein schlankes Digitalstudio für Automatisierung, Web und Business-Software.',
       lead:
-        'TreeTech unterstützt Unternehmen, Ordinationen, Kanzleien und lokale Dienstleister dabei, online hochwertiger aufzutreten und besser angefragt zu werden.',
+        'TreeTech unterstützt österreichische Unternehmen dabei, digitale Abläufe zu bauen, AI sinnvoll einzusetzen und Websysteme zu entwickeln, die im Alltag wirklich helfen.',
       storyTitle: 'Warum TreeTech',
       story:
-        'Viele Betriebe leisten sehr gute Arbeit, wirken online aber kleiner oder beliebiger, als sie sind. TreeTech übersetzt Qualität, Erfahrung und Standortnähe in einen Webauftritt, der ruhig, hochwertig und verständlich verkauft.',
+        'Viele Betriebe arbeiten mit starken Teams, aber mit zu vielen manuellen Schritten, verstreuten Tools und Websites, die nicht mehr zur Realität des Unternehmens passen. TreeTech verbindet Strategie, Design und Entwicklung zu digitalen Systemen, die sichtbar entlasten.',
       valuesTitle: 'So arbeiten wir',
       values: [
-        'Zuerst Klarheit über Angebot und Zielgruppe',
-        'Mobile Darstellung wird von Anfang an mitgedacht',
-        'Texte, Struktur und Design greifen ineinander',
-        'Technik bleibt nachvollziehbar und wartbar'
+        'Zuerst verstehen wir Prozesse, Engpässe und Ziele',
+        'AI wird dort eingesetzt, wo sie messbar Zeit spart',
+        'Interface, Text und Automatisierung greifen ineinander',
+        'Technik bleibt nachvollziehbar, wartbar und erweiterbar'
       ],
       promiseTitle: 'Was Sie erwarten können',
       promise:
-        'Eine Zusammenarbeit ohne Fachchinesisch: klare Entscheidungen, ehrliche Einschätzungen und ein Ergebnis, das zu Ihrem Betrieb passt.'
+        'Eine Zusammenarbeit ohne Fachchinesisch: klare Entscheidungen, ehrliche Einschätzungen und ein System, das zu Ihrem Betrieb, Ihren Tools und Ihrem Team passt.'
     },
     services: {
-      title: 'Websites für Betriebe, die Vertrauen und Anfragen brauchen.',
+      title: 'Digitale Systeme für Betriebe, die wachsen, automatisieren und besser verkaufen wollen.',
       lead:
-        'Ob neue Landing Page, mehrseitiger Auftritt oder hochwertiger Relaunch: TreeTech baut Websites, die Leistungen verständlich machen und Besucher zur Anfrage führen.',
-      packageTitle: 'Pakete',
+        'Wir bauen Websites, AI-Automationen, Web-Apps und Workflow-Systeme für Unternehmen, die weniger händisch erledigen und digital professioneller arbeiten möchten.',
+      serviceAreasTitle: 'Leistungsbereiche',
       processTitle: 'So läuft die Zusammenarbeit',
-      addOnsTitle: 'Sinnvolle Erweiterungen',
+      addOnsTitle: 'Was sich dadurch im Betrieb verbessert',
       addOns: [
-        'Mehrsprachige Inhalte mit sauberer URL-Struktur',
-        'Portfolio- oder Referenzbereich für Vertrauen',
-        'Kontaktformular vorbereitet für Resend',
-        'Performance-, Formular- und Launch-Check',
-        'Text-Feinschliff für bessere Anfragen'
+        'Weniger manuelle E-Mail-, CRM- und Dokumentenarbeit',
+        'Schnellere Reaktionszeiten gegenüber Kundinnen und Kunden',
+        'Saubere Verbindung von Website, Formularen, CRM und internen Tools',
+        'Bessere Übersicht über Leads, Prozesse und offene Aufgaben',
+        'AI-Assistenten für Support, Vertrieb und interne Abläufe'
       ]
     },
     portfolio: {
@@ -241,108 +271,108 @@ export const siteContent = {
       year: 'Jahr'
     },
     contact: {
-      title: 'Bereit für einen Webauftritt, der besser verkauft?',
+      title: 'Bereit für digitale Systeme, die Ihrem Team Arbeit abnehmen?',
       lead:
-        'Schreiben Sie kurz, worum es geht. TreeTech meldet sich mit einer ehrlichen Einschätzung, einem passenden Paket und einem klaren nächsten Schritt.',
+        'Schreiben Sie kurz, welcher Prozess, welche Website oder welches Web-Tool verbessert werden soll. TreeTech meldet sich mit einer ehrlichen Einschätzung und einem klaren nächsten Schritt.',
       detailsTitle: 'Direkter Kontakt',
       details:
-        'Passend für neue Websites, Landing Pages, Relaunches und zweisprachige Auftritte für Betriebe in Österreich.',
+        'Passend für AI-Automation, Webentwicklung, Web-Apps, CRM/ERP-Integrationen und digitale Workflows für Betriebe in Österreich.',
       responseTime: 'Antwort in der Regel innerhalb eines Werktags.',
       formTitle: 'Projektanfrage'
     }
   },
   en: {
     metadata: {
-      homeTitle: 'TreeTech | Premium websites for Austrian businesses',
+      homeTitle: 'TreeTech | AI automation, web development, and business software',
       homeDescription:
-        'TreeTech builds modern multilingual websites and landing pages for Austrian businesses. Clear packages from 200€.',
-      aboutTitle: 'About TreeTech | Web studio for Austria',
+        'TreeTech builds AI automations, websites, web apps, and digital workflows for Austrian businesses.',
+      aboutTitle: 'About TreeTech | Digital studio for Austrian businesses',
       aboutDescription:
-        'TreeTech is a modern web studio for Austrian businesses that want to look credible online and receive better inquiries.',
-      servicesTitle: 'Services & pricing | TreeTech',
+        'TreeTech is a modern digital studio for businesses that want to automate processes, build web software, and work better digitally.',
+      servicesTitle: 'Services | TreeTech',
       servicesDescription:
-        'Landing pages from 200€, websites from 450€, and business websites from 599€ for Austrian companies, clinics, law firms, and service providers.',
+        'AI automation, web development, custom web applications, AI integration, and workflow optimization for Austrian businesses.',
       portfolioTitle: 'Portfolio | TreeTech web studio',
       portfolioDescription:
         'Sample projects for Austrian industries: dental clinic, law firm, hotel, real estate, and fitness studio.',
       contactTitle: 'Contact | TreeTech',
       contactDescription:
-        'Start your website project with TreeTech. We will reply with a clear assessment and the right next step.'
+        'Start your digital project with TreeTech. We will reply with a clear assessment and the right next step.'
     },
     common: {
-      eyebrow: 'Web studio for Austria',
+      eyebrow: 'AI · Web · Automation',
       primaryCta: 'Request a project',
       secondaryCta: 'View work',
       viewProject: 'View case',
-      startProject: 'Start website',
+      startProject: 'Start project',
       learnMore: 'Learn more',
-      requestPackage: 'Request package',
-      recommended: 'Popular',
-      from: 'from',
-      included: 'Included',
+      requestPackage: 'Discuss project',
+      recommended: 'Core service',
+      from: 'Chapter',
+      included: 'What we build',
       backToPortfolio: 'Back to portfolio',
       nextStep: 'Next step'
     },
     home: {
-      heroTitle: 'A modern web presence that turns visitors into real inquiries.',
+      heroTitle: 'AI automation, websites, and business software for companies that want to move faster.',
       heroLead:
-        'TreeTech builds fast, multilingual websites for Austrian B2B and service businesses. Clear value, strong trust signals, and an inquiry path that is never hidden.',
-      heroBadge: 'Landing page from 200€',
+        'TreeTech combines web development, artificial intelligence, and process thinking. We build digital systems that generate inquiries, reduce manual work, and connect existing tools cleanly.',
+      heroBadge: '> booting TreeTech systems',
       heroTrust: [
-        'Productized website packages',
-        'SEO, speed, and conversion foundation',
-        'German & English from day one'
+        'AI automation for recurring work',
+        'Websites and web apps with clear business logic',
+        'CRM, ERP, and service integrations'
       ],
-      metricOne: '3 packages',
-      metricOneLabel: 'easy to plan',
-      metricTwo: '2 languages',
-      metricTwoLabel: 'DE & EN',
-      metricThree: '5 industries',
-      metricThreeLabel: 'realistic cases',
-      proofTitle: 'For businesses that want to look like the market leader online.',
+      metricOne: '5 areas',
+      metricOneLabel: 'AI, web, apps, integration, workflows',
+      metricTwo: 'DE/EN',
+      metricTwoLabel: 'multilingual by design',
+      metricThree: 'B2B',
+      metricThreeLabel: 'for Austrian businesses',
+      proofTitle: 'For businesses that want less manual work and a more professional digital sales flow.',
       proofCopy:
-        'From first impression to inquiry, every page is designed to build trust, explain services instantly, and make contact feel easy.',
-      servicesTitle: 'Website packages with clear business logic.',
+        'We do not think only in good-looking screens. Every solution has a purpose: respond faster, remove process friction, guide customers better, and use data more cleanly.',
+      servicesTitle: 'What we build.',
       servicesLead:
-        'Choose the right starting point. If your project needs more, we expand the scope clearly and transparently.',
+        'From AI automation to custom web applications: TreeTech builds digital systems that companies actually use in daily operations.',
       portfolioTitle: 'Demo cases that feel like real client wins.',
       portfolioLead:
         'Five realistic industry cases show how a professional website can work for Austrian businesses.',
-      processTitle: 'A launch process shaped like a good SaaS product.',
+      processTitle: 'A process shaped like a clean system launch.',
       processLead:
-        'You get a clear path from positioning to launch, not a loose collection of nice-looking sections.'
+        'We start with workflows, goals, and data. Then structure, interface, automation, and launch follow in clear steps.'
     },
     about: {
-      title: 'A lean web studio with a feel for Austrian businesses.',
+      title: 'A lean digital studio for automation, web, and business software.',
       lead:
-        'TreeTech helps companies, clinics, law firms, and local service providers look more professional online and generate better inquiries.',
+        'TreeTech helps Austrian businesses build digital workflows, use AI sensibly, and develop web systems that are useful in daily operations.',
       storyTitle: 'Why TreeTech',
       story:
-        'Many businesses do excellent work but appear smaller or less distinctive online than they really are. TreeTech turns quality, experience, and local relevance into a calm, premium website that sells clearly.',
+        'Many companies have strong teams but too many manual steps, scattered tools, and websites that no longer match how the business actually works. TreeTech combines strategy, design, and development into digital systems that reduce friction.',
       valuesTitle: 'How we work',
       values: [
-        'Clarity about offer and audience comes first',
-        'Mobile experience is considered from the start',
-        'Copy, structure, and design work together',
-        'Technology stays understandable and maintainable'
+        'We first understand workflows, bottlenecks, and goals',
+        'AI is used where it saves measurable time',
+        'Interface, copy, and automation work together',
+        'Technology stays understandable, maintainable, and extendable'
       ],
       promiseTitle: 'What to expect',
       promise:
-        'A collaboration without jargon: clear decisions, honest recommendations, and a result that fits your business.'
+        'A collaboration without jargon: clear decisions, honest recommendations, and a system that fits your business, tools, and team.'
     },
     services: {
-      title: 'Websites for businesses that need trust and inquiries.',
+      title: 'Digital systems for businesses that want to grow, automate, and sell better.',
       lead:
-        'Whether you need a new landing page, a multi-page website, or a premium relaunch, TreeTech builds websites that explain your services and guide visitors toward contact.',
-      packageTitle: 'Packages',
+        'We build websites, AI automations, web apps, and workflow systems for companies that want to reduce manual work and operate more professionally online.',
+      serviceAreasTitle: 'Service areas',
       processTitle: 'How collaboration works',
-      addOnsTitle: 'Useful add-ons',
+      addOnsTitle: 'What improves inside the business',
       addOns: [
-        'Multilingual content with clean URL structure',
-        'Portfolio or references section for trust',
-        'Contact form prepared for Resend',
-        'Performance, form, and launch check',
-        'Copy polish for stronger inquiries'
+        'Less manual email, CRM, and document work',
+        'Faster response times for customers and leads',
+        'Clean connection between website, forms, CRM, and internal tools',
+        'Better overview of leads, processes, and open tasks',
+        'AI assistants for support, sales, and internal workflows'
       ]
     },
     portfolio: {
@@ -360,12 +390,12 @@ export const siteContent = {
       year: 'Year'
     },
     contact: {
-      title: 'Ready for a website that sells better?',
+      title: 'Ready for digital systems that take work off your team?',
       lead:
-        'Send a short note about your project. TreeTech will reply with an honest assessment, a suitable package, and a clear next step.',
+        'Send a short note about the process, website, or web tool you want to improve. TreeTech will reply with an honest assessment and a clear next step.',
       detailsTitle: 'Direct contact',
       details:
-        'Best suited for new websites, landing pages, relaunches, and bilingual web presences for Austrian businesses.',
+        'Best suited for AI automation, web development, web apps, CRM/ERP integrations, and digital workflows for Austrian businesses.',
       responseTime: 'Replies usually within one business day.',
       formTitle: 'Project inquiry'
     }
@@ -552,11 +582,11 @@ export const portfolioProjects: PortfolioProject[] = [
     },
     solution: {
       de: 'TreeTech gestaltete eine kontrastreiche Seite mit Kursmodulen, Trainerbereichen, Preisankern und einem prominenten Probetraining-Flow.',
-      en: 'TreeTech designed a high-contrast site with class modules, trainer sections, pricing anchors, and a prominent trial-session flow.'
+      en: 'TreeTech designed a high-contrast site with class modules, trainer sections, membership decision points, and a prominent trial-session flow.'
     },
     features: {
       de: ['Probetraining-CTA', 'Kursplan-Sektion', 'Trainerkarten', 'Preisanker für Mitgliedschaften', 'Mobile-first Navigation'],
-      en: ['Trial session CTA', 'Class schedule section', 'Trainer cards', 'Membership pricing anchors', 'Mobile-first navigation']
+      en: ['Trial session CTA', 'Class schedule section', 'Trainer cards', 'Membership decision points', 'Mobile-first navigation']
     },
     visualStyle: {
       de: 'Starke Kontraste, elektrische Akzente, kompakte Module und sportliche Bewegungsflächen, ohne unseriös zu wirken.',

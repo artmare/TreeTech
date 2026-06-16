@@ -16,8 +16,8 @@ type PageProps = {
 };
 
 const studioSignals = {
-  de: ['Schlankes Studio', 'B2B-fokussiert', 'Mehrsprachig gedacht'],
-  en: ['Lean studio', 'B2B-focused', 'Multilingual by design']
+  de: ['AI-Automation', 'Custom Web Apps', 'Workflow-Optimierung'],
+  en: ['AI automation', 'Custom web apps', 'Workflow optimization']
 } satisfies Record<Locale, string[]>;
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
@@ -55,7 +55,7 @@ export default async function AboutPage({params}: PageProps) {
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
               {studioSignals[locale].map((item) => (
-                <div key={item} className="rounded-[8px] border border-white/10 bg-white/[0.07] p-4 text-sm font-semibold text-white">
+                <div key={item} className="rounded-[1rem] border border-white/10 bg-white/[0.07] p-4 font-mono text-sm text-white backdrop-blur">
                   {item}
                 </div>
               ))}
@@ -71,7 +71,7 @@ export default async function AboutPage({params}: PageProps) {
         <Container>
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <FadeIn>
-              <div className="h-full rounded-[8px] border border-border bg-white p-6 shadow-sm sm:p-8">
+              <div className="terminal-card shine-surface h-full rounded-[1.25rem] p-6 sm:p-8">
                 <Sparkles className="h-6 w-6 text-primary" aria-hidden="true" />
                 <h2 className="mt-5 text-4xl font-semibold leading-tight text-foreground">
                   {content.about.storyTitle}
@@ -84,7 +84,7 @@ export default async function AboutPage({params}: PageProps) {
                 {content.about.values.map((value, index) => {
                   const Icon = valueIcons[index] ?? CheckCircle2;
                   return (
-                    <article key={value} className="lift-card h-full rounded-[8px] border border-border bg-white p-5 shadow-sm">
+                    <article key={value} className="terminal-card h-full rounded-[1.25rem] p-5">
                       <Icon className="h-5 w-5 text-primary" aria-hidden="true" />
                       <p className="mt-4 text-sm font-semibold leading-7 text-foreground">{value}</p>
                     </article>
@@ -96,7 +96,7 @@ export default async function AboutPage({params}: PageProps) {
         </Container>
       </section>
 
-      <section className="bg-white py-16">
+      <section className="warm-band py-16">
         <Container>
           <SectionHeading
             title={content.services.processTitle}
@@ -105,8 +105,8 @@ export default async function AboutPage({params}: PageProps) {
           <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {processSteps.map((step, index) => (
               <FadeIn key={step.title[locale]} delay={index * 0.08}>
-                <article className="lift-card h-full rounded-[8px] border border-border bg-background p-5 shadow-sm">
-                  <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#0a1210] text-sm font-bold text-white">
+                <article className="terminal-card h-full rounded-[1.25rem] p-5">
+                  <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-full border border-accent/20 bg-accent/[0.08] font-mono text-sm text-accent">
                     {index + 1}
                   </div>
                   <h3 className="text-lg font-semibold text-foreground">{step.title[locale]}</h3>

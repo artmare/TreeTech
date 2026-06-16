@@ -1,4 +1,4 @@
-import {Check, CheckCircle2, Layers3, Rocket, ShieldCheck} from 'lucide-react';
+import {Bot, Check, CheckCircle2, GitBranch, Layers3, Rocket} from 'lucide-react';
 import type {Metadata} from 'next';
 import {setRequestLocale} from 'next-intl/server';
 
@@ -17,16 +17,16 @@ type PageProps = {
 
 const servicePillars = {
   de: [
-    {icon: Layers3, title: 'Struktur vor Design', text: 'Jede Seite bekommt eine klare Rolle im Anfrageweg.'},
-    {icon: ShieldCheck, title: 'Trust by default', text: 'Referenzen, Nutzenargumente und lokale Glaubwürdigkeit sind fest eingeplant.'},
-    {icon: Rocket, title: 'Launch-fähig', text: 'Responsiv, performant und vorbereitet für Kontaktformular und SEO.'}
+    {icon: Bot, title: 'AI mit echtem Nutzen', text: 'Keine Spielerei: Automationen werden an reale Aufgaben, Daten und Entscheidungen gekoppelt.'},
+    {icon: Layers3, title: 'Web als Betriebssystem', text: 'Website, Web-App, CRM-Flow und interne Tools werden als zusammenhängendes System geplant.'},
+    {icon: Rocket, title: 'Launch-fähig', text: 'Responsive, performant, nachvollziehbar und vorbereitet für Betrieb, Monitoring und Erweiterung.'}
   ],
   en: [
-    {icon: Layers3, title: 'Structure before design', text: 'Every page gets a clear role in the inquiry journey.'},
-    {icon: ShieldCheck, title: 'Trust by default', text: 'References, value arguments, and local credibility are built in.'},
-    {icon: Rocket, title: 'Launch-ready', text: 'Responsive, performant, and prepared for contact forms and SEO.'}
+    {icon: Bot, title: 'AI with real utility', text: 'No gimmicks: automations are tied to real tasks, data, and decisions.'},
+    {icon: Layers3, title: 'Web as operating system', text: 'Website, web app, CRM flow, and internal tools are planned as one connected system.'},
+    {icon: Rocket, title: 'Launch-ready', text: 'Responsive, performant, understandable, and prepared for operation, monitoring, and growth.'}
   ]
-} satisfies Record<Locale, Array<{icon: typeof Layers3; title: string; text: string}>>;
+} satisfies Record<Locale, Array<{icon: typeof Bot; title: string; text: string}>>;
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const locale = (await params).locale as Locale;
@@ -47,25 +47,29 @@ export default async function ServicesPage({params}: PageProps) {
 
   return (
     <>
-      <section className="relative overflow-hidden py-20 sm:py-24">
-        <div className="saas-grid absolute inset-0 opacity-45" />
+      <section className="dark-band scanline relative overflow-hidden py-20 text-white sm:py-24">
+        <div className="dark-grid absolute inset-0 opacity-45" />
         <Container className="relative">
           <FadeIn className="max-w-5xl">
-            <p className="inline-flex rounded-full border border-primary/[0.15] bg-primary/[0.08] px-3 py-2 text-sm font-semibold text-primary">
+            <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 font-mono text-sm text-accent">
               {content.common.eyebrow}
             </p>
-            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.04] text-foreground sm:text-7xl">
+            <div className="mt-6 rounded-[1rem] border border-white/10 bg-white/[0.04] p-3 font-mono text-xs text-white/62 sm:max-w-xl">
+              <p><span className="text-accent">&gt;</span> read service_registry.json</p>
+              <p className="mt-1"><span className="text-accent">&gt;</span> output: automation web apps workflows</p>
+            </div>
+            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.04] text-white sm:text-7xl">
               {content.services.title}
             </h1>
-            <p className="mt-6 max-w-3xl text-pretty text-lg leading-8 text-muted sm:text-xl">
+            <p className="mt-6 max-w-3xl text-pretty text-lg leading-8 text-white/72 sm:text-xl">
               {content.services.lead}
             </p>
           </FadeIn>
           <div className="mt-10 grid gap-4 lg:grid-cols-3">
             {servicePillars[locale].map((pillar, index) => (
               <FadeIn key={pillar.title} delay={index * 0.08}>
-                <article className="lift-card h-full rounded-[8px] border border-border bg-white p-5 shadow-sm">
-                  <pillar.icon className="h-5 w-5 text-primary" aria-hidden="true" />
+                <article className="terminal-card h-full rounded-[1.25rem] p-5">
+                  <pillar.icon className="h-5 w-5 text-accent" aria-hidden="true" />
                   <h2 className="mt-4 text-lg font-semibold text-foreground">{pillar.title}</h2>
                   <p className="mt-3 text-sm leading-7 text-muted">{pillar.text}</p>
                 </article>
@@ -75,19 +79,16 @@ export default async function ServicesPage({params}: PageProps) {
         </Container>
       </section>
 
-      <section className="bg-white py-16">
+      <section className="warm-band py-16">
         <Container>
-          <SectionHeading title={content.services.packageTitle} lead={content.home.servicesLead} />
-          <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          <SectionHeading title={content.services.serviceAreasTitle} lead={content.home.servicesLead} />
+          <div className="mt-10 grid gap-5 lg:grid-cols-2">
             {offers.map((offer, index) => (
-              <FadeIn key={offer.price} delay={index * 0.08}>
+              <FadeIn key={offer.chapter} delay={index * 0.08}>
                 <OfferCard
                   offer={offer}
                   locale={locale}
-                  includedLabel={content.common.included}
-                  fromLabel={content.common.from}
                   ctaLabel={content.common.requestPackage}
-                  recommendedLabel={content.common.recommended}
                 />
               </FadeIn>
             ))}
@@ -103,7 +104,6 @@ export default async function ServicesPage({params}: PageProps) {
               <SectionHeading
                 title={content.services.addOnsTitle}
                 lead={content.services.lead}
-                className="[&_h2]:text-white [&_p]:text-white/70"
               />
               <div className="mt-8">
                 <ButtonLink href="/contact" variant="accent">
@@ -114,9 +114,9 @@ export default async function ServicesPage({params}: PageProps) {
             <div className="grid gap-3 sm:grid-cols-2">
               {content.services.addOns.map((item, index) => (
                 <FadeIn key={item} delay={index * 0.06}>
-                  <div className="flex h-full gap-3 rounded-[8px] border border-white/12 bg-white/[0.07] p-4">
+                  <div className="terminal-card flex h-full gap-3 rounded-[1rem] p-4">
                     <Check className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
-                    <p className="text-sm leading-6 text-white/75">{item}</p>
+                    <p className="text-sm leading-6 text-muted">{item}</p>
                   </div>
                 </FadeIn>
               ))}
@@ -131,8 +131,12 @@ export default async function ServicesPage({params}: PageProps) {
           <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {processSteps.map((step, index) => (
               <FadeIn key={step.title[locale]} delay={index * 0.08}>
-                <article className="lift-card h-full rounded-[8px] border border-border bg-white p-5 shadow-sm">
-                  <CheckCircle2 className="mb-5 h-6 w-6 text-primary" aria-hidden="true" />
+                <article className="terminal-card h-full rounded-[1.25rem] p-5">
+                  {index % 2 === 0 ? (
+                    <CheckCircle2 className="mb-5 h-6 w-6 text-accent" aria-hidden="true" />
+                  ) : (
+                    <GitBranch className="mb-5 h-6 w-6 text-accent" aria-hidden="true" />
+                  )}
                   <h3 className="text-lg font-semibold text-foreground">{step.title[locale]}</h3>
                   <p className="mt-3 text-sm leading-7 text-muted">{step.description[locale]}</p>
                 </article>

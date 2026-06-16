@@ -10,15 +10,15 @@
     "language": "Sprache wechseln"
   },
   "footer": {
-    "tagline": "Websites für Betriebe, die online seriös auftreten und besser angefragt werden möchten.",
-    "cta": "Sprechen wir über Ihren Webauftritt.",
+    "tagline": "AI-Automatisierung, Websites, Web-Apps und Workflow-Systeme für österreichische Betriebe.",
+    "cta": "Sprechen wir über Ihr nächstes digitales System.",
     "copyright": "Alle Rechte vorbehalten."
   },
   "contactForm": {
     "name": "Name",
     "email": "E-Mail",
     "company": "Firma oder Betrieb",
-    "budget": "Gewünschter Rahmen",
+    "budget": "Projektart",
     "message": "Worum geht es?",
     "submit": "Anfrage abschicken",
     "submitting": "Wird gesendet",
@@ -28,17 +28,18 @@
     "namePlaceholder": "Max Mustermann",
     "emailPlaceholder": "name@betrieb.at",
     "companyPlaceholder": "Name Ihres Unternehmens",
-    "messagePlaceholder": "Kurzbeschreibung: Was soll die Website leisten, und bis wann soll sie online sein?",
+    "messagePlaceholder": "Kurzbeschreibung: Welcher Prozess, welche Website oder welches System soll verbessert werden?",
     "budgets": {
-      "landing": "Landing Page ab 200€",
-      "website": "Website ab 450€",
-      "business": "Business Website ab 599€",
-      "custom": "Individuelles Projekt"
+      "automation": "AI-Automatisierung",
+      "web": "Website oder Online-Shop",
+      "app": "Individuelle Web-App",
+      "integration": "AI- oder Systemintegration",
+      "workflow": "Workflow-Optimierung"
     },
     "errors": {
       "name": "Bitte geben Sie Ihren Namen ein.",
       "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
-      "budget": "Bitte wählen Sie einen Rahmen aus.",
+      "budget": "Bitte wählen Sie eine Projektart aus.",
       "message": "Bitte beschreiben Sie Ihr Projekt in mindestens 20 Zeichen."
     }
   }

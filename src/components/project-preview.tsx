@@ -11,7 +11,7 @@ export function ProjectPreview({project, size = 'card'}: ProjectPreviewProps) {
     return (
       <div
         className={cn(
-          'group relative min-h-[220px] overflow-hidden rounded-[8px] border border-white/70 bg-gradient-to-br p-3 shadow-[0_24px_70px_rgba(13,23,19,0.14)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_32px_90px_rgba(13,23,19,0.18)]',
+          'group relative min-h-[220px] overflow-hidden rounded-[1.1rem] border border-white/70 bg-gradient-to-br p-3 shadow-[0_24px_70px_rgba(13,23,19,0.14)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_32px_90px_rgba(13,23,19,0.18)]',
           project.gradient
         )}
         aria-hidden="true"
@@ -19,7 +19,7 @@ export function ProjectPreview({project, size = 'card'}: ProjectPreviewProps) {
         <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.42),rgba(255,255,255,0.04))]" />
         <div className="absolute inset-0 saas-grid opacity-25" />
         <div className="relative grid h-full gap-3">
-          <div className="rounded-[8px] border border-white/75 bg-white/88 p-3 shadow-xl shadow-black/10 backdrop-blur transition duration-300 group-hover:scale-[1.01]">
+          <div className="rounded-[0.9rem] border border-white/75 bg-white/88 p-3 shadow-xl shadow-black/10 backdrop-blur transition duration-300 group-hover:scale-[1.01]">
             <div className="mb-4 flex items-center justify-between border-b border-black/10 pb-2">
               <div className="flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-red-400" />
@@ -36,14 +36,14 @@ export function ProjectPreview({project, size = 'card'}: ProjectPreviewProps) {
               <span className="block h-2 w-4/5 rounded-full bg-black/14" />
             </div>
             <div className="mt-4 flex gap-2">
-              <span className={cn('block h-9 w-28 rounded-[8px]', project.accent)} />
-              <span className="block h-9 w-20 rounded-[8px] border border-black/10 bg-white" />
+              <span className={cn('block h-9 w-28 rounded-full', project.accent)} />
+              <span className="block h-9 w-20 rounded-full border border-black/10 bg-white" />
             </div>
           </div>
           <div className="grid grid-cols-3 gap-2">
-            <span className="h-12 rounded-[8px] border border-white/60 bg-white/62 shadow-sm" />
-            <span className="h-12 rounded-[8px] border border-white/50 bg-white/42 shadow-sm" />
-            <span className="h-12 rounded-[8px] border border-white/60 bg-white/62 shadow-sm" />
+            <span className="h-12 rounded-[0.9rem] border border-white/60 bg-white/62 shadow-sm" />
+            <span className="h-12 rounded-[0.9rem] border border-white/50 bg-white/42 shadow-sm" />
+            <span className="h-12 rounded-[0.9rem] border border-white/60 bg-white/62 shadow-sm" />
           </div>
         </div>
       </div>
@@ -53,7 +53,7 @@ export function ProjectPreview({project, size = 'card'}: ProjectPreviewProps) {
   return (
     <div
       className={cn(
-        'group relative overflow-hidden rounded-[8px] border border-white/70 bg-gradient-to-br shadow-[0_24px_70px_rgba(13,23,19,0.14)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_32px_90px_rgba(13,23,19,0.18)]',
+        'group relative overflow-hidden rounded-[1.25rem] border border-white/70 bg-gradient-to-br shadow-[0_24px_70px_rgba(13,23,19,0.14)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_32px_90px_rgba(13,23,19,0.18)]',
         project.gradient,
         'min-h-[420px] p-5 sm:p-8'
       )}
@@ -62,7 +62,7 @@ export function ProjectPreview({project, size = 'card'}: ProjectPreviewProps) {
       <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.42),rgba(255,255,255,0.04))]" />
       <div className="absolute inset-0 saas-grid opacity-25" />
       <div className="relative grid min-h-full gap-4">
-        <div className="rounded-[8px] border border-white/75 bg-white/88 p-4 shadow-2xl shadow-black/12 backdrop-blur transition duration-300 group-hover:scale-[1.01]">
+        <div className="rounded-[1rem] border border-white/75 bg-white/88 p-4 shadow-[0_22px_60px_rgba(0,0,0,0.12)] backdrop-blur transition duration-300 group-hover:scale-[1.01]">
           <div className="mb-5 flex items-center justify-between border-b border-black/10 pb-3">
             <div className="flex items-center gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
@@ -82,26 +82,26 @@ export function ProjectPreview({project, size = 'card'}: ProjectPreviewProps) {
                 <span className="block h-2 w-2/3 rounded-full bg-black/14" />
               </div>
               <div className="flex gap-2 pt-2">
-                <span className={cn('block h-10 w-32 rounded-[8px]', project.accent)} />
-                <span className="block h-10 w-24 rounded-[8px] border border-black/10 bg-white" />
+                <span className={cn('block h-10 w-32 rounded-full', project.accent)} />
+                <span className="block h-10 w-24 rounded-full border border-black/10 bg-white" />
               </div>
             </div>
             <div className="grid gap-2">
-              <span className="relative min-h-28 overflow-hidden rounded-[8px] bg-black/10 shadow-inner">
+              <span className="relative min-h-28 overflow-hidden rounded-[1rem] bg-black/10 shadow-inner">
                 <span className={cn('absolute bottom-0 left-0 h-2/5 w-full opacity-80', project.accent)} />
                 <span className="absolute left-4 top-4 h-3 w-16 rounded-full bg-white/80" />
               </span>
               <div className="grid grid-cols-2 gap-2">
-                <span className="min-h-20 rounded-[8px] bg-white/80 shadow-inner" />
-                <span className="min-h-20 rounded-[8px] bg-black/12 shadow-inner" />
+                <span className="min-h-20 rounded-[1rem] bg-white/80 shadow-inner" />
+                <span className="min-h-20 rounded-[1rem] bg-black/12 shadow-inner" />
               </div>
             </div>
           </div>
         </div>
         <div className="relative grid grid-cols-3 gap-2">
-          <span className="h-16 rounded-[8px] border border-white/60 bg-white/62 shadow-sm" />
-          <span className="h-16 rounded-[8px] border border-white/50 bg-white/42 shadow-sm" />
-          <span className="h-16 rounded-[8px] border border-white/60 bg-white/62 shadow-sm" />
+          <span className="h-16 rounded-[1rem] border border-white/60 bg-white/62 shadow-sm" />
+          <span className="h-16 rounded-[1rem] border border-white/50 bg-white/42 shadow-sm" />
+          <span className="h-16 rounded-[1rem] border border-white/60 bg-white/62 shadow-sm" />
         </div>
       </div>
     </div>

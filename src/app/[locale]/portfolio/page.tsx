@@ -58,7 +58,7 @@ export default async function PortfolioPage({params}: PageProps) {
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {portfolioStats[locale].map((stat, index) => (
               <FadeIn key={stat.label} delay={index * 0.08}>
-                <article className="rounded-[8px] border border-white/10 bg-white/[0.07] p-5">
+                <article className="terminal-card rounded-[1.25rem] p-5 backdrop-blur">
                   <stat.icon className="h-5 w-5 text-accent" aria-hidden="true" />
                   <p className="mt-4 text-3xl font-semibold text-white">{stat.value}</p>
                   <p className="mt-1 text-sm text-white/60">{stat.label}</p>

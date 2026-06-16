@@ -1,4 +1,4 @@
-import {Check} from 'lucide-react';
+import {ArrowUpRight, Check} from 'lucide-react';
 
 import type {Locale} from '@/i18n/routing';
 import {Link} from '@/i18n/navigation';
@@ -6,82 +6,57 @@ import {cn} from '@/lib/utils';
 
 type OfferCardProps = {
   offer: {
+    chapter: string;
     name: Record<Locale, string>;
-    price: string;
     description: Record<Locale, string>;
     features: Record<Locale, string[]>;
     highlighted?: boolean;
   };
   locale: Locale;
-  includedLabel: string;
-  fromLabel: string;
   ctaLabel: string;
-  recommendedLabel: string;
 };
 
-export function OfferCard({
-  offer,
-  locale,
-  includedLabel,
-  fromLabel,
-  ctaLabel,
-  recommendedLabel
-}: OfferCardProps) {
+export function OfferCard({offer, locale, ctaLabel}: OfferCardProps) {
   return (
     <article
       className={cn(
-        'group lift-card relative flex h-full flex-col overflow-hidden rounded-[8px] border bg-white p-6 shadow-sm',
-        offer.highlighted
-          ? 'border-primary shadow-[0_26px_70px_rgba(13,107,79,0.17)]'
-          : 'border-border'
+        'group terminal-card relative flex h-full flex-col overflow-hidden rounded-[1.25rem] p-5 sm:p-6',
+        offer.highlighted && 'border-accent/45 bg-accent/[0.08]'
       )}
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,#0d6b4f,#c8ff5f,#0ea5e9)] opacity-0 transition group-hover:opacity-100" />
-      {offer.highlighted ? (
-        <div className="absolute right-4 top-4 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase text-[#16200b]">
-          {recommendedLabel}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(214,255,99,0.88),transparent)] opacity-80" />
+      <div className="flex items-start justify-between gap-4">
+        <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 font-mono text-xs uppercase text-muted">
+          CHAPTER // {offer.chapter}
         </div>
-      ) : null}
-      <div className="flex min-h-36 flex-col justify-between">
-        <div className="pr-20">
-          <h3 className="text-2xl font-semibold text-foreground">{offer.name[locale]}</h3>
-          <p className="mt-4 text-sm leading-7 text-muted">{offer.description[locale]}</p>
-        </div>
-        <div className="mt-6">
-          <p
-            className={cn(
-              'text-xs font-bold uppercase tracking-[0.14em]',
-              offer.highlighted ? 'text-primary' : 'text-muted'
-            )}
-          >
-            {fromLabel}
-          </p>
-          <p className="mt-1 text-4xl font-semibold tracking-normal text-foreground">
-            {offer.price}
-          </p>
-        </div>
+        <span className="h-2 w-2 rounded-full bg-accent shadow-[0_0_18px_rgba(214,255,99,0.8)]" />
       </div>
-      <div className="mt-6 border-t border-border pt-5">
-        <p className="text-sm font-semibold text-foreground">{includedLabel}</p>
-        <ul className="mt-4 space-y-3">
+
+      <div className="mt-6">
+        <p className="font-mono text-xs text-accent">~/treetech/services/{offer.chapter}</p>
+        <h3 className="mt-3 text-balance text-2xl font-semibold leading-tight text-foreground">
+          {offer.name[locale]}
+        </h3>
+        <p className="mt-4 text-sm leading-7 text-muted">{offer.description[locale]}</p>
+      </div>
+
+      <div className="mt-6 border-t border-white/10 pt-5">
+        <ul className="grid gap-3">
           {offer.features[locale].map((feature) => (
             <li key={feature} className="flex gap-3 text-sm leading-6 text-muted">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
               <span>{feature}</span>
             </li>
           ))}
         </ul>
       </div>
+
       <Link
         href="/contact"
-        className={cn(
-          'mt-6 inline-flex min-h-12 items-center justify-center rounded-[8px] px-4 py-3 text-sm font-semibold transition',
-          offer.highlighted
-            ? 'bg-[#0a1210] !text-white hover:bg-primary'
-            : 'border border-border bg-white text-foreground hover:border-primary hover:bg-[#f6f8f4] hover:text-primary'
-        )}
+        className="mt-6 inline-flex min-h-11 w-fit items-center gap-2 rounded-full border border-accent/25 bg-accent px-4 py-3 text-sm font-semibold text-[#070806] transition hover:-translate-y-0.5 hover:bg-white"
       >
-        {ctaLabel}
+        <span>{ctaLabel}</span>
+        <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
       </Link>
     </article>
   );

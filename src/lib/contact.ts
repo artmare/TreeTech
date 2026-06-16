@@ -1,6 +1,6 @@
 import {z} from 'zod';
 
-export const budgetValues = ['landing', 'website', 'business', 'custom'] as const;
+export const budgetValues = ['automation', 'web', 'app', 'integration', 'workflow'] as const;
 export type BudgetValue = (typeof budgetValues)[number];
 
 type ContactMessages = {
@@ -27,7 +27,7 @@ export function createContactSchema(messages: ContactMessages) {
 export const serverContactSchema = createContactSchema({
   name: 'Name is required.',
   email: 'A valid email is required.',
-  budget: 'Budget is required.',
+  budget: 'Project type is required.',
   message: 'Message is required.'
 });
 

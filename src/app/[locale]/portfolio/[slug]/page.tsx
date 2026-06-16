@@ -91,7 +91,7 @@ export default async function PortfolioDetailPage({params}: PageProps) {
                 <ButtonLink href={`/portfolio/${project.slug}/site`} variant="accent">
                   {demoLabels.viewDemo}
                 </ButtonLink>
-                <ButtonLink href="/contact" variant="secondary" className="!border-white/20 !bg-white/10 !text-white hover:!bg-white hover:!text-foreground">
+                <ButtonLink href="/contact" variant="secondary" className="!border-white/20 !bg-white/10 !text-white hover:!bg-accent hover:!text-[#070806]">
                   {content.common.primaryCta}
                 </ButtonLink>
               </div>
@@ -118,9 +118,9 @@ export default async function PortfolioDetailPage({params}: PageProps) {
           <div className="grid gap-5 lg:grid-cols-3">
             {storyCards.map((card, index) => (
               <FadeIn key={card.label} delay={index * 0.08}>
-                <article className="lift-card h-full rounded-[8px] border border-border bg-white p-6 shadow-sm">
-                  <card.icon className="h-6 w-6 text-primary" aria-hidden="true" />
-                  <p className="mt-5 text-sm font-bold uppercase tracking-[0.14em] text-primary">
+                <article className="terminal-card h-full rounded-[1.25rem] p-6">
+                  <card.icon className="h-6 w-6 text-accent" aria-hidden="true" />
+                  <p className="mt-5 font-mono text-sm uppercase tracking-[0.14em] text-accent">
                     {card.label}
                   </p>
                   <p className="mt-4 text-base leading-8 text-muted">{card.text}</p>
@@ -131,7 +131,7 @@ export default async function PortfolioDetailPage({params}: PageProps) {
         </Container>
       </section>
 
-      <section className="bg-white py-16">
+      <section className="warm-band py-16">
         <Container>
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
             <FadeIn>
@@ -149,8 +149,8 @@ export default async function PortfolioDetailPage({params}: PageProps) {
               <div className="grid gap-3 sm:grid-cols-2">
                 {project.features[locale].map((feature, index) => (
                   <FadeIn key={feature} delay={index * 0.06}>
-                    <div className="flex h-full gap-3 rounded-[8px] border border-border bg-background p-4 shadow-sm">
-                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+                    <div className="terminal-card flex h-full gap-3 rounded-[1rem] p-4">
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
                       <p className="text-sm leading-6 text-muted">{feature}</p>
                     </div>
                   </FadeIn>
@@ -163,7 +163,7 @@ export default async function PortfolioDetailPage({params}: PageProps) {
 
       <section className="py-20">
         <Container>
-          <FadeIn className="dark-band relative overflow-hidden rounded-[8px] p-6 text-white shadow-[0_24px_80px_rgba(10,18,16,0.2)] sm:p-8 lg:p-10">
+          <FadeIn className="dark-band relative overflow-hidden rounded-[1.5rem] p-6 text-white shadow-[0_24px_80px_rgba(16,21,18,0.2)] sm:p-8 lg:p-10">
             <div className="dark-grid absolute inset-0 opacity-30" />
             <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
@@ -180,7 +180,7 @@ export default async function PortfolioDetailPage({params}: PageProps) {
                 </ButtonLink>
                 <Link
                   href="/contact"
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[8px] border border-white/20 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-white hover:text-foreground"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-accent hover:text-[#070806]"
                 >
                   <span>{content.common.primaryCta}</span>
                   <ExternalLink className="h-4 w-4" aria-hidden="true" />

@@ -8,28 +8,28 @@ type ConversionShowcaseProps = {
 
 const showcaseCopy = {
   de: {
-    label: 'Website-System',
-    score: 'Conversion Score',
-    scoreValue: '94%',
-    flow: ['Klarer Einstieg', 'Vertrauen', 'Anfrage'],
+    label: 'Workflow-System',
+    score: 'Prozessstatus',
+    scoreValue: 'live',
+    flow: ['Trigger', 'AI-Schritt', 'CRM-Update'],
     cards: [
-      {label: 'Mobile First', value: '1.2s', icon: Zap},
-      {label: 'Lead-Pfad', value: '+38%', icon: TrendingUp},
-      {label: 'Trust Layer', value: 'aktiv', icon: ShieldCheck}
+      {label: 'Antwortzeit', value: 'schnell', icon: Zap},
+      {label: 'Datenfluss', value: 'klar', icon: TrendingUp},
+      {label: 'Berechtigung', value: 'sauber', icon: ShieldCheck}
     ],
-    checklist: ['Angebot sofort verständlich', 'CTAs auf allen Kernseiten', 'Mehrsprachig vorbereitet']
+    checklist: ['E-Mail wird erkannt', 'Dokument wird vorbereitet', 'CRM wird aktualisiert']
   },
   en: {
-    label: 'Website system',
-    score: 'Conversion score',
-    scoreValue: '94%',
-    flow: ['Clear entry', 'Trust', 'Inquiry'],
+    label: 'Workflow system',
+    score: 'Process status',
+    scoreValue: 'live',
+    flow: ['Trigger', 'AI step', 'CRM update'],
     cards: [
-      {label: 'Mobile first', value: '1.2s', icon: Zap},
-      {label: 'Lead path', value: '+38%', icon: TrendingUp},
-      {label: 'Trust layer', value: 'active', icon: ShieldCheck}
+      {label: 'Response time', value: 'fast', icon: Zap},
+      {label: 'Data flow', value: 'clear', icon: TrendingUp},
+      {label: 'Permissions', value: 'clean', icon: ShieldCheck}
     ],
-    checklist: ['Offer understood fast', 'CTAs on every key page', 'Multilingual structure ready']
+    checklist: ['Email gets classified', 'Document gets prepared', 'CRM gets updated']
   }
 } satisfies Record<Locale, {
   label: string;
@@ -44,23 +44,23 @@ export function ConversionShowcase({locale}: ConversionShowcaseProps) {
   const copy = showcaseCopy[locale];
 
   return (
-    <div className="software-panel relative overflow-hidden rounded-[8px] p-4 text-white sm:p-5">
+    <div className="software-panel relative overflow-hidden rounded-[1.25rem] p-4 text-white sm:p-5">
       <div className="dark-grid absolute inset-0 opacity-35" />
-      <div className="relative rounded-[8px] border border-white/12 bg-[#0c1815]/78 p-4 shadow-2xl shadow-black/20">
+      <div className="relative rounded-[1rem] border border-white/12 bg-[#0c1815]/78 p-4 shadow-[0_24px_70px_rgba(0,0,0,0.2)]">
         <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent">{copy.label}</p>
             <p className="mt-2 text-2xl font-semibold">{copy.scoreValue}</p>
             <p className="text-sm text-white/58">{copy.score}</p>
           </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-[8px] bg-accent text-[#0a1210]">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-[#101512]">
             <MousePointerClick className="h-5 w-5" aria-hidden="true" />
           </div>
         </div>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           {copy.cards.map((card) => (
-            <div key={card.label} className="rounded-[8px] border border-white/10 bg-white/[0.07] p-3">
+            <div key={card.label} className="rounded-[1rem] border border-white/10 bg-white/[0.07] p-3">
               <card.icon className="h-4 w-4 text-accent" aria-hidden="true" />
               <p className="mt-4 text-xl font-semibold">{card.value}</p>
               <p className="mt-1 text-xs text-white/58">{card.label}</p>
@@ -68,7 +68,7 @@ export function ConversionShowcase({locale}: ConversionShowcaseProps) {
           ))}
         </div>
 
-        <div className="mt-5 rounded-[8px] border border-white/10 bg-white/[0.06] p-4">
+        <div className="mt-5 rounded-[1rem] border border-white/10 bg-white/[0.06] p-4">
           <div className="grid gap-3 sm:grid-cols-3">
             {copy.flow.map((item, index) => (
               <div key={item}>

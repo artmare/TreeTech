@@ -10,15 +10,15 @@
     "language": "Switch language"
   },
   "footer": {
-    "tagline": "Websites for businesses that want to look credible online and receive better inquiries.",
-    "cta": "Let’s talk about your web presence.",
+    "tagline": "AI automation, websites, web applications, and workflow systems for Austrian businesses.",
+    "cta": "Let’s talk about your next digital system.",
     "copyright": "All rights reserved."
   },
   "contactForm": {
     "name": "Name",
     "email": "Email",
     "company": "Company",
-    "budget": "Project range",
+    "budget": "Project type",
     "message": "What is the project about?",
     "submit": "Send inquiry",
     "submitting": "Sending",
@@ -28,17 +28,18 @@
     "namePlaceholder": "Alex Miller",
     "emailPlaceholder": "name@company.at",
     "companyPlaceholder": "Your company name",
-    "messagePlaceholder": "Short brief: what should the website achieve, and when should it go live?",
+    "messagePlaceholder": "Short brief: what process, website, or system should improve, and what should happen next?",
     "budgets": {
-      "landing": "Landing page from 200€",
-      "website": "Website from 450€",
-      "business": "Business website from 599€",
-      "custom": "Custom project"
+      "automation": "AI automation",
+      "web": "Website or online shop",
+      "app": "Custom web application",
+      "integration": "AI or system integration",
+      "workflow": "Workflow optimization"
     },
     "errors": {
       "name": "Please enter your name.",
       "email": "Please enter a valid email address.",
-      "budget": "Please choose a project range.",
+      "budget": "Please choose a project type.",
       "message": "Please describe your project in at least 20 characters."
     }
   }
