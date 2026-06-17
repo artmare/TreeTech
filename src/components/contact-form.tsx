@@ -12,6 +12,7 @@ import {cn} from '@/lib/utils';
 export function ContactForm() {
   const t = useTranslations('contactForm');
   const [status, setStatus] = useState<'success' | 'error' | null>(null);
+  const [startedAt] = useState(() => Date.now());
 
   const schema = useMemo(
     () =>
@@ -37,7 +38,8 @@ export function ContactForm() {
       company: '',
       budget: '',
       message: '',
-      websiteUrl: ''
+      websiteUrl: '',
+      startedAt
     }
   });
 
@@ -57,7 +59,15 @@ export function ContactForm() {
       return;
     }
 
-    reset();
+    reset({
+      name: '',
+      email: '',
+      company: '',
+      budget: '',
+      message: '',
+      websiteUrl: '',
+      startedAt
+    });
     setStatus('success');
   }
 
@@ -117,6 +127,7 @@ export function ContactForm() {
       </Field>
 
       <input {...register('websiteUrl')} tabIndex={-1} autoComplete="off" className="hidden" />
+      <input type="hidden" {...register('startedAt', {valueAsNumber: true})} value={startedAt} readOnly />
 
       <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <button

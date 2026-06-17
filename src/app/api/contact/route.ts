@@ -8,7 +8,19 @@ import {
   saveContactRequest
 } from '@/lib/contact-storage';
 
+const maxBodySizeBytes = 16 * 1024;
+const minimumFormAgeMs = 2000;
+const maximumFormAgeMs = 24 * 60 * 60 * 1000;
+const rateLimitWindowMs = 15 * 60 * 1000;
+const maxRequestsPerWindow = 5;
+
+type RateLimitEntry = {
+  count: number;
+  resetAt: number;
+};
+
 let resendClient: Resend | null = null;
+const rateLimit = new Map<string, RateLimitEntry>();
 
 function getResend() {
   if (!process.env.RESEND_API_KEY) {
@@ -23,6 +35,38 @@ function getResend() {
 }
 
 export async function POST(request: Request) {
+  const contentType = request.headers.get('content-type') || '';
+
+  if (!contentType.toLowerCase().includes('application/json')) {
+    return NextResponse.json(
+      {ok: false, message: 'Unsupported content type.'},
+      {status: 415}
+    );
+  }
+
+  const contentLength = Number(request.headers.get('content-length') || 0);
+
+  if (contentLength > maxBodySizeBytes) {
+    return NextResponse.json(
+      {ok: false, message: 'Request body is too large.'},
+      {status: 413}
+    );
+  }
+
+  const rateLimitResult = checkRateLimit(getRequestIp(request));
+
+  if (!rateLimitResult.allowed) {
+    return NextResponse.json(
+      {ok: false, message: 'Too many requests.'},
+      {
+        status: 429,
+        headers: {
+          'Retry-After': String(Math.ceil(rateLimitResult.retryAfterMs / 1000))
+        }
+      }
+    );
+  }
+
   const json = await request.json().catch(() => null);
   const parsed = serverContactSchema.safeParse(json);
 
@@ -35,7 +79,7 @@ export async function POST(request: Request) {
 
   const data = parsed.data;
 
-  if (data.websiteUrl) {
+  if (data.websiteUrl || !hasHumanTiming(data.startedAt)) {
     return NextResponse.json({ok: true});
   }
 
@@ -98,4 +142,56 @@ function escapeHtml(value: string) {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;');
+}
+
+function hasHumanTiming(startedAt: number | undefined) {
+  if (!startedAt) {
+    return false;
+  }
+
+  const age = Date.now() - startedAt;
+  return age >= minimumFormAgeMs && age <= maximumFormAgeMs;
+}
+
+function getRequestIp(request: Request) {
+  const forwardedFor = request.headers.get('x-forwarded-for');
+  const forwardedIp = forwardedFor?.split(',')[0]?.trim();
+
+  return (
+    forwardedIp ||
+    request.headers.get('x-real-ip') ||
+    request.headers.get('cf-connecting-ip') ||
+    'unknown'
+  );
+}
+
+function checkRateLimit(key: string) {
+  const now = Date.now();
+
+  for (const [entryKey, entry] of rateLimit.entries()) {
+    if (entry.resetAt <= now) {
+      rateLimit.delete(entryKey);
+    }
+  }
+
+  const entry = rateLimit.get(key);
+
+  if (!entry) {
+    rateLimit.set(key, {
+      count: 1,
+      resetAt: now + rateLimitWindowMs
+    });
+
+    return {allowed: true, retryAfterMs: 0};
+  }
+
+  if (entry.count >= maxRequestsPerWindow) {
+    return {
+      allowed: false,
+      retryAfterMs: Math.max(entry.resetAt - now, 1000)
+    };
+  }
+
+  entry.count += 1;
+  return {allowed: true, retryAfterMs: 0};
 }

@@ -20,7 +20,8 @@ export function createContactSchema(messages: ContactMessages) {
       .min(1, messages.budget)
       .refine((value) => budgetValues.includes(value as BudgetValue), messages.budget),
     message: z.string().trim().min(20, messages.message).max(2000),
-    websiteUrl: z.string().max(500).optional()
+    websiteUrl: z.string().max(500).optional(),
+    startedAt: z.number().int().positive().optional()
   });
 }
 

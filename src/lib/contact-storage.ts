@@ -55,8 +55,8 @@ export async function saveContactRequest(
       company: data.company || null,
       budget: data.budget,
       message: data.message,
-      source_url: request.headers.get('referer'),
-      user_agent: request.headers.get('user-agent')
+      source_url: truncateHeader(request.headers.get('referer'), 500),
+      user_agent: truncateHeader(request.headers.get('user-agent'), 500)
     })
   });
 
@@ -86,4 +86,12 @@ export async function markContactRequestEmailSent(id: string, resendEmailId: str
       resend_email_id: resendEmailId
     })
   });
+}
+
+function truncateHeader(value: string | null, maxLength: number) {
+  if (!value) {
+    return null;
+  }
+
+  return value.slice(0, maxLength);
 }
