@@ -1,6 +1,14 @@
 import type {NextConfig} from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
+const scriptSrc = [
+  "'self'",
+  "'unsafe-inline'",
+  process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''
+]
+  .filter(Boolean)
+  .join(' ');
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -10,10 +18,12 @@ const contentSecurityPolicy = [
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
   "style-src 'self' 'unsafe-inline'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  `script-src ${scriptSrc}`,
   "connect-src 'self' https://*.supabase.co https://api.resend.com https://vitals.vercel-insights.com ws: wss:",
-  'upgrade-insecure-requests'
-].join('; ');
+  process.env.NODE_ENV === 'production' ? 'upgrade-insecure-requests' : ''
+]
+  .filter(Boolean)
+  .join('; ');
 
 const securityHeaders = [
   {
