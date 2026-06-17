@@ -69,7 +69,7 @@ export async function POST(request: Request) {
         `Name: ${data.name}`,
         `E-Mail: ${data.email}`,
         `Unternehmen: ${data.company || '-'}`,
-        `Budget: ${data.budget}`,
+        `Projektart: ${data.budget}`,
         '',
         data.message
       ].join('\n'),
@@ -78,7 +78,7 @@ export async function POST(request: Request) {
         <p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
         <p><strong>E-Mail:</strong> ${escapeHtml(data.email)}</p>
         <p><strong>Unternehmen:</strong> ${escapeHtml(data.company || '-')}</p>
-        <p><strong>Budget:</strong> ${escapeHtml(data.budget)}</p>
+        <p><strong>Projektart:</strong> ${escapeHtml(data.budget)}</p>
         <p>${escapeHtml(data.message).replaceAll('\n', '<br />')}</p>
       `
     });

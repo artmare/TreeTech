@@ -18,8 +18,8 @@ export function SiteFooter() {
 
   return (
     <footer className="border-t border-white/10 bg-[#07110f] text-white">
-      <div className="dark-grid mx-auto grid w-full max-w-7xl gap-10 px-5 py-14 sm:px-6 lg:grid-cols-[1.2fr_0.8fr] lg:px-8">
-        <div>
+      <div className="dark-grid mx-auto grid w-full max-w-7xl gap-10 px-5 py-14 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(28rem,0.95fr)] lg:px-8">
+        <div className="min-w-0">
           <Link href="/" className="inline-flex items-center gap-3">
             <LogoMark className="h-10 w-10" />
             <span className="text-lg font-semibold">{siteConfig.name}</span>
@@ -29,21 +29,33 @@ export function SiteFooter() {
             &copy; {new Date().getFullYear()} TreeTech. {t('copyright')}
           </p>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2">
-          <div className="rounded-[1rem] border border-white/10 bg-white/[0.06] p-5">
+        <div className="grid min-w-0 gap-5 sm:grid-cols-[minmax(0,1.2fr)_minmax(9rem,0.8fr)]">
+          <div className="min-w-0 rounded-[1rem] border border-white/10 bg-white/[0.06] p-5">
             <p className="text-sm font-semibold text-white">{t('cta')}</p>
-            <a className="mt-3 block text-sm font-semibold text-accent" href={`mailto:${siteConfig.email}`}>
+            <a
+              className="mt-3 block max-w-full break-words text-sm font-semibold leading-6 text-accent [overflow-wrap:anywhere]"
+              href={`mailto:${siteConfig.email}`}
+            >
               {siteConfig.email}
             </a>
           </div>
-          <div className="grid gap-2 rounded-[1rem] border border-white/10 bg-white/[0.04] p-5 text-sm text-white/70">
-            <Link href="/services" className="transition hover:text-white">
+          <div className="grid gap-1 rounded-[1rem] border border-white/10 bg-white/[0.04] p-2 text-sm text-white/70">
+            <Link
+              href="/services"
+              className="flex min-h-11 items-center rounded-[0.75rem] px-4 py-3 font-medium transition hover:bg-white/[0.07] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
               {nav('services')}
             </Link>
-            <Link href="/portfolio" className="transition hover:text-white">
+            <Link
+              href="/portfolio"
+              className="flex min-h-11 items-center rounded-[0.75rem] px-4 py-3 font-medium transition hover:bg-white/[0.07] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
               {nav('portfolio')}
             </Link>
-            <Link href="/contact" className="transition hover:text-white">
+            <Link
+              href="/contact"
+              className="flex min-h-11 items-center rounded-[0.75rem] px-4 py-3 font-medium transition hover:bg-white/[0.07] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
               {nav('contact')}
             </Link>
           </div>

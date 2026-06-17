@@ -107,7 +107,7 @@ export default async function PortfolioDetailPage({params}: PageProps) {
               </div>
             </FadeIn>
             <FadeIn delay={0.1}>
-              <ProjectPreview project={project} size="large" />
+              <ProjectPreview project={project} locale={locale} size="large" />
             </FadeIn>
           </div>
         </Container>

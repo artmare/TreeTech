@@ -12,7 +12,7 @@ type DemoStat = {
   label: string;
 };
 
-type DemoSiteCopy = {
+export type DemoSiteCopy = {
   nav: string[];
   eyebrow: string;
   title: string;

@@ -56,9 +56,12 @@ export function SiteHeader({locale}: SiteHeaderProps) {
               <Link
                 key={item.key}
                 href={item.href}
+                aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'rounded-full px-3.5 py-2 text-sm font-semibold text-muted transition hover:bg-white/10 hover:text-white',
-                  active && 'bg-accent text-[#070806] shadow-sm hover:bg-accent hover:text-[#070806]'
+                  'rounded-full px-3.5 py-2 text-sm font-semibold transition',
+                  active
+                    ? 'bg-accent !text-[#070806] shadow-sm hover:bg-accent hover:!text-[#070806]'
+                    : 'text-muted hover:bg-white/10 hover:text-white'
                 )}
               >
                 {t(item.key)}

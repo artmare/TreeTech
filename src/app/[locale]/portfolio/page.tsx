@@ -1,4 +1,4 @@
-import {Building2, Globe2, MousePointerClick} from 'lucide-react';
+import {CheckCircle2} from 'lucide-react';
 import type {Metadata} from 'next';
 import {setRequestLocale} from 'next-intl/server';
 
@@ -14,18 +14,24 @@ type PageProps = {
   params: Promise<{locale: string}>;
 };
 
-const portfolioStats = {
-  de: [
-    {icon: Building2, value: '5', label: 'Branchen-Cases'},
-    {icon: Globe2, value: 'DE/EN', label: 'zweisprachig'},
-    {icon: MousePointerClick, value: 'CTA', label: 'anfrageorientiert'}
-  ],
-  en: [
-    {icon: Building2, value: '5', label: 'industry cases'},
-    {icon: Globe2, value: 'DE/EN', label: 'bilingual'},
-    {icon: MousePointerClick, value: 'CTA', label: 'inquiry-focused'}
-  ]
-} satisfies Record<Locale, Array<{icon: typeof Building2; value: string; label: string}>>;
+const portfolioBrief = {
+  de: {
+    title: 'Was Sie in den Projekten sehen',
+    items: [
+      'Welche Ausgangslage ein Betrieb hatte und wie die Website darauf antwortet.',
+      'Wie Struktur, Texte und Handlungsaufforderungen Besucher zur Anfrage führen.',
+      'Wie die fertige Demo-Seite für eine ähnliche Branche wirken könnte.'
+    ]
+  },
+  en: {
+    title: 'What to look for in each project',
+    items: [
+      'The business situation behind the project and how the website responds to it.',
+      'How structure, copy, and calls to action guide visitors toward inquiry.',
+      'How the finished demo page could feel for a similar industry.'
+    ]
+  }
+} satisfies Record<Locale, {title: string; items: string[]}>;
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const locale = (await params).locale as Locale;
@@ -55,17 +61,19 @@ export default async function PortfolioPage({params}: PageProps) {
             lead={content.portfolio.lead}
             className="[&_h2]:text-white [&_p]:text-white/72 [&_p:first-child]:border-white/15 [&_p:first-child]:bg-white/10 [&_p:first-child]:text-accent"
           />
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {portfolioStats[locale].map((stat, index) => (
-              <FadeIn key={stat.label} delay={index * 0.08}>
-                <article className="terminal-card rounded-[1.25rem] p-5 backdrop-blur">
-                  <stat.icon className="h-5 w-5 text-accent" aria-hidden="true" />
-                  <p className="mt-4 text-3xl font-semibold text-white">{stat.value}</p>
-                  <p className="mt-1 text-sm text-white/60">{stat.label}</p>
-                </article>
-              </FadeIn>
-            ))}
-          </div>
+          <FadeIn delay={0.1}>
+            <div className="mt-10 max-w-3xl rounded-[1.25rem] border border-white/10 bg-white/[0.06] p-5 backdrop-blur sm:p-6">
+              <p className="text-base font-semibold text-white">{portfolioBrief[locale].title}</p>
+              <ul className="mt-4 grid gap-3">
+                {portfolioBrief[locale].items.map((item) => (
+                  <li key={item} className="flex gap-3 border-t border-white/10 pt-3 text-sm leading-6 text-white/72 first:border-t-0 first:pt-0">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </FadeIn>
         </Container>
       </section>
 

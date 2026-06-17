@@ -61,6 +61,19 @@ const workflowLabels = {
   en: ['Workflow audit', 'System map', 'Interface', 'Automation', 'Launch']
 } satisfies Record<Locale, string[]>;
 
+const heroOutcomes = {
+  de: [
+    'Wir automatisieren manuelle Abläufe',
+    'Wir bauen Websites und Web-Apps',
+    'Wir verbinden Formulare, CRM, AI und interne Tools'
+  ],
+  en: [
+    'We automate manual business workflows',
+    'We build websites and web applications',
+    'We connect forms, CRM, AI, and internal tools'
+  ]
+} satisfies Record<Locale, string[]>;
+
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const rawLocale = (await params).locale;
 
@@ -88,11 +101,6 @@ export default async function HomePage({params}: PageProps) {
   const locale = rawLocale;
   setRequestLocale(locale);
   const content = siteContent[locale];
-  const salesStats = [
-    [content.home.metricOne, content.home.metricOneLabel],
-    [content.home.metricTwo, content.home.metricTwoLabel],
-    [content.home.metricThree, content.home.metricThreeLabel]
-  ];
   const proofCards = [
     {icon: Bot, text: content.home.heroTrust[0]},
     {icon: MonitorSmartphone, text: content.home.heroTrust[1]},
@@ -126,16 +134,16 @@ export default async function HomePage({params}: PageProps) {
                 {content.common.secondaryCta}
               </ButtonLink>
             </div>
-            <div className="mt-10 grid max-w-3xl gap-3 sm:grid-cols-3">
-              {salesStats.map(([value, label]) => (
-                <div key={value} className="terminal-card rounded-[1rem] p-4">
-                  <p className="font-mono text-2xl font-semibold text-white">{value}</p>
-                  <p className="mt-1 text-sm leading-5 text-white/58">{label}</p>
-                </div>
+            <ul className="mt-8 grid max-w-2xl gap-3">
+              {heroOutcomes[locale].map((item) => (
+                <li key={item} className="flex gap-3 text-sm font-semibold leading-6 text-white/76">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                  <span>{item}</span>
+                </li>
               ))}
-            </div>
+            </ul>
           </FadeIn>
-          <FadeIn delay={0.12}>
+          <FadeIn delay={0.12} className="lg:self-start lg:pt-10">
             <AgencyDashboard locale={locale} />
           </FadeIn>
         </Container>

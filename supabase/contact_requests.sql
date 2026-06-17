@@ -6,7 +6,7 @@ create table if not exists public.contact_requests (
   name text not null check (char_length(name) between 2 and 120),
   email text not null check (char_length(email) <= 160),
   company text check (company is null or char_length(company) <= 160),
-  budget text not null check (budget in ('landing', 'website', 'business', 'custom')),
+  budget text not null check (budget in ('automation', 'web', 'app', 'integration', 'workflow')),
   message text not null check (char_length(message) between 20 and 2000),
   source_url text,
   user_agent text,

@@ -1,108 +1,53 @@
+import Image from 'next/image';
+
 import type {PortfolioProject} from '@/content/site';
+import type {Locale} from '@/i18n/routing';
 import {cn} from '@/lib/utils';
 
 type ProjectPreviewProps = {
   project: PortfolioProject;
+  locale?: Locale;
   size?: 'card' | 'large';
 };
 
-export function ProjectPreview({project, size = 'card'}: ProjectPreviewProps) {
-  if (size === 'card') {
-    return (
-      <div
-        className={cn(
-          'group relative min-h-[220px] overflow-hidden rounded-[1.1rem] border border-white/70 bg-gradient-to-br p-3 shadow-[0_24px_70px_rgba(13,23,19,0.14)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_32px_90px_rgba(13,23,19,0.18)]',
-          project.gradient
-        )}
-        aria-hidden="true"
-      >
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.42),rgba(255,255,255,0.04))]" />
-        <div className="absolute inset-0 saas-grid opacity-25" />
-        <div className="relative grid h-full gap-3">
-          <div className="rounded-[0.9rem] border border-white/75 bg-white/88 p-3 shadow-xl shadow-black/10 backdrop-blur transition duration-300 group-hover:scale-[1.01]">
-            <div className="mb-4 flex items-center justify-between border-b border-black/10 pb-2">
-              <div className="flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-red-400" />
-                <span className="h-2 w-2 rounded-full bg-amber-400" />
-                <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              </div>
-              <span className="h-2 w-20 rounded-full bg-black/10" />
-            </div>
-            <span className={cn('block h-2.5 w-16 rounded-full', project.accent)} />
-            <span className="mt-4 block h-6 w-11/12 rounded-full bg-[#101815]" />
-            <span className="mt-2 block h-6 w-2/3 rounded-full bg-[#101815]" />
-            <div className="mt-4 space-y-2">
-              <span className="block h-2 w-full rounded-full bg-black/14" />
-              <span className="block h-2 w-4/5 rounded-full bg-black/14" />
-            </div>
-            <div className="mt-4 flex gap-2">
-              <span className={cn('block h-9 w-28 rounded-full', project.accent)} />
-              <span className="block h-9 w-20 rounded-full border border-black/10 bg-white" />
-            </div>
-          </div>
-          <div className="grid grid-cols-3 gap-2">
-            <span className="h-12 rounded-[0.9rem] border border-white/60 bg-white/62 shadow-sm" />
-            <span className="h-12 rounded-[0.9rem] border border-white/50 bg-white/42 shadow-sm" />
-            <span className="h-12 rounded-[0.9rem] border border-white/60 bg-white/62 shadow-sm" />
-          </div>
-        </div>
-      </div>
-    );
+const labels = {
+  de: {
+    demo: 'Demo-Website',
+    preview: 'Echte Vorschau'
+  },
+  en: {
+    demo: 'Demo website',
+    preview: 'Real preview'
   }
+} satisfies Record<Locale, {demo: string; preview: string}>;
+
+export function ProjectPreview({project, locale = 'en', size = 'card'}: ProjectPreviewProps) {
+  const large = size === 'large';
+  const copy = labels[locale];
 
   return (
     <div
       className={cn(
-        'group relative overflow-hidden rounded-[1.25rem] border border-white/70 bg-gradient-to-br shadow-[0_24px_70px_rgba(13,23,19,0.14)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_32px_90px_rgba(13,23,19,0.18)]',
+        'group relative aspect-[16/10] overflow-hidden border border-white/12 bg-gradient-to-br shadow-[0_24px_70px_rgba(0,0,0,0.24)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_32px_90px_rgba(0,0,0,0.32)]',
         project.gradient,
-        'min-h-[420px] p-5 sm:p-8'
+        large ? 'min-h-[420px] rounded-[1.25rem]' : 'min-h-[220px] rounded-[1.1rem]'
       )}
-      aria-hidden="true"
     >
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.42),rgba(255,255,255,0.04))]" />
-      <div className="absolute inset-0 saas-grid opacity-25" />
-      <div className="relative grid min-h-full gap-4">
-        <div className="rounded-[1rem] border border-white/75 bg-white/88 p-4 shadow-[0_22px_60px_rgba(0,0,0,0.12)] backdrop-blur transition duration-300 group-hover:scale-[1.01]">
-          <div className="mb-5 flex items-center justify-between border-b border-black/10 pb-3">
-            <div className="flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-              <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-            </div>
-            <span className="h-2 w-24 rounded-full bg-black/10" />
-          </div>
-          <div className="grid gap-4 xl:grid-cols-[1.08fr_0.92fr] xl:items-stretch">
-            <div className="space-y-4">
-              <span className={cn('block h-2.5 w-20 rounded-full', project.accent)} />
-              <span className="block h-7 w-11/12 rounded-full bg-[#101815]" />
-              <span className="block h-7 w-2/3 rounded-full bg-[#101815]" />
-              <div className="space-y-2 pt-1">
-                <span className="block h-2 w-full rounded-full bg-black/14" />
-                <span className="block h-2 w-5/6 rounded-full bg-black/14" />
-                <span className="block h-2 w-2/3 rounded-full bg-black/14" />
-              </div>
-              <div className="flex gap-2 pt-2">
-                <span className={cn('block h-10 w-32 rounded-full', project.accent)} />
-                <span className="block h-10 w-24 rounded-full border border-black/10 bg-white" />
-              </div>
-            </div>
-            <div className="grid gap-2">
-              <span className="relative min-h-28 overflow-hidden rounded-[1rem] bg-black/10 shadow-inner">
-                <span className={cn('absolute bottom-0 left-0 h-2/5 w-full opacity-80', project.accent)} />
-                <span className="absolute left-4 top-4 h-3 w-16 rounded-full bg-white/80" />
-              </span>
-              <div className="grid grid-cols-2 gap-2">
-                <span className="min-h-20 rounded-[1rem] bg-white/80 shadow-inner" />
-                <span className="min-h-20 rounded-[1rem] bg-black/12 shadow-inner" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="relative grid grid-cols-3 gap-2">
-          <span className="h-16 rounded-[1rem] border border-white/60 bg-white/62 shadow-sm" />
-          <span className="h-16 rounded-[1rem] border border-white/50 bg-white/42 shadow-sm" />
-          <span className="h-16 rounded-[1rem] border border-white/60 bg-white/62 shadow-sm" />
-        </div>
+      <Image
+        src={`/portfolio-previews/${project.slug}.png`}
+        alt={`${project.name} demo website preview`}
+        fill
+        sizes={large ? '(min-width: 1024px) 920px, 100vw' : '(min-width: 1024px) 560px, 100vw'}
+        className="object-cover object-top transition duration-500 group-hover:scale-[1.025]"
+      />
+      <div className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-inset ring-white/12" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#07110f]/82 via-[#07110f]/22 to-transparent" />
+      <div className="pointer-events-none absolute left-3 top-3 flex items-center gap-2 rounded-full border border-white/25 bg-[#07110f]/70 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/82 backdrop-blur">
+        <span className={cn('h-2 w-2 rounded-full', project.accent)} />
+        <span>{copy.demo}</span>
+      </div>
+      <div className="pointer-events-none absolute bottom-3 right-3 rounded-full border border-white/20 bg-white/12 px-3 py-1.5 text-[11px] font-semibold text-white/80 backdrop-blur">
+        {copy.preview}
       </div>
     </div>
   );

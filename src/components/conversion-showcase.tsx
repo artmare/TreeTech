@@ -1,4 +1,4 @@
-import {CheckCircle2, MousePointerClick, ShieldCheck, TrendingUp, Zap} from 'lucide-react';
+import {ArrowRight, CheckCircle2, FileText, Mail, PanelsTopLeft} from 'lucide-react';
 
 import type {Locale} from '@/i18n/routing';
 
@@ -8,87 +8,103 @@ type ConversionShowcaseProps = {
 
 const showcaseCopy = {
   de: {
-    label: 'Workflow-System',
-    score: 'Prozessstatus',
-    scoreValue: 'live',
-    flow: ['Trigger', 'AI-Schritt', 'CRM-Update'],
-    cards: [
-      {label: 'Antwortzeit', value: 'schnell', icon: Zap},
-      {label: 'Datenfluss', value: 'klar', icon: TrendingUp},
-      {label: 'Berechtigung', value: 'sauber', icon: ShieldCheck}
-    ],
-    checklist: ['E-Mail wird erkannt', 'Dokument wird vorbereitet', 'CRM wird aktualisiert']
+    eyebrow: 'Projektbild',
+    title: 'Aus verstreuter Arbeit wird ein klarer digitaler Ablauf.',
+    incoming: 'Typische Ausgangslage',
+    system: 'Was TreeTech daraus baut',
+    result: 'Was danach besser läuft',
+    painPoints: ['Anfragen bleiben in E-Mails liegen', 'Daten werden mehrfach kopiert', 'Website, CRM und Team arbeiten getrennt'],
+    builds: ['Website oder Web-App mit klarer Nutzerführung', 'AI-Assistent für wiederkehrende Fragen und Aufgaben', 'Automatisierung für CRM, Dokumente und interne Übergaben'],
+    outcomes: ['Weniger manuelle Schritte', 'Schnellere Reaktion auf neue Leads', 'Ein System, das im Alltag verständlich bleibt']
   },
   en: {
-    label: 'Workflow system',
-    score: 'Process status',
-    scoreValue: 'live',
-    flow: ['Trigger', 'AI step', 'CRM update'],
-    cards: [
-      {label: 'Response time', value: 'fast', icon: Zap},
-      {label: 'Data flow', value: 'clear', icon: TrendingUp},
-      {label: 'Permissions', value: 'clean', icon: ShieldCheck}
-    ],
-    checklist: ['Email gets classified', 'Document gets prepared', 'CRM gets updated']
+    eyebrow: 'Project picture',
+    title: 'Scattered work becomes one clear digital flow.',
+    incoming: 'Typical starting point',
+    system: 'What TreeTech builds from it',
+    result: 'What improves after launch',
+    painPoints: ['Inquiries sit in email inboxes', 'Data gets copied more than once', 'Website, CRM, and team work separately'],
+    builds: ['Website or web app with clear user journeys', 'AI assistant for recurring questions and tasks', 'Automation for CRM, documents, and internal handovers'],
+    outcomes: ['Fewer manual steps', 'Faster response to new leads', 'A system the team can actually understand']
   }
 } satisfies Record<Locale, {
-  label: string;
-  score: string;
-  scoreValue: string;
-  flow: string[];
-  cards: Array<{label: string; value: string; icon: typeof Zap}>;
-  checklist: string[];
+  eyebrow: string;
+  title: string;
+  incoming: string;
+  system: string;
+  result: string;
+  painPoints: string[];
+  builds: string[];
+  outcomes: string[];
 }>;
 
 export function ConversionShowcase({locale}: ConversionShowcaseProps) {
   const copy = showcaseCopy[locale];
 
   return (
-    <div className="software-panel relative overflow-hidden rounded-[1.25rem] p-4 text-white sm:p-5">
-      <div className="dark-grid absolute inset-0 opacity-35" />
-      <div className="relative rounded-[1rem] border border-white/12 bg-[#0c1815]/78 p-4 shadow-[0_24px_70px_rgba(0,0,0,0.2)]">
-        <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4">
+    <div className="relative overflow-hidden rounded-[1.5rem] border border-white/12 bg-[#f4f1e8] p-4 text-[#11160f] shadow-[0_28px_90px_rgba(0,0,0,0.28)] sm:p-5">
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(7,8,6,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(7,8,6,0.06)_1px,transparent_1px)] bg-[size:34px_34px]" />
+      <div className="relative">
+        <div className="flex items-start justify-between gap-5 border-b border-[#11160f]/10 pb-5">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent">{copy.label}</p>
-            <p className="mt-2 text-2xl font-semibold">{copy.scoreValue}</p>
-            <p className="text-sm text-white/58">{copy.score}</p>
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[#0b7b60]">
+              {copy.eyebrow}
+            </p>
+            <h2 className="mt-3 max-w-md text-2xl font-semibold leading-tight sm:text-3xl">
+              {copy.title}
+            </h2>
           </div>
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-[#101512]">
-            <MousePointerClick className="h-5 w-5" aria-hidden="true" />
-          </div>
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#d6ff63] text-[#11160f]">
+            <PanelsTopLeft className="h-5 w-5" aria-hidden="true" />
+          </span>
         </div>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          {copy.cards.map((card) => (
-            <div key={card.label} className="rounded-[1rem] border border-white/10 bg-white/[0.07] p-3">
-              <card.icon className="h-4 w-4 text-accent" aria-hidden="true" />
-              <p className="mt-4 text-xl font-semibold">{card.value}</p>
-              <p className="mt-1 text-xs text-white/58">{card.label}</p>
-            </div>
-          ))}
+        <div className="grid gap-4 py-5">
+          <BriefColumn title={copy.incoming} icon={Mail} items={copy.painPoints} muted />
+          <div className="flex justify-center text-[#0b7b60]" aria-hidden="true">
+            <ArrowRight className="h-5 w-5 rotate-90" />
+          </div>
+          <BriefColumn title={copy.system} icon={FileText} items={copy.builds} />
         </div>
 
-        <div className="mt-5 rounded-[1rem] border border-white/10 bg-white/[0.06] p-4">
-          <div className="grid gap-3 sm:grid-cols-3">
-            {copy.flow.map((item, index) => (
-              <div key={item}>
-                <div className="relative mb-3 h-1 overflow-hidden rounded-full bg-white/10">
-                  <span className="flow-line absolute inset-0" />
-                </div>
-                <p className="text-sm font-semibold text-white">{index + 1}. {item}</p>
+        <div className="rounded-[1.1rem] bg-[#11160f] p-4 text-white">
+          <p className="text-sm font-semibold">{copy.result}</p>
+          <div className="mt-4 grid gap-3">
+            {copy.outcomes.map((item) => (
+              <div key={item} className="flex gap-3 text-sm leading-6 text-white/76">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#d6ff63]" aria-hidden="true" />
+                <span>{item}</span>
               </div>
             ))}
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
 
-        <div className="mt-5 grid gap-3">
-          {copy.checklist.map((item) => (
-            <div key={item} className="flex items-center gap-3 text-sm text-white/72">
-              <CheckCircle2 className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
-              <span>{item}</span>
-            </div>
-          ))}
-        </div>
+type BriefColumnProps = {
+  title: string;
+  icon: typeof Mail;
+  items: string[];
+  muted?: boolean;
+};
+
+function BriefColumn({title, icon: Icon, items, muted}: BriefColumnProps) {
+  return (
+    <div className="rounded-[1.1rem] border border-[#11160f]/10 bg-white/64 p-4 shadow-sm">
+      <div className="flex items-center gap-3">
+        <span className={muted ? 'text-[#6f7669]' : 'text-[#0b7b60]'}>
+          <Icon className="h-5 w-5" aria-hidden="true" />
+        </span>
+        <p className="text-sm font-semibold">{title}</p>
+      </div>
+      <div className="mt-4 grid gap-3">
+        {items.map((item) => (
+          <p key={item} className="border-t border-[#11160f]/10 pt-3 text-sm leading-6 text-[#4b5248] first:border-t-0 first:pt-0">
+            {item}
+          </p>
+        ))}
       </div>
     </div>
   );

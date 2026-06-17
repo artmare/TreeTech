@@ -205,12 +205,6 @@ export const siteContent = {
         'Websites und Web-Apps mit klarer Business-Logik',
         'CRM-, ERP- und Service-Integrationen'
       ],
-      metricOne: '5 Bereiche',
-      metricOneLabel: 'AI, Web, Apps, Integration, Workflows',
-      metricTwo: 'DE/EN',
-      metricTwoLabel: 'mehrsprachig gedacht',
-      metricThree: 'B2B',
-      metricThreeLabel: 'für österreichische Betriebe',
       proofTitle: 'Für Betriebe, die weniger manuell arbeiten und digital professioneller verkaufen möchten.',
       proofCopy:
         'Wir denken nicht nur in schönen Screens. Jede Lösung bekommt einen Zweck: schneller reagieren, Prozesse entlasten, Kundinnen und Kunden besser führen und Daten sauberer nutzen.',
@@ -258,9 +252,9 @@ export const siteContent = {
       ]
     },
     portfolio: {
-      title: 'Digitale Auftritte für Branchen, die Vertrauen verkaufen.',
+      title: 'Beispiel-Websites für echte Branchen in Österreich.',
       lead:
-        'Die Beispielprojekte zeigen, wie TreeTech unterschiedliche österreichische Branchen positioniert: klar, hochwertig und auf Anfragen ausgerichtet.',
+        'Öffnen Sie ein Projekt und sehen Sie, wie Struktur, Texte, Design und Demo-Seite für ähnliche Betriebe aussehen können.',
       detailIntro: 'Projektüberblick',
       problem: 'Ausgangslage',
       solution: 'Lösung',
@@ -324,12 +318,6 @@ export const siteContent = {
         'Websites and web apps with clear business logic',
         'CRM, ERP, and service integrations'
       ],
-      metricOne: '5 areas',
-      metricOneLabel: 'AI, web, apps, integration, workflows',
-      metricTwo: 'DE/EN',
-      metricTwoLabel: 'multilingual by design',
-      metricThree: 'B2B',
-      metricThreeLabel: 'for Austrian businesses',
       proofTitle: 'For businesses that want less manual work and a more professional digital sales flow.',
       proofCopy:
         'We do not think only in good-looking screens. Every solution has a purpose: respond faster, remove process friction, guide customers better, and use data more cleanly.',
@@ -377,9 +365,9 @@ export const siteContent = {
       ]
     },
     portfolio: {
-      title: 'Digital presences for industries where trust matters.',
+      title: 'Example websites for real Austrian industries.',
       lead:
-        'These sample projects show how TreeTech positions different Austrian industries: clearly, professionally, and with inquiries in mind.',
+        'Open any project to see the structure, copy direction, visual style, and demo website we could build for similar businesses.',
       detailIntro: 'Project overview',
       problem: 'Starting point',
       solution: 'Solution',
