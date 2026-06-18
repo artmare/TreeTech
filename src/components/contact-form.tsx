@@ -1,29 +1,27 @@
 'use client';
 
-import {zodResolver} from '@hookform/resolvers/zod';
 import {Send} from 'lucide-react';
 import {useTranslations} from 'next-intl';
-import {useMemo, useState} from 'react';
+import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 
-import {budgetValues, createContactSchema, type ContactFormValues} from '@/lib/contact';
+import {budgetValues, type BudgetValue} from '@/lib/contact-options';
 import {cn} from '@/lib/utils';
+
+type ContactFormValues = {
+  name: string;
+  email: string;
+  company: string;
+  budget: '' | BudgetValue;
+  message: string;
+  websiteUrl: string;
+  startedAt: number;
+};
 
 export function ContactForm() {
   const t = useTranslations('contactForm');
   const [status, setStatus] = useState<'success' | 'error' | null>(null);
   const [startedAt] = useState(() => Date.now());
-
-  const schema = useMemo(
-    () =>
-      createContactSchema({
-        name: t('errors.name'),
-        email: t('errors.email'),
-        budget: t('errors.budget'),
-        message: t('errors.message')
-      }),
-    [t]
-  );
 
   const {
     register,
@@ -31,7 +29,6 @@ export function ContactForm() {
     reset,
     formState: {errors, isSubmitting}
   } = useForm<ContactFormValues>({
-    resolver: zodResolver(schema),
     defaultValues: {
       name: '',
       email: '',
@@ -76,7 +73,11 @@ export function ContactForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label={t('name')} error={errors.name?.message}>
           <input
-            {...register('name')}
+            {...register('name', {
+              required: t('errors.name'),
+              minLength: {value: 2, message: t('errors.name')},
+              maxLength: {value: 120, message: t('errors.name')}
+            })}
             autoComplete="name"
             placeholder={t('namePlaceholder')}
             className="h-12 w-full rounded-[0.9rem] border border-white/10 bg-white/[0.055] px-3 text-sm text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-white/[0.08] focus:ring-4 focus:ring-accent/10"
@@ -84,7 +85,14 @@ export function ContactForm() {
         </Field>
         <Field label={t('email')} error={errors.email?.message}>
           <input
-            {...register('email')}
+            {...register('email', {
+              required: t('errors.email'),
+              maxLength: {value: 160, message: t('errors.email')},
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: t('errors.email')
+              }
+            })}
             type="email"
             autoComplete="email"
             placeholder={t('emailPlaceholder')}
@@ -96,7 +104,9 @@ export function ContactForm() {
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <Field label={t('company')} error={errors.company?.message}>
           <input
-            {...register('company')}
+            {...register('company', {
+              maxLength: 160
+            })}
             autoComplete="organization"
             placeholder={t('companyPlaceholder')}
             className="h-12 w-full rounded-[0.9rem] border border-white/10 bg-white/[0.055] px-3 text-sm text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-white/[0.08] focus:ring-4 focus:ring-accent/10"
@@ -104,7 +114,9 @@ export function ContactForm() {
         </Field>
         <Field label={t('budget')} error={errors.budget?.message}>
           <select
-            {...register('budget')}
+            {...register('budget', {
+              validate: (value) => (value && budgetValues.includes(value)) || t('errors.budget')
+            })}
             className="h-12 w-full rounded-[0.9rem] border border-white/10 bg-[#11150f] px-3 text-sm text-foreground outline-none transition focus:border-accent/50 focus:bg-[#151b12] focus:ring-4 focus:ring-accent/10"
           >
             <option value="">{t('budgetPlaceholder')}</option>
@@ -119,7 +131,11 @@ export function ContactForm() {
 
       <Field label={t('message')} error={errors.message?.message} className="mt-4">
         <textarea
-          {...register('message')}
+          {...register('message', {
+            required: t('errors.message'),
+            minLength: {value: 20, message: t('errors.message')},
+            maxLength: {value: 2000, message: t('errors.message')}
+          })}
           rows={6}
           placeholder={t('messagePlaceholder')}
           className="w-full resize-none rounded-[0.9rem] border border-white/10 bg-white/[0.055] px-3 py-3 text-sm leading-6 text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-white/[0.08] focus:ring-4 focus:ring-accent/10"

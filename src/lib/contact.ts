@@ -1,7 +1,9 @@
 import {z} from 'zod';
 
-export const budgetValues = ['automation', 'web', 'app', 'integration', 'workflow'] as const;
-export type BudgetValue = (typeof budgetValues)[number];
+import {budgetValues, type BudgetValue} from '@/lib/contact-options';
+
+export {budgetValues};
+export type {BudgetValue};
 
 type ContactMessages = {
   name: string;

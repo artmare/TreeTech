@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "next dev",
     "gcp-build": "npm run build",
-    "build": "next build",
+    "build": "next build && node scripts/strip-next-nomodule-polyfills.mjs",
     "start": "node server.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings=0"
