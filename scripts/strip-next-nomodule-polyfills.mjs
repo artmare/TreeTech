@@ -2,7 +2,6 @@ import {promises as fs} from 'node:fs';
 import path from 'node:path';
 
 const root = process.cwd();
-const nextDir = path.join(root, '.next');
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -47,91 +46,112 @@ async function listFilesByName(dir, fileName, files = []) {
   return files;
 }
 
-if (!(await pathExists(nextDir))) {
-  console.log('No Next.js build manifest found, skipping noModule polyfill strip.');
-  process.exit(0);
+async function readUtf8(filePath) {
+  return fs.readFile(filePath, 'utf8');
 }
-
-const buildManifestPaths = await listFilesByName(nextDir, 'build-manifest.json');
-const polyfillFiles = new Set();
-let updatedManifestFiles = 0;
 
 const getLegacyPolyfills = (files = []) =>
   files.filter((file) => file.endsWith('.js') && !file.endsWith('.module.js'));
 
-for (const buildManifestPath of buildManifestPaths) {
-  const buildManifest = JSON.parse(await fs.readFile(buildManifestPath, 'utf8'));
-  const manifestPolyfills = getLegacyPolyfills(buildManifest.polyfillFiles ?? []);
+function removeLegacyPolyfillsFromSource(source, polyfillFiles) {
+  return source.replace(/("polyfillFiles"\s*:\s*)\[([\s\S]*?)\]/g, (match, prefix, body) => {
+    const files = [...body.matchAll(/["']([^"']+\.js)["']/g)].map((entry) => entry[1]);
+    const legacyFiles = getLegacyPolyfills(files);
 
-  if (manifestPolyfills.length > 0) {
-    manifestPolyfills.forEach((file) => polyfillFiles.add(file));
-    buildManifest.polyfillFiles = [];
-    await fs.writeFile(buildManifestPath, `${JSON.stringify(buildManifest, null, 2)}\n`);
-    updatedManifestFiles += 1;
-  }
+    if (legacyFiles.length === 0) {
+      return match;
+    }
+
+    legacyFiles.forEach((file) => polyfillFiles.add(file));
+    return `${prefix}[]`;
+  });
 }
 
-const middlewareManifestPaths = await listFilesByName(nextDir, 'middleware-build-manifest.js');
-let updatedMiddlewareManifestFiles = 0;
+async function stripBuildOutput(baseDir, label) {
+  if (!(await pathExists(baseDir))) {
+    return null;
+  }
 
-for (const middlewareManifestPath of middlewareManifestPaths) {
-  const manifestSource = await fs.readFile(middlewareManifestPath, 'utf8');
-  const nextManifestSource = manifestSource.replace(
-    /("polyfillFiles"\s*:\s*)\[([\s\S]*?)\]/g,
-    (match, prefix, body) => {
-      const files = [...body.matchAll(/["']([^"']+\.js)["']/g)].map((entry) => entry[1]);
-      const legacyFiles = getLegacyPolyfills(files);
+  const polyfillFiles = new Set();
+  let updatedManifestFiles = 0;
+  let updatedJsManifestFiles = 0;
+  let updatedHtmlFiles = 0;
+  let updatedAssetFiles = 0;
 
-      if (legacyFiles.length === 0) {
-        return match;
-      }
+  const buildManifestPaths = await listFilesByName(baseDir, 'build-manifest.json');
 
-      legacyFiles.forEach((file) => polyfillFiles.add(file));
-      return `${prefix}[]`;
+  for (const buildManifestPath of buildManifestPaths) {
+    const buildManifest = JSON.parse(await readUtf8(buildManifestPath));
+    const manifestPolyfills = getLegacyPolyfills(buildManifest.polyfillFiles ?? []);
+
+    if (manifestPolyfills.length > 0) {
+      manifestPolyfills.forEach((file) => polyfillFiles.add(file));
+      buildManifest.polyfillFiles = [];
+      await fs.writeFile(buildManifestPath, `${JSON.stringify(buildManifest, null, 2)}\n`);
+      updatedManifestFiles += 1;
     }
+  }
+
+  const jsManifestPaths = [
+    ...(await listFilesByName(baseDir, 'middleware-build-manifest.js')),
+    ...(await listFilesByName(baseDir, '_buildManifest.js'))
+  ];
+
+  for (const jsManifestPath of jsManifestPaths) {
+    const manifestSource = await readUtf8(jsManifestPath);
+    const nextManifestSource = removeLegacyPolyfillsFromSource(manifestSource, polyfillFiles);
+
+    if (nextManifestSource !== manifestSource) {
+      await fs.writeFile(jsManifestPath, nextManifestSource);
+      updatedJsManifestFiles += 1;
+    }
+  }
+
+  if (polyfillFiles.size === 0) {
+    return {
+      label,
+      polyfillCount: 0,
+      updatedManifestFiles,
+      updatedJsManifestFiles,
+      updatedHtmlFiles,
+      updatedAssetFiles
+    };
+  }
+
+  const polyfillList = [...polyfillFiles];
+  const polyfillNames = polyfillList.map((file) => escapeRegExp(file.replace(/\\/g, '/')));
+  const chunkNames = polyfillList.map((file) => escapeRegExp(path.basename(file)));
+  const polyfillPattern = new RegExp(
+    `<script\\b(?=[^>]*(?:noModule|nomodule)\\b)(?=[^>]*src=["'][^"']*(?:${[
+      ...polyfillNames,
+      ...chunkNames
+    ].join('|')})[^"']*["'])[^>]*><\\/script>`,
+    'g'
   );
 
-  if (nextManifestSource !== manifestSource) {
-    await fs.writeFile(middlewareManifestPath, nextManifestSource);
-    updatedMiddlewareManifestFiles += 1;
+  for (const polyfill of polyfillList) {
+    const relativePath = polyfill.replace(/\\/g, '/').split('/');
+    const directPath = path.join(baseDir, ...relativePath);
+
+    if (await pathExists(directPath)) {
+      await fs.writeFile(directPath, '/* Legacy noModule polyfill stripped for strict CSP. */\n');
+      updatedAssetFiles += 1;
+    }
+
+    const matchingAssets = await listFilesByName(baseDir, path.basename(polyfill));
+
+    for (const assetPath of matchingAssets) {
+      if (assetPath !== directPath) {
+        await fs.writeFile(assetPath, '/* Legacy noModule polyfill stripped for strict CSP. */\n');
+        updatedAssetFiles += 1;
+      }
+    }
   }
-}
 
-if (polyfillFiles.size === 0) {
-  console.log('No legacy noModule polyfills found.');
-  process.exit(0);
-}
-
-const polyfillList = [...polyfillFiles];
-const polyfillNames = polyfillList.map((file) => escapeRegExp(file.replace(/\\/g, '/')));
-const chunkNames = polyfillList.map((file) => escapeRegExp(path.basename(file)));
-let updatedPolyfillAssetFiles = 0;
-
-for (const polyfill of polyfillList) {
-  const polyfillPath = path.join(nextDir, ...polyfill.replace(/\\/g, '/').split('/'));
-
-  if (await pathExists(polyfillPath)) {
-    await fs.writeFile(polyfillPath, '/* Legacy noModule polyfill stripped for strict CSP. */\n');
-    updatedPolyfillAssetFiles += 1;
-  }
-}
-
-const polyfillPattern = new RegExp(
-  `<script\\b(?=[^>]*(?:noModule|nomodule)\\b)(?=[^>]*src=["'][^"']*(?:${[
-    ...polyfillNames,
-    ...chunkNames
-  ].join('|')})[^"']*["'])[^>]*><\\/script>`,
-  'g'
-);
-
-const serverDir = path.join(nextDir, 'server');
-let updatedHtmlFiles = 0;
-
-if (await pathExists(serverDir)) {
-  const htmlFiles = await listFiles(serverDir, '.html');
+  const htmlFiles = await listFiles(baseDir, '.html');
 
   for (const htmlFile of htmlFiles) {
-    const html = await fs.readFile(htmlFile, 'utf8');
+    const html = await readUtf8(htmlFile);
     const nextHtml = html.replace(polyfillPattern, '');
 
     if (nextHtml !== html) {
@@ -139,8 +159,40 @@ if (await pathExists(serverDir)) {
       updatedHtmlFiles += 1;
     }
   }
+
+  return {
+    label,
+    polyfillCount: polyfillList.length,
+    updatedManifestFiles,
+    updatedJsManifestFiles,
+    updatedHtmlFiles,
+    updatedAssetFiles
+  };
 }
 
-console.log(
-  `Stripped ${polyfillList.length} legacy noModule polyfill from ${updatedManifestFiles} build manifest file(s), ${updatedMiddlewareManifestFiles} middleware manifest file(s), ${updatedHtmlFiles} HTML file(s), and ${updatedPolyfillAssetFiles} asset file(s).`
-);
+const outputRoots = [
+  [path.join(root, '.next'), '.next'],
+  [path.join(root, '.vercel', 'output'), '.vercel/output'],
+  ['/vercel/output', '/vercel/output']
+];
+
+const results = [];
+
+for (const [outputRoot, label] of outputRoots) {
+  const result = await stripBuildOutput(outputRoot, label);
+
+  if (result) {
+    results.push(result);
+  }
+}
+
+if (results.length === 0) {
+  console.log('No Next.js or Vercel build output found, skipping noModule polyfill strip.');
+  process.exit(0);
+}
+
+for (const result of results) {
+  console.log(
+    `[${result.label}] Stripped ${result.polyfillCount} legacy noModule polyfill from ${result.updatedManifestFiles} JSON manifest file(s), ${result.updatedJsManifestFiles} JS manifest file(s), ${result.updatedHtmlFiles} HTML file(s), and ${result.updatedAssetFiles} asset file(s).`
+  );
+}
