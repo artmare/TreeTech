@@ -9,6 +9,9 @@ type OfferCardProps = {
     chapter: string;
     name: Record<Locale, string>;
     description: Record<Locale, string>;
+    problem: Record<Locale, string>;
+    solution: Record<Locale, string>;
+    result: Record<Locale, string>;
     features: Record<Locale, string[]>;
     highlighted?: boolean;
   };
@@ -17,6 +20,12 @@ type OfferCardProps = {
 };
 
 export function OfferCard({offer, locale, ctaLabel}: OfferCardProps) {
+  const detailLabels = {
+    problem: locale === 'de' ? 'Problem' : 'Problem',
+    solution: locale === 'de' ? 'Lösung' : 'Solution',
+    result: locale === 'de' ? 'Ergebnis' : 'Result'
+  };
+
   return (
     <article
       className={cn(
@@ -38,6 +47,19 @@ export function OfferCard({offer, locale, ctaLabel}: OfferCardProps) {
           {offer.name[locale]}
         </h3>
         <p className="mt-4 text-sm leading-7 text-muted">{offer.description[locale]}</p>
+      </div>
+
+      <div className="mt-6 grid gap-3 border-t border-white/10 pt-5">
+        {[
+          [detailLabels.problem, offer.problem[locale]],
+          [detailLabels.solution, offer.solution[locale]],
+          [detailLabels.result, offer.result[locale]]
+        ].map(([label, text]) => (
+          <div key={label} className="rounded-[0.9rem] border border-white/10 bg-white/[0.03] p-4">
+            <p className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-accent">{label}</p>
+            <p className="mt-2 text-sm leading-6 text-muted">{text}</p>
+          </div>
+        ))}
       </div>
 
       <div className="mt-6 border-t border-white/10 pt-5">

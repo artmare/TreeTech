@@ -1,5 +1,6 @@
 import {CheckCircle2} from 'lucide-react';
 import type {Metadata} from 'next';
+import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
 
 import {FadeIn} from '@/components/motion/fade-in';
@@ -7,7 +8,7 @@ import {PortfolioCard} from '@/components/portfolio-card';
 import {Container} from '@/components/ui/container';
 import {SectionHeading} from '@/components/ui/section-heading';
 import {portfolioProjects, siteContent} from '@/content/site';
-import type {Locale} from '@/i18n/routing';
+import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
 
 type PageProps = {
@@ -34,7 +35,13 @@ const portfolioBrief = {
 } satisfies Record<Locale, {title: string; items: string[]}>;
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
-  const locale = (await params).locale as Locale;
+  const rawLocale = (await params).locale;
+
+  if (!hasLocale(routing.locales, rawLocale)) {
+    return {};
+  }
+
+  const locale = rawLocale;
   const content = siteContent[locale];
 
   return createPageMetadata({

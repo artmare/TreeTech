@@ -1,4 +1,4 @@
-import {Bot, Code2, DatabaseZap, MonitorSmartphone, PlugZap} from 'lucide-react';
+import {Bot, Code2, DatabaseZap, Euro, HelpCircle, MonitorSmartphone, PlugZap, UsersRound} from 'lucide-react';
 import type {Metadata} from 'next';
 import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
@@ -11,7 +11,7 @@ import {PortfolioCard} from '@/components/portfolio-card';
 import {ButtonLink} from '@/components/ui/button-link';
 import {Container} from '@/components/ui/container';
 import {SectionHeading} from '@/components/ui/section-heading';
-import {offers, portfolioProjects, processSteps, siteContent} from '@/content/site';
+import {audienceItems, automationExamples, faqItems, offers, portfolioProjects, pricePackages, processSteps, siteContent} from '@/content/site';
 import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
 
@@ -101,6 +101,10 @@ export default async function HomePage({params}: PageProps) {
   const locale = rawLocale;
   setRequestLocale(locale);
   const content = siteContent[locale];
+  const automationLabels = {
+    process: locale === 'de' ? 'Prozess' : 'Process',
+    benefit: locale === 'de' ? 'Business-Nutzen' : 'Business benefit'
+  };
   const proofCards = [
     {icon: Bot, text: content.home.heroTrust[0]},
     {icon: MonitorSmartphone, text: content.home.heroTrust[1]},
@@ -190,6 +194,61 @@ export default async function HomePage({params}: PageProps) {
       <section className="warm-band py-16">
         <Container>
           <SectionHeading
+            eyebrow="automation examples"
+            title={content.home.automationTitle}
+            lead={content.home.automationLead}
+          />
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {automationExamples.map((example, index) => (
+              <FadeIn key={example.title[locale]} delay={index * 0.06}>
+                <article className="terminal-card h-full rounded-[1.25rem] p-5">
+                  <DatabaseZap className="h-5 w-5 text-accent" aria-hidden="true" />
+                  <h3 className="mt-4 text-xl font-semibold leading-tight text-foreground">
+                    {example.title[locale]}
+                  </h3>
+                  <p className="mt-4 font-mono text-xs uppercase tracking-[0.16em] text-accent">
+                    {automationLabels.process}
+                  </p>
+                  <p className="mt-2 text-sm leading-7 text-muted">{example.process[locale]}</p>
+                  <p className="mt-4 font-mono text-xs uppercase tracking-[0.16em] text-accent">
+                    {automationLabels.benefit}
+                  </p>
+                  <p className="mt-2 text-sm leading-7 text-muted">{example.benefit[locale]}</p>
+                </article>
+              </FadeIn>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-16">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+            <SectionHeading
+              eyebrow="fit"
+              title={content.home.audienceTitle}
+              lead={content.home.audienceLead}
+            />
+            <div className="grid gap-4">
+              {audienceItems.map((item, index) => (
+                <FadeIn key={item.title[locale]} delay={index * 0.08}>
+                  <article className="terminal-card flex gap-4 rounded-[1.25rem] p-5">
+                    <UsersRound className="mt-1 h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
+                    <div>
+                      <h3 className="text-lg font-semibold text-foreground">{item.title[locale]}</h3>
+                      <p className="mt-2 text-sm leading-7 text-muted">{item.description[locale]}</p>
+                    </div>
+                  </article>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="warm-band py-16">
+        <Container>
+          <SectionHeading
             eyebrow={content.common.nextStep}
             title={content.home.servicesTitle}
             lead={content.home.servicesLead}
@@ -202,6 +261,31 @@ export default async function HomePage({params}: PageProps) {
                   locale={locale}
                   ctaLabel={content.common.requestPackage}
                 />
+              </FadeIn>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="dark-band relative overflow-hidden py-16 text-white">
+        <div className="dark-grid absolute inset-0 opacity-30" />
+        <Container className="relative">
+          <SectionHeading
+            eyebrow="budget"
+            title={locale === 'de' ? 'Startangebote und Budgetrahmen.' : 'Starting offers and budget ranges.'}
+            lead={locale === 'de'
+              ? 'Orientierungen für den Einstieg. Nach einer kurzen Ersteinschätzung empfehlen wir ehrlich, ob ein Sprint reicht oder ein größerer Aufbau sinnvoll ist.'
+              : 'Orientation ranges for getting started. After a short first assessment, we honestly recommend whether a sprint is enough or a larger setup makes sense.'}
+          />
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {pricePackages.map((item, index) => (
+              <FadeIn key={item.name[locale]} delay={index * 0.06}>
+                <article className="terminal-card h-full rounded-[1.25rem] p-5">
+                  <Euro className="h-5 w-5 text-accent" aria-hidden="true" />
+                  <h3 className="mt-4 text-xl font-semibold text-foreground">{item.name[locale]}</h3>
+                  <p className="mt-3 text-2xl font-semibold text-accent">{item.price[locale]}</p>
+                  <p className="mt-4 text-sm leading-7 text-muted">{item.description[locale]}</p>
+                </article>
               </FadeIn>
             ))}
           </div>
@@ -266,6 +350,55 @@ export default async function HomePage({params}: PageProps) {
           </div>
           <div className="mt-10 flex justify-center">
             <ButtonLink href="/contact">{content.common.startProject}</ButtonLink>
+          </div>
+        </Container>
+      </section>
+
+      <section className="warm-band py-16">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+            <SectionHeading
+              eyebrow="seo"
+              title={content.home.seoTitle}
+              lead={content.home.seoLead}
+            />
+            <div className="terminal-card rounded-[1.25rem] p-6">
+              <div className="grid gap-5">
+                {content.home.seoParagraphs.map((paragraph) => (
+                  <p key={paragraph} className="text-base leading-8 text-muted">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+              <div className="mt-8 border-t border-white/10 pt-6">
+                <ButtonLink href="/blog" variant="secondary">
+                  {content.home.blogLink}
+                </ButtonLink>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-16">
+        <Container>
+          <SectionHeading
+            eyebrow="faq"
+            title={locale === 'de' ? 'Häufige Fragen' : 'Frequently asked questions'}
+            lead={locale === 'de'
+              ? 'Antworten auf typische Fragen zu Websites, AI-Automation, CRM-Verbindungen und Zusammenarbeit.'
+              : 'Answers to common questions about websites, AI automation, CRM connections, and collaboration.'}
+          />
+          <div className="mt-10 grid gap-4 lg:grid-cols-2">
+            {faqItems.map((item, index) => (
+              <FadeIn key={item.question[locale]} delay={index * 0.04}>
+                <article className="terminal-card h-full rounded-[1.25rem] p-5">
+                  <HelpCircle className="h-5 w-5 text-accent" aria-hidden="true" />
+                  <h3 className="mt-4 text-lg font-semibold text-foreground">{item.question[locale]}</h3>
+                  <p className="mt-3 text-sm leading-7 text-muted">{item.answer[locale]}</p>
+                </article>
+              </FadeIn>
+            ))}
           </div>
         </Container>
       </section>

@@ -67,7 +67,30 @@ export async function POST(request: Request) {
     );
   }
 
-  const json = await request.json().catch(() => null);
+  const body = await request.text().catch(() => null);
+
+  if (!body) {
+    return NextResponse.json(
+      {ok: false, message: 'Request body is required.'},
+      {status: 400}
+    );
+  }
+
+  if (new TextEncoder().encode(body).length > maxBodySizeBytes) {
+    return NextResponse.json(
+      {ok: false, message: 'Request body is too large.'},
+      {status: 413}
+    );
+  }
+
+  let json: unknown = null;
+
+  try {
+    json = JSON.parse(body);
+  } catch {
+    json = null;
+  }
+
   const parsed = serverContactSchema.safeParse(json);
 
   if (!parsed.success) {
@@ -105,7 +128,7 @@ export async function POST(request: Request) {
 
   if (resend && to) {
     const result = await resend.emails.send({
-      from: process.env.CONTACT_FROM_EMAIL || 'TreeTech <karnaukhovartem02@gmail.com>',
+      from: process.env.CONTACT_FROM_EMAIL || 'TreeTech <office@treetech.at>',
       to,
       replyTo: data.email,
       subject: `TreeTech Anfrage: ${data.budget}`,

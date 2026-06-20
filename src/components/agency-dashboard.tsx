@@ -54,24 +54,24 @@ export function AgencyDashboard({locale}: AgencyDashboardProps) {
     root.rotation.set(-0.08, 0.2, 0.08);
     scene.add(root);
 
-    scene.add(new THREE.AmbientLight(0xeaf7dd, 0.72));
+    scene.add(new THREE.AmbientLight(0xdfffd0, 1.1));
 
-    const keyLight = new THREE.DirectionalLight(0xfff8dc, 2.1);
+    const keyLight = new THREE.DirectionalLight(0xf8ffe8, 2.4);
     keyLight.position.set(4, 5, 7);
     scene.add(keyLight);
 
-    const greenLight = new THREE.PointLight(0xd6ff63, 9, 12);
+    const greenLight = new THREE.PointLight(0xd6ff63, 14, 12);
     greenLight.position.set(-3.5, 1.3, 3);
     scene.add(greenLight);
 
-    const cyanLight = new THREE.PointLight(0x37ffd0, 4.5, 10);
+    const cyanLight = new THREE.PointLight(0x37ffd0, 7, 10);
     cyanLight.position.set(3, -1.5, 2.5);
     scene.add(cyanLight);
 
     const coreMaterial = new THREE.MeshPhysicalMaterial({
       color: 0xd6ff63,
       emissive: 0x8bff63,
-      emissiveIntensity: 0.18,
+      emissiveIntensity: 0.22,
       metalness: 0.24,
       roughness: 0.18,
       clearcoat: 0.78,
@@ -88,7 +88,7 @@ export function AgencyDashboard({locale}: AgencyDashboardProps) {
       new THREE.MeshStandardMaterial({
         color: 0xf4ffd2,
         emissive: 0xd6ff63,
-        emissiveIntensity: 0.34,
+        emissiveIntensity: 0.42,
         metalness: 0.12,
         roughness: 0.28
       })
@@ -101,15 +101,15 @@ export function AgencyDashboard({locale}: AgencyDashboardProps) {
         color: 0xd6ff63,
         wireframe: true,
         transparent: true,
-        opacity: 0.2
+        opacity: 0.3
       })
     );
     root.add(wireCore);
 
     const ringMaterials = [
-      new THREE.MeshBasicMaterial({color: 0xd6ff63, transparent: true, opacity: 0.34}),
-      new THREE.MeshBasicMaterial({color: 0x7cffd4, transparent: true, opacity: 0.2}),
-      new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.12})
+      new THREE.MeshBasicMaterial({color: 0xd6ff63, transparent: true, opacity: 0.48}),
+      new THREE.MeshBasicMaterial({color: 0x7cffd4, transparent: true, opacity: 0.28}),
+      new THREE.MeshBasicMaterial({color: 0xffffff, transparent: true, opacity: 0.18})
     ];
 
     const rings = [
@@ -144,7 +144,7 @@ export function AgencyDashboard({locale}: AgencyDashboardProps) {
     const lineMaterial = new THREE.MeshBasicMaterial({
       color: 0xd6ff63,
       transparent: true,
-      opacity: 0.16
+      opacity: 0.28
     });
 
     const nodePositions = [
@@ -178,7 +178,7 @@ export function AgencyDashboard({locale}: AgencyDashboardProps) {
     }
 
     const particleGeometry = new THREE.BufferGeometry();
-    const particleCount = 72;
+    const particleCount = 140;
     const positions = new Float32Array(particleCount * 3);
 
     for (let index = 0; index < particleCount; index += 1) {
@@ -197,9 +197,9 @@ export function AgencyDashboard({locale}: AgencyDashboardProps) {
       particleGeometry,
       new THREE.PointsMaterial({
         color: 0xd6ff63,
-        size: 0.024,
+        size: 0.03,
         transparent: true,
-        opacity: 0.24,
+        opacity: 0.42,
         sizeAttenuation: true
       })
     );
@@ -255,7 +255,7 @@ export function AgencyDashboard({locale}: AgencyDashboardProps) {
         node.scale.setScalar(pulse);
       });
 
-      greenLight.intensity = 8 + Math.sin(elapsed * 1.4) * 1.2;
+      greenLight.intensity = 12 + Math.sin(elapsed * 1.4) * 2;
       renderer.render(scene, camera);
 
       if (!prefersReducedMotion) {
@@ -285,14 +285,10 @@ export function AgencyDashboard({locale}: AgencyDashboardProps) {
   }, []);
 
   return (
-    <div
-      id="hero-3d"
-      className="relative -mx-5 min-h-[22rem] overflow-hidden rounded-[2rem] border border-white/10 bg-[#050705] shadow-[0_30px_120px_rgba(0,0,0,0.42)] sm:mx-0 sm:min-h-[30rem] lg:min-h-[34rem]"
-      aria-label={content.label}
-    >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(214,255,99,0.18),transparent_15rem),radial-gradient(circle_at_58%_58%,rgba(25,85,62,0.28),transparent_20rem),linear-gradient(180deg,#0d130f_0%,#050705_66%,#030403_100%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_32%,rgba(3,4,3,0.54)_72%,rgba(3,4,3,0.9)_100%)]" />
-      <div className="pointer-events-none absolute inset-x-10 bottom-10 h-24 rounded-full bg-accent/10 blur-3xl" />
+    <div id="hero-3d" className="relative -mx-6 min-h-[22rem] overflow-hidden sm:mx-0 sm:min-h-[30rem] lg:min-h-[34rem]" aria-label={content.label}>
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_46%,rgba(214,255,99,0.22),transparent_18rem),radial-gradient(circle_at_70%_30%,rgba(55,255,208,0.12),transparent_16rem)]" />
+      <div className="pointer-events-none absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-accent/28 to-transparent" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[20rem] w-[20rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/10 sm:h-[28rem] sm:w-[28rem]" />
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full touch-none" aria-hidden="true" />
     </div>
   );

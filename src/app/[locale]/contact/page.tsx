@@ -1,12 +1,13 @@
 import {Mail, MapPin, MessageSquareText, ShieldCheck, Timer} from 'lucide-react';
 import type {Metadata} from 'next';
+import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
 
 import {ContactForm} from '@/components/contact-form';
 import {FadeIn} from '@/components/motion/fade-in';
 import {Container} from '@/components/ui/container';
 import {siteConfig, siteContent} from '@/content/site';
-import type {Locale} from '@/i18n/routing';
+import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
 
 type PageProps = {
@@ -27,7 +28,13 @@ const contactSignals = {
 } satisfies Record<Locale, Array<{icon: typeof ShieldCheck; text: string}>>;
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
-  const locale = (await params).locale as Locale;
+  const rawLocale = (await params).locale;
+
+  if (!hasLocale(routing.locales, rawLocale)) {
+    return {};
+  }
+
+  const locale = rawLocale;
   const content = siteContent[locale];
 
   return createPageMetadata({

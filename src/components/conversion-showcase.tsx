@@ -42,15 +42,15 @@ export function ConversionShowcase({locale}: ConversionShowcaseProps) {
   const copy = showcaseCopy[locale];
 
   return (
-    <div className="relative overflow-hidden rounded-[1.5rem] border border-white/12 bg-[#f4f1e8] p-4 text-[#11160f] shadow-[0_28px_90px_rgba(0,0,0,0.28)] sm:p-5">
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(7,8,6,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(7,8,6,0.06)_1px,transparent_1px)] bg-[size:34px_34px]" />
+    <div className="relative overflow-hidden rounded-[1.5rem] border border-white/12 bg-[#0b1512] p-4 text-white shadow-[0_28px_90px_rgba(0,0,0,0.34)] sm:p-5">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(55,255,208,0.16),transparent_34%),linear-gradient(rgba(214,255,99,0.055)_1px,transparent_1px),linear-gradient(90deg,rgba(214,255,99,0.055)_1px,transparent_1px)] bg-[size:auto,34px_34px,34px_34px]" />
       <div className="relative">
-        <div className="flex items-start justify-between gap-5 border-b border-[#11160f]/10 pb-5">
+        <div className="flex items-start justify-between gap-5 border-b border-white/10 pb-5">
           <div>
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[#0b7b60]">
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-accent">
               {copy.eyebrow}
             </p>
-            <h2 className="mt-3 max-w-md text-2xl font-semibold leading-tight sm:text-3xl">
+            <h2 className="mt-3 max-w-md text-2xl font-semibold leading-tight text-white sm:text-3xl">
               {copy.title}
             </h2>
           </div>
@@ -61,13 +61,13 @@ export function ConversionShowcase({locale}: ConversionShowcaseProps) {
 
         <div className="grid gap-4 py-5">
           <BriefColumn title={copy.incoming} icon={Mail} items={copy.painPoints} muted />
-          <div className="flex justify-center text-[#0b7b60]" aria-hidden="true">
+          <div className="flex justify-center text-accent" aria-hidden="true">
             <ArrowRight className="h-5 w-5 rotate-90" />
           </div>
           <BriefColumn title={copy.system} icon={FileText} items={copy.builds} />
         </div>
 
-        <div className="rounded-[1.1rem] bg-[#11160f] p-4 text-white">
+        <div className="rounded-[1.1rem] border border-white/10 bg-black/28 p-4 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
           <p className="text-sm font-semibold">{copy.result}</p>
           <div className="mt-4 grid gap-3">
             {copy.outcomes.map((item) => (
@@ -92,16 +92,16 @@ type BriefColumnProps = {
 
 function BriefColumn({title, icon: Icon, items, muted}: BriefColumnProps) {
   return (
-    <div className="rounded-[1.1rem] border border-[#11160f]/10 bg-white/64 p-4 shadow-sm">
+    <div className="rounded-[1.1rem] border border-white/10 bg-white/[0.065] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur">
       <div className="flex items-center gap-3">
-        <span className={muted ? 'text-[#6f7669]' : 'text-[#0b7b60]'}>
+        <span className={muted ? 'text-white/58' : 'text-accent'}>
           <Icon className="h-5 w-5" aria-hidden="true" />
         </span>
-        <p className="text-sm font-semibold">{title}</p>
+        <p className="text-sm font-semibold text-white">{title}</p>
       </div>
       <div className="mt-4 grid gap-3">
         {items.map((item) => (
-          <p key={item} className="border-t border-[#11160f]/10 pt-3 text-sm leading-6 text-[#4b5248] first:border-t-0 first:pt-0">
+          <p key={item} className="border-t border-white/10 pt-3 text-sm leading-6 text-white/68 first:border-t-0 first:pt-0">
             {item}
           </p>
         ))}

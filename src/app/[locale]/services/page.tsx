@@ -1,5 +1,6 @@
 import {Bot, Check, CheckCircle2, GitBranch, Layers3, Rocket} from 'lucide-react';
 import type {Metadata} from 'next';
+import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
 
 import {FadeIn} from '@/components/motion/fade-in';
@@ -8,7 +9,7 @@ import {ButtonLink} from '@/components/ui/button-link';
 import {Container} from '@/components/ui/container';
 import {SectionHeading} from '@/components/ui/section-heading';
 import {offers, processSteps, siteContent} from '@/content/site';
-import type {Locale} from '@/i18n/routing';
+import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
 
 type PageProps = {
@@ -29,7 +30,13 @@ const servicePillars = {
 } satisfies Record<Locale, Array<{icon: typeof Bot; title: string; text: string}>>;
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
-  const locale = (await params).locale as Locale;
+  const rawLocale = (await params).locale;
+
+  if (!hasLocale(routing.locales, rawLocale)) {
+    return {};
+  }
+
+  const locale = rawLocale;
   const content = siteContent[locale];
 
   return createPageMetadata({

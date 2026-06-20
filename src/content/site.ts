@@ -2,8 +2,8 @@ import type {Locale} from '@/i18n/routing';
 
 export const siteConfig = {
   name: 'TreeTech',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://treetech.at',
-  email: 'karnaukhovartem02@gmail.com',
+  url: (process.env.NEXT_PUBLIC_SITE_URL || 'https://treetech.at').replace(/\/$/, ''),
+  email: 'office@treetech.at',
   googleSiteVerification: 'PdjQivxgyQpk4Qxzy2-3pMhBPW2pZreWQYBlrry2Gyw'
 };
 
@@ -14,6 +14,9 @@ type Offer = {
   chapter: string;
   name: LocalizedText;
   description: LocalizedText;
+  problem: LocalizedText;
+  solution: LocalizedText;
+  result: LocalizedText;
   features: LocalizedList;
   highlighted?: boolean;
 };
@@ -21,6 +24,28 @@ type Offer = {
 type ProcessStep = {
   title: LocalizedText;
   description: LocalizedText;
+};
+
+type AutomationExample = {
+  title: LocalizedText;
+  process: LocalizedText;
+  benefit: LocalizedText;
+};
+
+type AudienceItem = {
+  title: LocalizedText;
+  description: LocalizedText;
+};
+
+type PricePackage = {
+  name: LocalizedText;
+  price: LocalizedText;
+  description: LocalizedText;
+};
+
+type FaqItem = {
+  question: LocalizedText;
+  answer: LocalizedText;
 };
 
 export type PortfolioProject = {
@@ -48,12 +73,24 @@ export const offers: Offer[] = [
       en: 'AI Automation & Business Process Automation'
     },
     description: {
-      de: 'Wir automatisieren wiederkehrende Abläufe mit künstlicher Intelligenz, damit Teams weniger manuell abarbeiten und schneller reagieren können.',
-      en: 'We automate recurring business processes with AI so teams spend less time on manual work and react faster.'
+      de: 'AI automation Austria für Betriebe, die Anfragen, E-Mails, Dokumente und interne Aufgaben schneller bearbeiten möchten.',
+      en: 'AI automation Austria for businesses that need to process inquiries, emails, documents, and internal tasks faster.'
+    },
+    problem: {
+      de: 'Viele Schritte hängen an einzelnen Personen: kopieren, prüfen, antworten, nachfassen und Daten ins CRM übertragen.',
+      en: 'Many steps depend on individual people: copying, checking, replying, following up, and moving data into the CRM.'
+    },
+    solution: {
+      de: 'Wir bauen Automationen, AI-Assistenten und klare Workflows, die wiederkehrende Aufgaben übernehmen und Menschen nur bei Entscheidungen einbeziehen.',
+      en: 'We build automations, AI assistants, and clear workflows that handle repeatable tasks and involve people only for decisions.'
+    },
+    result: {
+      de: 'Weniger manuelle Arbeit, schnellere Reaktionszeiten und mehr Zeit für Beratung, Verkauf und Service.',
+      en: 'Less manual work, faster response times, and more time for consulting, sales, and service.'
     },
     features: {
-      de: ['Automatische E-Mail-Verarbeitung', 'Rechnungs- und Dokumentengenerierung', 'CRM-Automatisierung', 'Chatbots und AI-Assistenten', 'Integration verschiedener Services'],
-      en: ['Automatic email processing', 'Invoice and document generation', 'CRM automation', 'Chatbots and AI assistants', 'Integration of different services']
+      de: ['Automatische E-Mail- und Anfrageverarbeitung', 'Rechnungs- und Dokumentengenerierung', 'CRM automation und Follow-ups', 'AI chatbot for business und interne Assistenten', 'Integration verschiedener Services'],
+      en: ['Automatic email and inquiry processing', 'Invoice and document generation', 'CRM automation and follow-ups', 'AI chatbot for business and internal assistants', 'Integration of different services']
     },
     highlighted: true
   },
@@ -64,11 +101,23 @@ export const offers: Offer[] = [
       en: 'Web Development'
     },
     description: {
-      de: 'Wir entwickeln Websites, die seriös wirken, sauber performen und Besucher klar zu Anfrage, Buchung oder Kauf führen.',
-      en: 'We develop websites that feel credible, perform cleanly, and guide visitors toward inquiry, booking, or purchase.'
+      de: 'Web development Austria für Unternehmen, die online verständlich erklären, Vertrauen aufbauen und mehr qualifizierte Anfragen erhalten möchten.',
+      en: 'Web development Austria for companies that need to explain clearly, build trust, and receive more qualified inquiries online.'
+    },
+    problem: {
+      de: 'Die Website sieht vielleicht ordentlich aus, bringt aber zu wenig Anfragen oder erklärt Leistungen nicht schnell genug.',
+      en: 'The website may look acceptable, but it does not generate enough inquiries or explain services quickly enough.'
+    },
+    solution: {
+      de: 'Wir strukturieren Inhalte, Nutzerwege, Formulare und website automation so, dass Besucher schneller verstehen und leichter Kontakt aufnehmen.',
+      en: 'We structure content, user journeys, forms, and website automation so visitors understand faster and contact you more easily.'
+    },
+    result: {
+      de: 'Ein professioneller Webauftritt, der Vertrauen schafft, Anfragen sauber erfasst und den Vertrieb entlastet.',
+      en: 'A professional website that builds trust, captures inquiries cleanly, and supports the sales process.'
     },
     features: {
-      de: ['Landingpages', 'Corporate Websites', 'Mehrseitige Websites', 'Online-Shops', 'Restaurantseiten mit Online-Reservierung', 'Individuelle Weblösungen'],
+      de: ['Landingpages mit klarem Anfrageziel', 'Corporate Websites', 'Mehrseitige Websites', 'Online-Shops', 'Restaurantseiten mit Online-Reservierung', 'Individuelle Weblösungen'],
       en: ['Landing pages', 'Corporate websites', 'Multi-page websites', 'Online shops', 'Restaurant websites with online booking', 'Custom web solutions']
     }
   },
@@ -79,11 +128,23 @@ export const offers: Offer[] = [
       en: 'Custom Web Applications'
     },
     description: {
-      de: 'Wir bauen Web-Software, die echte operative Arbeit abbildet: übersichtlich, sicher und passend zu bestehenden Prozessen.',
-      en: 'We build web software for real operational work: clear, secure, and shaped around existing business processes.'
+      de: 'Individuelle Web-Tools für Teams, die Angebote, Kunden, Aufgaben oder interne Freigaben zentral steuern möchten.',
+      en: 'Custom web tools for teams that need to manage offers, customers, tasks, or internal approvals centrally.'
+    },
+    problem: {
+      de: 'Excel, E-Mail und einzelne Tools reichen nicht mehr aus, weil Informationen verstreut sind und Aufgaben leicht liegen bleiben.',
+      en: 'Spreadsheets, email, and isolated tools are no longer enough because information is scattered and tasks are easy to miss.'
+    },
+    solution: {
+      de: 'Wir entwickeln Web-Apps, Portale und Dashboards, die bestehende Prozesse abbilden und wichtige Daten an einem Ort bündeln.',
+      en: 'We develop web apps, portals, and dashboards that reflect existing processes and bring important data into one place.'
+    },
+    result: {
+      de: 'Mehr Übersicht, weniger Rückfragen und ein System, das tägliche Arbeit nachvollziehbar macht.',
+      en: 'More overview, fewer clarification loops, and a system that makes daily work easier to track.'
     },
     features: {
-      de: ['CRM-Systeme', 'ERP-Systeme', 'Kundenportale', 'Interne Unternehmenssysteme', 'SaaS-Plattformen', 'Individuelle Business-Tools'],
+      de: ['CRM-Systeme', 'ERP-Systeme', 'Kundenportale', 'Interne Unternehmenssysteme', 'SaaS-Plattformen', 'Digitale Lösungen für kleine Unternehmen'],
       en: ['CRM systems', 'ERP systems', 'Customer portals', 'Internal company systems', 'SaaS platforms', 'Custom business tools']
     }
   },
@@ -94,11 +155,23 @@ export const offers: Offer[] = [
       en: 'AI Integration for Business'
     },
     description: {
-      de: 'Wir integrieren AI dort, wo sie im Alltag wirklich Nutzen bringt: Beratung, Support, Datenanalyse, Vertrieb und operative Entscheidungen.',
-      en: 'We integrate AI where it creates real daily value: consulting, support, data analysis, sales, marketing, and operations.'
+      de: 'AI tools for companies, die Support, Vertrieb, Wissensabfragen und interne Entscheidungen schneller machen sollen.',
+      en: 'AI tools for companies that need faster support, sales work, knowledge retrieval, and internal decisions.'
+    },
+    problem: {
+      de: 'Wissen liegt in Dokumenten, Postfächern oder Köpfen. Kunden und Teams warten dadurch länger auf Antworten.',
+      en: 'Knowledge lives in documents, inboxes, or people’s heads. Customers and teams wait longer for answers.'
+    },
+    solution: {
+      de: 'Wir integrieren AI-Assistenten, Chatbots und Datenabfragen in bestehende Tools, mit klaren Grenzen und nachvollziehbaren Antworten.',
+      en: 'We integrate AI assistants, chatbots, and data queries into existing tools, with clear limits and traceable answers.'
+    },
+    result: {
+      de: 'Bessere Kundenerfahrung, schnellere interne Auskünfte und weniger wiederholte Erklärarbeit.',
+      en: 'A better customer experience, faster internal answers, and less repeated explanation work.'
     },
     features: {
-      de: ['AI-Berater', 'AI-Kundensupport', 'AI-Datenanalyse', 'AI für Vertrieb und Marketing', 'AI zur Optimierung operativer Abläufe'],
+      de: ['AI-Berater für Website oder Team', 'AI-Kundensupport', 'AI-Datenanalyse', 'AI für Vertrieb und Marketing', 'AI zur Optimierung operativer Abläufe'],
       en: ['AI consultants', 'AI customer support', 'AI data analysis', 'AI for sales and marketing', 'AI for operational optimization']
     }
   },
@@ -109,8 +182,20 @@ export const offers: Offer[] = [
       en: 'Business Digitalization & Workflow Optimization'
     },
     description: {
-      de: 'Wir übersetzen analoge und unklare Prozesse in digitale Workflows, die nachvollziehbar, messbar und für Teams leichter steuerbar sind.',
-      en: 'We turn analog and unclear processes into digital workflows that are easier to manage, measure, and scale.'
+      de: 'Workflow automation Austria für Betriebe, die Prozesse digitalisieren möchten, ohne sofort mehr Personal einzustellen.',
+      en: 'Workflow automation Austria for businesses that want to digitalize processes without immediately hiring more staff.'
+    },
+    problem: {
+      de: 'Abläufe sind gewachsen, aber nicht dokumentiert: Zuständigkeiten, Status und Daten wechseln zwischen Telefon, E-Mail und Tabellen.',
+      en: 'Processes have grown over time but are not documented: responsibilities, status, and data move between phone, email, and spreadsheets.'
+    },
+    solution: {
+      de: 'Wir analysieren Engpässe, verbinden Systeme und bauen business automation Vienna-taugliche Workflows für Alltag, CRM und interne Aufgaben.',
+      en: 'We analyze bottlenecks, connect systems, and build business automation Vienna-ready workflows for daily operations, CRM, and internal tasks.'
+    },
+    result: {
+      de: 'Zentrale Prozesse, weniger doppelte Eingaben und ein Team, das mit gleicher Besetzung mehr schafft.',
+      en: 'Centralized processes, fewer duplicate entries, and a team that can handle more work with the same headcount.'
     },
     features: {
       de: ['Prozesse digitalisieren', 'Manuelle Arbeit reduzieren', 'Team-Effizienz erhöhen', 'CRM, ERP und andere Systeme verbinden', 'Workflows sauber dokumentieren'],
@@ -162,12 +247,142 @@ export const processSteps: ProcessStep[] = [
   }
 ];
 
+export const automationExamples: AutomationExample[] = [
+  {
+    title: {de: 'Anfragen automatisch vorqualifizieren', en: 'Automatically qualify inquiries'},
+    process: {
+      de: 'Website-Formulare, E-Mails oder Buchungsanfragen werden erfasst, sortiert und mit den wichtigsten Informationen ins CRM übertragen.',
+      en: 'Website forms, emails, or booking requests are captured, sorted, and transferred into the CRM with the most important information.'
+    },
+    benefit: {
+      de: 'Ihr Team reagiert schneller, verliert weniger Leads und muss Daten nicht doppelt eingeben.',
+      en: 'Your team responds faster, loses fewer leads, and no longer enters the same data twice.'
+    }
+  },
+  {
+    title: {de: 'Kundenkommunikation vorbereiten', en: 'Prepare customer communication'},
+    process: {
+      de: 'AI erstellt Antwortentwürfe, Follow-ups, Terminbestätigungen oder Statusmeldungen passend zu Anfrage, Sprache und Kundentyp.',
+      en: 'AI prepares reply drafts, follow-ups, appointment confirmations, or status updates based on inquiry, language, and customer type.'
+    },
+    benefit: {
+      de: 'Antworten werden konsistenter und schneller, ohne dass persönliche Betreuung verloren geht.',
+      en: 'Replies become faster and more consistent without losing the human service layer.'
+    }
+  },
+  {
+    title: {de: 'CRM-Prozesse automatisieren', en: 'Automate CRM processes'},
+    process: {
+      de: 'Leads, Aufgaben, Pipeline-Status, Erinnerungen und interne Zuständigkeiten werden automatisch aktualisiert.',
+      en: 'Leads, tasks, pipeline stages, reminders, and internal responsibilities are updated automatically.'
+    },
+    benefit: {
+      de: 'Vertrieb und Service sehen schneller, was offen ist, wer zuständig ist und welcher nächste Schritt ansteht.',
+      en: 'Sales and service teams see faster what is open, who owns it, and which next step is due.'
+    }
+  },
+  {
+    title: {de: 'Support und FAQs entlasten', en: 'Reduce support and FAQ workload'},
+    process: {
+      de: 'Ein AI chatbot for business beantwortet häufige Fragen, sammelt Kontext und leitet komplexe Fälle an das Team weiter.',
+      en: 'An AI chatbot for business answers common questions, collects context, and routes complex cases to the team.'
+    },
+    benefit: {
+      de: 'Kunden erhalten schneller Hilfe, während Ihr Team weniger Standardfragen manuell beantwortet.',
+      en: 'Customers get help faster while your team handles fewer repetitive support questions manually.'
+    }
+  },
+  {
+    title: {de: 'Interne Routineaufgaben reduzieren', en: 'Reduce internal routine tasks'},
+    process: {
+      de: 'Berichte, Checklisten, Dokumente, Freigaben und wiederkehrende Erinnerungen werden aus bestehenden Daten erzeugt.',
+      en: 'Reports, checklists, documents, approvals, and recurring reminders are generated from existing data.'
+    },
+    benefit: {
+      de: 'Mitarbeitende verbringen weniger Zeit mit Verwaltung und mehr Zeit mit wertschöpfender Arbeit.',
+      en: 'Employees spend less time on administration and more time on work that creates value.'
+    }
+  },
+  {
+    title: {de: 'Services miteinander verbinden', en: 'Connect services together'},
+    process: {
+      de: 'Website, CRM, E-Mail, Kalender, Buchungssysteme, Zahlungsanbieter und interne Tools werden zu einem Workflow verbunden.',
+      en: 'Website, CRM, email, calendar, booking systems, payment providers, and internal tools are connected into one workflow.'
+    },
+    benefit: {
+      de: 'Informationen fließen automatisch durch den Betrieb, statt in einzelnen Tools stecken zu bleiben.',
+      en: 'Information flows through the business automatically instead of getting stuck in separate tools.'
+    }
+  }
+];
+
+export const audienceItems: AudienceItem[] = [
+  {
+    title: {de: 'Hotels & Tourismusbetriebe', en: 'Hotels & tourism businesses'},
+    description: {
+      de: 'Websites, Anfrageflows und Automationen für Direktanfragen, Gästekommunikation und saisonale Angebote.',
+      en: 'Websites, inquiry flows, and automations for direct inquiries, guest communication, and seasonal offers.'
+    }
+  },
+  {
+    title: {de: 'Arztpraxen & Ordinationen', en: 'Medical practices & clinics'},
+    description: {
+      de: 'Klare Leistungsseiten, Terminführung, FAQ-Struktur und weniger manuelle Kommunikation.',
+      en: 'Clear service pages, appointment guidance, FAQ structure, and less manual communication.'
+    }
+  },
+  {
+    title: {de: 'Rechtsanwälte & Beratungen', en: 'Law firms & consultants'},
+    description: {
+      de: 'Seriöse Websites, strukturierte Erstkontakte und digitale Abläufe für Anfragen und Follow-ups.',
+      en: 'Credible websites, structured first contact, and digital workflows for inquiries and follow-ups.'
+    }
+  },
+  {
+    title: {de: 'Immobilienunternehmen', en: 'Real estate companies'},
+    description: {
+      de: 'Objektanfragen, Bewertungs-CTAs, Lead-Erfassung und CRM-Verbindung für Käufer und Eigentümer.',
+      en: 'Property inquiries, valuation CTAs, lead capture, and CRM connection for buyers and owners.'
+    }
+  },
+  {
+    title: {de: 'Fitnessstudios & lokale Dienstleister', en: 'Fitness studios & local service providers'},
+    description: {
+      de: 'Mehr Probetrainings, Buchungen oder Erstgespräche durch klare Websites und einfache Anfrageautomatisierung.',
+      en: 'More trial sessions, bookings, or consultations through clear websites and simple inquiry automation.'
+    }
+  },
+  {
+    title: {de: 'KMU mit manuellen Büroprozessen', en: 'SMEs with manual office processes'},
+    description: {
+      de: 'Für Teams, die E-Mail, CRM, Formulare, Dokumente und wiederkehrende Aufgaben besser verbinden möchten.',
+      en: 'For teams that want to connect email, CRM, forms, documents, and recurring tasks more cleanly.'
+    }
+  }
+];
+
+export const pricePackages: PricePackage[] = [
+  {name: {de: 'Website Sprint', en: 'Website Sprint'}, price: {de: 'ab 1.500-3.000 EUR', en: 'from EUR 1,500-3,000'}, description: {de: 'Landingpage oder kleine Firmenwebsite mit klarem Angebot und Kontaktweg.', en: 'Landing page or small company website with a clear offer and contact path.'}},
+  {name: {de: 'Business Website', en: 'Business Website'}, price: {de: 'ab 3.000-6.000 EUR', en: 'from EUR 3,000-6,000'}, description: {de: 'Mehrseitige Website mit Anfrageführung, SEO-Grundlagen und Formularlogik.', en: 'Multi-page website with inquiry guidance, SEO basics, and form logic.'}},
+  {name: {de: 'Automation Sprint', en: 'Automation Sprint'}, price: {de: 'ab 900-2.500 EUR', en: 'from EUR 900-2,500'}, description: {de: 'Ein konkreter Prozess automatisiert: Anfrage, CRM, E-Mail oder Dokument.', en: 'One concrete process automated: inquiry, CRM, email, or document.'}},
+  {name: {de: 'Custom Web App', en: 'Custom Web App'}, price: {de: 'nach Aufwand', en: 'custom estimate'}, description: {de: 'CRM, Portal oder internes Tool für gewachsene Abläufe.', en: 'CRM, portal, or internal tool for established workflows.'}}
+];
+
+export const faqItems: FaqItem[] = [
+  {question: {de: 'Was kostet eine Website?', en: 'What does a website cost?'}, answer: {de: 'Kleine Websites starten meist bei 1.500-3.000 EUR. Mehrseitige Business Websites liegen häufig bei 3.000-6.000 EUR.', en: 'Small websites usually start at EUR 1,500-3,000. Multi-page business websites often sit around EUR 3,000-6,000.'}},
+  {question: {de: 'Wie lange dauert ein Projekt?', en: 'How long does a project take?'}, answer: {de: 'Kleine Websites oder Automatisierungen dauern oft wenige Wochen. Größere Systeme werden in Etappen umgesetzt.', en: 'Small websites or automations often take a few weeks. Larger systems are built in phases.'}},
+  {question: {de: 'Können bestehende Websites verbessert werden?', en: 'Can existing websites be improved?'}, answer: {de: 'Ja. Struktur, Texte, Anfrageführung und CRM-Anbindung können oft ohne kompletten Neustart verbessert werden.', en: 'Yes. Structure, copy, inquiry guidance, and CRM connection can often be improved without a full rebuild.'}},
+  {question: {de: 'Können wir klein starten?', en: 'Can we start small?'}, answer: {de: 'Ja. Website Sprint und Automation Sprint sind für einen klar begrenzten Einstieg gedacht.', en: 'Yes. Website Sprint and Automation Sprint are designed for a clearly limited first step.'}},
+  {question: {de: 'Arbeitet TreeTech mit bestehenden Tools?', en: 'Does TreeTech work with existing tools?'}, answer: {de: 'Ja. Wenn möglich verbinden wir bestehende Website, Formulare, E-Mail, CRM und Kalender.', en: 'Yes. Where possible, we connect existing website, forms, email, CRM, and calendar.'}},
+  {question: {de: 'Ist AI-Automation DSGVO-konform?', en: 'Is AI automation GDPR-compliant?'}, answer: {de: 'Das hängt vom Prozess ab. TreeTech plant AI-Flows DSGVO-bewusst mit Datenminimierung und menschlicher Kontrolle.', en: 'It depends on the process. TreeTech plans AI flows with GDPR awareness, data minimization, and human review.'}}
+];
+
 export const siteContent = {
   de: {
     metadata: {
-      homeTitle: 'TreeTech | AI-Automation, Webentwicklung und Business-Software',
+      homeTitle: 'TreeTech | AI automation Austria, Webentwicklung und CRM Integration',
       homeDescription:
-        'TreeTech baut AI-Automatisierungen, Websites, Web-Apps und digitale Workflows für österreichische Unternehmen.',
+        'TreeTech baut AI-Automatisierungen, Websites, CRM-Integrationen und Workflow Automation für kleine und mittlere Unternehmen in Österreich.',
       aboutTitle: 'Über TreeTech | Digitalstudio für österreichische Betriebe',
       aboutDescription:
         'TreeTech ist ein modernes Digitalstudio für Betriebe, die Prozesse automatisieren, Web-Software bauen und digital besser arbeiten möchten.',
@@ -183,8 +398,8 @@ export const siteContent = {
     },
     common: {
       eyebrow: 'AI · Web · Automatisierung',
-      primaryCta: 'Projekt anfragen',
-      secondaryCta: 'Referenzen ansehen',
+      primaryCta: 'Kostenlose Ersteinschätzung anfragen',
+      secondaryCta: 'Beispielprojekte ansehen',
       viewProject: 'Case ansehen',
       startProject: 'Projekt starten',
       learnMore: 'Mehr erfahren',
@@ -196,27 +411,42 @@ export const siteContent = {
       nextStep: 'Nächster Schritt'
     },
     home: {
-      heroTitle: 'AI-Automation, Websites und Business-Software für Unternehmen, die schneller arbeiten wollen.',
+      heroTitle: 'Websites, AI-Automation und interne Tools für österreichische Betriebe.',
       heroLead:
-        'TreeTech verbindet Webentwicklung, künstliche Intelligenz und Prozessverständnis. Wir bauen digitale Systeme, die Anfragen bringen, Arbeit reduzieren und bestehende Tools sauber verbinden.',
-      heroBadge: '> booting TreeTech systems',
+        'Wir bauen Websites, CRM-Flows, AI-Assistenten und Automationen für Hotels, Ordinationen, Kanzleien, Dienstleister und lokale Betriebe in Österreich, die mehr Anfragen bekommen und manuelle Arbeit reduzieren wollen.',
+      heroBadge: 'Kostenlose Ersteinschätzung',
       heroTrust: [
-        'AI-Automation für wiederkehrende Aufgaben',
-        'Websites und Web-Apps mit klarer Business-Logik',
-        'CRM-, ERP- und Service-Integrationen'
+        'AI automation Austria für wiederkehrende Aufgaben',
+        'Web development Austria mit klarer Anfrageführung',
+        'CRM Integration, AI-Assistenten und Workflow Automation'
       ],
       proofTitle: 'Für Betriebe, die weniger manuell arbeiten und digital professioneller verkaufen möchten.',
       proofCopy:
         'Wir denken nicht nur in schönen Screens. Jede Lösung bekommt einen Zweck: schneller reagieren, Prozesse entlasten, Kundinnen und Kunden besser führen und Daten sauberer nutzen.',
       servicesTitle: 'Was wir bauen.',
       servicesLead:
-        'Von AI-Automation bis Custom Web Applications: TreeTech baut digitale Systeme, die im Alltag eines Unternehmens wirklich verwendet werden.',
-      portfolioTitle: 'Demo-Cases, die wie echte Kundengewinne wirken.',
+        'Von business automation Vienna bis Custom Web Applications: TreeTech baut digitale Systeme, die im Alltag eines Unternehmens wirklich verwendet werden.',
+      portfolioTitle: 'Beispielprojekte für typische Branchen in Österreich.',
       portfolioLead:
-        'Fünf realistische Branchen-Cases zeigen, wie ein professioneller Auftritt für österreichische Unternehmen wirken kann.',
+        'Diese Demo-Projekte zeigen, wie TreeTech Struktur, Design und Anfrageführung für verschiedene Branchen umsetzt.',
       processTitle: 'Ein Prozess wie ein sauberer System-Launch.',
       processLead:
-        'Wir starten mit Abläufen, Zielen und Daten. Danach entstehen Struktur, Interface, Automatisierung und Launch in klaren Schritten.'
+        'Wir starten mit Abläufen, Zielen und Daten. Danach entstehen Struktur, Interface, Automatisierung und Launch in klaren Schritten.',
+      automationTitle: 'Was lässt sich im Betrieb automatisieren?',
+      automationLead:
+        'Viele kleine Aufgaben kosten jeden Tag Zeit. Mit AI automation, CRM automation und Integrationen zwischen bestehenden Services werden diese Schritte schneller, zuverlässiger und besser nachvollziehbar.',
+      audienceTitle: 'Für wen TreeTech entwickelt.',
+      audienceLead:
+        'Unsere digitalen Lösungen richten sich an kleine und mittlere Unternehmen in Österreich, die moderner arbeiten möchten, ohne für jede neue Aufgabe sofort zusätzliche Mitarbeitende einzustellen.',
+      seoTitle: 'Digitale Lösungen für Unternehmen in Österreich.',
+      seoLead:
+        'TreeTech entwickelt praktische Systeme für Betriebe, die Web, AI und Prozesse sinnvoll verbinden möchten.',
+      seoParagraphs: [
+        'AI Automation in Austria ist besonders wertvoll, wenn Unternehmen viele Anfragen, E-Mails, Dokumente oder wiederkehrende Aufgaben bearbeiten. Statt jeden Schritt manuell auszuführen, können AI Assistants Informationen vorbereiten, Kundenkommunikation beschleunigen und interne Workflows strukturieren.',
+        'Web Development in Austria bedeutet für uns mehr als eine schöne Website. Eine moderne Unternehmenswebsite soll erklären, Vertrauen schaffen, Leads erfassen und Prozesse anstoßen. Mit website automation, Formularlogik und CRM Integration wird aus einem Webauftritt ein aktiver Teil des Vertriebs.',
+        'Business Automation, Workflow Automation Austria und CRM automation helfen Teams, zentrale Informationen schneller zu finden und Aufgaben sauber zu verfolgen. So entstehen digitale Lösungen für kleine Unternehmen, die Zeit sparen, Fehler reduzieren und das Kundenerlebnis verbessern.'
+      ],
+      blogLink: 'Blog / Insights lesen'
     },
     about: {
       title: 'Ein schlankes Digitalstudio für Automatisierung, Web und Business-Software.',
@@ -278,9 +508,9 @@ export const siteContent = {
   },
   en: {
     metadata: {
-      homeTitle: 'TreeTech | AI automation, web development, and business software',
+      homeTitle: 'TreeTech | AI automation Austria, web development, and CRM integration',
       homeDescription:
-        'TreeTech builds AI automations, websites, web apps, and digital workflows for Austrian businesses.',
+        'TreeTech builds AI automations, websites, CRM integrations, and workflow automation for small and medium-sized businesses in Austria.',
       aboutTitle: 'About TreeTech | Digital studio for Austrian businesses',
       aboutDescription:
         'TreeTech is a modern digital studio for businesses that want to automate processes, build web software, and work better digitally.',
@@ -296,8 +526,8 @@ export const siteContent = {
     },
     common: {
       eyebrow: 'AI · Web · Automation',
-      primaryCta: 'Request a project',
-      secondaryCta: 'View work',
+      primaryCta: 'Request a free first assessment',
+      secondaryCta: 'View example projects',
       viewProject: 'View case',
       startProject: 'Start project',
       learnMore: 'Learn more',
@@ -309,27 +539,42 @@ export const siteContent = {
       nextStep: 'Next step'
     },
     home: {
-      heroTitle: 'AI automation, websites, and business software for companies that want to move faster.',
+      heroTitle: 'Websites, AI automation, and internal tools for Austrian businesses.',
       heroLead:
-        'TreeTech combines web development, artificial intelligence, and process thinking. We build digital systems that generate inquiries, reduce manual work, and connect existing tools cleanly.',
-      heroBadge: '> booting TreeTech systems',
+        'We build websites, CRM flows, AI assistants, and automations for hotels, clinics, law firms, service providers, and local businesses in Austria that want more inquiries and less manual work.',
+      heroBadge: 'Free first assessment',
       heroTrust: [
-        'AI automation for recurring work',
-        'Websites and web apps with clear business logic',
-        'CRM, ERP, and service integrations'
+        'AI automation Austria for recurring work',
+        'Web development Austria with clear inquiry flows',
+        'CRM Integration, AI assistants, and Workflow Automation'
       ],
       proofTitle: 'For businesses that want less manual work and a more professional digital sales flow.',
       proofCopy:
         'We do not think only in good-looking screens. Every solution has a purpose: respond faster, remove process friction, guide customers better, and use data more cleanly.',
       servicesTitle: 'What we build.',
       servicesLead:
-        'From AI automation to custom web applications: TreeTech builds digital systems that companies actually use in daily operations.',
-      portfolioTitle: 'Demo cases that feel like real client wins.',
+        'From business automation Vienna to custom web applications: TreeTech builds digital systems that companies actually use in daily operations.',
+      portfolioTitle: 'Example projects for typical Austrian industries.',
       portfolioLead:
-        'Five realistic industry cases show how a professional website can work for Austrian businesses.',
+        'These demo projects show how TreeTech handles structure, design, and inquiry guidance for different industries.',
       processTitle: 'A process shaped like a clean system launch.',
       processLead:
-        'We start with workflows, goals, and data. Then structure, interface, automation, and launch follow in clear steps.'
+        'We start with workflows, goals, and data. Then structure, interface, automation, and launch follow in clear steps.',
+      automationTitle: 'What can be automated inside the business?',
+      automationLead:
+        'Many small tasks cost time every day. With AI automation, CRM automation, and integrations between existing services, these steps become faster, more reliable, and easier to track.',
+      audienceTitle: 'Who TreeTech is for.',
+      audienceLead:
+        'Our digital solutions are built for small and medium-sized businesses in Austria that want to modernize operations without hiring a new person for every new task.',
+      seoTitle: 'Digital solutions for companies in Austria.',
+      seoLead:
+        'TreeTech develops practical systems for businesses that want to connect web, AI, and operations in a useful way.',
+      seoParagraphs: [
+        'AI Automation in Austria is especially valuable when companies handle many inquiries, emails, documents, or recurring tasks. Instead of completing every step manually, AI Assistants can prepare information, speed up customer communication, and structure internal workflows.',
+        'Web Development in Austria means more to us than a good-looking website. A modern business website should explain, build trust, capture leads, and start processes. With website automation, form logic, and CRM Integration, a website becomes an active part of sales.',
+        'Business Automation, Workflow Automation Austria, and CRM automation help teams find central information faster and track tasks cleanly. The result is digital solutions for small businesses that save time, reduce errors, and improve the customer experience.'
+      ],
+      blogLink: 'Read Blog / Insights'
     },
     about: {
       title: 'A lean digital studio for automation, web, and business software.',

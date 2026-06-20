@@ -1,5 +1,6 @@
 import {ArrowLeft, CheckCircle2, ExternalLink, Target, TrendingUp, Wrench} from 'lucide-react';
 import type {Metadata} from 'next';
+import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 
@@ -25,12 +26,13 @@ export function generateStaticParams() {
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const {locale: rawLocale, slug} = await params;
-  const locale = rawLocale as Locale;
   const project = getProjectBySlug(slug);
 
-  if (!project) {
+  if (!hasLocale(routing.locales, rawLocale) || !project) {
     return {};
   }
+
+  const locale = rawLocale;
 
   return createPageMetadata({
     locale,

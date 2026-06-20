@@ -1,20 +1,27 @@
+import Image from 'next/image';
+
 import {cn} from '@/lib/utils';
 
 type LogoMarkProps = {
   className?: string;
+  priority?: boolean;
 };
 
-export function LogoMark({className}: LogoMarkProps) {
+export function LogoMark({className, priority = false}: LogoMarkProps) {
   return (
-    <svg
-      className={cn('block h-11 w-11 shrink-0', className)}
-      viewBox="0 0 64 64"
+    <span
+      className={cn('relative block h-12 w-40 shrink-0 overflow-hidden', className)}
       aria-hidden="true"
-      focusable="false"
     >
-      <rect width="64" height="64" rx="12" fill="#0f5f45" />
-      <path d="M19 18h26v8H35v22h-8V26h-8z" fill="#fff" />
-      <path d="M38 30h9v7h-9v11h-8V30z" fill="#f2b84b" />
-    </svg>
+      <Image
+        src="/brand/treetech-logo.png"
+        alt=""
+        width={920}
+        height={390}
+        priority={priority}
+        sizes="(max-width: 640px) 160px, 192px"
+        className="h-full w-full object-contain object-left"
+      />
+    </span>
   );
 }

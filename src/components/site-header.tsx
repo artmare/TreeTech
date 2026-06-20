@@ -15,6 +15,7 @@ const navItems = [
   {href: '/', key: 'home'},
   {href: '/about', key: 'about'},
   {href: '/services', key: 'services'},
+  {href: '/blog', key: 'blog'},
   {href: '/portfolio', key: 'portfolio'},
   {href: '/contact', key: 'contact'}
 ] as const;
@@ -37,14 +38,11 @@ export function SiteHeader({locale}: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#070806]/78 backdrop-blur-2xl">
       <div className="mx-auto flex h-[78px] w-full max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3" aria-label="TreeTech">
-          <LogoMark className="h-11 w-11 drop-shadow-[0_0_22px_rgba(214,255,99,0.22)]" />
-          <span className="grid leading-tight">
-            <span className="text-lg font-semibold text-foreground">TreeTech</span>
-            <span className="hidden font-mono text-[11px] uppercase text-muted sm:block">
-              AI · Web · AT
-            </span>
-          </span>
+        <Link href="/" className="flex items-center" aria-label="TreeTech">
+          <LogoMark
+            priority
+            className="h-14 w-40 drop-shadow-[0_0_22px_rgba(55,255,208,0.18)] sm:w-48"
+          />
         </Link>
 
         <nav className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.055] p-1 shadow-sm lg:flex" aria-label="Main navigation">

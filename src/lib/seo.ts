@@ -19,12 +19,16 @@ export function createPageMetadata({
 }: MetadataInput): Metadata {
   const canonicalPath = getLocalizedPath(locale, path);
   const canonical = new URL(canonicalPath, siteConfig.url);
-  const languages = Object.fromEntries(
+  const languages: Record<string, string> = Object.fromEntries(
     routing.locales.map((item) => [
       item,
       new URL(getLocalizedPath(item, path), siteConfig.url).toString()
     ])
   );
+  languages['x-default'] = new URL(
+    getLocalizedPath(routing.defaultLocale, path),
+    siteConfig.url
+  ).toString();
 
   return {
     metadataBase: new URL(siteConfig.url),

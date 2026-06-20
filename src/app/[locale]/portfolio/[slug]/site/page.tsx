@@ -1,4 +1,5 @@
 import type {Metadata} from 'next';
+import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 
@@ -19,12 +20,13 @@ export function generateStaticParams() {
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const {locale: rawLocale, slug} = await params;
-  const locale = rawLocale as Locale;
   const site = getDemoSiteBySlug(slug);
 
-  if (!site) {
+  if (!hasLocale(routing.locales, rawLocale) || !site) {
     return {};
   }
+
+  const locale = rawLocale;
 
   return createPageMetadata({
     locale,

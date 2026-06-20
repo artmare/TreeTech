@@ -20,9 +20,8 @@ export function SiteFooter() {
     <footer className="border-t border-white/10 bg-[#07110f] text-white">
       <div className="dark-grid mx-auto grid w-full max-w-7xl gap-10 px-5 py-14 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(28rem,0.95fr)] lg:px-8">
         <div className="min-w-0">
-          <Link href="/" className="inline-flex items-center gap-3">
-            <LogoMark className="h-10 w-10" />
-            <span className="text-lg font-semibold">{siteConfig.name}</span>
+          <Link href="/" className="inline-flex items-center gap-3" aria-label={siteConfig.name}>
+            <LogoMark className="h-14 w-44" />
           </Link>
           <p className="mt-5 max-w-md text-sm leading-7 text-white/68">{t('tagline')}</p>
           <p className="mt-8 text-sm text-white/60">
