@@ -1,5 +1,6 @@
 import type {Locale} from '@/i18n/routing';
 import {withLocaleFallbacks} from '@/i18n/localized';
+import {formatEur, formatPackagePrice, founderOffer, getPackage, hourlyRate, type PackageId} from '@/content/pricing';
 
 export const siteConfig = {
   name: 'TreeTech',
@@ -581,18 +582,46 @@ export const audienceItems: AudienceItem[] = withLocaleFallbacks([
   }
 ]);
 
-export const pricePackages: PricePackage[] = withLocaleFallbacks([
-  {name: {de: 'Website Sprint', en: 'Website Sprint', ru: 'Website Sprint'}, price: {de: 'ab 250 EUR', en: 'from EUR 250', ru: 'от 250 EUR'}, description: {de: 'Landingpage oder kleine Firmenwebsite mit klarem Angebot und Kontaktweg.', en: 'Landing page or small company website with a clear offer and contact path.', ru: 'Лендинг или небольшой сайт компании с понятным предложением и путем к контакту.'}},
-  {name: {de: 'Business Website', en: 'Business Website', ru: 'Business Website'}, price: {de: 'ab 600 EUR', en: 'from EUR 600', ru: 'от 600 EUR'}, description: {de: 'Mehrseitige Website mit Anfrageführung, SEO-Grundlagen und Formularlogik.', en: 'Multi-page website with inquiry guidance, SEO basics, and form logic.', ru: 'Многостраничный сайт с маршрутом заявки, базовым SEO и логикой форм.'}},
-  {name: {de: 'Automation Sprint', en: 'Automation Sprint', ru: 'Automation Sprint'}, price: {de: 'ab 200 EUR', en: 'from EUR 200', ru: 'от 200 EUR'}, description: {de: 'Ein konkreter Prozess automatisiert: Anfrage, CRM, E-Mail oder Dokument.', en: 'One concrete process automated: inquiry, CRM, email, or document.', ru: 'Автоматизация одного конкретного процесса: заявка, CRM, e-mail или документ.'}},
-  {name: {de: 'Custom Web App', en: 'Custom Web App', ru: 'Custom Web App'}, price: {de: 'nach Aufwand', en: 'custom estimate', ru: 'индивидуальная оценка'}, description: {de: 'CRM, Portal oder internes Tool für gewachsene Abläufe.', en: 'CRM, portal, or internal tool for established workflows.', ru: 'CRM, портал или внутренний инструмент для сложившихся процессов.'}}
-]);
+// Generated from src/content/pricing.ts — change prices there, not here.
+const homePricePackageIds: PackageId[] = ['websiteStart', 'websiteBusiness', 'pflege', 'anfrageAutomation'];
+const allLocales: Locale[] = ['de', 'en', 'ru'];
+const perLocale = (build: (locale: Locale) => string): LocalizedText =>
+  Object.fromEntries(allLocales.map((locale) => [locale, build(locale)])) as LocalizedText;
+
+export const pricePackages: PricePackage[] = homePricePackageIds.map((id) => {
+  const pkg = getPackage(id);
+  return {
+    name: perLocale(() => pkg.name),
+    price: perLocale((locale) => formatPackagePrice(pkg, locale)),
+    description: perLocale((locale) => {
+      const founder = id === founderOffer.packageId
+        ? ({de: ` Gründerpreis ${formatEur(founderOffer.price, 'de')} für die ersten ${founderOffer.slots} Betriebe.`, en: ` Founding price ${formatEur(founderOffer.price, 'en')} for the first ${founderOffer.slots} businesses.`, ru: ` Цена основателя ${formatEur(founderOffer.price, 'ru')} для первых ${founderOffer.slots} бизнесов.`})[locale]
+        : '';
+      const delivery = pkg.delivery ? ` ${pkg.delivery[locale].charAt(0).toUpperCase()}${pkg.delivery[locale].slice(1)}.` : '';
+      return `${pkg.tagline[locale]}${delivery}${founder}`;
+    })
+  };
+});
+
+function websitePriceAnswer(locale: Locale): string {
+  const start = formatPackagePrice(getPackage('websiteStart'), locale);
+  const business = formatPackagePrice(getPackage('websiteBusiness'), locale);
+  const abo = formatPackagePrice(getPackage('websiteAbo'), locale);
+  const care = formatPackagePrice(getPackage('pflege'), locale);
+  const founder = formatEur(founderOffer.price, locale);
+  const hourly = formatEur(hourlyRate, locale);
+  return {
+    de: `Website Start kostet ${start}, Website Business ${business} — Fixpreise inklusive Texten. Ohne große Anfangsinvestition: Website-Abo ${abo}. Pflege ab ${care}. Für die ersten ${founderOffer.slots} Betriebe gilt der Gründerpreis von ${founder}. Zusätzliche Arbeiten: ${hourly} pro Stunde, immer vorher abgesprochen.`,
+    en: `Website Start costs ${start}, Website Business ${business} — fixed prices including copywriting. No large upfront cost: Website subscription ${abo}. Care plans from ${care}. The first ${founderOffer.slots} businesses get the founding price of ${founder}. Extra work: ${hourly} per hour, always agreed in advance.`,
+    ru: `Website Start стоит ${start}, Website Business — ${business}; цены фиксированные, тексты включены. Без крупной оплаты на старте: Website-Abo ${abo}. Pflege — от ${care}. Для первых ${founderOffer.slots} бизнесов действует цена основателя ${founder}. Дополнительные работы — ${hourly} в час, всегда по предварительной договорённости.`
+  }[locale];
+}
 
 export const faqItems: FaqItem[] = withLocaleFallbacks([
-  {question: {de: 'Was kostet eine Website?', en: 'What does a website cost?', ru: 'Сколько стоит сайт?'}, answer: {de: 'Website Sprints starten bei 250 EUR. Business Websites starten bei 600 EUR.', en: 'Website Sprints start at EUR 250. Business websites start at EUR 600.', ru: 'Website Sprint начинается от 250 EUR. Business Website начинается от 600 EUR.'}},
-  {question: {de: 'Wie lange dauert ein Projekt?', en: 'How long does a project take?', ru: 'Сколько длится проект?'}, answer: {de: 'Kleine Websites oder Automatisierungen dauern oft wenige Wochen. Größere Systeme werden in Etappen umgesetzt.', en: 'Small websites or automations often take a few weeks. Larger systems are built in phases.', ru: 'Небольшие сайты или автоматизации часто занимают несколько недель. Более крупные системы делаются этапами.'}},
+  {question: {de: 'Was kostet eine Website?', en: 'What does a website cost?', ru: 'Сколько стоит сайт?'}, answer: perLocale((locale) => websitePriceAnswer(locale))},
+  {question: {de: 'Wie lange dauert ein Projekt?', en: 'How long does a project take?', ru: 'Сколько длится проект?'}, answer: {de: 'Website Start ist in 7 Tagen online, Website Business in 14 Tagen — gerechnet ab dem 30-Minuten-Gespräch, nicht ab dem Tag, an dem Sie uns Texte schicken. Automationen dauern 3 Tage bis 2 Wochen, individuelle Software 4–8 Wochen.', en: 'Website Start goes live in 7 days, Website Business in 14 days — counted from our 30-minute call, not from when you send us copy. Automations take 3 days to 2 weeks, custom software 4–8 weeks.', ru: 'Website Start запускается за 7 дней, Website Business — за 14, считая от 30-минутного разговора, а не от момента, когда вы пришлёте тексты. Автоматизации — от 3 дней до 2 недель, индивидуальное ПО — 4–8 недель.'}},
   {question: {de: 'Können bestehende Websites verbessert werden?', en: 'Can existing websites be improved?', ru: 'Можно улучшить существующий сайт?'}, answer: {de: 'Ja. Struktur, Texte, Anfrageführung und CRM-Anbindung können oft ohne kompletten Neustart verbessert werden.', en: 'Yes. Structure, copy, inquiry guidance, and CRM connection can often be improved without a full rebuild.', ru: 'Да. Структуру, тексты, путь заявки и CRM-подключение часто можно улучшить без полного перезапуска.'}},
-  {question: {de: 'Können wir klein starten?', en: 'Can we start small?', ru: 'Можно начать с малого?'}, answer: {de: 'Ja. Website Sprint und Automation Sprint sind für einen klar begrenzten Einstieg gedacht.', en: 'Yes. Website Sprint and Automation Sprint are designed for a clearly limited first step.', ru: 'Да. Website Sprint и Automation Sprint рассчитаны на понятный ограниченный первый шаг.'}},
+  {question: {de: 'Können wir klein starten?', en: 'Can we start small?', ru: 'Можно начать с малого?'}, answer: {de: 'Ja. Website Start oder das Website-Abo ohne große Anfangsinvestition, später bei Bedarf eine Anfrage-Automation. Pflege-Pakete sind monatlich kündbar.', en: 'Yes. Start with Website Start or the Website subscription without a large upfront cost, and add inquiry automation later if needed. Care plans can be cancelled monthly.', ru: 'Да. Начните с Website Start или Website-Abo без крупной оплаты на старте, а автоматизацию заявок добавьте позже. Пакеты Pflege расторгаются помесячно.'}},
   {question: {de: 'Arbeitet TreeTech mit bestehenden Tools?', en: 'Does TreeTech work with existing tools?', ru: 'TreeTech работает с уже существующими инструментами?'}, answer: {de: 'Ja. Wenn möglich verbinden wir bestehende Website, Formulare, E-Mail, CRM und Kalender.', en: 'Yes. Where possible, we connect existing website, forms, email, CRM, and calendar.', ru: 'Да. Если возможно, мы связываем существующий сайт, формы, e-mail, CRM и календарь.'}},
   {question: {de: 'Ist AI-Automation DSGVO-konform?', en: 'Is AI automation GDPR-compliant?', ru: 'AI-автоматизация соответствует GDPR?'}, answer: {de: 'Das hängt vom Prozess ab. TreeTech plant AI-Flows DSGVO-bewusst mit Datenminimierung und menschlicher Kontrolle.', en: 'It depends on the process. TreeTech plans AI flows with GDPR awareness, data minimization, and human review.', ru: 'Это зависит от процесса. TreeTech проектирует AI-flow с учетом GDPR, минимизации данных и человеческого контроля.'}}
 ]);

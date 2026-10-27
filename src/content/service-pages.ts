@@ -1,4 +1,5 @@
 import type {Locale} from '@/i18n/routing';
+import {priceLine} from '@/content/pricing';
 import {withLocaleFallbacks} from '@/i18n/localized';
 
 export type ServicePage = {
@@ -69,7 +70,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
     solution: {de: 'TreeTech analysiert einen konkreten Ablauf und baut eine AI-Automation mit klaren Regeln, Übergaben und menschlicher Kontrolle bei wichtigen Entscheidungen.', en: 'TreeTech analyzes one concrete workflow and builds an AI automation with clear rules, handovers, and human review for important decisions.', ru: 'TreeTech анализирует конкретный процесс и строит AI-автоматизацию с понятными правилами, передачами и человеческим контролем важных решений.'},
     result: {de: 'Weniger manuelle Arbeit, schnellere Antworten und mehr Zeit für Kunden, Beratung und Verkauf.', en: 'Less manual work, faster replies, and more time for customers, consulting, and sales.', ru: 'Меньше ручной работы, быстрее ответы и больше времени для клиентов, консультаций и продаж.'},
     example: {de: 'Eine Anfrage wird automatisch zusammengefasst, kategorisiert, ins CRM übertragen und mit einem Antwortentwurf vorbereitet.', en: 'An inquiry is automatically summarized, categorized, transferred into the CRM, and prepared with a reply draft.', ru: 'Заявка автоматически резюмируется, категоризируется, передается в CRM и подготавливается с черновиком ответа.'},
-    price: {de: 'Automation Sprint ab 200 EUR', en: 'Automation Sprint from EUR 200', ru: 'Automation Sprint от 200 EUR'},
+    price: priceLine('anfrageAutomation', 'automationSprint'),
     deliverables: {de: ['Prozessanalyse', 'AI-Flow oder Automationslogik', 'Test mit realen Beispielen', 'Übergabe und kurze Dokumentation'], en: ['Process analysis', 'AI flow or automation logic', 'Testing with real examples', 'Handover and short documentation'], ru: ['Анализ процесса', 'AI-flow или логика автоматизации', 'Тест на реальных примерах', 'Передача и короткая документация']}
   },
   {
@@ -81,7 +82,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
     solution: {de: 'TreeTech entwickelt Struktur, Texte, Design, responsive Umsetzung, SEO-Grundlagen und auf Wunsch Formular- oder CRM-Anbindung.', en: 'TreeTech develops structure, copy, design, responsive implementation, SEO basics, and optional form or CRM connection.', ru: 'TreeTech разрабатывает структуру, тексты, дизайн, адаптивную реализацию, SEO-основу и при необходимости подключение форм или CRM.'},
     result: {de: 'Ein Webauftritt, der klarer verkauft, Vertrauen aufbaut und Anfragen sauberer erfasst.', en: 'A website that sells more clearly, builds trust, and captures inquiries more cleanly.', ru: 'Сайт, который понятнее продает, вызывает доверие и аккуратнее собирает заявки.'},
     example: {de: 'Aus einer unklaren Firmenwebsite wird eine mehrseitige Business Website mit Leistungsseiten, Anfrage-CTA und besserer mobiler Führung.', en: 'An unclear company website becomes a multi-page business website with service pages, inquiry CTA, and better mobile guidance.', ru: 'Неясный сайт компании превращается в многостраничный Business Website со страницами услуг, CTA на заявку и лучшей мобильной навигацией.'},
-    price: {de: 'Website Sprint ab 250 EUR, Business Website ab 600 EUR', en: 'Website Sprint from EUR 250, Business Website from EUR 600', ru: 'Website Sprint от 250 EUR, Business Website от 600 EUR'},
+    price: priceLine('websiteStart', 'websiteBusiness', 'websiteAbo'),
     deliverables: {de: ['Informationsarchitektur', 'Texte und Seitenstruktur', 'Responsive Website', 'Kontakt- und Anfrageführung'], en: ['Information architecture', 'Copy and page structure', 'Responsive website', 'Contact and inquiry flow'], ru: ['Информационная архитектура', 'Тексты и структура страниц', 'Адаптивный сайт', 'Путь контакта и заявки']}
   },
   {
@@ -93,7 +94,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
     solution: {de: 'TreeTech strukturiert Zimmer, Angebote, Region, FAQs und Anfrage-CTAs so, dass Gäste schneller verstehen und anfragen können.', en: 'TreeTech structures rooms, offers, region, FAQs, and inquiry CTAs so guests understand faster and can inquire easily.', ru: 'TreeTech структурирует номера, предложения, регион, FAQ и CTA так, чтобы гости быстрее понимали и проще отправляли запрос.'},
     result: {de: 'Mehr Direktanfragen, weniger Standardfragen und ein professioneller Auftritt für Saison und Region.', en: 'More direct inquiries, fewer standard questions, and a professional presence for season and region.', ru: 'Больше прямых заявок, меньше стандартных вопросов и профессиональная подача сезона и региона.'},
     example: {de: 'Ein Anfrageformular fragt Reisedaten, Personenanzahl und Interessen ab und sendet die Daten direkt an das Team oder CRM.', en: 'An inquiry form asks for travel dates, number of guests, and interests, then sends the data directly to the team or CRM.', ru: 'Форма заявки спрашивает даты поездки, количество гостей и интересы, а затем отправляет данные команде или в CRM.'},
-    price: {de: 'Business Website ab 600 EUR', en: 'Business Website from EUR 600', ru: 'Business Website от 600 EUR'},
+    price: priceLine('websiteBusiness'),
     deliverables: {de: ['Startseite', 'Zimmer- oder Angebotsseiten', 'Direktanfrage-Flow', 'Regionale SEO-Grundlagen'], en: ['Homepage', 'Room or offer pages', 'Direct inquiry flow', 'Regional SEO basics'], ru: ['Главная страница', 'Страницы номеров или предложений', 'Flow прямой заявки', 'Базовое региональное SEO']}
   },
   {
@@ -105,7 +106,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
     solution: {de: 'TreeTech baut eine ruhige, vertrauenswürdige Struktur mit Leistungsseiten, FAQ, Kontaktführung und klaren mobilen Wegen.', en: 'TreeTech builds a calm, trustworthy structure with service pages, FAQ, contact guidance, and clear mobile paths.', ru: 'TreeTech строит спокойную, надежную структуру со страницами услуг, FAQ, контактным маршрутом и понятными мобильными путями.'},
     result: {de: 'Weniger wiederholte Fragen, mehr Vertrauen vor dem Erstkontakt und klarere Termin- oder Anfragewege.', en: 'Fewer repeated questions, more trust before first contact, and clearer appointment or inquiry paths.', ru: 'Меньше повторяющихся вопросов, больше доверия до первого контакта и понятнее путь к записи или заявке.'},
     example: {de: 'Neue Patientinnen sehen sofort Leistungen, Ablauf und Kontaktoptionen und können gezielt eine Anfrage senden.', en: 'New patients immediately see services, process, and contact options and can send a targeted inquiry.', ru: 'Новые пациенты сразу видят услуги, процесс и варианты контакта и могут отправить точную заявку.'},
-    price: {de: 'Website Sprint ab 250 EUR, mehrseitig ab 600 EUR', en: 'Website Sprint from EUR 250, multi-page from EUR 600', ru: 'Website Sprint от 250 EUR, многостраничный сайт от 600 EUR'},
+    price: priceLine('websiteStart', 'websiteBusiness'),
     deliverables: {de: ['Leistungsstruktur', 'FAQ', 'Kontakt- und Terminführung', 'Mobile Optimierung'], en: ['Service structure', 'FAQ', 'Contact and appointment guidance', 'Mobile optimization'], ru: ['Структура услуг', 'FAQ', 'Путь контакта и записи', 'Мобильная оптимизация']}
   },
   {
@@ -117,7 +118,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
     solution: {de: 'TreeTech strukturiert Leistungen, Erstkontakt, Vertrauen und Sprache so, dass passende Mandanten schneller erkennen, ob die Kanzlei passt.', en: 'TreeTech structures services, first contact, trust, and copy so suitable clients understand faster whether the firm fits.', ru: 'TreeTech структурирует услуги, первый контакт, доверие и тексты так, чтобы подходящие клиенты быстрее понимали, подходит ли фирма.'},
     result: {de: 'Mehr qualifizierte Erstkontakte und weniger unklare Anfragen.', en: 'More qualified first contacts and fewer unclear inquiries.', ru: 'Больше квалифицированных первых контактов и меньше неясных заявок.'},
     example: {de: 'Ein Fachgebiet erhält eine eigene Seite mit typischen Fällen, Ablauf und diskretem Anfrageformular.', en: 'A practice area receives its own page with typical cases, process, and discreet inquiry form.', ru: 'Отдельная специализация получает свою страницу с типичными случаями, процессом и дискретной формой заявки.'},
-    price: {de: 'Business Website ab 600 EUR', en: 'Business Website from EUR 600', ru: 'Business Website от 600 EUR'},
+    price: priceLine('websiteBusiness'),
     deliverables: {de: ['Fachgebietsseiten', 'Vertrauensstruktur', 'Diskrete Kontaktführung', 'SEO-Grundlagen'], en: ['Practice area pages', 'Trust structure', 'Discreet contact guidance', 'SEO basics'], ru: ['Страницы направлений', 'Структура доверия', 'Дискретный контактный путь', 'SEO-основа']}
   },
   {
@@ -129,7 +130,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
     solution: {de: 'TreeTech verbindet Website, Formulare, E-Mail und CRM zu einem klaren Lead-Flow mit Aufgaben und Erinnerungen.', en: 'TreeTech connects website, forms, email, and CRM into a clear lead flow with tasks and reminders.', ru: 'TreeTech связывает сайт, формы, e-mail и CRM в понятный lead-flow с задачами и напоминаниями.'},
     result: {de: 'Schnellere Reaktionszeiten, bessere Übersicht und weniger verlorene Anfragen.', en: 'Faster response times, better overview, and fewer lost inquiries.', ru: 'Быстрее реакция, лучше обзор и меньше потерянных заявок.'},
     example: {de: 'Eine Anfrage wird automatisch als Lead angelegt, kategorisiert und mit einer Follow-up-Aufgabe versehen.', en: 'An inquiry is automatically created as a lead, categorized, and assigned a follow-up task.', ru: 'Заявка автоматически создается как лид, категоризируется и получает follow-up задачу.'},
-    price: {de: 'Automation Sprint ab 200 EUR', en: 'Automation Sprint from EUR 200', ru: 'Automation Sprint от 200 EUR'},
+    price: priceLine('anfrageAutomation', 'automationSprint'),
     deliverables: {de: ['CRM-Flow', 'Formular-Integration', 'Aufgaben und Erinnerungen', 'Testfälle'], en: ['CRM flow', 'Form integration', 'Tasks and reminders', 'Test cases'], ru: ['CRM-flow', 'Интеграция формы', 'Задачи и напоминания', 'Тестовые сценарии']}
   },
   {
@@ -141,7 +142,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
     solution: {de: 'TreeTech baut einen begrenzten, klar gesteuerten AI-Assistenten mit Übergabe an Menschen und optionaler CRM-Anbindung.', en: 'TreeTech builds a limited, clearly controlled AI assistant with human handover and optional CRM connection.', ru: 'TreeTech строит ограниченного, управляемого AI-ассистента с передачей человеку и опциональным подключением CRM.'},
     result: {de: 'Schnellere Antworten, bessere Vorqualifizierung und weniger Standardkommunikation.', en: 'Faster replies, better pre-qualification, and less standard communication.', ru: 'Быстрее ответы, лучше предварительная квалификация и меньше стандартной коммуникации.'},
     example: {de: 'Der Chatbot beantwortet FAQs, fragt fehlende Details ab und sendet eine strukturierte Anfrage an das Team.', en: 'The chatbot answers FAQs, asks for missing details, and sends a structured inquiry to the team.', ru: 'Чатбот отвечает на FAQ, уточняет недостающие детали и отправляет структурированную заявку команде.'},
-    price: {de: 'ab 200 EUR je nach Daten und Integration', en: 'from EUR 200 depending on data and integration', ru: 'от 200 EUR в зависимости от данных и интеграции'},
+    price: priceLine('kiAssistent'),
     deliverables: {de: ['FAQ- und Wissensstruktur', 'Chatbot-Flow', 'Fallback an Menschen', 'Test und Übergabe'], en: ['FAQ and knowledge structure', 'Chatbot flow', 'Human fallback', 'Testing and handover'], ru: ['Структура FAQ и знаний', 'Chatbot-flow', 'Fallback к человеку', 'Тест и передача']}
   },
   {
@@ -153,7 +154,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
     solution: {de: 'TreeTech dokumentiert den Ablauf, reduziert unnötige Schritte und verbindet die passenden Tools zu einem klaren Workflow.', en: 'TreeTech documents the process, reduces unnecessary steps, and connects the right tools into a clear workflow.', ru: 'TreeTech документирует процесс, убирает лишние шаги и связывает подходящие инструменты в понятный workflow.'},
     result: {de: 'Weniger Doppelarbeit, bessere Übersicht und ein Team, das mit gleicher Besetzung mehr schafft.', en: 'Less duplicate work, better overview, and a team that can handle more with the same headcount.', ru: 'Меньше двойной работы, лучший обзор и команда, которая успевает больше тем же составом.'},
     example: {de: 'Aus einer E-Mail-Anfrage entsteht automatisch ein CRM-Eintrag, eine Aufgabe, ein Dokumententwurf und eine Erinnerung.', en: 'An email inquiry automatically becomes a CRM entry, task, document draft, and reminder.', ru: 'Из e-mail заявки автоматически создаются CRM-запись, задача, черновик документа и напоминание.'},
-    price: {de: 'Automation Sprint ab 200 EUR, größere Workflows nach Aufwand', en: 'Automation Sprint from EUR 200, larger workflows by estimate', ru: 'Automation Sprint от 200 EUR, крупные workflow по оценке'},
+    price: priceLine('automationSprint', 'analyseWorkshop'),
     deliverables: {de: ['Workflow-Audit', 'Systemplan', 'Automationslogik', 'Dokumentation'], en: ['Workflow audit', 'System plan', 'Automation logic', 'Documentation'], ru: ['Workflow-аудит', 'План системы', 'Логика автоматизации', 'Документация']}
   }
 ]);
