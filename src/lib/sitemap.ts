@@ -1,6 +1,6 @@
 import type {MetadataRoute} from 'next';
 
-import {blogPosts} from '@/content/blog';
+import {blogPosts, isPostInLocale} from '@/content/blog';
 import {demoSites} from '@/content/demo-sites';
 import {servicePages} from '@/content/service-pages';
 import {portfolioProjects, siteConfig} from '@/content/site';
@@ -11,7 +11,6 @@ const staticPaths = ['', '/about', '/services', '/blog', '/portfolio', '/contact
 
 const sitemapPaths = [
   ...staticPaths,
-  ...blogPosts.map((post) => `/blog/${post.slug}`),
   ...servicePages.map((page) => `/${page.slug}`),
   ...portfolioProjects.map((project) => `/portfolio/${project.slug}`),
   ...demoSites.map((site) => `/portfolio/${site.slug}/site`)
@@ -20,15 +19,33 @@ const sitemapPaths = [
 export function buildLocaleSitemap(locale: Locale): MetadataRoute.Sitemap {
   const now = new Date();
 
-  return sitemapPaths.map((path) => ({
+  const pages = sitemapPaths.map((path) => ({
     url: `${siteConfig.url}/${locale}${path}`,
     lastModified: now,
-    changeFrequency: path.includes('/portfolio/') ? 'monthly' : 'weekly',
+    changeFrequency: path.includes('/portfolio/') ? ('monthly' as const) : ('weekly' as const),
     priority: path === '' ? 1 : path.includes('/portfolio/') ? 0.7 : 0.85,
     alternates: {
       languages: buildAlternateLanguages(path)
     }
   }));
+  // Blog posts only exist in the languages they were written in.
+  const posts = blogPosts
+    .filter((post) => isPostInLocale(post, locale))
+    .map((post) => {
+      const path = `/blog/${post.slug}`;
+      const locales = routing.locales.filter((item) => isPostInLocale(post, item));
+      return {
+        url: `${siteConfig.url}/${locale}${path}`,
+        lastModified: new Date(post.publishedAt),
+        changeFrequency: 'monthly' as const,
+        priority: 0.75,
+        alternates: {
+          languages: buildAlternateLanguages(path, locales)
+        }
+      };
+    });
+
+  return [...pages, ...posts];
 }
 
 export function buildFullSitemap(): MetadataRoute.Sitemap {
@@ -71,9 +88,9 @@ export function serializeSitemap(entries: MetadataRoute.Sitemap) {
   return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">${urls}</urlset>`;
 }
 
-function buildAlternateLanguages(path: string) {
+function buildAlternateLanguages(path: string, locales: readonly Locale[] = routing.locales) {
   const languages: Record<string, string> = Object.fromEntries(
-    routing.locales.map((locale) => [
+    locales.map((locale) => [
       locale,
       `${siteConfig.url}/${locale}${path}`
     ])

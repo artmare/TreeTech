@@ -1084,35 +1084,43 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     location: 'Innsbruck',
     industry: {
       de: 'Zahnordination in Tirol',
-      en: 'Dental clinic in Tyrol'
+      en: 'Dental clinic in Tyrol',
+      ru: 'Стоматология в Тироле'
     },
     description: {
       de: 'Ein ruhiger, vertrauenswürdiger Webauftritt für eine moderne Ordination mit klarer Terminführung und verständlichen Leistungsseiten.',
-      en: 'A calm, trustworthy website for a modern dental clinic with clear appointment guidance and easy-to-understand service pages.'
+      en: 'A calm, trustworthy website for a modern dental clinic with clear appointment guidance and easy-to-understand service pages.',
+      ru: 'Спокойный сайт, вызывающий доверие, для современной стоматологии: понятная запись и простые страницы услуг.'
     },
     problem: {
       de: 'Die Ordination wirkte online zu austauschbar. Leistungen waren nicht schnell erfassbar, und neue Patientinnen und Patienten fanden den Weg zur Terminvereinbarung nicht klar genug.',
-      en: 'The clinic looked too generic online. Services were not easy to scan, and new patients did not have a clear path to booking an appointment.'
+      en: 'The clinic looked too generic online. Services were not easy to scan, and new patients did not have a clear path to booking an appointment.',
+      ru: 'Клиника выглядела в интернете слишком безлико. Услуги было трудно быстро понять, а новым пациентам не хватало понятного пути к записи.'
     },
     solution: {
       de: 'TreeTech entwickelte eine übersichtliche Struktur mit Behandlungsbereichen, Vertrauenselementen, ruhiger Bildsprache und wiederkehrenden Termin-CTAs.',
-      en: 'TreeTech created a clear structure with treatment areas, trust elements, calm visuals, and recurring appointment CTAs.'
+      en: 'TreeTech created a clear structure with treatment areas, trust elements, calm visuals, and recurring appointment CTAs.',
+      ru: 'TreeTech сделал понятную структуру с направлениями лечения, элементами доверия, спокойными визуалами и повторяющимися кнопками записи.'
     },
     features: {
       de: ['Leistungsseiten für Behandlungen', 'Team- und Ordinationsbereich', 'Termin-CTA auf allen Kernseiten', 'FAQ für neue Patientinnen und Patienten', 'Lokale SEO-Struktur für Innsbruck'],
-      en: ['Treatment service pages', 'Team and clinic section', 'Appointment CTA on key pages', 'FAQ for new patients', 'Local SEO structure for Innsbruck']
+      en: ['Treatment service pages', 'Team and clinic section', 'Appointment CTA on key pages', 'FAQ for new patients', 'Local SEO structure for Innsbruck'],
+      ru: ['Страницы услуг по видам лечения','Раздел о команде и клинике','Кнопка записи на ключевых страницах','FAQ для новых пациентов','Локальное SEO для Инсбрука']
     },
     visualStyle: {
       de: 'Helle Flächen, sanfte Mint- und Blautöne, großzügiger Weißraum und eine medizinische Typografie, die sauber, ruhig und hochwertig wirkt.',
-      en: 'Bright surfaces, soft mint and blue tones, generous whitespace, and medical typography that feels clean, calm, and premium.'
+      en: 'Bright surfaces, soft mint and blue tones, generous whitespace, and medical typography that feels clean, calm, and premium.',
+      ru: 'Светлые поверхности, мягкие мятные и голубые тона, много воздуха и аккуратная типографика, которая выглядит чисто, спокойно и дорого.'
     },
     cta: {
       de: 'Mehr Vertrauen vor dem ersten Termin und ein klarer Weg zur Anfrage.',
-      en: 'More trust before the first appointment and a clearer path to inquiry.'
+      en: 'More trust before the first appointment and a clearer path to inquiry.',
+      ru: 'Больше доверия до первого визита и понятный путь к заявке.'
     },
     metric: {
       de: 'Klarerer Weg vom ersten Besuch zur Terminvereinbarung.',
-      en: 'Clearer journey from first visit to appointment request.'
+      en: 'Clearer journey from first visit to appointment request.',
+      ru: 'Понятный путь от первого визита на сайт до записи.'
     },
     gradient: 'from-cyan-100 via-emerald-100 to-white',
     accent: 'bg-cyan-500'
@@ -1124,35 +1132,43 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     location: 'Wien',
     industry: {
       de: 'Rechtsanwaltskanzlei in Wien',
-      en: 'Law firm in Vienna'
+      en: 'Law firm in Vienna',
+      ru: 'Адвокатская контора в Вене'
     },
     description: {
       de: 'Ein seriöser Kanzlei-Auftritt, der Fachgebiete klar erklärt, Vertrauen schafft und den Erstkontakt diskret erleichtert.',
-      en: 'A composed law firm website that explains practice areas clearly, builds trust, and makes first contact discreet and simple.'
+      en: 'A composed law firm website that explains practice areas clearly, builds trust, and makes first contact discreet and simple.',
+      ru: 'Сдержанный сайт адвокатской конторы: понятно объясняет направления, вызывает доверие и делает первый контакт простым и деликатным.'
     },
     problem: {
       de: 'Die Kanzlei hatte starke Spezialisierungen, aber online fehlten klare Positionierung, nachvollziehbare Fachbereiche und ein sicher wirkender Weg zur Kontaktaufnahme.',
-      en: 'The firm had strong specializations, but the website lacked clear positioning, understandable practice areas, and a reassuring contact path.'
+      en: 'The firm had strong specializations, but the website lacked clear positioning, understandable practice areas, and a reassuring contact path.',
+      ru: 'У конторы были сильные специализации, но сайту не хватало чёткого позиционирования, понятных направлений и спокойного пути к контакту.'
     },
     solution: {
       de: 'Wir ordneten Fachgebiete, Anwaltsporträts und Kontaktwege so, dass Mandantinnen und Mandanten rasch erkennen, ob die Kanzlei zur eigenen Situation passt.',
-      en: 'We structured practice areas, attorney profiles, and contact routes so potential clients quickly understand whether the firm fits their situation.'
+      en: 'We structured practice areas, attorney profiles, and contact routes so potential clients quickly understand whether the firm fits their situation.',
+      ru: 'Мы выстроили направления практики, профили адвокатов и способы связи так, чтобы клиент быстро понял, подходит ли ему контора.'
     },
     features: {
       de: ['Fachgebietsseiten', 'Anwaltsporträts', 'Diskrete Kontaktführung', 'Mehrsprachige Struktur', 'Vertrauensmodule für Erstbesucher'],
-      en: ['Practice area pages', 'Attorney profiles', 'Discreet contact flow', 'Multilingual structure', 'Trust modules for first-time visitors']
+      en: ['Practice area pages', 'Attorney profiles', 'Discreet contact flow', 'Multilingual structure', 'Trust modules for first-time visitors'],
+      ru: ['Страницы направлений практики','Профили адвокатов','Деликатная форма связи','Многоязычная структура','Блоки доверия для новых посетителей']
     },
     visualStyle: {
       de: 'Dunkles Tintenblau, warme Goldakzente, feine Linien und eine ruhige Layoutsprache, die Kompetenz ohne Übertreibung vermittelt.',
-      en: 'Deep ink blue, warm gold accents, fine lines, and a calm layout language that communicates authority without overstatement.'
+      en: 'Deep ink blue, warm gold accents, fine lines, and a calm layout language that communicates authority without overstatement.',
+      ru: 'Глубокий чернильно-синий, тёплые золотые акценты, тонкие линии и спокойная подача, которая передаёт авторитет без пафоса.'
     },
     cta: {
       de: 'Mehr Sicherheit vor dem ersten Beratungsgespräch.',
-      en: 'More confidence before the first consultation.'
+      en: 'More confidence before the first consultation.',
+      ru: 'Больше уверенности до первой консультации.'
     },
     metric: {
       de: 'Schnelleres Verständnis der passenden Rechtsgebiete.',
-      en: 'Faster understanding of the right legal areas.'
+      en: 'Faster understanding of the right legal areas.',
+      ru: 'Быстрее понятно, какие правовые направления нужны.'
     },
     gradient: 'from-slate-900 via-blue-900 to-amber-200',
     accent: 'bg-amber-400'
@@ -1164,35 +1180,43 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     location: 'Salzkammergut',
     industry: {
       de: 'Alpines Hotel',
-      en: 'Alpine hotel'
+      en: 'Alpine hotel',
+      ru: 'Альпийский отель'
     },
     description: {
       de: 'Eine atmosphärische Hotelwebsite, die Zimmer, Region und Erlebnisse emotional zeigt und Gäste konsequent zur Direktanfrage führt.',
-      en: 'An atmospheric hotel website that presents rooms, region, and experiences emotionally while guiding guests toward direct inquiry.'
+      en: 'An atmospheric hotel website that presents rooms, region, and experiences emotionally while guiding guests toward direct inquiry.',
+      ru: 'Атмосферный сайт отеля: эмоционально показывает номера, регион и впечатления и ведёт гостей к прямой заявке.'
     },
     problem: {
       de: 'Schöne Bilder waren vorhanden, aber Angebote, Zimmer und Buchungsargumente wirkten verstreut. Gäste fanden keinen klaren Weg von Inspiration zur Anfrage.',
-      en: 'Beautiful imagery existed, but offers, rooms, and booking arguments felt scattered. Guests had no clear path from inspiration to inquiry.'
+      en: 'Beautiful imagery existed, but offers, rooms, and booking arguments felt scattered. Guests had no clear path from inspiration to inquiry.',
+      ru: 'Красивые фото были, но предложения, номера и аргументы для бронирования были разбросаны. У гостей не было понятного пути от вдохновения к заявке.'
     },
     solution: {
       de: 'TreeTech baute eine emotionale Startseite, modulare Zimmerbereiche, saisonale Angebote und einen durchgängigen Anfragefluss für Direktbuchungen.',
-      en: 'TreeTech built an emotional homepage, modular room sections, seasonal offers, and a consistent inquiry flow for direct bookings.'
+      en: 'TreeTech built an emotional homepage, modular room sections, seasonal offers, and a consistent inquiry flow for direct bookings.',
+      ru: 'TreeTech сделал эмоциональную главную, модульные блоки номеров, сезонные предложения и единый путь к прямому бронированию.'
     },
     features: {
       de: ['Zimmer- und Suite-Karten', 'Erlebnisbereiche für Sommer und Winter', 'Saisonale Angebotsflächen', 'Direktanfrage-CTA', 'Regionale SEO-Module'],
-      en: ['Room and suite cards', 'Experience areas for summer and winter', 'Seasonal offer sections', 'Direct inquiry CTA', 'Regional SEO modules']
+      en: ['Room and suite cards', 'Experience areas for summer and winter', 'Seasonal offer sections', 'Direct inquiry CTA', 'Regional SEO modules'],
+      ru: ['Карточки номеров и люксов','Разделы впечатлений для лета и зимы','Блоки сезонных предложений','Кнопка прямой заявки','Региональные SEO-блоки']
     },
     visualStyle: {
       de: 'Alpines Grün, helle Himmelstöne, großzügige Bildflächen und magazinartige Sektionen, die Urlaubswertigkeit vermitteln.',
-      en: 'Alpine green, bright sky tones, generous image areas, and magazine-like sections that communicate the value of a stay.'
+      en: 'Alpine green, bright sky tones, generous image areas, and magazine-like sections that communicate the value of a stay.',
+      ru: 'Альпийский зелёный, светлые небесные тона, большие фото и журнальные разделы, которые передают ценность отдыха.'
     },
     cta: {
       de: 'Mehr Direktanfragen durch einen emotionalen, klaren Buchungsweg.',
-      en: 'More direct inquiries through an emotional, clear booking path.'
+      en: 'More direct inquiries through an emotional, clear booking path.',
+      ru: 'Больше прямых заявок благодаря эмоциональному и понятному пути к бронированию.'
     },
     metric: {
       de: 'Stärkere Verbindung aus Urlaubslust und Buchungsabsicht.',
-      en: 'Stronger connection between travel desire and booking intent.'
+      en: 'Stronger connection between travel desire and booking intent.',
+      ru: 'Сильнее связь между желанием поехать и намерением забронировать.'
     },
     gradient: 'from-emerald-800 via-sky-200 to-white',
     accent: 'bg-emerald-500'
@@ -1204,35 +1228,43 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     location: 'Graz',
     industry: {
       de: 'Immobilienagentur in Graz',
-      en: 'Real estate agency in Graz'
+      en: 'Real estate agency in Graz',
+      ru: 'Агентство недвижимости в Граце'
     },
     description: {
       de: 'Eine hochwertige Immobilienwebsite, die Objekte sauber präsentiert und Eigentümerinnen und Eigentümer zur Bewertung anfragt.',
-      en: 'A premium real estate website that presents properties clearly and encourages owners to request a valuation.'
+      en: 'A premium real estate website that presents properties clearly and encourages owners to request a valuation.',
+      ru: 'Премиальный сайт агентства недвижимости: понятно показывает объекты и побуждает владельцев заказать оценку.'
     },
     problem: {
       de: 'Die Agentur wollte hochwertiger wahrgenommen werden, hatte aber keine konsistente Objektpräsentation und zu wenig gezielte Anfragen von Verkäuferinnen und Verkäufern.',
-      en: 'The agency wanted to be perceived as more premium, but had inconsistent property presentation and too few targeted seller inquiries.'
+      en: 'The agency wanted to be perceived as more premium, but had inconsistent property presentation and too few targeted seller inquiries.',
+      ru: 'Агентство хотело выглядеть премиальнее, но объекты подавались непоследовательно, а целевых заявок от продавцов было мало.'
     },
     solution: {
       de: 'Wir entwickelten Objektkarten, Bewertungs-CTAs, Maklerprofile und Vertrauensbereiche, die Käufer und Eigentümer getrennt, aber stimmig abholen.',
-      en: 'We developed listing cards, valuation CTAs, agent profiles, and trust sections that speak to buyers and owners separately but coherently.'
+      en: 'We developed listing cards, valuation CTAs, agent profiles, and trust sections that speak to buyers and owners separately but coherently.',
+      ru: 'Мы сделали карточки объектов, кнопки оценки, профили агентов и блоки доверия, которые обращаются к покупателям и владельцам отдельно, но согласованно.'
     },
     features: {
       de: ['Objektübersicht', 'Immobilienbewertung als CTA', 'Maklerprofil', 'Vertrauensmodule', 'Lead-Formular für Eigentümer'],
-      en: ['Listing overview', 'Property valuation CTA', 'Agent profile', 'Trust modules', 'Owner lead form']
+      en: ['Listing overview', 'Property valuation CTA', 'Agent profile', 'Trust modules', 'Owner lead form'],
+      ru: ['Обзор объектов','Кнопка оценки недвижимости','Профиль агента','Блоки доверия','Форма для владельцев']
     },
     visualStyle: {
       de: 'Natürliche Grüntöne, warme neutrale Flächen, präzise Kartenlayouts und eine Bildsprache, die Wertigkeit statt Lautstärke vermittelt.',
-      en: 'Natural greens, warm neutral surfaces, precise card layouts, and visuals that communicate value rather than noise.'
+      en: 'Natural greens, warm neutral surfaces, precise card layouts, and visuals that communicate value rather than noise.',
+      ru: 'Природные зелёные, тёплые нейтральные поверхности, точные карточки и визуалы, которые передают ценность, а не шум.'
     },
     cta: {
       de: 'Mehr qualifizierte Objekt- und Bewertungsanfragen.',
-      en: 'More qualified listing and valuation inquiries.'
+      en: 'More qualified listing and valuation inquiries.',
+      ru: 'Больше качественных заявок на продажу и оценку.'
     },
     metric: {
       de: 'Höherwertige Wahrnehmung bei Eigentümern und Käufern.',
-      en: 'More premium perception among owners and buyers.'
+      en: 'More premium perception among owners and buyers.',
+      ru: 'Более премиальное восприятие у владельцев и покупателей.'
     },
     gradient: 'from-lime-100 via-stone-100 to-emerald-200',
     accent: 'bg-lime-500'
@@ -1244,35 +1276,43 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     location: 'Linz',
     industry: {
       de: 'Fitnessstudio in Linz',
-      en: 'Fitness studio in Linz'
+      en: 'Fitness studio in Linz',
+      ru: 'Фитнес-студия в Линце'
     },
     description: {
       de: 'Eine dynamische Studio-Website mit klarem Probetraining-Fokus, Kursübersicht und Angeboten für neue Mitglieder.',
-      en: 'A dynamic studio website with a clear trial-session focus, class overview, and offers for new members.'
+      en: 'A dynamic studio website with a clear trial-session focus, class overview, and offers for new members.',
+      ru: 'Динамичный сайт студии с упором на пробное занятие, обзором тренировок и предложениями для новых участников.'
     },
     problem: {
       de: 'Vor Ort hatte das Studio starke Energie, online fehlten aber klare Einstiegspunkte, eine verständliche Kursübersicht und ein motivierender Weg zum Probetraining.',
-      en: 'The studio had strong energy on site, but online it lacked clear entry points, an understandable class overview, and a motivating path to a trial session.'
+      en: 'The studio had strong energy on site, but online it lacked clear entry points, an understandable class overview, and a motivating path to a trial session.',
+      ru: 'На месте у студии сильная энергия, но в интернете не хватало понятного входа, обзора тренировок и мотивирующего пути к пробному занятию.'
     },
     solution: {
       de: 'TreeTech gestaltete eine kontrastreiche Seite mit Kursmodulen, Trainerbereichen, Preisankern und einem prominenten Probetraining-Flow.',
-      en: 'TreeTech designed a high-contrast site with class modules, trainer sections, membership decision points, and a prominent trial-session flow.'
+      en: 'TreeTech designed a high-contrast site with class modules, trainer sections, membership decision points, and a prominent trial-session flow.',
+      ru: 'TreeTech сделал контрастный сайт с блоками тренировок, разделом тренеров, выбором абонемента и заметной записью на пробное занятие.'
     },
     features: {
       de: ['Probetraining-CTA', 'Kursplan-Sektion', 'Trainerkarten', 'Preisanker für Mitgliedschaften', 'Mobile-first Navigation'],
-      en: ['Trial session CTA', 'Class schedule section', 'Trainer cards', 'Membership decision points', 'Mobile-first navigation']
+      en: ['Trial session CTA', 'Class schedule section', 'Trainer cards', 'Membership decision points', 'Mobile-first navigation'],
+      ru: ['Кнопка записи на пробное занятие','Расписание тренировок','Карточки тренеров','Выбор абонемента','Навигация для телефона']
     },
     visualStyle: {
       de: 'Starke Kontraste, elektrische Akzente, kompakte Module und sportliche Bewegungsflächen, ohne unseriös zu wirken.',
-      en: 'Strong contrast, electric accents, compact modules, and athletic motion surfaces without feeling gimmicky.'
+      en: 'Strong contrast, electric accents, compact modules, and athletic motion surfaces without feeling gimmicky.',
+      ru: 'Сильный контраст, электрические акценты, компактные блоки и спортивная динамика без лишних эффектов.'
     },
     cta: {
       de: 'Mehr Probetrainings durch einen schnellen, motivierenden Einstieg.',
-      en: 'More trial sessions through a fast, motivating entry point.'
+      en: 'More trial sessions through a fast, motivating entry point.',
+      ru: 'Больше пробных занятий благодаря быстрому и мотивирующему входу.'
     },
     metric: {
       de: 'Stärkerer Fokus auf Probetraining und Mitgliedschaften.',
-      en: 'Stronger focus on trial sessions and memberships.'
+      en: 'Stronger focus on trial sessions and memberships.',
+      ru: 'Больше внимания к пробным занятиям и абонементам.'
     },
     gradient: 'from-zinc-950 via-red-500 to-yellow-300',
     accent: 'bg-red-500'

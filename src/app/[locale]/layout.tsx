@@ -11,7 +11,8 @@ import {AssistantWidgetLoader} from '@/components/assistant-widget-loader';
 import {MobileContactBar} from '@/components/mobile-contact-bar';
 import {SiteFooter} from '@/components/site-footer';
 import {SiteHeader} from '@/components/site-header';
-import {siteConfig} from '@/content/site';
+import {formatEur, getPackage} from '@/content/pricing';
+import {siteConfig, siteContent} from '@/content/site';
 import {routing, type Locale} from '@/i18n/routing';
 
 type Props = {
@@ -41,17 +42,30 @@ export default async function LocaleLayout({children, params}: Props) {
   const organizationJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ProfessionalService',
+    '@id': `${siteConfig.url}/#organization`,
     name: siteConfig.name,
     url: siteConfig.url,
     email: siteConfig.email,
-    areaServed: 'AT',
-    serviceType: [
-      'AI automation',
-      'Web development',
-      'Business process automation',
-      'Custom web applications'
+    telephone: siteConfig.phone,
+    logo: `${siteConfig.url}/icon-512.png`,
+    image: `${siteConfig.url}/og-image.png`,
+    description: siteContent[locale as Locale].metadata.homeDescription,
+    priceRange: `ab ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'de')}`,
+    areaServed: [
+      {'@type': 'City', name: 'Wien'},
+      {'@type': 'State', name: 'Niederösterreich'}
     ],
-    inLanguage: ['de-AT', 'en', 'ru-RU']
+    knowsLanguage: ['de', 'en', 'ru'],
+    serviceType: ['Webdesign', 'Website für Handwerker', 'Website-Pflege', 'Google-Unternehmensprofil'],
+    makesOffer: ['websiteStart', 'websiteBusiness', 'pflege'].map((id) => {
+      const pkg = getPackage(id as 'websiteStart' | 'websiteBusiness' | 'pflege');
+      return {
+        '@type': 'Offer',
+        name: pkg.name,
+        price: pkg.monthly ?? pkg.oneTime,
+        priceCurrency: 'EUR'
+      };
+    })
   };
 
   return (

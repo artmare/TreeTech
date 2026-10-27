@@ -1,4 +1,5 @@
 import type {Locale} from '@/i18n/routing';
+import {handwerkPosts} from '@/content/blog-handwerk';
 import {withLocaleFallbacks} from '@/i18n/localized';
 
 export type BlogPost = {
@@ -15,22 +16,23 @@ export type BlogPost = {
     heading: Record<Locale, string>;
     body: Record<Locale, string[]>;
   }>;
+  /** Languages the post is written in. Missing means all. */
+  locales?: Locale[];
 };
 
 export const blogContent = withLocaleFallbacks({
   de: {
     metadata: {
-      title: 'Blog / Insights | TreeTech',
+      title: 'Ratgeber für Handwerk und Werkstätten | TreeTech',
       description:
-        'Praxisnahe Artikel über AI Automation, CRM automation, Webentwicklung und digitale Prozesse für Unternehmen in Österreich.'
+        'Praktische Artikel für Handwerksbetriebe in Wien und Niederösterreich: was eine Website kostet, Google-Unternehmensprofil, Checklisten und mehr Anfragen.'
     },
-    heroEyebrow: 'Blog / Insights',
-    heroTitle: 'Praktische Ideen für Automatisierung, Websites und digitale Prozesse.',
+    heroEyebrow: 'Ratgeber',
+    heroTitle: 'Ratgeber für Handwerk und Werkstätten.',
     heroLead:
-      'Der TreeTech Blog erklärt, wie kleine und mittlere Unternehmen in Österreich mit AI, CRM Integration und modernen Websites Zeit sparen, Anfragen schneller bearbeiten und interne Abläufe klarer steuern.',
-    introTitle: 'Worüber wir schreiben',
-    introLead:
-      'Keine Buzzwords, sondern konkrete Anwendungsfälle: welche Aufgaben automatisiert werden können, wie eine Website mehr Anfragen erzeugt und wann AI-Assistenten im Alltag wirklich helfen.',
+      'Kurze, ehrliche Antworten auf die Fragen, die uns Betriebe stellen: was eine Website kostet, wie Sie bei Google gefunden werden und was auf Ihre Seite gehört.',
+    introTitle: 'Themen',
+    introLead: 'Ohne Fachchinesisch. Jeder Artikel ist in wenigen Minuten gelesen.',
     allArticles: 'Alle Artikel',
     featured: 'Empfohlener Einstieg',
     readArticle: 'Artikel lesen',
@@ -46,24 +48,22 @@ export const blogContent = withLocaleFallbacks({
       'Ändern Sie slug, Datum, Titel, SEO-Beschreibung, Tags und Abschnitte.',
       'Nach dem Speichern erscheint der Beitrag automatisch auf /de/blog und /en/blog sowie als eigene Artikelseite.'
     ],
-    relatedCtaTitle: 'Soll ein Prozess in Ihrem Betrieb automatisiert werden?',
-    relatedCtaLead:
-      'Schicken Sie kurz, welche Aufgabe Zeit kostet. TreeTech prüft, ob Website, CRM, AI-Assistent oder Workflow-Automation sinnvoll ist.',
-    relatedCta: 'Projekt besprechen'
+    relatedCtaTitle: 'Sehen Sie Ihre Website, bevor Sie sich entscheiden.',
+    relatedCtaLead: 'Name Ihres Betriebs und Ort genügen. Die Vorschau haben Sie in 3 Werktagen, kostenlos.',
+    relatedCta: 'Kostenlose Vorschau anfordern'
   },
   en: {
     metadata: {
-      title: 'Blog / Insights | TreeTech',
+      title: 'Guides for trades and workshops | TreeTech',
       description:
-        'Practical articles about AI automation, CRM automation, web development, and digital workflows for companies in Austria.'
+        'Practical articles for trade businesses in Vienna and Lower Austria: website costs, Google Business Profile, checklists and more inquiries.'
     },
-    heroEyebrow: 'Blog / Insights',
-    heroTitle: 'Practical ideas for automation, websites, and digital operations.',
+    heroEyebrow: 'Guides',
+    heroTitle: 'Guides for trades and workshops.',
     heroLead:
-      'The TreeTech blog explains how small and medium-sized companies in Austria can save time, handle inquiries faster, and manage internal workflows more clearly with AI, CRM integration, and modern websites.',
-    introTitle: 'What we write about',
-    introLead:
-      'No buzzwords, just practical use cases: which tasks can be automated, how a website can generate more inquiries, and when AI assistants actually help in daily work.',
+      'Short, honest answers to the questions businesses ask us: what a website costs, how to get found on Google and what belongs on your site.',
+    introTitle: 'Topics',
+    introLead: 'No jargon. Every article takes a few minutes to read.',
     allArticles: 'All articles',
     featured: 'Recommended start',
     readArticle: 'Read article',
@@ -79,24 +79,22 @@ export const blogContent = withLocaleFallbacks({
       'Change the slug, date, title, SEO description, tags, and sections.',
       'After saving, the post appears automatically on /de/blog and /en/blog and gets its own article page.'
     ],
-    relatedCtaTitle: 'Could a process in your business be automated?',
-    relatedCtaLead:
-      'Send a short note about the task that costs time. TreeTech will check whether a website, CRM, AI assistant, or workflow automation is the right next step.',
-    relatedCta: 'Discuss project'
+    relatedCtaTitle: 'See your website before you decide.',
+    relatedCtaLead: 'Your business name and town are enough. You get the preview within 3 working days, free of charge.',
+    relatedCta: 'Get my free preview'
   },
   ru: {
     metadata: {
-      title: 'Блог / Insights | TreeTech',
+      title: 'Советы для мастеров и автосервисов | TreeTech',
       description:
-        'Практичные статьи об AI-автоматизации, CRM-автоматизации, веб-разработке и цифровых процессах для компаний в Австрии.'
+        'Практичные статьи для мастеров в Вене и Нижней Австрии: сколько стоит сайт, профиль в Google, чек-листы и больше заявок.'
     },
-    heroEyebrow: 'Блог / Insights',
-    heroTitle: 'Практичные идеи для автоматизации, сайтов и цифровых процессов.',
+    heroEyebrow: 'Советы',
+    heroTitle: 'Советы для мастеров и автосервисов.',
     heroLead:
-      'Блог TreeTech объясняет, как малый и средний бизнес в Австрии может экономить время, быстрее обрабатывать заявки и понятнее управлять внутренними процессами с помощью AI, CRM-интеграций и современных сайтов.',
-    introTitle: 'О чем мы пишем',
-    introLead:
-      'Без buzzwords: конкретные сценарии, какие задачи можно автоматизировать, как сайт может давать больше заявок и когда AI-ассистенты действительно помогают в ежедневной работе.',
+      'Короткие честные ответы на вопросы, которые нам задают: сколько стоит сайт, как вас найдут в Google и что должно быть на сайте.',
+    introTitle: 'Темы',
+    introLead: 'Без умных слов. Каждая статья читается за несколько минут.',
     allArticles: 'Все статьи',
     featured: 'Рекомендуемый старт',
     readArticle: 'Читать статью',
@@ -112,16 +110,17 @@ export const blogContent = withLocaleFallbacks({
       'Измените slug, дату, заголовок, SEO-описание, теги и разделы.',
       'После сохранения статья автоматически появится на /de/blog, /en/blog и /ru/blog, а также получит отдельную страницу.'
     ],
-    relatedCtaTitle: 'Нужно автоматизировать процесс в вашем бизнесе?',
-    relatedCtaLead:
-      'Коротко напишите, какая задача забирает время. TreeTech проверит, что лучше подойдет: сайт, CRM, AI-ассистент или workflow-автоматизация.',
-    relatedCta: 'Обсудить проект'
+    relatedCtaTitle: 'Посмотрите на свой сайт, прежде чем решать.',
+    relatedCtaLead: 'Достаточно названия бизнеса и города. Превью будет у вас через 3 рабочих дня, бесплатно.',
+    relatedCta: 'Получить бесплатное превью'
   }
 }) satisfies Record<Locale, Record<string, unknown>>;
 
-export const blogPosts: BlogPost[] = withLocaleFallbacks([
+const generalPosts: BlogPost[] = withLocaleFallbacks([
   {
     slug: 'business-processes-to-automate-first',
+    // Older general articles, written in German and English only.
+    locales: ['de', 'en'],
     publishedAt: '2026-06-19',
     category: {de: 'Business Automation', en: 'Business Automation'},
     title: {
@@ -223,6 +222,8 @@ export const blogPosts: BlogPost[] = withLocaleFallbacks([
   },
   {
     slug: 'ai-tools-for-companies',
+    // Older general articles, written in German and English only.
+    locales: ['de', 'en'],
     publishedAt: '2026-06-19',
     category: {de: 'AI für Unternehmen', en: 'AI for Companies'},
     title: {
@@ -324,6 +325,8 @@ export const blogPosts: BlogPost[] = withLocaleFallbacks([
   },
   {
     slug: 'crm-automation-for-small-businesses',
+    // Older general articles, written in German and English only.
+    locales: ['de', 'en'],
     publishedAt: '2026-06-19',
     category: {de: 'CRM Automation', en: 'CRM Automation'},
     title: {
@@ -427,6 +430,8 @@ export const blogPosts: BlogPost[] = withLocaleFallbacks([
   },
   {
     slug: 'modern-websites-for-austrian-businesses',
+    // Older general articles, written in German and English only.
+    locales: ['de', 'en'],
     publishedAt: '2026-06-19',
     category: {de: 'Web Development Austria', en: 'Web Development Austria'},
     title: {
@@ -530,6 +535,8 @@ export const blogPosts: BlogPost[] = withLocaleFallbacks([
   },
   {
     slug: 'save-time-with-ai-automation',
+    // Older general articles, written in German and English only.
+    locales: ['de', 'en'],
     publishedAt: '2026-06-19',
     category: {de: 'Workflow Automation', en: 'Workflow Automation'},
     title: {
@@ -632,6 +639,16 @@ export const blogPosts: BlogPost[] = withLocaleFallbacks([
     ]
   }
 ]);
+
+export const blogPosts: BlogPost[] = [...handwerkPosts, ...generalPosts];
+
+export function isPostInLocale(post: BlogPost, locale: Locale) {
+  return !post.locales || post.locales.includes(locale);
+}
+
+export function getPostsForLocale(locale: Locale) {
+  return blogPosts.filter((post) => isPostInLocale(post, locale));
+}
 
 export function getBlogPostBySlug(slug: string) {
   return blogPosts.find((post) => post.slug === slug);

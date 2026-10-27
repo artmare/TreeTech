@@ -77,7 +77,7 @@ export const demoSiteLabels = withLocaleFallbacks({
   }
 }) satisfies Localized<Record<string, string>>;
 
-export const demoSites: DemoSite[] = withLocaleFallbacks([
+const demoSiteList = withLocaleFallbacks([
   {
     slug: 'elektro-huber',
     brand: 'Elektro Huber',
@@ -214,15 +214,18 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
     location: 'Innsbruck',
     industry: {
       de: 'Zahnordination',
-      en: 'Dental clinic'
+      en: 'Dental clinic',
+      ru: 'Стоматология'
     },
     metaTitle: {
       de: 'AlpenDent Demo-Website | TreeTech Portfolio',
-      en: 'AlpenDent Demo Website | TreeTech Portfolio'
+      en: 'AlpenDent Demo Website | TreeTech Portfolio',
+      ru: 'AlpenDent, пример сайта | TreeTech'
     },
     metaDescription: {
       de: 'Zweisprachige Demo-Website für eine moderne Zahnordination in Innsbruck.',
-      en: 'Bilingual demo website for a modern dental clinic in Innsbruck.'
+      en: 'Bilingual demo website for a modern dental clinic in Innsbruck.',
+      ru: 'Пример сайта для современной стоматологии в Инсбруке. Сайт на немецком, как для настоящей австрийской клиники.'
     },
     theme: {
       background: '#f3fbfa',
@@ -330,15 +333,18 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
     location: 'Wien',
     industry: {
       de: 'Rechtsanwaltskanzlei',
-      en: 'Law firm'
+      en: 'Law firm',
+      ru: 'Адвокатская контора'
     },
     metaTitle: {
       de: 'Vienna Legal Demo-Website | TreeTech Portfolio',
-      en: 'Vienna Legal Demo Website | TreeTech Portfolio'
+      en: 'Vienna Legal Demo Website | TreeTech Portfolio',
+      ru: 'Vienna Legal, пример сайта | TreeTech'
     },
     metaDescription: {
       de: 'Zweisprachige Demo-Website für eine seriöse Wiener Rechtsanwaltskanzlei.',
-      en: 'Bilingual demo website for a composed Vienna law firm.'
+      en: 'Bilingual demo website for a composed Vienna law firm.',
+      ru: 'Пример сайта для адвокатской конторы в Вене. Сайт на немецком, как для настоящей австрийской фирмы.'
     },
     theme: {
       background: '#f6f4ef',
@@ -446,15 +452,18 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
     location: 'Salzkammergut',
     industry: {
       de: 'Alpines Hotel',
-      en: 'Alpine hotel'
+      en: 'Alpine hotel',
+      ru: 'Альпийский отель'
     },
     metaTitle: {
       de: 'Bergblick Hotel Demo-Website | TreeTech Portfolio',
-      en: 'Bergblick Hotel Demo Website | TreeTech Portfolio'
+      en: 'Bergblick Hotel Demo Website | TreeTech Portfolio',
+      ru: 'Bergblick Hotel, пример сайта | TreeTech'
     },
     metaDescription: {
       de: 'Zweisprachige Demo-Website für ein alpines Hotel im Salzkammergut.',
-      en: 'Bilingual demo website for an alpine hotel in the Salzkammergut.'
+      en: 'Bilingual demo website for an alpine hotel in the Salzkammergut.',
+      ru: 'Пример сайта для альпийского отеля в Зальцкаммергуте. Сайт на немецком, как для настоящего австрийского отеля.'
     },
     theme: {
       background: '#f5f8f3',
@@ -562,15 +571,18 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
     location: 'Graz',
     industry: {
       de: 'Immobilienagentur',
-      en: 'Real estate agency'
+      en: 'Real estate agency',
+      ru: 'Агентство недвижимости'
     },
     metaTitle: {
       de: 'GreenHaus Immobilien Demo-Website | TreeTech Portfolio',
-      en: 'GreenHaus Immobilien Demo Website | TreeTech Portfolio'
+      en: 'GreenHaus Immobilien Demo Website | TreeTech Portfolio',
+      ru: 'GreenHaus Immobilien, пример сайта | TreeTech'
     },
     metaDescription: {
       de: 'Zweisprachige Demo-Website für eine Immobilienagentur in Graz.',
-      en: 'Bilingual demo website for a real estate agency in Graz.'
+      en: 'Bilingual demo website for a real estate agency in Graz.',
+      ru: 'Пример сайта для агентства недвижимости в Граце. Сайт на немецком, как для настоящей австрийской фирмы.'
     },
     theme: {
       background: '#f8f7f1',
@@ -678,15 +690,18 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
     location: 'Linz',
     industry: {
       de: 'Fitnessstudio',
-      en: 'Fitness studio'
+      en: 'Fitness studio',
+      ru: 'Фитнес-студия'
     },
     metaTitle: {
       de: 'KraftWerk Fitness Demo-Website | TreeTech Portfolio',
-      en: 'KraftWerk Fitness Demo Website | TreeTech Portfolio'
+      en: 'KraftWerk Fitness Demo Website | TreeTech Portfolio',
+      ru: 'KraftWerk Fitness, пример сайта | TreeTech'
     },
     metaDescription: {
       de: 'Zweisprachige Demo-Website für ein Fitnessstudio in Linz.',
-      en: 'Bilingual demo website for a fitness studio in Linz.'
+      en: 'Bilingual demo website for a fitness studio in Linz.',
+      ru: 'Пример сайта для фитнес-студии в Линце. Сайт на немецком, как для настоящей австрийской студии.'
     },
     theme: {
       background: '#111111',
@@ -789,6 +804,14 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
     }
   }
 ]);
+
+/**
+ * The older example sites are written in German and English. On the Russian site they show the
+ * German version, as a real Austrian business would have it; only the frame around them is Russian.
+ */
+export const demoSites: DemoSite[] = demoSiteList.map((site) =>
+  site.slug === 'elektro-huber' ? site : {...site, copy: {...site.copy, ru: site.copy.de}}
+);
 
 export function getDemoSiteBySlug(slug: string) {
   return demoSites.find((site) => site.slug === slug);

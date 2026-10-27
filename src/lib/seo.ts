@@ -9,13 +9,16 @@ type MetadataInput = {
   path?: string;
   title: string;
   description: string;
+  /** Languages this page exists in, for hreflang. Defaults to all. */
+  locales?: Locale[];
 };
 
 export function createPageMetadata({
   locale,
   path = '',
   title,
-  description
+  description,
+  locales = [...routing.locales]
 }: MetadataInput): Metadata {
   const openGraphLocales = {
     de: 'de_AT',
@@ -26,13 +29,13 @@ export function createPageMetadata({
   const canonical = new URL(canonicalPath, siteConfig.url);
   const openGraphImage = new URL('/og-image.png', siteConfig.url).toString();
   const languages: Record<string, string> = Object.fromEntries(
-    routing.locales.map((item) => [
+    locales.map((item) => [
       item,
       new URL(getLocalizedPath(item, path), siteConfig.url).toString()
     ])
   );
   languages['x-default'] = new URL(
-    getLocalizedPath(routing.defaultLocale, path),
+    getLocalizedPath(locales.includes(routing.defaultLocale) ? routing.defaultLocale : locales[0], path),
     siteConfig.url
   ).toString();
 
@@ -66,7 +69,7 @@ export function createPageMetadata({
           url: openGraphImage,
           width: 1200,
           height: 630,
-          alt: `${siteConfig.name} - AI automation, websites and workflows`
+          alt: `${siteConfig.name}: Websites für Handwerk und Werkstätten in Wien und Niederösterreich`
         }
       ]
     },

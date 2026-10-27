@@ -1,17 +1,17 @@
-import {ArrowLeft, Clock, Tags} from 'lucide-react';
+import {ArrowLeft, Clock, Phone} from 'lucide-react';
 import type {Metadata} from 'next';
 import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 
-import {FadeIn} from '@/components/motion/fade-in';
 import {ButtonLink} from '@/components/ui/button-link';
 import {Container} from '@/components/ui/container';
-import {blogContent, blogPosts, getBlogPostBySlug, getFormattedPostDate} from '@/content/blog';
-import {siteConfig} from '@/content/site';
+import {blogContent, blogPosts, getBlogPostBySlug, getFormattedPostDate, isPostInLocale} from '@/content/blog';
+import {phoneHref, siteConfig} from '@/content/site';
 import {Link} from '@/i18n/navigation';
 import {routing} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
+import {softHyphens} from '@/lib/utils';
 
 type PageProps = {
   params: Promise<{locale: string; slug: string}>;
@@ -19,7 +19,7 @@ type PageProps = {
 
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) =>
-    blogPosts.map((post) => ({locale, slug: post.slug}))
+    blogPosts.filter((post) => isPostInLocale(post, locale)).map((post) => ({locale, slug: post.slug}))
   );
 }
 
@@ -27,7 +27,7 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const {locale: rawLocale, slug} = await params;
   const post = getBlogPostBySlug(slug);
 
-  if (!hasLocale(routing.locales, rawLocale) || !post) {
+  if (!hasLocale(routing.locales, rawLocale) || !post || !isPostInLocale(post, rawLocale)) {
     return {};
   }
 
@@ -35,6 +35,7 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
 
   return createPageMetadata({
     locale,
+    locales: routing.locales.filter((item) => isPostInLocale(post, item)),
     path: `/blog/${post.slug}`,
     title: post.seoTitle[locale],
     description: post.seoDescription[locale]
@@ -58,7 +59,7 @@ export default async function BlogPostPage({params}: PageProps) {
     ru: 'ru-RU'
   } satisfies Record<typeof locale, string>;
 
-  if (!post) {
+  if (!post || !isPostInLocale(post, locale)) {
     notFound();
   }
 
@@ -85,98 +86,67 @@ export default async function BlogPostPage({params}: PageProps) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{__html: JSON.stringify(articleJsonLd)}}
-      />
-
-      <section className="dark-band relative overflow-hidden py-10 text-foreground sm:py-14">
-        <div className="dark-grid absolute inset-0 opacity-30" />
-        <Container className="relative">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-muted transition hover:text-foreground"
-          >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            <span>{content.backToBlog}</span>
-          </Link>
-        </Container>
-      </section>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(articleJsonLd)}} />
 
       <article>
-        <section className="dark-band scanline relative overflow-hidden pb-16 text-foreground">
-          <div className="dark-grid absolute inset-0 opacity-35" />
-          <Container className="relative">
-            <FadeIn className="max-w-4xl">
-              <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 font-bold text-sm text-accent">
-                {post.category[locale]}
-              </p>
-              <h1 className="mt-6 break-words text-balance text-5xl font-semibold leading-[1.03] text-foreground sm:text-7xl">
-                {post.title[locale]}
-              </h1>
-              <p className="mt-6 text-pretty text-lg leading-8 text-muted sm:text-xl">
-                {post.excerpt[locale]}
-              </p>
-              <div className="mt-8 flex flex-wrap gap-4 text-sm font-semibold text-muted">
-                <span>{content.published}: {getFormattedPostDate(post, locale)}</span>
-                <span className="inline-flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-accent" aria-hidden="true" />
-                  {content.readingTimeLabel}: {post.readingTime[locale]}
-                </span>
-              </div>
-            </FadeIn>
-          </Container>
-        </section>
-
-        <section className="py-16">
+        <header className="border-b-2 border-foreground py-10 sm:py-14">
           <Container>
-            <div className="mx-auto grid max-w-4xl gap-12">
-              {post.sections.map((section, index) => (
-                <FadeIn key={section.heading[locale]} delay={index * 0.06}>
-                  <section className="border-b border-border pb-10 last:border-b-0 last:pb-0">
-                    <h2 className="break-words text-balance text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
-                      {section.heading[locale]}
-                    </h2>
-                    <div className="mt-6 grid gap-5">
-                      {section.body[locale].map((paragraph) => (
-                        <p key={paragraph} className="text-pretty text-base leading-8 text-muted sm:text-lg">
-                          {paragraph}
-                        </p>
-                      ))}
-                    </div>
-                  </section>
-                </FadeIn>
-              ))}
+            <Link
+              href="/blog"
+              className="inline-flex min-h-11 items-center gap-2 text-[15px] font-bold text-muted transition hover:text-foreground"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              <span>{content.backToBlog}</span>
+            </Link>
+            <p className="mt-4 text-base font-bold text-accent">{post.category[locale]}</p>
+            <h1 className="mt-2 max-w-4xl text-balance text-[38px] leading-[1.05] text-foreground sm:text-[56px]">
+              {softHyphens(post.title[locale])}
+            </h1>
+            <p className="mt-4 max-w-[38em] text-pretty text-lg leading-relaxed text-muted">{post.excerpt[locale]}</p>
+            <p className="mt-5 flex flex-wrap gap-x-5 gap-y-1 text-[15px] font-semibold text-muted">
+              <span>
+                {content.published}: {getFormattedPostDate(post, locale)}
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <Clock className="h-4 w-4 text-accent" aria-hidden="true" />
+                {content.readingTimeLabel}: {post.readingTime[locale]}
+              </span>
+            </p>
+          </Container>
+        </header>
 
-              <div className="flex flex-wrap gap-3">
-                {post.tags[locale].map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-flex min-h-10 items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-sm font-semibold text-muted"
-                  >
-                    <Tags className="h-4 w-4 text-accent" aria-hidden="true" />
-                    {tag}
-                  </span>
-                ))}
-              </div>
+        <div className="bg-surface py-12 sm:py-16">
+          <Container>
+            <div className="mx-auto grid max-w-[44rem] gap-10">
+              {post.sections.map((section) => (
+                <section key={section.heading[locale]}>
+                  <h2 className="text-balance text-[26px] leading-tight text-foreground sm:text-[32px]">
+                    {section.heading[locale]}
+                  </h2>
+                  <div className="mt-4 grid gap-4">
+                    {section.body[locale].map((paragraph) => (
+                      <p key={paragraph} className="text-pretty text-[18px] leading-[1.7] text-foreground/90">
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                </section>
+              ))}
             </div>
           </Container>
-        </section>
+        </div>
       </article>
 
-      <section className="warm-band py-16">
+      <section className="bg-accent py-14 text-white">
         <Container>
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div>
-              <h2 className="break-words text-balance text-3xl font-semibold leading-tight text-foreground sm:text-5xl">
-                {content.relatedCtaTitle}
-              </h2>
-              <p className="mt-5 max-w-3xl text-base leading-8 text-muted sm:text-lg">
-                {content.relatedCtaLead}
-              </p>
-            </div>
-            <ButtonLink href="/contact" variant="accent">
+          <h2 className="max-w-3xl text-balance text-[30px] leading-[1.08] sm:text-[44px]">{content.relatedCtaTitle}</h2>
+          <p className="mt-3 max-w-[38em] text-[17px] text-white/85">{content.relatedCtaLead}</p>
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <ButtonLink href="/contact#audit-call" variant="signal" trackingEvent="cta_preview_blog_post">
               {content.relatedCta}
+            </ButtonLink>
+            <ButtonLink href={phoneHref} variant="onDark" icon={Phone} trackingEvent="phone_click">
+              {siteConfig.phone}
             </ButtonLink>
           </div>
         </Container>
