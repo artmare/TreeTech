@@ -2,6 +2,7 @@ import type {MetadataRoute} from 'next';
 
 import {blogPosts} from '@/content/blog';
 import {demoSites} from '@/content/demo-sites';
+import {servicePages} from '@/content/service-pages';
 import {portfolioProjects, siteConfig} from '@/content/site';
 import type {Locale} from '@/i18n/routing';
 import {routing} from '@/i18n/routing';
@@ -11,6 +12,7 @@ const staticPaths = ['', '/about', '/services', '/blog', '/portfolio', '/contact
 const sitemapPaths = [
   ...staticPaths,
   ...blogPosts.map((post) => `/blog/${post.slug}`),
+  ...servicePages.map((page) => `/${page.slug}`),
   ...portfolioProjects.map((project) => `/portfolio/${project.slug}`),
   ...demoSites.map((site) => `/portfolio/${site.slug}/site`)
 ];
