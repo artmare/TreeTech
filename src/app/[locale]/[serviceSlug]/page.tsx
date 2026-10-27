@@ -86,12 +86,12 @@ export default async function ServiceLandingPage({params}: PageProps) {
 
   return (
     <>
-      <section className="dark-band relative overflow-hidden py-10 text-white sm:py-14">
+      <section className="dark-band relative overflow-hidden py-10 text-foreground sm:py-14">
         <div className="dark-grid absolute inset-0 opacity-30" />
         <Container className="relative">
           <Link
             href="/services"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-white/70 transition hover:text-white"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-muted transition hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             <span>{content.back}</span>
@@ -99,17 +99,17 @@ export default async function ServiceLandingPage({params}: PageProps) {
         </Container>
       </section>
 
-      <section className="dark-band scanline relative overflow-hidden pb-16 text-white">
+      <section className="dark-band scanline relative overflow-hidden pb-16 text-foreground">
         <div className="dark-grid absolute inset-0 opacity-35" />
         <Container className="relative">
           <FadeIn className="max-w-5xl">
             <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 text-sm font-semibold text-accent">
               TreeTech Service
             </p>
-            <h1 className="mt-6 break-words text-balance text-5xl font-semibold leading-[1.03] text-white sm:text-7xl">
+            <h1 className="mt-6 break-words text-balance text-5xl font-semibold leading-[1.03] text-foreground sm:text-7xl">
               {page.title[locale]}
             </h1>
-            <p className="mt-6 max-w-3xl text-pretty text-lg leading-8 text-white/72 sm:text-xl">
+            <p className="mt-6 max-w-3xl text-pretty text-lg leading-8 text-muted sm:text-xl">
               {page.description[locale]}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">

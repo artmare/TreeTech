@@ -87,7 +87,7 @@ export function ContactForm() {
             })}
             autoComplete="name"
             placeholder={t('namePlaceholder')}
-            className="h-12 w-full rounded-[0.9rem] border border-white/10 bg-white/[0.055] px-3 text-sm text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-white/[0.08] focus:ring-4 focus:ring-accent/10"
+            className="h-12 w-full rounded-[0.9rem] border border-border bg-surface px-3 text-sm text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-surface focus:ring-4 focus:ring-accent/10"
           />
         </Field>
         <Field label={t('email')} error={errors.email?.message}>
@@ -103,7 +103,7 @@ export function ContactForm() {
             type="email"
             autoComplete="email"
             placeholder={t('emailPlaceholder')}
-            className="h-12 w-full rounded-[0.9rem] border border-white/10 bg-white/[0.055] px-3 text-sm text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-white/[0.08] focus:ring-4 focus:ring-accent/10"
+            className="h-12 w-full rounded-[0.9rem] border border-border bg-surface px-3 text-sm text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-surface focus:ring-4 focus:ring-accent/10"
           />
         </Field>
       </div>
@@ -117,7 +117,7 @@ export function ContactForm() {
           })}
           rows={6}
           placeholder={t('messagePlaceholder')}
-          className="w-full resize-none rounded-[0.9rem] border border-white/10 bg-white/[0.055] px-3 py-3 text-sm leading-6 text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-white/[0.08] focus:ring-4 focus:ring-accent/10"
+          className="w-full resize-none rounded-[0.9rem] border border-border bg-surface px-3 py-3 text-sm leading-6 text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-surface focus:ring-4 focus:ring-accent/10"
         />
       </Field>
 
@@ -128,7 +128,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-[#070806] shadow-[0_18px_42px_rgba(214,255,99,0.14)] transition hover:-translate-y-0.5 hover:bg-white disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex min-h-14 items-center justify-center gap-2 rounded-[12px] bg-accent px-6 py-3.5 text-base font-bold text-white transition hover:bg-[var(--accent-strong)] disabled:cursor-not-allowed disabled:opacity-70"
         >
           <Send className="h-4 w-4" aria-hidden="true" />
           <span>{isSubmitting ? t('submitting') : t('submit')}</span>

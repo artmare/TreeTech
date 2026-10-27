@@ -33,12 +33,12 @@ export function OfferCard({offer, locale, ctaLabel}: OfferCardProps) {
         offer.highlighted && 'border-accent/45 bg-accent/[0.08]'
       )}
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(214,255,99,0.88),transparent)] opacity-80" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px hidden opacity-80" />
       <div className="flex items-start justify-between gap-4">
-        <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 font-mono text-xs uppercase text-muted">
+        <div className="rounded-full border border-border bg-surface px-3 py-1.5 font-bold text-xs text-muted">
           CHAPTER // {offer.chapter}
         </div>
-        <span className="h-2 w-2 rounded-full bg-accent shadow-[0_0_18px_rgba(214,255,99,0.8)]" />
+        <span className="h-2 w-2 rounded-full bg-accent" />
       </div>
 
       <div className="mt-6">
@@ -49,20 +49,20 @@ export function OfferCard({offer, locale, ctaLabel}: OfferCardProps) {
         <p className="mt-4 text-sm leading-7 text-muted">{offer.description[locale]}</p>
       </div>
 
-      <div className="mt-6 grid gap-3 border-t border-white/10 pt-5">
+      <div className="mt-6 grid gap-3 border-t border-border pt-5">
         {[
           [detailLabels.problem, offer.problem[locale]],
           [detailLabels.solution, offer.solution[locale]],
           [detailLabels.result, offer.result[locale]]
         ].map(([label, text]) => (
-          <div key={label} className="rounded-[0.9rem] border border-white/10 bg-white/[0.03] p-4">
-            <p className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-accent">{label}</p>
+          <div key={label} className="rounded-[0.9rem] border border-border bg-surface p-4">
+            <p className="font-mono text-[0.68rem] text-accent">{label}</p>
             <p className="mt-2 text-sm leading-6 text-muted">{text}</p>
           </div>
         ))}
       </div>
 
-      <div className="mt-6 border-t border-white/10 pt-5">
+      <div className="mt-6 border-t border-border pt-5">
         <ul className="grid gap-3">
           {offer.features[locale].map((feature) => (
             <li key={feature} className="flex gap-3 text-sm leading-6 text-muted">
@@ -75,7 +75,7 @@ export function OfferCard({offer, locale, ctaLabel}: OfferCardProps) {
 
       <Link
         href="/contact"
-        className="mt-6 inline-flex min-h-11 w-fit items-center gap-2 rounded-full border border-accent/25 bg-accent px-4 py-3 text-sm font-semibold text-[#070806] transition hover:-translate-y-0.5 hover:bg-white"
+        className="mt-6 inline-flex min-h-14 w-fit items-center gap-2 rounded-[12px] bg-accent px-6 py-3.5 text-base font-bold text-white transition hover:bg-[var(--accent-strong)]"
       >
         <span>{ctaLabel}</span>
         <ArrowUpRight className="h-4 w-4" aria-hidden="true" />

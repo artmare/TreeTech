@@ -20,7 +20,7 @@ export function PortfolioCard({project, locale, cta}: PortfolioCardProps) {
       <ProjectPreview project={project} locale={locale} />
       <div className="flex flex-col p-2 lg:p-4">
         <div className="flex items-center justify-between gap-4 lg:mt-2">
-          <p className="font-mono text-xs uppercase tracking-[0.14em] text-accent">
+          <p className="font-mono text-xs text-accent">
             {conceptLabel} · {project.industry[locale]}
           </p>
           <span className="text-sm text-muted">{project.location}</span>
@@ -29,12 +29,12 @@ export function PortfolioCard({project, locale, cta}: PortfolioCardProps) {
         <p className="mt-3 text-sm leading-6 text-muted">
           {project.description[locale]}
         </p>
-        <div className="mt-4 rounded-[1rem] border border-white/10 bg-white/[0.04] px-3 py-3 text-sm font-semibold leading-6 text-foreground">
+        <div className="mt-4 rounded-[1rem] border border-border bg-surface px-3 py-3 text-sm font-semibold leading-6 text-foreground">
           <span className="text-accent">{goalLabel}:</span> {project.metric[locale]}
         </div>
         <Link
           href={`/portfolio/${project.slug}`}
-          className="mt-4 inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-accent px-4 py-3 text-sm font-semibold text-[#070806] transition hover:bg-white lg:mt-5"
+          className="mt-4 inline-flex min-h-14 w-fit items-center gap-2 rounded-[12px] bg-accent px-6 py-3.5 text-base font-bold text-white transition hover:bg-[var(--accent-strong)] lg:mt-5"
         >
           <span>{cta}</span>
           <ArrowUpRight

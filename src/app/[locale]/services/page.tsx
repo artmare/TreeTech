@@ -65,21 +65,21 @@ export default async function ServicesPage({params}: PageProps) {
 
   return (
     <>
-      <section className="dark-band scanline relative overflow-hidden py-20 text-white sm:py-24">
+      <section className="dark-band scanline relative overflow-hidden py-20 text-foreground sm:py-24">
         <div className="dark-grid absolute inset-0 opacity-45" />
         <Container className="relative">
           <FadeIn className="max-w-5xl">
-            <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 font-mono text-sm text-accent">
+            <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 font-bold text-sm text-accent">
               {content.common.eyebrow}
             </p>
-            <div className="mt-6 rounded-[1rem] border border-white/10 bg-white/[0.04] p-3 font-mono text-xs text-white/62 sm:max-w-xl">
+            <div className="mt-6 rounded-[1rem] border border-border bg-surface p-3 font-bold text-xs text-muted sm:max-w-xl">
               <p><span className="text-accent">&gt;</span> read service_registry.json</p>
               <p className="mt-1"><span className="text-accent">&gt;</span> output: automation web apps workflows</p>
             </div>
-            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.04] text-white sm:text-7xl">
+            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.04] text-foreground sm:text-7xl">
               {content.services.title}
             </h1>
-            <p className="mt-6 max-w-3xl text-pretty text-lg leading-8 text-white/72 sm:text-xl">
+            <p className="mt-6 max-w-3xl text-pretty text-lg leading-8 text-muted sm:text-xl">
               {content.services.lead}
             </p>
           </FadeIn>
@@ -115,7 +115,7 @@ export default async function ServicesPage({params}: PageProps) {
         </Container>
       </section>
 
-      <section className="dark-band relative overflow-hidden py-16 text-white">
+      <section className="dark-band relative overflow-hidden py-16 text-foreground">
         <div className="dark-grid absolute inset-0 opacity-30" />
         <Container className="relative">
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">

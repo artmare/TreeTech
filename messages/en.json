@@ -9,10 +9,11 @@
     "analysis": "Free preview",
     "menu": "Open menu",
     "close": "Close menu",
-    "language": "Switch language"
+    "language": "Switch language",
+    "call": "Call"
   },
   "footer": {
-    "tagline": "AI automation, websites, web applications, and workflow systems for Austrian businesses.",
+    "tagline": "Websites for trades and workshops in Vienna and Lower Austria. Fixed prices, copy included, live in 7 days.",
     "cta": "Let’s talk about your next digital system.",
     "copyright": "All rights reserved."
   },

@@ -20,7 +20,7 @@ type Props = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#070806',
+  themeColor: '#F2F3EF',
   width: 'device-width',
   initialScale: 1
 };

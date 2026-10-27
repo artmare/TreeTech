@@ -77,17 +77,17 @@ export default async function BlogPage({params}: PageProps) {
         dangerouslySetInnerHTML={{__html: JSON.stringify(blogJsonLd)}}
       />
 
-      <section className="dark-band scanline relative overflow-hidden py-20 text-white sm:py-24">
+      <section className="dark-band scanline relative overflow-hidden py-20 text-foreground sm:py-24">
         <div className="dark-grid absolute inset-0 opacity-45" />
         <Container className="relative">
           <FadeIn className="max-w-5xl">
-            <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 font-mono text-sm text-accent">
+            <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 font-bold text-sm text-accent">
               {content.heroEyebrow}
             </p>
-            <h1 className="mt-6 break-words text-balance text-5xl font-semibold leading-[1.03] text-white sm:text-7xl">
+            <h1 className="mt-6 break-words text-balance text-5xl font-semibold leading-[1.03] text-foreground sm:text-7xl">
               {content.heroTitle}
             </h1>
-            <p className="mt-6 max-w-3xl text-pretty text-lg leading-8 text-white/72 sm:text-xl">
+            <p className="mt-6 max-w-3xl text-pretty text-lg leading-8 text-muted sm:text-xl">
               {content.heroLead}
             </p>
           </FadeIn>
@@ -119,7 +119,7 @@ export default async function BlogPage({params}: PageProps) {
                 </div>
                 <div className="mt-8 flex items-end justify-between gap-5">
                   <div>
-                    <p className="font-mono text-xs uppercase tracking-[0.16em] text-accent">
+                    <p className="font-mono text-xs text-accent">
                       {getFormattedPostDate(featuredPost, locale)}
                     </p>
                     <p className="mt-4 max-w-2xl text-lg leading-8 text-muted">
@@ -145,7 +145,7 @@ export default async function BlogPage({params}: PageProps) {
             {Array.from(new Set(blogPosts.flatMap((post) => post.tags[locale]))).map((tag) => (
               <span
                 key={tag}
-                className="inline-flex min-h-10 items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-semibold text-muted"
+                className="inline-flex min-h-10 items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-sm font-semibold text-muted"
               >
                 <Tags className="h-4 w-4 text-accent" aria-hidden="true" />
                 {tag}
@@ -171,7 +171,7 @@ export default async function BlogPage({params}: PageProps) {
                   className="terminal-card group flex h-full flex-col rounded-[1.25rem] p-5 transition hover:-translate-y-1 hover:border-accent/45"
                 >
                   <div className="flex items-center justify-between gap-4">
-                    <p className="font-mono text-xs uppercase tracking-[0.16em] text-accent">
+                    <p className="font-mono text-xs text-accent">
                       {post.category[locale]}
                     </p>
                     <FileText className="h-5 w-5 text-accent" aria-hidden="true" />
@@ -180,7 +180,7 @@ export default async function BlogPage({params}: PageProps) {
                     {post.title[locale]}
                   </h2>
                   <p className="mt-4 text-sm leading-7 text-muted">{post.excerpt[locale]}</p>
-                  <div className="mt-6 flex flex-wrap gap-3 border-t border-white/10 pt-5 text-xs font-semibold text-muted">
+                  <div className="mt-6 flex flex-wrap gap-3 border-t border-border pt-5 text-xs font-semibold text-muted">
                     <span>{getFormattedPostDate(post, locale)}</span>
                     <span>{post.readingTime[locale]}</span>
                   </div>
