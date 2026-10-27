@@ -6,8 +6,20 @@ export const siteConfig = {
   name: 'TreeTech',
   url: 'https://treetech.at',
   email: 'office@treetech.at',
+  /** Displayed phone number. Change it here and it changes everywhere. */
+  phone: '+43 660 9557357',
+  /** Digits only, international format, used for tel: and wa.me links. */
+  phoneDigits: '436609557357',
+  region: {de: 'Wien und Niederösterreich', en: 'Vienna and Lower Austria', ru: 'Вена и Нижняя Австрия'},
   googleSiteVerification: 'PdjQivxgyQpk4Qxzy2-3pMhBPW2pZreWQYBlrry2Gyw'
 };
+
+export const phoneHref = `tel:+${siteConfig.phoneDigits}`;
+
+export function whatsappHref(message?: string) {
+  const base = `https://wa.me/${siteConfig.phoneDigits}`;
+  return message ? `${base}?text=${encodeURIComponent(message)}` : base;
+}
 
 export type LocalizedText = Record<Locale, string>;
 export type LocalizedList = Record<Locale, string[]>;
@@ -629,9 +641,9 @@ export const faqItems: FaqItem[] = withLocaleFallbacks([
 export const siteContent = withLocaleFallbacks({
   de: {
     metadata: {
-      homeTitle: 'TreeTech | Websites, Automation & Software für Unternehmen in Österreich',
+      homeTitle: 'Website für Handwerker & Werkstätten in Wien und NÖ | TreeTech',
       homeDescription:
-        'TreeTech entwickelt Websites, Automatisierungen und individuelle Software, damit österreichische Unternehmen mehr Anfragen gewinnen und weniger manuell arbeiten.',
+        `Websites für Elektriker, Installateure, Dachdecker, Maler und Kfz-Werkstätten in Wien und Niederösterreich. Fixpreis ab ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'de')}, Texte inklusive, online in 7 Tagen — Vorschau vor der Zahlung.`,
       aboutTitle: 'Über TreeTech | Digitalstudio für österreichische Betriebe',
       aboutDescription:
         'TreeTech ist ein modernes Digitalstudio für Betriebe, die Prozesse automatisieren, Web-Software bauen und digital besser arbeiten möchten.',
@@ -647,7 +659,7 @@ export const siteContent = withLocaleFallbacks({
     },
     common: {
       eyebrow: 'Websites · Automation · Software',
-      primaryCta: 'Kostenlose Analyse',
+      primaryCta: 'Kostenlose Vorschau',
       secondaryCta: 'Beispielprojekte ansehen',
       viewProject: 'Case ansehen',
       startProject: 'Projekt starten',
@@ -759,9 +771,9 @@ export const siteContent = withLocaleFallbacks({
   },
   en: {
     metadata: {
-      homeTitle: 'TreeTech | Websites, automation & software for Austrian businesses',
+      homeTitle: 'Websites for trades & workshops in Vienna and Lower Austria | TreeTech',
       homeDescription:
-        'TreeTech builds websites, automations, and custom software so Austrian businesses gain more customers and spend less time on manual work.',
+        `Websites for electricians, plumbers, roofers, painters and car workshops in Vienna and Lower Austria. Fixed price from ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'en')}, copywriting included, live in 7 days — preview before you pay.`,
       aboutTitle: 'About TreeTech | Digital studio for Austrian businesses',
       aboutDescription:
         'TreeTech is a modern digital studio for businesses that want to automate processes, build web software, and work better digitally.',
@@ -777,7 +789,7 @@ export const siteContent = withLocaleFallbacks({
     },
     common: {
       eyebrow: 'Websites · Automation · Software',
-      primaryCta: 'Free analysis',
+      primaryCta: 'Free preview',
       secondaryCta: 'View example projects',
       viewProject: 'View case',
       startProject: 'Start project',
@@ -889,9 +901,9 @@ export const siteContent = withLocaleFallbacks({
   },
   ru: {
     metadata: {
-      homeTitle: 'TreeTech | AI-автоматизация в Австрии, сайты и CRM-интеграции',
+      homeTitle: 'Сайты для мастерских и автосервисов в Вене и Нижней Австрии | TreeTech',
       homeDescription:
-        'TreeTech создает AI-автоматизацию, сайты, CRM-интеграции и workflow-системы для малого и среднего бизнеса в Австрии.',
+        `Сайты для электриков, сантехников, кровельщиков, маляров и автосервисов в Вене и Нижней Австрии. Фиксированная цена от ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'ru')}, тексты включены, онлайн за 7 дней — превью до оплаты.`,
       aboutTitle: 'О TreeTech | Digital-студия для бизнеса в Австрии',
       aboutDescription:
         'TreeTech помогает компаниям автоматизировать процессы, создавать веб-софт и работать цифровыми инструментами эффективнее.',
@@ -907,7 +919,7 @@ export const siteContent = withLocaleFallbacks({
     },
     common: {
       eyebrow: 'Сайты · Автоматизация · ПО',
-      primaryCta: 'Бесплатный анализ',
+      primaryCta: 'Бесплатное превью',
       secondaryCta: 'Посмотреть примеры проектов',
       viewProject: 'Посмотреть кейс',
       startProject: 'Начать проект',

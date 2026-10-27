@@ -38,6 +38,15 @@ export function AnalyticsLoader() {
       const target = event.target instanceof Element ? event.target : null;
       const link = target?.closest('a[href]');
       const href = link?.getAttribute('href') || '';
+      const tracked = link?.getAttribute('data-track');
+
+      if (tracked) {
+        trackEvent(tracked, {href});
+      } else if (href.startsWith('tel:')) {
+        trackEvent('phone_click', {href});
+      } else if (href.includes('wa.me/')) {
+        trackEvent('whatsapp_click', {href});
+      }
 
       if (href.includes('#audit-call')) {
         trackEvent('cta_click', {target: 'audit_call', href});
