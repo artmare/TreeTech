@@ -1,12 +1,11 @@
 'use client';
 
-import {AnimatePresence, motion} from 'framer-motion';
 import {Globe2, Menu, X} from 'lucide-react';
-import {useLocale, useTranslations} from 'next-intl';
+import {useTranslations} from 'next-intl';
 import {useState} from 'react';
 
 import {LogoMark} from '@/components/logo-mark';
-import type {Locale} from '@/i18n/routing';
+import {localeLabels, localeShortLabels, routing, type Locale} from '@/i18n/routing';
 import {Link, usePathname} from '@/i18n/navigation';
 import {isDemoSitePath} from '@/lib/demo-routes';
 import {cn} from '@/lib/utils';
@@ -26,10 +25,9 @@ type SiteHeaderProps = {
 
 export function SiteHeader({locale}: SiteHeaderProps) {
   const t = useTranslations('nav');
-  const activeLocale = useLocale() as Locale;
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const nextLocale = activeLocale === 'de' ? 'en' : 'de';
+  const languageOptions = routing.locales.filter((item) => item !== locale);
 
   if (isDemoSitePath(pathname)) {
     return null;
@@ -69,20 +67,28 @@ export function SiteHeader({locale}: SiteHeaderProps) {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link
-            href={pathname}
-            locale={nextLocale}
-            className="hidden min-h-10 items-center gap-2 rounded-full border border-white/10 bg-white/[0.055] px-3 py-2 text-sm font-semibold text-foreground shadow-sm transition hover:border-accent/40 hover:text-accent sm:inline-flex"
+          <div
+            className="hidden min-h-10 items-center gap-1 rounded-full border border-white/10 bg-white/[0.055] p-1 text-sm font-semibold text-foreground shadow-sm sm:flex"
             aria-label={t('language')}
           >
             <Globe2 className="h-4 w-4" aria-hidden="true" />
-            <span>{locale === 'de' ? 'EN' : 'DE'}</span>
-          </Link>
+            {languageOptions.map((item) => (
+              <Link
+                key={item}
+                href={pathname}
+                locale={item}
+                className="rounded-full px-2 py-1.5 transition hover:bg-white/10 hover:text-accent"
+                aria-label={`${t('language')}: ${localeLabels[item]}`}
+              >
+                {localeShortLabels[item]}
+              </Link>
+            ))}
+          </div>
           <Link
-            href="/contact"
+            href="/contact#audit-call"
             className="hidden min-h-11 items-center justify-center rounded-full bg-accent px-4 py-2 text-sm font-semibold !text-[#070806] shadow-[0_14px_32px_rgba(214,255,99,0.14)] transition hover:-translate-y-0.5 hover:bg-white sm:inline-flex"
           >
-            {t('contact')}
+            {t('analysis')}
           </Link>
           <button
             type="button"
@@ -96,39 +102,37 @@ export function SiteHeader({locale}: SiteHeaderProps) {
         </div>
       </div>
 
-      <AnimatePresence>
-        {open ? (
-          <motion.div
-            initial={{height: 0, opacity: 0}}
-            animate={{height: 'auto', opacity: 1}}
-            exit={{height: 0, opacity: 0}}
-            className="overflow-hidden border-t border-white/10 bg-[#070806] lg:hidden"
-          >
-            <nav className="mx-auto grid max-w-7xl gap-2 px-5 py-4 sm:px-6" aria-label="Mobile navigation">
-              {navItems.map((item) => (
+      {open ? (
+        <div className="overflow-hidden border-t border-white/10 bg-[#070806] lg:hidden">
+          <nav className="mx-auto grid max-w-7xl gap-2 px-5 py-4 sm:px-6" aria-label="Mobile navigation">
+            {navItems.map((item) => (
+              <Link
+                key={item.key}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className="rounded-[1rem] border border-white/10 bg-white/[0.055] px-4 py-3 text-base font-semibold text-foreground shadow-sm"
+              >
+                {t(item.key)}
+              </Link>
+            ))}
+            <div className="mt-1 grid gap-2 sm:grid-cols-2" aria-label={t('language')}>
+              {languageOptions.map((item) => (
                 <Link
-                  key={item.key}
-                  href={item.href}
+                  key={item}
+                  href={pathname}
+                  locale={item}
                   onClick={() => setOpen(false)}
-                  className="rounded-[1rem] border border-white/10 bg-white/[0.055] px-4 py-3 text-base font-semibold text-foreground shadow-sm"
+                  className="inline-flex items-center justify-center gap-2 rounded-[1rem] border border-white/10 bg-white/[0.055] px-4 py-3 text-sm font-semibold text-foreground"
+                  aria-label={`${t('language')}: ${localeLabels[item]}`}
                 >
-                  {t(item.key)}
+                  <Globe2 className="h-4 w-4" aria-hidden="true" />
+                  <span>{localeLabels[item]}</span>
                 </Link>
               ))}
-              <Link
-                href={pathname}
-                locale={nextLocale}
-                onClick={() => setOpen(false)}
-                className="mt-1 inline-flex items-center justify-center gap-2 rounded-[1rem] border border-white/10 bg-white/[0.055] px-4 py-3 text-sm font-semibold text-foreground"
-                aria-label={t('language')}
-              >
-                <Globe2 className="h-4 w-4" aria-hidden="true" />
-                <span>{locale === 'de' ? 'English' : 'Deutsch'}</span>
-              </Link>
-            </nav>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+            </div>
+          </nav>
+        </div>
+      ) : null}
     </header>
   );
 }

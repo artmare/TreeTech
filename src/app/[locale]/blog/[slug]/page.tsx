@@ -52,6 +52,11 @@ export default async function BlogPostPage({params}: PageProps) {
   setRequestLocale(locale);
   const content = blogContent[locale];
   const post = getBlogPostBySlug(slug);
+  const schemaLanguages = {
+    de: 'de-AT',
+    en: 'en',
+    ru: 'ru-RU'
+  } satisfies Record<typeof locale, string>;
 
   if (!post) {
     notFound();
@@ -75,7 +80,7 @@ export default async function BlogPostPage({params}: PageProps) {
       url: siteConfig.url
     },
     mainEntityOfPage: `${siteConfig.url}/${locale}/blog/${post.slug}`,
-    inLanguage: locale === 'de' ? 'de-AT' : 'en'
+    inLanguage: schemaLanguages[locale]
   };
 
   return (

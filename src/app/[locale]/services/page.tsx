@@ -4,11 +4,11 @@ import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
 
 import {FadeIn} from '@/components/motion/fade-in';
-import {OfferCard} from '@/components/offer-card';
+import {PrimaryServiceCard} from '@/components/primary-service-card';
 import {ButtonLink} from '@/components/ui/button-link';
 import {Container} from '@/components/ui/container';
 import {SectionHeading} from '@/components/ui/section-heading';
-import {offers, processSteps, siteContent} from '@/content/site';
+import {primaryServiceOffers, processSteps, siteContent} from '@/content/site';
 import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
 
@@ -26,8 +26,19 @@ const servicePillars = {
     {icon: Bot, title: 'AI with real utility', text: 'No gimmicks: automations are tied to real tasks, data, and decisions.'},
     {icon: Layers3, title: 'Web as operating system', text: 'Website, web app, CRM flow, and internal tools are planned as one connected system.'},
     {icon: Rocket, title: 'Launch-ready', text: 'Responsive, performant, understandable, and prepared for operation, monitoring, and growth.'}
+  ],
+  ru: [
+    {icon: Bot, title: 'AI с реальной пользой', text: 'Без игрушек: автоматизация привязана к реальным задачам, данным и решениям.'},
+    {icon: Layers3, title: 'Веб как рабочая система', text: 'Сайт, веб-приложение, CRM-flow и внутренние инструменты планируются как единая связанная система.'},
+    {icon: Rocket, title: 'Готово к запуску', text: 'Адаптивно, быстро, понятно и подготовлено к эксплуатации, мониторингу и развитию.'}
   ]
 } satisfies Record<Locale, Array<{icon: typeof Bot; title: string; text: string}>>;
+
+const serviceLabels = {
+  de: {details: 'Details öffnen'},
+  en: {details: 'Open details'},
+  ru: {details: 'Открыть детали'}
+} satisfies Record<Locale, {details: string}>;
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const rawLocale = (await params).locale;
@@ -90,12 +101,13 @@ export default async function ServicesPage({params}: PageProps) {
         <Container>
           <SectionHeading title={content.services.serviceAreasTitle} lead={content.home.servicesLead} />
           <div className="mt-10 grid gap-5 lg:grid-cols-2">
-            {offers.map((offer, index) => (
-              <FadeIn key={offer.chapter} delay={index * 0.08}>
-                <OfferCard
+            {primaryServiceOffers.map((offer, index) => (
+              <FadeIn key={offer.id} delay={index * 0.08}>
+                <PrimaryServiceCard
                   offer={offer}
                   locale={locale}
                   ctaLabel={content.common.requestPackage}
+                  detailLabel={serviceLabels[locale].details}
                 />
               </FadeIn>
             ))}

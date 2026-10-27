@@ -18,7 +18,8 @@ type PageProps = {
 
 const studioSignals = {
   de: ['AI-Automation', 'Custom Web Apps', 'Workflow-Optimierung'],
-  en: ['AI automation', 'Custom web apps', 'Workflow optimization']
+  en: ['AI automation', 'Custom web apps', 'Workflow optimization'],
+  ru: ['AI-автоматизация', 'Индивидуальные веб-приложения', 'Оптимизация workflow']
 } satisfies Record<Locale, string[]>;
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {

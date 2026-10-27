@@ -24,7 +24,7 @@ import {motion} from 'framer-motion';
 
 import type {DemoSite, DemoSiteCopy} from '@/content/demo-sites';
 import {demoSiteLabels} from '@/content/demo-sites';
-import type {Locale} from '@/i18n/routing';
+import {localeLabels, localeShortLabels, routing, type Locale} from '@/i18n/routing';
 import {Link} from '@/i18n/navigation';
 import {cn} from '@/lib/utils';
 
@@ -97,7 +97,7 @@ function renderDemo(slug: string, props: DemoRendererProps) {
 }
 
 function DemoHeader({site, locale, copy}: DemoRendererProps) {
-  const nextLocale = locale === 'de' ? 'en' : 'de';
+  const languageOptions = routing.locales.filter((item) => item !== locale);
   const isDark = site.slug === 'vienna-legal' || site.slug === 'kraftwerk-fitness';
 
   return (
@@ -133,15 +133,23 @@ function DemoHeader({site, locale, copy}: DemoRendererProps) {
         </nav>
 
         <div className="flex shrink-0 items-center gap-2">
-          <Link
-            href={`/portfolio/${site.slug}/site`}
-            locale={nextLocale}
-            className="inline-flex min-h-10 items-center gap-2 rounded-full border border-[var(--demo-border)] bg-[var(--demo-surface)] px-3 py-2 text-sm font-semibold text-[var(--demo-text)]"
-            aria-label={locale === 'de' ? 'Switch to English' : 'Auf Deutsch wechseln'}
+          <div
+            className="inline-flex min-h-10 items-center gap-1 rounded-full border border-[var(--demo-border)] bg-[var(--demo-surface)] p-1 text-sm font-semibold text-[var(--demo-text)]"
+            aria-label="Switch language"
           >
             <Globe2 className="h-4 w-4" aria-hidden="true" />
-            <span>{locale === 'de' ? 'EN' : 'DE'}</span>
-          </Link>
+            {languageOptions.map((item) => (
+              <Link
+                key={item}
+                href={`/portfolio/${site.slug}/site`}
+                locale={item}
+                className="rounded-full px-2 py-1.5 transition hover:bg-[var(--demo-background)]"
+                aria-label={`Switch language: ${localeLabels[item]}`}
+              >
+                {localeShortLabels[item]}
+              </Link>
+            ))}
+          </div>
           <a
             href="#contact"
             className="hidden min-h-10 items-center justify-center rounded-full bg-[var(--demo-primary)] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 sm:inline-flex"

@@ -21,9 +21,9 @@ type OfferCardProps = {
 
 export function OfferCard({offer, locale, ctaLabel}: OfferCardProps) {
   const detailLabels = {
-    problem: locale === 'de' ? 'Problem' : 'Problem',
-    solution: locale === 'de' ? 'Lösung' : 'Solution',
-    result: locale === 'de' ? 'Ergebnis' : 'Result'
+    problem: locale === 'ru' ? 'Проблема' : 'Problem',
+    solution: locale === 'de' ? 'Lösung' : locale === 'ru' ? 'Решение' : 'Solution',
+    result: locale === 'de' ? 'Ergebnis' : locale === 'ru' ? 'Результат' : 'Result'
   };
 
   return (

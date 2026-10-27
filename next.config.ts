@@ -4,6 +4,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const scriptSrc = [
   "'self'",
   "'unsafe-inline'",
+  'https://www.googletagmanager.com',
   process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''
 ]
   .filter(Boolean)
@@ -19,7 +20,7 @@ const contentSecurityPolicy = [
   "font-src 'self' data:",
   "style-src 'self' 'unsafe-inline'",
   `script-src ${scriptSrc}`,
-  "connect-src 'self' https://*.supabase.co https://api.resend.com https://vitals.vercel-insights.com ws: wss:",
+  "connect-src 'self' https://api.resend.com https://vitals.vercel-insights.com https://www.google-analytics.com https://region1.google-analytics.com https://*.google-analytics.com ws: wss:",
   process.env.NODE_ENV === 'production' ? 'upgrade-insecure-requests' : ''
 ]
   .filter(Boolean)
@@ -54,8 +55,23 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  compress: true,
+  productionBrowserSourceMaps: false,
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 31536000
+  },
   async headers() {
     return [
+      {
+        source: '/:path*\\.(png|jpg|jpeg|webp|avif|ico|svg|woff|woff2)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      },
       {
         source: '/(.*)',
         headers: securityHeaders

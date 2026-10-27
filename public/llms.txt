@@ -1,0 +1,26 @@
+# TreeTech
+
+TreeTech builds AI automation systems, CRM workflows, websites, custom web applications and business process automation for companies in Austria.
+
+## Website
+
+- [Production site](https://treetech.at/)
+- [German homepage](https://treetech.at/de)
+- [English homepage](https://treetech.at/en)
+- [Russian homepage](https://treetech.at/ru)
+- [Sitemap](https://treetech.at/sitemap.xml)
+
+## Services
+
+- AI automation
+- Business process automation
+- CRM workflows and integrations
+- Websites and landing pages
+- Custom web applications
+- AI chatbots and internal assistants
+- Lead management and contact workflows
+
+## Contact
+
+- Email: office@treetech.at
+- [Contact page](https://treetech.at/de/contact)

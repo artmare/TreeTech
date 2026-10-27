@@ -2,11 +2,7 @@ import {NextResponse} from 'next/server';
 import {Resend} from 'resend';
 
 import {serverContactSchema} from '@/lib/contact';
-import {
-  ContactStorageError,
-  markContactRequestEmailSent,
-  saveContactRequest
-} from '@/lib/contact-storage';
+import {createLeadFromContact, LeadStorageError, markLeadEmailSent} from '@/lib/crm/lead-service';
 
 const maxBodySizeBytes = 16 * 1024;
 const minimumFormAgeMs = 2000;
@@ -109,7 +105,7 @@ export async function POST(request: Request) {
   let storedRequestId: string;
 
   try {
-    const storedRequest = await saveContactRequest(data, request);
+    const storedRequest = await createLeadFromContact(data, request);
     storedRequestId = storedRequest.id;
   } catch (error) {
     console.error(
@@ -119,16 +115,17 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       {ok: false, message: 'Contact request could not be saved.'},
-      {status: error instanceof ContactStorageError ? 503 : 500}
+      {status: error instanceof LeadStorageError ? 503 : 500}
     );
   }
 
   const resend = getResend();
   const to = process.env.CONTACT_TO_EMAIL;
+  const from = process.env.CONTACT_FROM_EMAIL || 'TreeTech <office@treetech.at>';
 
   if (resend && to) {
     const result = await resend.emails.send({
-      from: process.env.CONTACT_FROM_EMAIL || 'TreeTech <office@treetech.at>',
+      from,
       to,
       replyTo: data.email,
       subject: `TreeTech Anfrage: ${data.budget}`,
@@ -151,8 +148,36 @@ export async function POST(request: Request) {
     });
 
     if (result.data?.id) {
-      await markContactRequestEmailSent(storedRequestId, result.data.id);
+      await markLeadEmailSent(storedRequestId, result.data.id).catch((error) => {
+        console.error('crm_email_activity_failed', error instanceof Error ? error.message : 'unknown');
+      });
     }
+  }
+
+  if (resend) {
+    const confirmation = getConfirmationCopy(data.metadata?.locale || getLocaleFromReferer(request));
+
+    await resend.emails.send({
+      from,
+      to: data.email,
+      subject: confirmation.subject,
+      text: [
+        confirmation.greeting,
+        '',
+        confirmation.body,
+        '',
+        confirmation.responseTime,
+        '',
+        'TreeTech',
+        'office@treetech.at'
+      ].join('\n'),
+      html: `
+        <p>${escapeHtml(confirmation.greeting)}</p>
+        <p>${escapeHtml(confirmation.body)}</p>
+        <p><strong>${escapeHtml(confirmation.responseTime)}</strong></p>
+        <p>TreeTech<br /><a href="mailto:office@treetech.at">office@treetech.at</a></p>
+      `
+    });
   }
 
   return NextResponse.json({ok: true, id: storedRequestId});
@@ -174,6 +199,45 @@ function hasHumanTiming(startedAt: number | undefined) {
 
   const age = Date.now() - startedAt;
   return age >= minimumFormAgeMs && age <= maximumFormAgeMs;
+}
+
+function getLocaleFromReferer(request: Request): 'de' | 'en' | 'ru' {
+  const referer = request.headers.get('referer') || '';
+
+  if (referer.includes('/en/')) {
+    return 'en';
+  }
+
+  if (referer.includes('/ru/')) {
+    return 'ru';
+  }
+
+  return 'de';
+}
+
+function getConfirmationCopy(locale: 'de' | 'en' | 'ru' = 'de') {
+  const copy = {
+    de: {
+      subject: 'TreeTech: Ihre Anfrage ist angekommen',
+      greeting: 'Danke, Ihre Anfrage ist angekommen.',
+      body: 'Wir prüfen kurz, welcher nächste Schritt für Ihre Website, Automatisierung oder individuelle Software sinnvoll ist.',
+      responseTime: 'Antwort in der Regel innerhalb von 2 Stunden während der Geschäftszeit.'
+    },
+    en: {
+      subject: 'TreeTech: your inquiry has arrived',
+      greeting: 'Thank you, your inquiry has arrived.',
+      body: 'We will briefly check which next step makes sense for your website, automation, or custom software.',
+      responseTime: 'Replies usually within 2 hours during business hours.'
+    },
+    ru: {
+      subject: 'TreeTech: заявка получена',
+      greeting: 'Спасибо, ваша заявка получена.',
+      body: 'Мы быстро проверим, какой следующий шаг подойдет для сайта, автоматизации или индивидуального ПО.',
+      responseTime: 'Обычно отвечаем в течение 2 часов в рабочее время.'
+    }
+  } satisfies Record<'de' | 'en' | 'ru', Record<string, string>>;
+
+  return copy[locale];
 }
 
 function getRequestIp(request: Request) {

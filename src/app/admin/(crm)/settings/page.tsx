@@ -1,0 +1,5 @@
+import {AdminHeading} from '@/components/admin/crm-ui';
+import {getGoogleConnectionStatus} from '@/lib/google/auth';
+import {isAdminAuthConfigured} from '@/lib/admin-auth';
+export default function SettingsPage(){const google=getGoogleConnectionStatus();const items=[['Admin-Zugang',isAdminAuthConfigured()],['Google Service Account',google.serviceAccount],['Google Spreadsheet',google.spreadsheet],['Google Drive',google.drive],['Resend',Boolean(process.env.RESEND_API_KEY&&process.env.CONTACT_TO_EMAIL)],['OpenAI',Boolean(process.env.OPENAI_API_KEY)]] as const;return <div><AdminHeading eyebrow="System" title="Einstellungen" lead="Nur der Konfigurationsstatus wird angezeigt. Geheimnisse bleiben serverseitig."/><div className="mt-7 max-w-3xl rounded-[1.15rem] border border-white/10 bg-white/[0.04] p-5">{items.map(([label,ok])=><div key={label} className="flex items-center justify-between border-b border-white/10 py-3 last:border-0"><span className="text-sm">{label}</span><span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${ok?'bg-accent/15 text-accent':'bg-amber-400/10 text-amber-200'}`}>{ok?'Konfiguriert':'Fehlt'}</span></div>)}</div></div>}
+

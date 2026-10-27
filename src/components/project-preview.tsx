@@ -12,14 +12,15 @@ type ProjectPreviewProps = {
 
 const labels = {
   de: {
-    demo: 'Demo-Website',
-    preview: 'Echte Vorschau'
+    preview: 'Branchenvorschau'
   },
   en: {
-    demo: 'Demo website',
-    preview: 'Real preview'
+    preview: 'Industry preview'
+  },
+  ru: {
+    preview: 'Пример для отрасли'
   }
-} satisfies Record<Locale, {demo: string; preview: string}>;
+} satisfies Record<Locale, {preview: string}>;
 
 export function ProjectPreview({project, locale = 'en', size = 'card'}: ProjectPreviewProps) {
   const large = size === 'large';
@@ -34,9 +35,11 @@ export function ProjectPreview({project, locale = 'en', size = 'card'}: ProjectP
       )}
     >
       <Image
-        src={`/portfolio-previews/${project.slug}.png`}
+        src={`/portfolio-previews/${project.slug}.webp`}
         alt={`${project.name} demo website preview`}
         fill
+        priority={large}
+        quality={large ? 82 : 74}
         sizes={large ? '(min-width: 1024px) 920px, 100vw' : '(min-width: 1024px) 560px, 100vw'}
         className="object-cover object-top transition duration-500 group-hover:scale-[1.025]"
       />
@@ -44,9 +47,6 @@ export function ProjectPreview({project, locale = 'en', size = 'card'}: ProjectP
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#07110f]/82 via-[#07110f]/22 to-transparent" />
       <div className="pointer-events-none absolute left-3 top-3 flex items-center gap-2 rounded-full border border-white/25 bg-[#07110f]/70 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/82 backdrop-blur">
         <span className={cn('h-2 w-2 rounded-full', project.accent)} />
-        <span>{copy.demo}</span>
-      </div>
-      <div className="pointer-events-none absolute bottom-3 right-3 rounded-full border border-white/20 bg-white/12 px-3 py-1.5 text-[11px] font-semibold text-white/80 backdrop-blur">
         {copy.preview}
       </div>
     </div>
