@@ -6,7 +6,7 @@ import {cn} from '@/lib/utils';
 type ButtonLinkProps = {
   href: ComponentProps<typeof Link>['href'];
   children: ReactNode;
-  variant?: 'primary' | 'secondary' | 'ghost' | 'accent';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'accent' | 'signal' | 'onDark';
   className?: string;
   /** Optional icon shown before the label. */
   icon?: ComponentType<SVGProps<SVGSVGElement>>;
@@ -19,7 +19,11 @@ const variants = {
   secondary:
     'border-2 border-foreground bg-surface text-foreground hover:bg-background [&_svg]:text-current',
   ghost: 'text-foreground hover:bg-surface hover:text-accent',
-  accent: 'bg-accent text-white hover:bg-[var(--accent-strong)] [&_svg]:text-white'
+  accent: 'bg-accent text-white hover:bg-[var(--accent-strong)] [&_svg]:text-white',
+  /** Yellow button for use on the green final sections. */
+  signal: 'bg-[var(--signal)] text-foreground hover:bg-white [&_svg]:text-foreground',
+  /** Outline button for use on the green final sections. */
+  onDark: 'border-2 border-white/70 bg-transparent text-white hover:bg-white/10 [&_svg]:text-white'
 };
 
 const baseClass =

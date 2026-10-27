@@ -3,7 +3,7 @@
 import {MessageCircle, Phone} from 'lucide-react';
 
 import {homeHandwerk} from '@/content/home-handwerk';
-import {phoneHref, whatsappHref} from '@/content/site';
+import {phoneHref, whatsappHref} from '@/content/contact-links';
 import {Link, usePathname} from '@/i18n/navigation';
 import type {Locale} from '@/i18n/routing';
 import {isDemoSitePath} from '@/lib/demo-routes';

@@ -1,3 +1,4 @@
+import {contactPhone, phoneHref, whatsappHref} from '@/content/contact-links';
 import type {Locale} from '@/i18n/routing';
 import {withLocaleFallbacks} from '@/i18n/localized';
 import {formatEur, formatPackagePrice, founderOffer, getPackage, hourlyRate, type PackageId} from '@/content/pricing';
@@ -6,20 +7,16 @@ export const siteConfig = {
   name: 'TreeTech',
   url: 'https://treetech.at',
   email: 'office@treetech.at',
-  /** Displayed phone number. Change it here and it changes everywhere. */
-  phone: '+43 660 9557357',
-  /** Digits only, international format, used for tel: and wa.me links. */
-  phoneDigits: '436609557357',
+  /** Change the number in src/content/contact-links.ts and it changes everywhere. */
+  phone: contactPhone.display,
+  phoneDigits: contactPhone.digits,
+  /** Public Cal.com booking page for the 30-minute call. NEXT_PUBLIC_CAL_URL overrides it. */
+  calUrl: 'https://cal.com/artem-karnaukhov-rneqin/treetech-website-analyse',
   region: {de: 'Wien und Niederösterreich', en: 'Vienna and Lower Austria', ru: 'Вена и Нижняя Австрия'},
   googleSiteVerification: 'PdjQivxgyQpk4Qxzy2-3pMhBPW2pZreWQYBlrry2Gyw'
 };
 
-export const phoneHref = `tel:+${siteConfig.phoneDigits}`;
-
-export function whatsappHref(message?: string) {
-  const base = `https://wa.me/${siteConfig.phoneDigits}`;
-  return message ? `${base}?text=${encodeURIComponent(message)}` : base;
-}
+export {phoneHref, whatsappHref};
 
 export type LocalizedText = Record<Locale, string>;
 export type LocalizedList = Record<Locale, string[]>;
@@ -647,15 +644,15 @@ export const siteContent = withLocaleFallbacks({
       aboutTitle: 'Über TreeTech | Digitalstudio für österreichische Betriebe',
       aboutDescription:
         'TreeTech ist ein modernes Digitalstudio für Betriebe, die Prozesse automatisieren, Web-Software bauen und digital besser arbeiten möchten.',
-      servicesTitle: 'Leistungen | TreeTech',
+      servicesTitle: 'Leistungen und Preise | TreeTech',
       servicesDescription:
-        'AI-Automation, Webentwicklung, Custom Web Applications, AI-Integration und Workflow-Optimierung für österreichische Unternehmen.',
+        `Alle Pakete mit Fixpreis: Websites ab ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'de')}, Pflege ab ${formatEur(getPackage('pflege').monthly ?? 0, 'de')} im Monat, Anfrage-Automation und eigene Software. Für Handwerk und Werkstätten in Wien und Niederösterreich.`,
       portfolioTitle: 'Portfolio | TreeTech Webstudio',
       portfolioDescription:
-        'Beispielprojekte für österreichische Branchen: Ordination, Kanzlei, Hotel, Immobilien und Fitnessstudio.',
-      contactTitle: 'Kontakt | TreeTech',
+        'Beispiel-Websites zum Anklicken: Elektriker, Ordination, Kanzlei, Hotel, Immobilien und Fitnessstudio. So sieht Ihre kostenlose Vorschau aus.',
+      contactTitle: 'Kostenlose Website-Vorschau anfordern | TreeTech',
       contactDescription:
-        'Starten Sie Ihr Digitalprojekt mit TreeTech. Wir melden uns mit einer klaren Einschätzung und einem passenden nächsten Schritt.'
+        'Name Ihres Betriebs und Ort genügen. Ihre kostenlose Website-Vorschau bekommen Sie in 3 Werktagen. Anrufen, WhatsApp oder Formular.'
     },
     common: {
       eyebrow: 'Websites · Automation · Software',
@@ -743,9 +740,9 @@ export const siteContent = withLocaleFallbacks({
       ]
     },
     portfolio: {
-      title: 'Beispiel-Websites für echte Branchen in Österreich.',
+      title: 'Beispiel-Websites zum Anklicken.',
       lead:
-        'Öffnen Sie ein Projekt und sehen Sie, wie Struktur, Texte, Design und Demo-Seite für ähnliche Betriebe aussehen können.',
+        'Öffnen Sie ein Beispiel und probieren Sie es am Handy aus. Genau so fühlt sich Ihre Vorschau an, nur mit Ihrem Betrieb.',
       disclaimer:
         'Die Beispiele zeigen mögliche Lösungen für typische Branchen. Reale Kundenfälle werden ergänzt, sobald abgeschlossene Projekte mit freigegebenen Ergebnissen vorliegen.',
       detailIntro: 'Projektüberblick',
@@ -777,15 +774,15 @@ export const siteContent = withLocaleFallbacks({
       aboutTitle: 'About TreeTech | Digital studio for Austrian businesses',
       aboutDescription:
         'TreeTech is a modern digital studio for businesses that want to automate processes, build web software, and work better digitally.',
-      servicesTitle: 'Services | TreeTech',
+      servicesTitle: 'Services and prices | TreeTech',
       servicesDescription:
-        'AI automation, web development, custom web applications, AI integration, and workflow optimization for Austrian businesses.',
+        `Every package at a fixed price: websites from ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'en')}, care from ${formatEur(getPackage('pflege').monthly ?? 0, 'en')} a month, inquiry automation and custom software. For trades and workshops in Vienna and Lower Austria.`,
       portfolioTitle: 'Portfolio | TreeTech web studio',
       portfolioDescription:
-        'Sample projects for Austrian industries: dental clinic, law firm, hotel, real estate, and fitness studio.',
-      contactTitle: 'Contact | TreeTech',
+        'Example websites to click through: electrician, dental clinic, law firm, hotel, real estate and fitness studio. This is what your free preview looks like.',
+      contactTitle: 'Get a free website preview | TreeTech',
       contactDescription:
-        'Start your digital project with TreeTech. We will reply with a clear assessment and the right next step.'
+        'Your business name and town are enough. You get your free website preview within 3 working days. Call, WhatsApp or use the form.'
     },
     common: {
       eyebrow: 'Websites · Automation · Software',
@@ -873,9 +870,9 @@ export const siteContent = withLocaleFallbacks({
       ]
     },
     portfolio: {
-      title: 'Example websites for real Austrian industries.',
+      title: 'Example websites to click through.',
       lead:
-        'Open any project to see the structure, copy direction, visual style, and demo website we could build for similar businesses.',
+        'Open an example and try it on your phone. Your preview feels exactly like this, just with your business.',
       disclaimer:
         'The examples below show possible solutions for typical industries. Real client cases will be added here as completed projects and approved results become available.',
       detailIntro: 'Project overview',
@@ -907,15 +904,15 @@ export const siteContent = withLocaleFallbacks({
       aboutTitle: 'О TreeTech | Digital-студия для бизнеса в Австрии',
       aboutDescription:
         'TreeTech помогает компаниям автоматизировать процессы, создавать веб-софт и работать цифровыми инструментами эффективнее.',
-      servicesTitle: 'Услуги | TreeTech',
+      servicesTitle: 'Услуги и цены | TreeTech',
       servicesDescription:
-        'AI-автоматизация, веб-разработка, индивидуальные веб-приложения, AI-интеграции и оптимизация workflow для бизнеса в Австрии.',
+        `Все пакеты с фиксированной ценой: сайты от ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'ru')}, поддержка от ${formatEur(getPackage('pflege').monthly ?? 0, 'ru')} в месяц, автоматизация заявок и собственное ПО. Для мастеров и автосервисов в Вене и Нижней Австрии.`,
       portfolioTitle: 'Портфолио | Веб-студия TreeTech',
       portfolioDescription:
         'Примеры проектов для австрийских отраслей: клиника, юридическая фирма, отель, недвижимость и фитнес-студия.',
-      contactTitle: 'Контакт | TreeTech',
+      contactTitle: 'Бесплатное превью сайта | TreeTech',
       contactDescription:
-        'Начните цифровой проект с TreeTech. Мы ответим с понятной оценкой и следующим шагом.'
+        'Достаточно названия бизнеса и города. Бесплатное превью сайта будет у вас через 3 рабочих дня. Звонок, WhatsApp или форма.'
     },
     common: {
       eyebrow: 'Сайты · Автоматизация · ПО',
@@ -1003,9 +1000,9 @@ export const siteContent = withLocaleFallbacks({
       ]
     },
     portfolio: {
-      title: 'Примеры сайтов для реальных отраслей в Австрии.',
+      title: 'Примеры сайтов, которые можно потрогать.',
       lead:
-        'Откройте любой проект, чтобы увидеть структуру, направление текстов, визуальный стиль и demo-сайт, который можно адаптировать для похожего бизнеса.',
+        'Откройте пример и попробуйте его с телефона. Ваше превью будет ощущаться так же, только с вашим бизнесом.',
       disclaimer:
         'Ниже показаны примеры возможных решений для типичных отраслей. Реальные кейсы клиентов появятся здесь по мере завершения проектов и согласования результатов.',
       detailIntro: 'Обзор проекта',
@@ -1032,6 +1029,54 @@ export const siteContent = withLocaleFallbacks({
 }) satisfies Record<Locale, Record<string, unknown>>;
 
 export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
+  {
+    slug: 'elektro-huber',
+    name: 'Elektro Huber',
+    year: '2026',
+    location: 'Mödling',
+    industry: {
+      de: 'Elektriker in Niederösterreich',
+      en: 'Electrician in Lower Austria',
+      ru: 'Электрик в Нижней Австрии'
+    },
+    description: {
+      de: 'So sieht eine Website Start für einen Elektriker aus: Anruf-Knopf immer sichtbar, Anfrage mit Foto, Leistungen und Einsatzgebiet auf einen Blick.',
+      en: 'This is what Website Start looks like for an electrician: call button always visible, inquiry with photo, services and service area at a glance.',
+      ru: 'Так выглядит Website Start для электрика: кнопка звонка всегда на виду, заявка с фото, услуги и район выезда с первого взгляда.'
+    },
+    problem: {
+      de: 'Typisch für viele Elektriker: gute Bewertungen bei Google, aber keine eigene Website. Wer am Handy nach einem Elektriker in Mödling sucht, ruft den Mitbewerber an.',
+      en: 'Typical for many electricians: good Google reviews but no website. Anyone searching for an electrician in Mödling on their phone calls a competitor.',
+      ru: 'Типично для многих электриков: хорошие отзывы в Google, но своего сайта нет. Кто ищет электрика в Мёдлинге с телефона, звонит конкуренту.'
+    },
+    solution: {
+      de: 'Eine schnelle Seite mit klarer Botschaft, vier Leistungen, Einsatzgebiet, Ablauf in drei Schritten und einem Formular, über das Kunden ein Foto vom Schaden schicken.',
+      en: 'A fast page with a clear message, four services, service area, a three-step process and a form where customers send a photo of the problem.',
+      ru: 'Быстрая страница с понятным посылом, четыре услуги, район выезда, три шага и форма, через которую клиенты присылают фото поломки.'
+    },
+    features: {
+      de: ['Anruf-Leiste am Handy', 'Anfrage mit Foto und Adresse', 'Leistungsseiten', 'Einsatzgebiet mit Orten', 'Platz für Google-Bewertungen'],
+      en: ['Call bar on mobile', 'Inquiry with photo and address', 'Service pages', 'Service area with towns', 'Space for Google reviews'],
+      ru: ['Панель звонка на телефоне', 'Заявка с фото и адресом', 'Страницы услуг', 'Район выезда с городами', 'Место для отзывов Google']
+    },
+    visualStyle: {
+      de: 'Dunkelblau und Signalorange, große Schrift, große Knöpfe. Gut lesbar am Handy, auch mit Handschuhen.',
+      en: 'Navy and signal orange, large type, large buttons. Easy to read on a phone, even with gloves on.',
+      ru: 'Тёмно-синий и сигнальный оранжевый, крупный шрифт, большие кнопки. Удобно с телефона, даже в перчатках.'
+    },
+    cta: {
+      de: 'So eine Seite für Ihren Betrieb, als kostenlose Vorschau.',
+      en: 'A site like this for your business, as a free preview.',
+      ru: 'Такой сайт для вашего бизнеса, бесплатным превью.'
+    },
+    metric: {
+      de: 'Ein Tipp bis zum Anruf, von jeder Seite aus.',
+      en: 'One tap to call, from every page.',
+      ru: 'Один тап до звонка с любой страницы.'
+    },
+    gradient: 'from-sky-100 via-orange-100 to-white',
+    accent: 'bg-orange-500'
+  },
   {
     slug: 'alpendent',
     name: 'AlpenDent',

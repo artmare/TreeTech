@@ -61,7 +61,7 @@ export const hourlyRate = 65;
 export const paymentTerms: Text = {
   de: '50 % bei Auftrag, 50 % beim Launch. Auf Wunsch in 2 Raten. Pflege-Pakete monatlich kündbar.',
   en: '50% on order, 50% at launch. Two instalments on request. Care plans can be cancelled monthly.',
-  ru: '50 % при заказе, 50 % при запуске. По запросу — в 2 платежа. Пакеты Pflege расторгаются помесячно.'
+  ru: '50 % при заказе, 50 % при запуске. По запросу можно в 2 платежа. Пакеты Pflege расторгаются помесячно.'
 };
 
 // TODO(legal): once the Gewerbe is registered, add the Kleinunternehmerregelung
@@ -104,7 +104,7 @@ export const packages: PricePackageDefinition[] = [
     includes: {
       de: ['Alles aus Website Start, bis zu 10 Seiten', 'Eigene Seite pro Leistung und bis zu 3 Orts-Seiten', 'Anfrage mit Foto-Upload und Dringlichkeit, Referenzgalerie, Bewertungen', 'Strukturierte Daten (LocalBusiness) für Google', '3 Korrekturrunden', 'Zweite Sprache optional (+390 €)'],
       en: ['Everything in Website Start, up to 10 pages', 'One page per service and up to 3 location pages', 'Inquiry with photo upload and urgency, project gallery, reviews', 'Structured data (LocalBusiness) for Google', '3 rounds of revisions', 'Second language optional (+€390)'],
-      ru: ['Всё из Website Start, до 10 страниц', 'Отдельная страница на каждую услугу и до 3 страниц под города', 'Заявка с фото и срочностью, галерея работ, отзывы', 'Структурированные данные (LocalBusiness) для Google', '3 раунда правок', 'Второй язык — по желанию (+390 €)']
+      ru: ['Всё из Website Start, до 10 страниц', 'Отдельная страница на каждую услугу и до 3 страниц под города', 'Заявка с фото и срочностью, галерея работ, отзывы', 'Структурированные данные (LocalBusiness) для Google', '3 раунда правок', 'Второй язык по желанию (+390 €)']
     }
   },
   {
@@ -134,8 +134,8 @@ export const packages: PricePackageDefinition[] = [
     from: true,
     delivery: {de: 'online in 7–10 Tagen', en: 'live in 7–10 days', ru: 'онлайн за 7–10 дней'},
     tagline: {
-      de: 'Ihre Website ist veraltet oder am Handy kaum lesbar? Wir machen sie neu — Inhalte übernehmen wir.',
-      en: 'Outdated website or hard to read on a phone? We rebuild it — and move your content over.',
+      de: 'Ihre Website ist veraltet oder am Handy kaum lesbar? Wir machen sie neu und übernehmen Ihre Inhalte.',
+      en: 'Outdated website or hard to read on a phone? We rebuild it and move your content over.',
       ru: 'Сайт устарел или плохо читается с телефона? Сделаем заново и перенесём содержимое.'
     },
     includes: {
@@ -150,9 +150,9 @@ export const packages: PricePackageDefinition[] = [
     name: 'Pflege',
     monthly: 39,
     tagline: {
-      de: 'Technik, Sicherheit und kleine Änderungen — ohne dass Sie sich darum kümmern müssen.',
-      en: 'Hosting, security and small changes — without you having to think about it.',
-      ru: 'Техника, безопасность и мелкие правки — без вашего участия.'
+      de: 'Technik, Sicherheit und kleine Änderungen, ohne dass Sie sich darum kümmern müssen.',
+      en: 'Hosting, security and small changes, without you having to think about it.',
+      ru: 'Техника, безопасность и мелкие правки без вашего участия.'
     },
     includes: {
       de: ['Hosting, .at-Domain, SSL, tägliche Backups', 'Überwachung: Fällt die Seite aus, wissen wir es zuerst', 'Bis zu 30 Min. Änderungen pro Monat per WhatsApp, in 2 Werktagen', 'Monatlicher Kurzbericht: Besucher, Anfragen, Anruf-Klicks', 'Monatlich kündbar'],
@@ -166,9 +166,9 @@ export const packages: PricePackageDefinition[] = [
     name: 'Pflege Plus',
     monthly: 79,
     tagline: {
-      de: 'Mehr Sichtbarkeit bei Google — wir pflegen Ihr Google-Profil und Ihre Bewertungen jeden Monat.',
-      en: 'More visibility on Google — we look after your Google profile and reviews every month.',
-      ru: 'Больше видимости в Google — каждый месяц ведём ваш профиль и отзывы.'
+      de: 'Mehr Sichtbarkeit bei Google. Wir pflegen Ihr Google-Profil und Ihre Bewertungen jeden Monat.',
+      en: 'More visibility on Google. We look after your Google profile and reviews every month.',
+      ru: 'Больше видимости в Google. Каждый месяц ведём ваш профиль и отзывы.'
     },
     includes: {
       de: ['Alles aus Pflege', 'Bis zu 60 Min. Änderungen pro Monat, in 1 Werktag', '2 Beiträge pro Monat im Google-Profil', 'Antwortentwürfe auf Google-Bewertungen', 'Quartalsweise Ranking-Check mit einer Verbesserung'],
@@ -201,9 +201,9 @@ export const packages: PricePackageDefinition[] = [
     monthly: 29,
     delivery: {de: 'in 7 Tagen', en: 'in 7 days', ru: 'за 7 дней'},
     tagline: {
-      de: 'Beantwortet Fragen rund um die Uhr und sammelt Anfragen — auch am Wochenende.',
-      en: 'Answers questions around the clock and collects inquiries — weekends included.',
-      ru: 'Отвечает на вопросы круглосуточно и собирает заявки — даже в выходные.'
+      de: 'Beantwortet Fragen rund um die Uhr und sammelt Anfragen, auch am Wochenende.',
+      en: 'Answers questions around the clock and collects inquiries, weekends included.',
+      ru: 'Отвечает на вопросы круглосуточно и собирает заявки, даже в выходные.'
     },
     includes: {
       de: ['Chat auf Ihrer Website mit Ihren Leistungen, Preisen und Einsatzgebiet', 'Sammelt Kontaktdaten und leitet Anfragen weiter', 'Monatlicher Betrag deckt die KI-Kosten bis zu einem festen Limit'],
@@ -220,9 +220,9 @@ export const packages: PricePackageDefinition[] = [
     from: true,
     delivery: {de: 'in 1–2 Wochen', en: 'in 1–2 weeks', ru: 'за 1–2 недели'},
     tagline: {
-      de: 'Ein Ablauf, der Sie jede Woche Stunden kostet — automatisiert.',
-      en: 'One process that costs you hours every week — automated.',
-      ru: 'Один процесс, который каждую неделю отнимает у вас часы, — автоматизирован.'
+      de: 'Ein Ablauf, der Sie jede Woche Stunden kostet, läuft automatisch.',
+      en: 'One process that costs you hours every week, now automated.',
+      ru: 'Один процесс, который каждую неделю отнимает у вас часы, теперь идёт автоматически.'
     },
     includes: {
       de: ['Ein konkreter Prozess, z. B. Angebot als PDF, Terminbestätigung und Erinnerung, Rechnung nach Auftrag, E-Mail-Sortierung', 'Fixpreis nach einem 15-Minuten-Gespräch', 'Monatlich: Betrieb, Überwachung, kleine Anpassungen'],

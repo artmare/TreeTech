@@ -17,27 +17,27 @@ type PageProps = {
 
 const portfolioBrief = {
   de: {
-    title: 'Was Sie in den Projekten sehen',
+    title: 'Gut zu wissen',
     items: [
-      'Welche Ausgangslage ein Betrieb hatte und wie die Website darauf antwortet.',
-      'Wie Struktur, Texte und Handlungsaufforderungen Besucher zur Anfrage führen.',
-      'Wie die fertige Demo-Seite für eine ähnliche Branche wirken könnte.'
+      'Das sind Beispiel-Websites, die wir als Muster gebaut haben. Die Betriebe sind erfunden.',
+      'Jede Seite funktioniert wie eine echte: Knöpfe, Formulare und Handy-Ansicht.',
+      'Ihre eigene Vorschau bauen wir kostenlos, mit Ihrem Namen, Ihren Leistungen und Ihrem Ort.'
     ]
   },
   en: {
-    title: 'What to look for in each project',
+    title: 'Good to know',
     items: [
-      'The business situation behind the project and how the website responds to it.',
-      'How structure, copy, and calls to action guide visitors toward inquiry.',
-      'How the finished demo page could feel for a similar industry.'
+      'These are example websites we built as samples. The businesses are made up.',
+      'Every site works like a real one: buttons, forms and mobile view.',
+      'We build your own preview for free, with your name, your services and your town.'
     ]
   },
   ru: {
-    title: 'Что смотреть в каждом проекте',
+    title: 'Полезно знать',
     items: [
-      'Какая исходная ситуация была у бизнеса и как сайт на нее отвечает.',
-      'Как структура, тексты и CTA ведут посетителя к заявке.',
-      'Как готовая демо-страница может выглядеть для похожей отрасли.'
+      'Это примеры сайтов, которые мы сделали как образцы. Фирмы вымышленные.',
+      'Каждый сайт работает как настоящий: кнопки, формы и мобильная версия.',
+      'Ваше собственное превью мы делаем бесплатно, с вашим названием, услугами и городом.'
     ]
   }
 } satisfies Record<Locale, {title: string; items: string[]}>;
@@ -71,7 +71,6 @@ export default async function PortfolioPage({params}: PageProps) {
         <div className="dark-grid absolute inset-0 opacity-35" />
         <Container className="relative">
           <SectionHeading
-            eyebrow={content.common.eyebrow}
             title={content.portfolio.title}
             lead={content.portfolio.lead}
             className="[&_h2]:text-foreground [&_p]:text-muted [&_p:first-child]:border-border [&_p:first-child]:bg-surface [&_p:first-child]:text-accent"

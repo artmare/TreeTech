@@ -1,5 +1,5 @@
 import type {Locale} from '@/i18n/routing';
-import {priceLine} from '@/content/pricing';
+import {formatEur, getPackage, priceLine} from '@/content/pricing';
 import {withLocaleFallbacks} from '@/i18n/localized';
 
 export type ServicePage = {
@@ -13,7 +13,16 @@ export type ServicePage = {
   example: Record<Locale, string>;
   price: Record<Locale, string>;
   deliverables: Record<Locale, string[]>;
+  /** Page-specific questions. Without them the general FAQ is shown. */
+  faq?: Record<Locale, Array<{q: string; a: string}>>;
+  /** Niche pages for the main audience: CTA leads to the free preview. */
+  primary?: boolean;
 };
+
+const startPrice = getPackage('websiteStart').oneTime ?? 0;
+const startDe = formatEur(startPrice, 'de');
+const startEn = formatEur(startPrice, 'en');
+const startRu = formatEur(startPrice, 'ru');
 
 export const servicePageContent = withLocaleFallbacks({
   de: {
@@ -23,12 +32,16 @@ export const servicePageContent = withLocaleFallbacks({
     solution: 'Was TreeTech macht',
     result: 'Ergebnis',
     example: 'Beispiel',
-    price: 'Preisrahmen',
-    deliverables: 'Typischer Umfang',
-    ctaTitle: 'Kostenlose Ersteinschätzung anfragen',
-    ctaLead:
-      'Beschreiben Sie kurz Ihre Website, Ihren Prozess oder Ihre Idee. TreeTech antwortet mit einer ehrlichen Einschätzung, welcher nächste Schritt sinnvoll ist.',
-    cta: 'Einschätzung anfragen'
+    price: 'Preis',
+    deliverables: 'Was Sie bekommen',
+    ctaTitle: 'Sehen Sie Ihre Website, bevor Sie sich entscheiden.',
+    ctaLead: 'Name Ihres Betriebs und Ort genügen. Die Vorschau haben Sie in 3 Werktagen, kostenlos.',
+    cta: 'Kostenlose Vorschau anfordern',
+    call: 'Anrufen',
+    assessmentTitle: 'Kostenlose Ersteinschätzung anfragen',
+    assessmentLead:
+      'Beschreiben Sie kurz Ihren Ablauf oder Ihre Idee. Wir antworten mit einer ehrlichen Einschätzung, welcher nächste Schritt sinnvoll ist.',
+    assessmentCta: 'Einschätzung anfragen'
   },
   en: {
     back: 'Back to services',
@@ -37,12 +50,16 @@ export const servicePageContent = withLocaleFallbacks({
     solution: 'What TreeTech does',
     result: 'Result',
     example: 'Example',
-    price: 'Budget range',
-    deliverables: 'Typical scope',
-    ctaTitle: 'Request a free first assessment',
-    ctaLead:
-      'Briefly describe your website, process, or idea. TreeTech will reply with an honest recommendation for the next step.',
-    cta: 'Request assessment'
+    price: 'Price',
+    deliverables: 'What you get',
+    ctaTitle: 'See your website before you decide.',
+    ctaLead: 'Your business name and town are enough. You get the preview within 3 working days, free of charge.',
+    cta: 'Get my free preview',
+    call: 'Call',
+    assessmentTitle: 'Request a free first assessment',
+    assessmentLead:
+      'Briefly describe your workflow or idea. We reply with an honest recommendation for the next step.',
+    assessmentCta: 'Request assessment'
   },
   ru: {
     back: 'Назад к услугам',
@@ -51,16 +68,147 @@ export const servicePageContent = withLocaleFallbacks({
     solution: 'Что делает TreeTech',
     result: 'Результат',
     example: 'Пример',
-    price: 'Бюджетный диапазон',
-    deliverables: 'Типичный объем',
-    ctaTitle: 'Запросить бесплатную первичную оценку',
-    ctaLead:
-      'Коротко опишите ваш сайт, процесс или идею. TreeTech ответит честной оценкой, какой следующий шаг имеет смысл.',
-    cta: 'Запросить оценку'
+    price: 'Цена',
+    deliverables: 'Что вы получаете',
+    ctaTitle: 'Посмотрите на свой сайт, прежде чем решать.',
+    ctaLead: 'Достаточно названия бизнеса и города. Превью будет у вас через 3 рабочих дня, бесплатно.',
+    cta: 'Получить бесплатное превью',
+    call: 'Позвонить',
+    assessmentTitle: 'Запросить бесплатную первичную оценку',
+    assessmentLead:
+      'Коротко опишите ваш процесс или идею. Мы честно ответим, какой следующий шаг имеет смысл.',
+    assessmentCta: 'Запросить оценку'
   }
 }) satisfies Record<Locale, Record<string, unknown>>;
 
 export const servicePages: ServicePage[] = withLocaleFallbacks([
+  {
+    slug: 'websites-fuer-handwerker',
+    primary: true,
+    title: {
+      de: 'Websites für Handwerker in Wien und Niederösterreich',
+      en: 'Websites for tradespeople in Vienna and Lower Austria',
+      ru: 'Сайты для мастеров в Вене и Нижней Австрии'
+    },
+    description: {
+      de: `Für Elektriker, Installateure, Dachdecker, Maler und Fliesenleger. Fixpreis ${startDe}, Texte inklusive, in 7 Tagen online. Die Vorschau ist kostenlos.`,
+      en: `For electricians, plumbers, roofers, painters and tilers. Fixed price ${startEn}, copy included, live in 7 days. The preview is free.`,
+      ru: `Для электриков, сантехников, кровельщиков, маляров и плиточников. Фиксированная цена ${startRu}, тексты включены, онлайн за 7 дней. Превью бесплатно.`
+    },
+    audience: {
+      de: 'Für Handwerksbetriebe mit 1 bis 20 Leuten, die gute Arbeit machen, aber online kaum zu finden sind oder eine veraltete Seite haben.',
+      en: 'For trade businesses with 1 to 20 people who do good work but are hard to find online or have an outdated site.',
+      ru: 'Для мастерских и бригад от 1 до 20 человек, которые хорошо работают, но в интернете их почти не найти или сайт устарел.'
+    },
+    problem: {
+      de: 'Kunden suchen am Handy nach "Elektriker Mödling" oder "Installateur Wien". Wer dort keine ordentliche Seite hat, bekommt den Anruf nicht, auch mit guten Bewertungen.',
+      en: 'Customers search on their phone for "electrician Mödling" or "plumber Vienna". Without a proper website you do not get the call, even with good reviews.',
+      ru: 'Клиенты ищут с телефона «электрик Мёдлинг» или «сантехник Вена». Без нормального сайта звонок уходит другому, даже при хороших отзывах.'
+    },
+    solution: {
+      de: 'Wir bauen eine schnelle Website mit Ihren Leistungen, Ihrem Einsatzgebiet und einem Anruf-Knopf, der am Handy immer sichtbar ist. Die Texte schreiben wir nach einem 30-Minuten-Gespräch. Google-Profil, Impressum und Datenschutz richten wir mit ein.',
+      en: 'We build a fast website with your services, your service area and a call button that is always visible on mobile. We write the copy after a 30-minute call and set up your Google profile, legal notice and privacy policy.',
+      ru: 'Делаем быстрый сайт с вашими услугами, районом выезда и кнопкой звонка, которая всегда видна с телефона. Тексты пишем после 30-минутного разговора. Профиль в Google, Impressum и Datenschutz настраиваем сами.'
+    },
+    result: {
+      de: 'Kunden finden Sie, sehen in Sekunden, was Sie machen und wo, und rufen an oder schicken ein Foto vom Schaden.',
+      en: 'Customers find you, see in seconds what you do and where, and call or send a photo of the problem.',
+      ru: 'Клиенты находят вас, за секунды понимают, что и где вы делаете, и звонят или присылают фото поломки.'
+    },
+    example: {
+      de: 'Ein Elektriker aus Mödling bekommt Seiten für Störungsdienst, E-Check und Photovoltaik, eine eigene Seite für Mödling und Baden und ein Formular, über das Kunden ein Foto schicken.',
+      en: 'An electrician from Mödling gets pages for emergency service, safety checks and solar, a page each for Mödling and Baden, and a form where customers can send a photo.',
+      ru: 'Электрик из Мёдлинга получает страницы для аварийных вызовов, проверок и солнечных панелей, отдельные страницы для Мёдлинга и Бадена и форму, через которую клиенты присылают фото.'
+    },
+    price: priceLine('websiteStart', 'websiteBusiness', 'pflege'),
+    deliverables: {
+      de: ['Bis 5 Seiten, Texte inklusive', 'Anruf- und WhatsApp-Knopf, Anfrage mit Foto', 'Google-Profil eingerichtet und verbunden', 'Impressum und Datenschutz', 'Online in 7 Tagen nach dem Gespräch'],
+      en: ['Up to 5 pages, copy included', 'Call and WhatsApp button, inquiry with photo', 'Google profile set up and linked', 'Legal notice and privacy policy', 'Live 7 days after the call'],
+      ru: ['До 5 страниц, тексты включены', 'Кнопки звонка и WhatsApp, заявка с фото', 'Профиль в Google настроен и связан с сайтом', 'Impressum и Datenschutz', 'Онлайн через 7 дней после разговора']
+    },
+    faq: {
+      de: [
+        {q: 'Ich habe keine Fotos von meinen Arbeiten.', a: 'Dann nehmen wir passende Bilder, bis Sie eigene machen. Ein paar Handyfotos von fertigen Arbeiten reichen später völlig.'},
+        {q: 'Brauche ich als Handwerker wirklich ein Impressum?', a: 'Ja, in Österreich braucht jede Firmenwebsite ein Impressum. Wir richten es mit Ihren Daten ein, ebenso die Datenschutzerklärung.'},
+        {q: 'Kann ich die Seite später selbst ändern?', a: 'Kleine Änderungen schicken Sie uns einfach per WhatsApp. Mit der Pflege sind sie inklusive.'},
+        {q: 'Was ist, wenn ich mehrere Orte habe?', a: 'Dann passt Website Business. Dort bekommt jeder Ort und jede Leistung eine eigene Seite, damit Sie bei Google dort gefunden werden.'}
+      ],
+      en: [
+        {q: 'I have no photos of my work.', a: 'Then we use suitable images until you take your own. A few phone photos of finished jobs are plenty later on.'},
+        {q: 'Do I really need a legal notice?', a: 'Yes, every business website in Austria needs one. We set it up with your details, along with the privacy policy.'},
+        {q: 'Can I change the site later?', a: 'Simply send small changes via WhatsApp. With the care plan they are included.'},
+        {q: 'What if I work in several towns?', a: 'Then Website Business fits. Every town and service gets its own page so Google shows you there.'}
+      ],
+      ru: [
+        {q: 'У меня нет фото моих работ.', a: 'Тогда поставим подходящие картинки, пока не появятся ваши. Потом хватит нескольких фото с телефона.'},
+        {q: 'Мастеру правда нужен Impressum?', a: 'Да, в Австрии он нужен на каждом сайте компании. Мы оформим его с вашими данными, как и Datenschutz.'},
+        {q: 'Смогу ли я потом менять сайт?', a: 'Мелкие правки просто присылайте в WhatsApp. С поддержкой они включены.'},
+        {q: 'А если я работаю в нескольких городах?', a: 'Тогда подойдёт Website Business. У каждого города и услуги будет своя страница, чтобы Google показывал вас там.'}
+      ]
+    }
+  },
+  {
+    slug: 'websites-fuer-kfz-werkstaetten',
+    primary: true,
+    title: {
+      de: 'Websites für Kfz-Werkstätten in Wien und Niederösterreich',
+      en: 'Websites for car workshops in Vienna and Lower Austria',
+      ru: 'Сайты для автосервисов в Вене и Нижней Австрии'
+    },
+    description: {
+      de: `Terminwunsch fürs Pickerl oder den Reifenwechsel direkt über die Website. Fixpreis ${startDe}, Texte inklusive, in 7 Tagen online.`,
+      en: `Customers request a slot for the annual inspection (Pickerl) or a tyre change right on your website. Fixed price ${startEn}, copy included, live in 7 days.`,
+      ru: `Запись на техосмотр (Pickerl) или смену шин прямо через сайт. Фиксированная цена ${startRu}, тексты включены, онлайн за 7 дней.`
+    },
+    audience: {
+      de: 'Für freie Werkstätten, Reifen- und Pickerl-Betriebe, Spengler und Lackierer.',
+      en: 'For independent garages, tyre and inspection shops, body shops and painters.',
+      ru: 'Для независимых автосервисов, шиномонтажей, пунктов техосмотра, жестянщиков и маляров.'
+    },
+    problem: {
+      de: 'Viele Kunden rufen nur an, um Preise und freie Termine zu fragen. Das Telefon läutet, während Sie unter dem Auto liegen.',
+      en: 'Many customers only call to ask about prices and free slots. The phone rings while you are under a car.',
+      ru: 'Многие звонят только спросить цену и свободное время. Телефон звонит, когда вы под машиной.'
+    },
+    solution: {
+      de: 'Wir bauen eine Website mit Ihren Leistungen, auf Wunsch mit Richtpreisen, Öffnungszeiten, Anfahrt und einem Formular für Terminwünsche mit Kennzeichen und Anliegen.',
+      en: 'We build a website with your services, guide prices if you want, opening hours, directions and a booking request form with licence plate and issue.',
+      ru: 'Делаем сайт с услугами, при желании с ориентировочными ценами, часами работы, схемой проезда и формой записи с номером машины и проблемой.'
+    },
+    result: {
+      de: 'Weniger Unterbrechungen am Telefon. Terminwünsche kommen gesammelt per E-Mail oder WhatsApp.',
+      en: 'Fewer interruptions on the phone. Booking requests arrive bundled via email or WhatsApp.',
+      ru: 'Меньше отвлечений на звонки. Заявки на запись приходят собранными в e-mail или WhatsApp.'
+    },
+    example: {
+      de: 'Eine Werkstatt in Wien-Floridsdorf bekommt Seiten für Pickerl, Service, Reifen und Klimaservice und ein Formular, das Kennzeichen, Wunschtermin und Telefonnummer abfragt.',
+      en: 'A workshop in Vienna-Floridsdorf gets pages for inspection, service, tyres and air conditioning, plus a form asking for plate, preferred date and phone number.',
+      ru: 'Автосервис во Флоридсдорфе получает страницы для Pickerl, сервиса, шин и кондиционера и форму с номером машины, желаемой датой и телефоном.'
+    },
+    price: priceLine('websiteStart', 'websiteBusiness', 'anfrageAutomation'),
+    deliverables: {
+      de: ['Seiten für Pickerl, Service, Reifen und mehr', 'Terminwunsch mit Kennzeichen und Wunschtermin', 'Öffnungszeiten, Anfahrt, Google-Profil', 'Impressum und Datenschutz', 'Online in 7 Tagen nach dem Gespräch'],
+      en: ['Pages for inspection, service, tyres and more', 'Booking request with plate and preferred date', 'Opening hours, directions, Google profile', 'Legal notice and privacy policy', 'Live 7 days after the call'],
+      ru: ['Страницы для Pickerl, сервиса, шин и другого', 'Запись с номером машины и желаемой датой', 'Часы работы, проезд, профиль в Google', 'Impressum и Datenschutz', 'Онлайн через 7 дней после разговора']
+    },
+    faq: {
+      de: [
+        {q: 'Muss ich Preise auf die Website schreiben?', a: 'Nein. Viele Werkstätten zeigen nur Richtpreise für Pickerl oder Reifenwechsel, der Rest bleibt auf Anfrage. Sie entscheiden.'},
+        {q: 'Ersetzt das Formular mein Terminbuch?', a: 'Nein, es sammelt nur Terminwünsche. Sie bestätigen wie gewohnt per Telefon oder WhatsApp.'},
+        {q: 'Kann ich Öffnungszeiten selbst ändern?', a: 'Schicken Sie uns die neuen Zeiten per WhatsApp, mit der Pflege ist das inklusive. Im Google-Profil können Sie sie auch selbst ändern.'}
+      ],
+      en: [
+        {q: 'Do I have to show prices?', a: 'No. Many workshops only show guide prices for inspection or tyre changes and keep the rest on request. Your call.'},
+        {q: 'Does the form replace my booking book?', a: 'No, it only collects requests. You confirm by phone or WhatsApp as usual.'},
+        {q: 'Can I change opening hours myself?', a: 'Send us the new hours via WhatsApp, included with the care plan. You can also change them in your Google profile.'}
+      ],
+      ru: [
+        {q: 'Обязательно указывать цены?', a: 'Нет. Многие показывают только ориентировочные цены на Pickerl или шины, остальное по запросу. Решаете вы.'},
+        {q: 'Форма заменит мой журнал записи?', a: 'Нет, она только собирает пожелания. Подтверждаете вы как обычно, по телефону или в WhatsApp.'},
+        {q: 'Могу ли я сам менять часы работы?', a: 'Пришлите новые часы в WhatsApp, с поддержкой это включено. В профиле Google их можно поменять и самому.'}
+      ]
+    }
+  },
   {
     slug: 'ai-automation',
     title: {de: 'AI-Automation für österreichische Betriebe', en: 'AI automation for Austrian businesses', ru: 'AI-автоматизация для бизнеса в Австрии'},

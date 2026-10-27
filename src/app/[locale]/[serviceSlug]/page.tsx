@@ -1,18 +1,17 @@
-import {ArrowLeft, CheckCircle2, Euro, Lightbulb, Target, UsersRound, Wrench} from 'lucide-react';
+import {ArrowLeft, CheckCircle2, ChevronDown, Phone, Target, UsersRound, Wrench} from 'lucide-react';
 import type {Metadata} from 'next';
 import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 
-import {FadeIn} from '@/components/motion/fade-in';
 import {ButtonLink} from '@/components/ui/button-link';
 import {Container} from '@/components/ui/container';
-import {SectionHeading} from '@/components/ui/section-heading';
 import {getServicePageBySlug, servicePageContent, servicePages} from '@/content/service-pages';
-import {faqItems} from '@/content/site';
+import {faqItems, phoneHref} from '@/content/site';
 import {Link} from '@/i18n/navigation';
 import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
+import {softHyphens} from '@/lib/utils';
 
 type PageProps = {
   params: Promise<{locale: string; serviceSlug: string}>;
@@ -21,20 +20,23 @@ type PageProps = {
 const serviceDetailLabels = {
   de: {
     viewExamples: 'Beispielprojekte ansehen',
+    allPrices: 'Alle Pakete und Preise',
     faqTitle: 'Häufige Fragen',
     faqLead: 'Antworten auf typische Fragen zu Kosten, Ablauf, bestehenden Tools und Support.'
   },
   en: {
     viewExamples: 'View example projects',
+    allPrices: 'All packages and prices',
     faqTitle: 'Frequently asked questions',
     faqLead: 'Answers to common questions about cost, process, existing tools, and support.'
   },
   ru: {
     viewExamples: 'Посмотреть примеры проектов',
+    allPrices: 'Все пакеты и цены',
     faqTitle: 'Частые вопросы',
     faqLead: 'Ответы на типичные вопросы о стоимости, процессе, существующих инструментах и поддержке.'
   }
-} satisfies Record<Locale, {viewExamples: string; faqTitle: string; faqLead: string}>;
+} satisfies Record<Locale, {viewExamples: string; allPrices: string; faqTitle: string; faqLead: string}>;
 
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) =>
@@ -84,83 +86,83 @@ export default async function ServiceLandingPage({params}: PageProps) {
     {label: content.result, text: page.result[locale], icon: CheckCircle2}
   ];
 
+  const faq = page.faq?.[locale] ?? faqItems.slice(0, 6).map((item) => ({q: item.question[locale], a: item.answer[locale]}));
+  const primary = Boolean(page.primary);
+  const ctaHref = primary ? '/contact#audit-call' : '/contact';
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((item) => ({'@type': 'Question', name: item.q, acceptedAnswer: {'@type': 'Answer', text: item.a}}))
+  };
+
   return (
     <>
-      <section className="dark-band relative overflow-hidden py-10 text-foreground sm:py-14">
-        <div className="dark-grid absolute inset-0 opacity-30" />
-        <Container className="relative">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(faqJsonLd)}} />
+      <section className="border-b-2 border-foreground py-10 sm:py-14">
+        <Container>
           <Link
             href="/services"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-muted transition hover:text-foreground"
+            className="inline-flex min-h-11 items-center gap-2 text-[15px] font-bold text-muted transition hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             <span>{content.back}</span>
           </Link>
-        </Container>
-      </section>
-
-      <section className="dark-band scanline relative overflow-hidden pb-16 text-foreground">
-        <div className="dark-grid absolute inset-0 opacity-35" />
-        <Container className="relative">
-          <FadeIn className="max-w-5xl">
-            <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 text-sm font-semibold text-accent">
-              TreeTech Service
-            </p>
-            <h1 className="mt-6 break-words text-balance text-5xl font-semibold leading-[1.03] text-foreground sm:text-7xl">
-              {page.title[locale]}
-            </h1>
-            <p className="mt-6 max-w-3xl text-pretty text-lg leading-8 text-muted sm:text-xl">
-              {page.description[locale]}
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/contact" variant="accent">
-                {content.cta}
+          <h1 className="mt-4 max-w-5xl text-balance text-[42px] leading-[1.02] text-foreground sm:text-6xl">
+            {softHyphens(page.title[locale])}
+          </h1>
+          <p className="mt-4 max-w-[38em] text-pretty text-lg leading-relaxed text-muted">{page.description[locale]}</p>
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <ButtonLink href={ctaHref} variant="accent" trackingEvent="cta_preview_service">
+              {primary ? content.cta : content.assessmentCta}
+            </ButtonLink>
+            {primary ? (
+              <ButtonLink href={phoneHref} variant="secondary" icon={Phone} trackingEvent="phone_click">
+                {content.call}
               </ButtonLink>
+            ) : (
               <ButtonLink href="/portfolio" variant="secondary">
                 {labels.viewExamples}
               </ButtonLink>
-            </div>
-          </FadeIn>
+            )}
+          </div>
         </Container>
       </section>
 
-      <section className="py-16">
+      <section className="bg-surface py-12 sm:py-16">
         <Container>
-          <div className="grid gap-5 md:grid-cols-2">
-            {cards.map((card, index) => (
-              <FadeIn key={card.label} delay={index * 0.06}>
-                <article className="terminal-card h-full rounded-[1.25rem] p-5">
-                  <card.icon className="h-5 w-5 text-accent" aria-hidden="true" />
-                  <h2 className="mt-4 text-xl font-semibold text-foreground">{card.label}</h2>
-                  <p className="mt-3 text-sm leading-7 text-muted">{card.text}</p>
-                </article>
-              </FadeIn>
+          <div className="grid gap-x-12 gap-y-8 md:grid-cols-2">
+            {cards.map((card) => (
+              <article key={card.label} className="border-t-2 border-foreground pt-5">
+                <card.icon className="h-6 w-6 text-accent" aria-hidden="true" />
+                <h2 className="mt-3 text-2xl text-foreground">{card.label}</h2>
+                <p className="mt-2 text-[17px] leading-relaxed text-muted">{card.text}</p>
+              </article>
             ))}
           </div>
         </Container>
       </section>
 
-      <section className="warm-band py-16">
+      <section className="py-12 sm:py-16">
         <Container>
-          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
-            <SectionHeading
-              eyebrow={content.example}
-              title={page.example[locale]}
-              lead={page.description[locale]}
-            />
-            <div className="grid gap-5">
-              <article className="terminal-card rounded-[1.25rem] p-5">
-                <Euro className="h-5 w-5 text-accent" aria-hidden="true" />
-                <h2 className="mt-4 text-xl font-semibold text-foreground">{content.price}</h2>
-                <p className="mt-3 text-2xl font-semibold text-accent">{page.price[locale]}</p>
+          <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-12">
+            <div>
+              <p className="text-base font-bold text-accent">{content.example}</p>
+              <p className="mt-2 text-pretty text-2xl font-bold leading-snug text-foreground sm:text-[28px]">{page.example[locale]}</p>
+            </div>
+            <div className="grid gap-4">
+              <article className="rounded-[14px] border-2 border-foreground bg-surface p-6">
+                <h2 className="text-lg text-foreground">{content.price}</h2>
+                <p className="mt-2 text-xl font-bold leading-snug text-accent">{page.price[locale]}</p>
+                <Link href="/services" className="mt-3 inline-flex min-h-11 items-center text-[15px] font-bold text-accent hover:underline">
+                  {labels.allPrices}
+                </Link>
               </article>
-              <article className="terminal-card rounded-[1.25rem] p-5">
-                <Lightbulb className="h-5 w-5 text-accent" aria-hidden="true" />
-                <h2 className="mt-4 text-xl font-semibold text-foreground">{content.deliverables}</h2>
-                <ul className="mt-4 grid gap-3">
+              <article className="rounded-[14px] border-2 border-foreground bg-surface p-6">
+                <h2 className="text-lg text-foreground">{content.deliverables}</h2>
+                <ul className="mt-3 grid gap-2.5">
                   {page.deliverables[locale].map((item) => (
-                    <li key={item} className="flex gap-3 text-sm leading-6 text-muted">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
+                    <li key={item} className="grid grid-cols-[22px_1fr] gap-2 text-[16px] leading-snug text-foreground">
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 text-accent" aria-hidden="true" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -171,32 +173,37 @@ export default async function ServiceLandingPage({params}: PageProps) {
         </Container>
       </section>
 
-      <section className="py-16">
+      <section className="border-t-2 border-foreground bg-surface py-12 sm:py-16">
         <Container>
-          <SectionHeading
-            eyebrow="faq"
-            title={labels.faqTitle}
-            lead={labels.faqLead}
-          />
-          <div className="mt-10 grid gap-4 lg:grid-cols-2">
-            {faqItems.slice(0, 6).map((item, index) => (
-              <FadeIn key={item.question[locale]} delay={index * 0.04}>
-                <article className="terminal-card h-full rounded-[1.25rem] p-5">
-                  <h2 className="text-lg font-semibold text-foreground">{item.question[locale]}</h2>
-                  <p className="mt-3 text-sm leading-7 text-muted">{item.answer[locale]}</p>
-                </article>
-              </FadeIn>
-            ))}
+          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+            <h2 className="text-balance text-[30px] leading-[1.08] text-foreground sm:text-[44px]">{labels.faqTitle}</h2>
+            <div className="border-t border-border">
+              {faq.map((item, index) => (
+                <details key={item.q} className="group border-b border-border" open={index === 0}>
+                  <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-lg font-bold text-foreground [&::-webkit-details-marker]:hidden">
+                    {item.q}
+                    <ChevronDown className="h-5 w-5 shrink-0 transition group-open:rotate-180" aria-hidden="true" />
+                  </summary>
+                  <p className="pb-5 text-[16px] leading-relaxed text-muted">{item.a}</p>
+                </details>
+              ))}
+            </div>
           </div>
         </Container>
       </section>
 
-      <section className="warm-band py-16">
+      <section className="bg-accent py-14 text-white">
         <Container>
-          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-            <SectionHeading title={content.ctaTitle} lead={content.ctaLead} />
-            <ButtonLink href="/contact" variant="accent">
-              {content.cta}
+          <h2 className="max-w-3xl text-balance text-[30px] leading-[1.08] sm:text-[44px]">
+            {primary ? content.ctaTitle : content.assessmentTitle}
+          </h2>
+          <p className="mt-3 max-w-[38em] text-[17px] text-white/85">{primary ? content.ctaLead : content.assessmentLead}</p>
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <ButtonLink href={ctaHref} variant="signal" trackingEvent="cta_preview_service_final">
+              {primary ? content.cta : content.assessmentCta}
+            </ButtonLink>
+            <ButtonLink href={phoneHref} variant="onDark" icon={Phone} trackingEvent="phone_click">
+              {content.call}
             </ButtonLink>
           </div>
         </Container>

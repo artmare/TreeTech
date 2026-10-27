@@ -55,32 +55,159 @@ export type DemoSite = {
 
 export const demoSiteLabels = withLocaleFallbacks({
   de: {
-    viewDemo: 'Demo-Website ansehen',
-    demoEyebrow: 'Live-Demo',
-    backToCase: 'Zurueck zum Case',
-    storageTitle: 'Speicherstrategie',
-    storageText:
-      'Dieses Demo wird als typisierte Inhaltsdatei gespeichert und statisch generiert. So bleibt das Portfolio schnell, uebersetzbar und ohne zusaetzliche Datenbank wartbar.'
+    viewDemo: 'Beispiel-Website ansehen',
+    demoEyebrow: 'Beispiel',
+    backToCase: 'Zurück zum Beispiel',
+    banner: 'Beispiel-Website von TreeTech. Der Betrieb ist erfunden.',
+    bannerCta: 'So eine Website für Ihren Betrieb'
   },
   en: {
-    viewDemo: 'View demo website',
-    demoEyebrow: 'Live demo',
-    backToCase: 'Back to case',
-    storageTitle: 'Storage strategy',
-    storageText:
-      'This demo is stored as typed content and statically generated. That keeps the portfolio fast, translatable, and maintainable without an extra database.'
+    viewDemo: 'View example website',
+    demoEyebrow: 'Example',
+    backToCase: 'Back to the example',
+    banner: 'Example website by TreeTech. The business is made up.',
+    bannerCta: 'A site like this for your business'
   },
   ru: {
-    viewDemo: 'Посмотреть demo-сайт',
-    demoEyebrow: 'Live demo',
-    backToCase: 'Назад к кейсу',
-    storageTitle: 'Стратегия хранения',
-    storageText:
-      'Это demo хранится как типизированный content-файл и генерируется статически. Так портфолио остается быстрым, переводимым и поддерживаемым без отдельной базы данных.'
+    viewDemo: 'Открыть пример сайта',
+    demoEyebrow: 'Пример',
+    backToCase: 'Назад к примеру',
+    banner: 'Пример сайта от TreeTech. Фирма вымышленная.',
+    bannerCta: 'Такой сайт для вашего бизнеса'
   }
 }) satisfies Localized<Record<string, string>>;
 
 export const demoSites: DemoSite[] = withLocaleFallbacks([
+  {
+    slug: 'elektro-huber',
+    brand: 'Elektro Huber',
+    location: 'Mödling',
+    industry: {
+      de: 'Elektriker',
+      en: 'Electrician',
+      ru: 'Электрик'
+    },
+    metaTitle: {
+      de: 'Elektro Huber Beispiel-Website | TreeTech',
+      en: 'Elektro Huber example website | TreeTech',
+      ru: 'Elektro Huber, пример сайта | TreeTech'
+    },
+    metaDescription: {
+      de: 'Beispiel-Website für einen Elektriker in Mödling: Anruf-Knopf, Anfrage mit Foto, Leistungen und Einsatzgebiet. Ein erfundener Betrieb, gebaut von TreeTech.',
+      en: 'Example website for an electrician in Mödling: call button, inquiry with photo, services and service area. A made-up business built by TreeTech.',
+      ru: 'Пример сайта для электрика в Мёдлинге: кнопка звонка, заявка с фото, услуги и район выезда. Вымышленная фирма, сайт сделал TreeTech.'
+    },
+    theme: {
+      background: '#f5f6f8',
+      surface: '#ffffff',
+      text: '#14202e',
+      muted: '#556170',
+      primary: '#14324f',
+      accent: '#e8590c',
+      hero: '#14324f'
+    },
+    copy: {
+      de: {
+        nav: ['Leistungen', 'Über uns', 'Ablauf', 'Kontakt'],
+        eyebrow: 'Elektriker in Mödling und Umgebung',
+        title: 'Strom weg? Wir kommen heute noch.',
+        lead: 'Störungen, Umbau, E-Check und Photovoltaik. Meisterbetrieb in Mödling, unterwegs im ganzen Bezirk und in Baden.',
+        primaryCta: 'Jetzt anrufen',
+        secondaryCta: 'Anfrage mit Foto senden',
+        stats: [
+          {value: '25 Jahre', label: 'Meisterbetrieb'},
+          {value: '30 min', label: 'bis zum Rückruf'},
+          {value: '7 bis 19 Uhr', label: 'Mo bis Fr, Notdienst am Wochenende'}
+        ],
+        introTitle: 'Ein Betrieb, ein Ansprechpartner.',
+        introText: 'Sie reden mit dem Meister, nicht mit einer Hotline. Wir sagen Ihnen vorher, was es kostet, und hinterlassen die Baustelle sauber.',
+        servicesTitle: 'Was wir für Sie machen',
+        services: [
+          {title: 'Störungsdienst', text: 'Sicherung fliegt, Licht geht nicht, Herd ohne Strom. Wir finden den Fehler und beheben ihn.'},
+          {title: 'Umbau und Sanierung', text: 'Neue Leitungen, Steckdosen und Verteiler für Wohnung, Haus und Geschäft.'},
+          {title: 'E-Check für Vermieter', text: 'Prüfung der Elektroanlage mit Protokoll, oft schon am nächsten Tag.'},
+          {title: 'Photovoltaik und Wallbox', text: 'Beratung, Montage und Anschluss, abgestimmt mit Ihrem Netzbetreiber.'}
+        ],
+        processTitle: 'So einfach geht es',
+        process: [
+          {title: 'Anrufen oder Foto schicken', text: 'Sagen Sie kurz, was los ist. Ein Foto hilft uns, gleich das Richtige mitzunehmen.'},
+          {title: 'Termin und Preis vorher', text: 'Sie wissen, wann wir kommen und womit Sie rechnen können.'},
+          {title: 'Erledigt und sauber', text: 'Wir machen die Arbeit fertig, räumen auf und erklären Ihnen, was wir gemacht haben.'}
+        ],
+        testimonial: 'Hier stehen auf Ihrer Website später Ihre echten Google-Bewertungen.',
+        testimonialAuthor: 'Platz für Ihre Bewertungen',
+        contactTitle: 'Was ist kaputt?',
+        contactText: 'Schicken Sie uns ein Foto und Ihre Adresse. Wir rufen innerhalb von 30 Minuten zurück.',
+        contactButton: 'Anfrage senden'
+      },
+      en: {
+        nav: ['Services', 'About', 'Process', 'Contact'],
+        eyebrow: 'Electrician in Mödling and the surrounding area',
+        title: 'Power out? We come today.',
+        lead: 'Faults, renovations, safety checks and solar. Master electricians in Mödling, working across the district and in Baden.',
+        primaryCta: 'Call now',
+        secondaryCta: 'Send a request with photo',
+        stats: [
+          {value: '25 years', label: 'master business'},
+          {value: '30 min', label: 'until we call back'},
+          {value: '7am to 7pm', label: 'Mon to Fri, emergency service at weekends'}
+        ],
+        introTitle: 'One business, one contact.',
+        introText: 'You talk to the master electrician, not a hotline. We tell you the cost upfront and leave the site clean.',
+        servicesTitle: 'What we do for you',
+        services: [
+          {title: 'Emergency service', text: 'Fuse keeps tripping, lights out, cooker without power. We find the fault and fix it.'},
+          {title: 'Renovation', text: 'New wiring, sockets and distribution boards for flats, houses and shops.'},
+          {title: 'Safety check for landlords', text: 'Inspection of the electrical system with a report, often the next day.'},
+          {title: 'Solar and wallbox', text: 'Advice, installation and connection, coordinated with your grid operator.'}
+        ],
+        processTitle: 'Simple as that',
+        process: [
+          {title: 'Call or send a photo', text: 'Tell us briefly what is wrong. A photo helps us bring the right parts.'},
+          {title: 'Date and price upfront', text: 'You know when we come and what to expect.'},
+          {title: 'Done and clean', text: 'We finish the job, tidy up and explain what we did.'}
+        ],
+        testimonial: 'Your real Google reviews will appear here on your website.',
+        testimonialAuthor: 'Space for your reviews',
+        contactTitle: 'What is broken?',
+        contactText: 'Send us a photo and your address. We call back within 30 minutes.',
+        contactButton: 'Send request'
+      },
+      ru: {
+        nav: ['Услуги', 'О нас', 'Как работаем', 'Контакт'],
+        eyebrow: 'Электрик в Мёдлинге и окрестностях',
+        title: 'Нет света? Приедем сегодня.',
+        lead: 'Неисправности, ремонт, проверки и солнечные панели. Мастерская в Мёдлинге, выезжаем по всему округу и в Баден.',
+        primaryCta: 'Позвонить',
+        secondaryCta: 'Отправить заявку с фото',
+        stats: [
+          {value: '25 лет', label: 'работаем как мастерская'},
+          {value: '30 мин', label: 'до обратного звонка'},
+          {value: '7:00–19:00', label: 'пн–пт, аварийный выезд в выходные'}
+        ],
+        introTitle: 'Одна фирма, один контакт.',
+        introText: 'Вы говорите с мастером, а не с горячей линией. Цену называем заранее и оставляем после себя чистоту.',
+        servicesTitle: 'Что мы делаем',
+        services: [
+          {title: 'Аварийный выезд', text: 'Выбивает автомат, не горит свет, плита без тока. Находим причину и устраняем.'},
+          {title: 'Ремонт и замена', text: 'Новая проводка, розетки и щитки для квартиры, дома и магазина.'},
+          {title: 'Проверка для арендодателей', text: 'Проверка электросети с протоколом, часто уже на следующий день.'},
+          {title: 'Солнечные панели и зарядка', text: 'Консультация, монтаж и подключение по согласованию с сетевой компанией.'}
+        ],
+        processTitle: 'Всё просто',
+        process: [
+          {title: 'Позвоните или пришлите фото', text: 'Коротко опишите проблему. Фото помогает взять с собой нужное.'},
+          {title: 'Время и цена заранее', text: 'Вы знаете, когда мы приедем и сколько это будет стоить.'},
+          {title: 'Сделано и чисто', text: 'Заканчиваем работу, убираем за собой и объясняем, что сделали.'}
+        ],
+        testimonial: 'Здесь на вашем сайте будут ваши настоящие отзывы из Google.',
+        testimonialAuthor: 'Место для ваших отзывов',
+        contactTitle: 'Что сломалось?',
+        contactText: 'Пришлите фото и адрес. Перезвоним в течение 30 минут.',
+        contactButton: 'Отправить заявку'
+      }
+    }
+  },
   {
     slug: 'alpendent',
     brand: 'AlpenDent',
@@ -94,7 +221,7 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
       en: 'AlpenDent Demo Website | TreeTech Portfolio'
     },
     metaDescription: {
-      de: 'Zweisprachige Demo-Website fuer eine moderne Zahnordination in Innsbruck.',
+      de: 'Zweisprachige Demo-Website für eine moderne Zahnordination in Innsbruck.',
       en: 'Bilingual demo website for a modern dental clinic in Innsbruck.'
     },
     theme: {
@@ -110,45 +237,45 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
       de: {
         nav: ['Behandlungen', 'Ordination', 'Ablauf', 'Kontakt'],
         eyebrow: 'Zahnarztpraxis in Innsbruck',
-        title: 'Ruhige Zahnmedizin fuer ein gutes Gefuehl vor dem Termin.',
+        title: 'Ruhige Zahnmedizin für ein gutes Gefühl vor dem Termin.',
         lead:
-          'AlpenDent verbindet moderne Zahnmedizin mit klarer Beratung und einer Atmosphaere, in der sich Patientinnen und Patienten gut aufgehoben fuehlen.',
+          'AlpenDent verbindet moderne Zahnmedizin mit klarer Beratung und einer Atmosphäre, in der sich Patientinnen und Patienten gut aufgehoben fühlen.',
         primaryCta: 'Termin anfragen',
         secondaryCta: 'Behandlungen ansehen',
         stats: [
-          {value: '24h', label: 'Rueckmeldung bei Online-Anfragen'},
+          {value: '24h', label: 'Rückmeldung bei Online-Anfragen'},
           {value: '4.9', label: 'Patientenzufriedenheit'},
           {value: 'DE/EN', label: 'Betreuung auf zwei Sprachen'}
         ],
         introTitle: 'Vertrauen beginnt vor dem ersten Besuch.',
         introText:
-          'Die Website fuehrt neue Patientinnen und Patienten ruhig durch Leistungen, Team und Terminoptionen. Jede Sektion beantwortet eine konkrete Frage, bevor sie zur Anfrage fuehrt.',
+          'Die Website führt neue Patientinnen und Patienten ruhig durch Leistungen, Team und Terminoptionen. Jede Sektion beantwortet eine konkrete Frage, bevor sie zur Anfrage führt.',
         servicesTitle: 'Leistungen mit klarer Orientierung',
         services: [
           {
             title: 'Prophylaxe & Mundhygiene',
-            text: 'Schonende Betreuung, transparente Empfehlungen und regelmaessige Vorsorge fuer langfristige Zahngesundheit.'
+            text: 'Schonende Betreuung, transparente Empfehlungen und regelmäßige Vorsorge für langfristige Zahngesundheit.'
           },
           {
-            title: 'Aesthetische Zahnmedizin',
-            text: 'Bleaching, Veneers und unauffaellige Korrekturen mit einem natuerlichen Ergebnis im Fokus.'
+            title: 'Ästhetische Zahnmedizin',
+            text: 'Bleaching, Veneers und unauffällige Korrekturen mit einem natürlichen Ergebnis im Fokus.'
           },
           {
             title: 'Akute Beschwerden',
-            text: 'Schnelle Einschaetzung, klare Kommunikation und planbare naechste Schritte bei Schmerzen.'
+            text: 'Schnelle Einschätzung, klare Kommunikation und planbare nächste Schritte bei Schmerzen.'
           }
         ],
-        processTitle: 'So laeuft der erste Termin',
+        processTitle: 'So läuft der erste Termin',
         process: [
-          {title: 'Anfrage', text: 'Patienten senden online ihr Anliegen und erhalten eine zeitnahe Rueckmeldung.'},
-          {title: 'Erstgespraech', text: 'Die Ordination klaert Beschwerden, Wuensche und passende Behandlungsschritte.'},
-          {title: 'Behandlung', text: 'Jede Massnahme wird verstaendlich erklaert und sorgfaeltig umgesetzt.'}
+          {title: 'Anfrage', text: 'Patienten senden online ihr Anliegen und erhalten eine zeitnahe Rückmeldung.'},
+          {title: 'Erstgespräch', text: 'Die Ordination klärt Beschwerden, Wünsche und passende Behandlungsschritte.'},
+          {title: 'Behandlung', text: 'Jede Massnahme wird verständlich erklärt und sorgfältig umgesetzt.'}
         ],
         testimonial:
           'Die neue Website nimmt die Unsicherheit vor dem ersten Besuch. Genau das wollten wir erreichen.',
         testimonialAuthor: 'Dr. Lena Hofer, Leitung AlpenDent',
-        contactTitle: 'Bereit fuer einen ruhigen ersten Schritt?',
-        contactText: 'Senden Sie Ihre Anfrage direkt an die Ordination. AlpenDent meldet sich mit passenden Terminvorschlaegen.',
+        contactTitle: 'Bereit für einen ruhigen ersten Schritt?',
+        contactText: 'Senden Sie Ihre Anfrage direkt an die Ordination. AlpenDent meldet sich mit passenden Terminvorschlägen.',
         contactButton: 'Jetzt Termin anfragen'
       },
       en: {
@@ -210,7 +337,7 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
       en: 'Vienna Legal Demo Website | TreeTech Portfolio'
     },
     metaDescription: {
-      de: 'Zweisprachige Demo-Website fuer eine serioese Wiener Rechtsanwaltskanzlei.',
+      de: 'Zweisprachige Demo-Website für eine seriöse Wiener Rechtsanwaltskanzlei.',
       en: 'Bilingual demo website for a composed Vienna law firm.'
     },
     theme: {
@@ -225,46 +352,46 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
     copy: {
       de: {
         nav: ['Fachgebiete', 'Kanzlei', 'Ablauf', 'Kontakt'],
-        eyebrow: 'Kanzlei fuer Wirtschafts- und Immobilienrecht',
+        eyebrow: 'Kanzlei für Wirtschafts- und Immobilienrecht',
         title: 'Klare rechtliche Orientierung, bevor es kompliziert wird.',
         lead:
-          'Vienna Legal begleitet Unternehmen, Eigentuemer und Privatpersonen mit praeziser Beratung und einem diskreten Weg zum Erstgespraech.',
-        primaryCta: 'Erstgespraech anfragen',
+          'Vienna Legal begleitet Unternehmen, Eigentümer und Privatpersonen mit präziser Beratung und einem diskreten Weg zum Erstgespräch.',
+        primaryCta: 'Erstgespräch anfragen',
         secondaryCta: 'Fachgebiete ansehen',
         stats: [
           {value: '3', label: 'Kernbereiche'},
-          {value: '48h', label: 'Rueckmeldung auf Anfragen'},
+          {value: '48h', label: 'Rückmeldung auf Anfragen'},
           {value: 'DE/EN', label: 'Mandantenkommunikation'}
         ],
-        introTitle: 'Serioes, klar und ohne juristische Nebelwand.',
+        introTitle: 'Seriös, klar und ohne juristische Nebelwand.',
         introText:
-          'Die Website erklaert Fachgebiete in verstaendlicher Sprache und fuehrt Mandantinnen und Mandanten zu einem sicheren ersten Kontakt.',
+          'Die Website erklärt Fachgebiete in verständlicher Sprache und führt Mandantinnen und Mandanten zu einem sicheren ersten Kontakt.',
         servicesTitle: 'Fachgebiete',
         services: [
           {
             title: 'Wirtschaftsrecht',
-            text: 'Vertraege, Gesellschaftsfragen und laufende rechtliche Begleitung fuer Unternehmen.'
+            text: 'Verträge, Gesellschaftsfragen und laufende rechtliche Begleitung für Unternehmen.'
           },
           {
             title: 'Immobilienrecht',
             text: 'Kauf, Bestand, Entwicklung und Streitfragen mit Fokus auf saubere Entscheidungen.'
           },
           {
-            title: 'Konfliktloesung',
-            text: 'Strategische Einschaetzung, Verhandlung und gerichtliche Vertretung, wenn es noetig ist.'
+            title: 'Konfliktlösung',
+            text: 'Strategische Einschätzung, Verhandlung und gerichtliche Vertretung, wenn es nötig ist.'
           }
         ],
-        processTitle: 'Vom Anliegen zur Einschaetzung',
+        processTitle: 'Vom Anliegen zur Einschätzung',
         process: [
-          {title: 'Kurz schildern', text: 'Mandanten beschreiben ihr Anliegen sicher und knapp ueber das Formular.'},
-          {title: 'Pruefen', text: 'Die Kanzlei klaert Zustaendigkeit, Dringlichkeit und die passende Vorgehensweise.'},
-          {title: 'Beraten', text: 'Im Erstgespraech entstehen klare Optionen, Risiken und naechste Schritte.'}
+          {title: 'Kurz schildern', text: 'Mandanten beschreiben ihr Anliegen sicher und knapp über das Formular.'},
+          {title: 'Prüfen', text: 'Die Kanzlei klärt Zuständigkeit, Dringlichkeit und die passende Vorgehensweise.'},
+          {title: 'Beraten', text: 'Im Erstgespräch entstehen klare Optionen, Risiken und nächste Schritte.'}
         ],
         testimonial:
-          'Die Seite wirkt wie unsere Kanzlei: ruhig, praezise und auf den Punkt.',
+          'Die Seite wirkt wie unsere Kanzlei: ruhig, präzise und auf den Punkt.',
         testimonialAuthor: 'Mag. Thomas Berger, Partner Vienna Legal',
-        contactTitle: 'Ihr Anliegen braucht eine klare Einschaetzung?',
-        contactText: 'Senden Sie eine kurze Beschreibung. Vienna Legal meldet sich diskret mit dem passenden naechsten Schritt.',
+        contactTitle: 'Ihr Anliegen braucht eine klare Einschätzung?',
+        contactText: 'Senden Sie eine kurze Beschreibung. Vienna Legal meldet sich diskret mit dem passenden nächsten Schritt.',
         contactButton: 'Kontakt aufnehmen'
       },
       en: {
@@ -326,7 +453,7 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
       en: 'Bergblick Hotel Demo Website | TreeTech Portfolio'
     },
     metaDescription: {
-      de: 'Zweisprachige Demo-Website fuer ein alpines Hotel im Salzkammergut.',
+      de: 'Zweisprachige Demo-Website für ein alpines Hotel im Salzkammergut.',
       en: 'Bilingual demo website for an alpine hotel in the Salzkammergut.'
     },
     theme: {
@@ -344,18 +471,18 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
         eyebrow: 'Alpines Hideaway im Salzkammergut',
         title: 'Urlaub mit Weitblick, Ruhe und einem klaren Weg zur Direktanfrage.',
         lead:
-          'Das Bergblick Hotel verbindet alpine Erholung, regionale Kueche und persoenlichen Service fuer Gaeste, die bewusst buchen.',
+          'Das Bergblick Hotel verbindet alpine Erholung, regionale Küche und persönlichen Service für Gäste, die bewusst buchen.',
         primaryCta: 'Aufenthalt anfragen',
         secondaryCta: 'Zimmer entdecken',
         stats: [
           {value: '32', label: 'Zimmer & Suiten'},
           {value: '4', label: 'Jahreszeiten-Angebote'},
-          {value: 'DE/EN', label: 'Gaestekommunikation'}
+          {value: 'DE/EN', label: 'Gästekommunikation'}
         ],
-        introTitle: 'Inspiration und Buchungsabsicht gehoeren zusammen.',
+        introTitle: 'Inspiration und Buchungsabsicht gehören zusammen.',
         introText:
-          'Die Website zeigt Atmosphaere, Zimmer und Region emotional, fuehrt aber immer wieder sauber zur Direktanfrage.',
-        servicesTitle: 'Was Gaeste erwartet',
+          'Die Website zeigt Atmosphäre, Zimmer und Region emotional, führt aber immer wieder sauber zur Direktanfrage.',
+        servicesTitle: 'Was Gäste erwartet',
         services: [
           {
             title: 'Zimmer mit Ausblick',
@@ -363,7 +490,7 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
           },
           {
             title: 'Regionale Kulinarik',
-            text: 'Fruehstueck, Abendmenues und Produkte aus der Region mit persoenlicher Handschrift.'
+            text: 'Frühstück, Abendmenüs und Produkte aus der Region mit persönlicher Handschrift.'
           },
           {
             title: 'Sommer & Winter',
@@ -372,15 +499,15 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
         ],
         processTitle: 'Direkt anfragen ohne Umwege',
         process: [
-          {title: 'Zeitraum waehlen', text: 'Gaeste geben Reisedaten, Personen und Wuensche an.'},
-          {title: 'Angebot erhalten', text: 'Das Hotel sendet ein persoenliches Angebot statt anonymer Standardpreise.'},
+          {title: 'Zeitraum wählen', text: 'Gäste geben Reisedaten, Personen und Wünsche an.'},
+          {title: 'Angebot erhalten', text: 'Das Hotel sendet ein persönliches Angebot statt anonymer Standardpreise.'},
           {title: 'Aufenthalt fixieren', text: 'Die Buchung wird direkt und nachvollziehbar abgeschlossen.'}
         ],
         testimonial:
-          'Die Website fuehlt sich nach Urlaub an und macht Direktanfragen viel einfacher.',
+          'Die Website fühlt sich nach Urlaub an und macht Direktanfragen viel einfacher.',
         testimonialAuthor: 'Maria Leitner, Gastgeberin Bergblick Hotel',
         contactTitle: 'Planen Sie Ihre Auszeit in den Bergen?',
-        contactText: 'Fragen Sie Ihren Wunschzeitraum direkt an. Das Bergblick Team sendet ein persoenliches Angebot.',
+        contactText: 'Fragen Sie Ihren Wunschzeitraum direkt an. Das Bergblick Team sendet ein persönliches Angebot.',
         contactButton: 'Aufenthalt anfragen'
       },
       en: {
@@ -442,7 +569,7 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
       en: 'GreenHaus Immobilien Demo Website | TreeTech Portfolio'
     },
     metaDescription: {
-      de: 'Zweisprachige Demo-Website fuer eine Immobilienagentur in Graz.',
+      de: 'Zweisprachige Demo-Website für eine Immobilienagentur in Graz.',
       en: 'Bilingual demo website for a real estate agency in Graz.'
     },
     theme: {
@@ -458,9 +585,9 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
       de: {
         nav: ['Objekte', 'Bewertung', 'Maklerteam', 'Kontakt'],
         eyebrow: 'Immobilienvermittlung in Graz',
-        title: 'Immobilien hochwertig praesentieren und Eigentuemern Vertrauen geben.',
+        title: 'Immobilien hochwertig präsentieren und Eigentümern Vertrauen geben.',
         lead:
-          'GreenHaus Immobilien verbindet Marktkenntnis, saubere Objektpraesentation und persoenliche Beratung fuer Kauf, Verkauf und Bewertung.',
+          'GreenHaus Immobilien verbindet Marktkenntnis, saubere Objektpräsentation und persönliche Beratung für Kauf, Verkauf und Bewertung.',
         primaryCta: 'Immobilie bewerten',
         secondaryCta: 'Objekte ansehen',
         stats: [
@@ -468,34 +595,34 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
           {value: '72h', label: 'erste Bewertung'},
           {value: 'DE/EN', label: 'Exposes & Beratung'}
         ],
-        introTitle: 'Ein Immobilienauftritt muss zwei Zielgruppen fuehren.',
+        introTitle: 'Ein Immobilienauftritt muss zwei Zielgruppen führen.',
         introText:
-          'Kaeufer wollen schnell passende Objekte verstehen. Eigentuemern muss die Website Kompetenz und Diskretion vermitteln.',
-        servicesTitle: 'Leistungen fuer Eigentuemer und Kaeufer',
+          'Käufer wollen schnell passende Objekte verstehen. Eigentümern muss die Website Kompetenz und Diskretion vermitteln.',
+        servicesTitle: 'Leistungen für Eigentümer und Käufer',
         services: [
           {
             title: 'Immobilienbewertung',
-            text: 'Realistische Einschaetzung mit Marktbezug, Lageanalyse und klarem naechsten Schritt.'
+            text: 'Realistische Einschätzung mit Marktbezug, Lageanalyse und klarem nächsten Schritt.'
           },
           {
             title: 'Verkauf & Vermarktung',
-            text: 'Praezise Objektaufbereitung, hochwertige Exposes und strukturierte Anfragefuehrung.'
+            text: 'Präzise Objektaufbereitung, hochwertige Exposes und strukturierte Anfrageführung.'
           },
           {
-            title: 'Kaeuferberatung',
+            title: 'Käuferberatung',
             text: 'Begleitung von der ersten Besichtigung bis zur fundierten Kaufentscheidung.'
           }
         ],
         processTitle: 'Vom Objekt zur qualifizierten Anfrage',
         process: [
           {title: 'Objekt verstehen', text: 'Eckdaten, Lage und Zielgruppe werden sauber aufgenommen.'},
-          {title: 'Wertigkeit zeigen', text: 'Das Objekt wird strukturiert, klar und hochwertig praesentiert.'},
-          {title: 'Anfragen qualifizieren', text: 'Kontaktwege trennen Kaeuferanfragen und Eigentuemergespraeche.'}
+          {title: 'Wertigkeit zeigen', text: 'Das Objekt wird strukturiert, klar und hochwertig präsentiert.'},
+          {title: 'Anfragen qualifizieren', text: 'Kontaktwege trennen Käuferanfragen und Eigentümergespräche.'}
         ],
         testimonial:
-          'Unsere Objekte wirken online endlich so hochwertig, wie sie es tatsaechlich sind.',
+          'Unsere Objekte wirken online endlich so hochwertig, wie sie es tatsächlich sind.',
         testimonialAuthor: 'Sophie Krainer, GreenHaus Immobilien',
-        contactTitle: 'Moechten Sie eine Immobilie einschaetzen lassen?',
+        contactTitle: 'Möchten Sie eine Immobilie einschätzen lassen?',
         contactText: 'Senden Sie die wichtigsten Eckdaten. GreenHaus meldet sich mit einer ersten Orientierung.',
         contactButton: 'Bewertung anfragen'
       },
@@ -558,7 +685,7 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
       en: 'KraftWerk Fitness Demo Website | TreeTech Portfolio'
     },
     metaDescription: {
-      de: 'Zweisprachige Demo-Website fuer ein Fitnessstudio in Linz.',
+      de: 'Zweisprachige Demo-Website für ein Fitnessstudio in Linz.',
       en: 'Bilingual demo website for a fitness studio in Linz.'
     },
     theme: {
@@ -574,7 +701,7 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
       de: {
         nav: ['Training', 'Kurse', 'Coaches', 'Probetraining'],
         eyebrow: 'Fitnessstudio in Linz',
-        title: 'Training, das Energie macht und den Einstieg leicht haelt.',
+        title: 'Training, das Energie macht und den Einstieg leicht hält.',
         lead:
           'KraftWerk Fitness verbindet starke Trainingsbereiche, motivierende Coaches und einen klaren Weg zum Probetraining.',
         primaryCta: 'Probetraining buchen',
@@ -584,14 +711,14 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
           {value: '7', label: 'Coaches'},
           {value: 'DE/EN', label: 'Trainingseinweisung'}
         ],
-        introTitle: 'Der erste Besuch entscheidet ueber die Mitgliedschaft.',
+        introTitle: 'Der erste Besuch entscheidet über die Mitgliedschaft.',
         introText:
           'Die Website nimmt Interessenten schnell mit: Was kann ich trainieren, wer begleitet mich, und wie komme ich zum Probetraining?',
-        servicesTitle: 'Training fuer unterschiedliche Ziele',
+        servicesTitle: 'Training für unterschiedliche Ziele',
         services: [
           {
             title: 'Strength Zone',
-            text: 'Freihantelbereich, Maschinen und Planbegleitung fuer messbare Fortschritte.'
+            text: 'Freihantelbereich, Maschinen und Planbegleitung für messbare Fortschritte.'
           },
           {
             title: 'Functional Classes',
@@ -599,20 +726,20 @@ export const demoSites: DemoSite[] = withLocaleFallbacks([
           },
           {
             title: 'Personal Coaching',
-            text: 'Individuelle Betreuung fuer Einstieg, Technik und langfristige Motivation.'
+            text: 'Individuelle Betreuung für Einstieg, Technik und langfristige Motivation.'
           }
         ],
         processTitle: 'Vom Interesse zum ersten Training',
         process: [
-          {title: 'Slot buchen', text: 'Interessenten waehlen online einen passenden Probetraining-Termin.'},
+          {title: 'Slot buchen', text: 'Interessenten wählen online einen passenden Probetraining-Termin.'},
           {title: 'Studio erleben', text: 'Ein Coach zeigt Bereiche, Kurse und sinnvolle Einstiegsoptionen.'},
-          {title: 'Plan starten', text: 'Nach dem Probetraining gibt es einen klaren Plan fuer die ersten Wochen.'}
+          {title: 'Plan starten', text: 'Nach dem Probetraining gibt es einen klaren Plan für die ersten Wochen.'}
         ],
         testimonial:
           'Die Website bringt die Energie des Studios auf den Punkt und macht Probetrainings sichtbar.',
-        testimonialAuthor: 'Markus Steiner, Gruender KraftWerk Fitness',
-        contactTitle: 'Bereit fuer Ihr erstes Training?',
-        contactText: 'Buchen Sie ein unverbindliches Probetraining und lernen Sie Studio, Coaches und Trainingsmoeglichkeiten kennen.',
+        testimonialAuthor: 'Markus Steiner, Gründer KraftWerk Fitness',
+        contactTitle: 'Bereit für Ihr erstes Training?',
+        contactText: 'Buchen Sie ein unverbindliches Probetraining und lernen Sie Studio, Coaches und Trainingsmöglichkeiten kennen.',
         contactButton: 'Probetraining buchen'
       },
       en: {

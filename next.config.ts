@@ -5,6 +5,9 @@ const scriptSrc = [
   "'self'",
   "'unsafe-inline'",
   'https://www.googletagmanager.com',
+  // Microsoft Clarity, loaded only after consent.
+  'https://www.clarity.ms',
+  'https://*.clarity.ms',
   process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : ''
 ]
   .filter(Boolean)
@@ -15,12 +18,14 @@ const contentSecurityPolicy = [
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'none'",
+  // Cal.com booking calendar on the contact page.
+  "frame-src 'self' https://cal.com https://app.cal.com",
   "form-action 'self'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
   "style-src 'self' 'unsafe-inline'",
   `script-src ${scriptSrc}`,
-  "connect-src 'self' https://api.resend.com https://vitals.vercel-insights.com https://www.google-analytics.com https://region1.google-analytics.com https://*.google-analytics.com ws: wss:",
+  "connect-src 'self' https://api.resend.com https://vitals.vercel-insights.com https://www.google-analytics.com https://region1.google-analytics.com https://*.google-analytics.com https://*.clarity.ms https://c.bing.com ws: wss:",
   process.env.NODE_ENV === 'production' ? 'upgrade-insecure-requests' : ''
 ]
   .filter(Boolean)

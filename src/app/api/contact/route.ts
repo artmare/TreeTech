@@ -127,23 +127,25 @@ export async function POST(request: Request) {
     const result = await resend.emails.send({
       from,
       to,
-      replyTo: data.email,
-      subject: `TreeTech Anfrage: ${data.budget}`,
+      ...(data.email ? {replyTo: data.email} : {}),
+      subject: `TreeTech Anfrage: ${data.company || data.name}`,
       text: [
         `Name: ${data.name}`,
-        `E-Mail: ${data.email}`,
+        `Telefon: ${data.phone || '-'}`,
+        `E-Mail: ${data.email || '-'}`,
         `Unternehmen: ${data.company || '-'}`,
         `Projektart: ${data.budget}`,
         '',
-        data.message
+        data.message || ''
       ].join('\n'),
       html: `
         <h2>Neue TreeTech Anfrage</h2>
         <p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
-        <p><strong>E-Mail:</strong> ${escapeHtml(data.email)}</p>
+        <p><strong>Telefon:</strong> ${escapeHtml(data.phone || '-')}</p>
+        <p><strong>E-Mail:</strong> ${escapeHtml(data.email || '-')}</p>
         <p><strong>Unternehmen:</strong> ${escapeHtml(data.company || '-')}</p>
         <p><strong>Projektart:</strong> ${escapeHtml(data.budget)}</p>
-        <p>${escapeHtml(data.message).replaceAll('\n', '<br />')}</p>
+        <p>${escapeHtml(data.message || '').replaceAll('\n', '<br />')}</p>
       `
     });
 
@@ -154,7 +156,7 @@ export async function POST(request: Request) {
     }
   }
 
-  if (resend) {
+  if (resend && data.email) {
     const confirmation = getConfirmationCopy(data.metadata?.locale || getLocaleFromReferer(request));
 
     await resend.emails.send({
@@ -220,20 +222,20 @@ function getConfirmationCopy(locale: 'de' | 'en' | 'ru' = 'de') {
     de: {
       subject: 'TreeTech: Ihre Anfrage ist angekommen',
       greeting: 'Danke, Ihre Anfrage ist angekommen.',
-      body: 'Wir prüfen kurz, welcher nächste Schritt für Ihre Website, Automatisierung oder individuelle Software sinnvoll ist.',
-      responseTime: 'Antwort in der Regel innerhalb von 2 Stunden während der Geschäftszeit.'
+      body: 'Wir sehen uns Ihren Betrieb an und melden uns persönlich bei Ihnen. Ihre kostenlose Vorschau bekommen Sie innerhalb von 3 Werktagen.',
+      responseTime: 'Fragen? Rufen Sie uns an: +43 660 9557357'
     },
     en: {
       subject: 'TreeTech: your inquiry has arrived',
       greeting: 'Thank you, your inquiry has arrived.',
-      body: 'We will briefly check which next step makes sense for your website, automation, or custom software.',
-      responseTime: 'Replies usually within 2 hours during business hours.'
+      body: 'We will look at your business and get back to you personally. Your free preview arrives within 3 working days.',
+      responseTime: 'Questions? Call us: +43 660 9557357'
     },
     ru: {
       subject: 'TreeTech: заявка получена',
       greeting: 'Спасибо, ваша заявка получена.',
-      body: 'Мы быстро проверим, какой следующий шаг подойдет для сайта, автоматизации или индивидуального ПО.',
-      responseTime: 'Обычно отвечаем в течение 2 часов в рабочее время.'
+      body: 'Мы посмотрим на ваш бизнес и лично свяжемся с вами. Бесплатное превью вы получите в течение 3 рабочих дней.',
+      responseTime: 'Вопросы? Звоните: +43 660 9557357'
     }
   } satisfies Record<'de' | 'en' | 'ru', Record<string, string>>;
 

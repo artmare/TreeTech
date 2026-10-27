@@ -24,6 +24,7 @@ import {motion} from 'framer-motion';
 
 import type {DemoSite, DemoSiteCopy} from '@/content/demo-sites';
 import {demoSiteLabels} from '@/content/demo-sites';
+import {ElektroDemo} from '@/components/demo-elektro';
 import {localeLabels, localeShortLabels, routing, type Locale} from '@/i18n/routing';
 import {Link} from '@/i18n/navigation';
 import {cn} from '@/lib/utils';
@@ -57,7 +58,12 @@ const reveal = {
 const navTargets = ['services', 'about', 'process', 'contact'];
 
 export function DemoSitePage({site, locale}: DemoSitePageProps) {
+  if (site.slug === 'elektro-huber') {
+    return <ElektroDemo site={site} locale={locale} />;
+  }
+
   const copy = site.copy[locale];
+  const labels = demoSiteLabels[locale];
   const style = {
     '--demo-background': site.theme.background,
     '--demo-surface': site.theme.surface,
@@ -72,6 +78,14 @@ export function DemoSitePage({site, locale}: DemoSitePageProps) {
 
   return (
     <div style={style} className="min-h-screen bg-[var(--demo-background)] text-[var(--demo-text)]">
+      <div className="bg-[#1c2220] text-white">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-5 py-2.5 text-sm sm:px-6 lg:px-8">
+          <span>{labels.banner}</span>
+          <Link href="/contact#audit-call" className="font-bold text-[#f3c431] underline-offset-4 hover:underline">
+            {labels.bannerCta}
+          </Link>
+        </div>
+      </div>
       <DemoHeader site={site} locale={locale} copy={copy} />
       <main>{renderDemo(site.slug, {site, locale, copy})}</main>
       <DemoFooter site={site} locale={locale} />
