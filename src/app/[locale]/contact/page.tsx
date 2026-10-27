@@ -1,12 +1,13 @@
-import {CalendarCheck, Mail, MapPin, MessageSquareText, ShieldCheck, Timer} from 'lucide-react';
+import {CalendarCheck, ChevronDown, Mail, MessageCircle, Phone} from 'lucide-react';
 import type {Metadata} from 'next';
 import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
+import {notFound} from 'next/navigation';
 
 import {ContactForm} from '@/components/contact-form';
-import {FadeIn} from '@/components/motion/fade-in';
 import {Container} from '@/components/ui/container';
-import {siteConfig, siteContent} from '@/content/site';
+import {homeHandwerk} from '@/content/home-handwerk';
+import {phoneHref, siteConfig, siteContent, whatsappHref} from '@/content/site';
 import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
 
@@ -14,54 +15,81 @@ type PageProps = {
   params: Promise<{locale: string}>;
 };
 
-const contactSignals = {
-  de: [
-    {icon: ShieldCheck, text: 'Ehrliche Einschätzung statt Verkaufsdruck'},
-    {icon: MessageSquareText, text: 'Klarer Vorschlag für Prozess, System und nächsten Schritt'},
-    {icon: Timer, text: 'Antwort in der Regel innerhalb von 2 Stunden während der Geschäftszeit'}
-  ],
-  en: [
-    {icon: ShieldCheck, text: 'Honest assessment without sales pressure'},
-    {icon: MessageSquareText, text: 'Clear suggestion for process, system, and next step'},
-    {icon: Timer, text: 'Replies usually within 2 hours during business hours'}
-  ],
-  ru: [
-    {icon: ShieldCheck, text: 'Честная оценка без давления продаж'},
-    {icon: MessageSquareText, text: 'Понятное предложение по процессу, системе и следующему шагу'},
-    {icon: Timer, text: 'Обычно отвечаем в течение 2 часов в рабочее время'}
-  ]
-} satisfies Record<Locale, Array<{icon: typeof ShieldCheck; text: string}>>;
+type ContactCopy = {
+  title: string;
+  lead: string;
+  formTitle: string;
+  directTitle: string;
+  call: string;
+  whatsapp: string;
+  email: string;
+  nextTitle: string;
+  next: string[];
+  calendarTitle: string;
+  calendarLead: string;
+  calendarFrameTitle: string;
+  calendarExternal: string;
+};
 
-const bookingContent = {
+const copy: Record<Locale, ContactCopy> = {
   de: {
-    eyebrow: 'Kostenlose 15-Minuten-Analyse',
-    title: 'Website und Prozesse kurz gemeinsam prüfen.',
-    lead:
-      'Wir prüfen Ihre Website, Kundengewinnung oder internen Abläufe und zeigen 2–3 konkrete Verbesserungsmöglichkeiten.',
-    calendarTitle: 'Termin für die kostenlose TreeTech Analyse wählen',
-    fallback:
-      'Senden Sie zwei passende Zeitfenster. Wir bestätigen den 15-minütigen Analyse-Termin direkt per E-Mail.',
-    cta: 'Termin per E-Mail anfragen'
+    title: 'Ihre kostenlose Vorschau.',
+    lead: 'Name Ihres Betriebs und Ort genügen. In 3 Werktagen sehen Sie, wie Ihre Website aussehen kann. Sie zahlen nur, wenn sie Ihnen gefällt.',
+    formTitle: 'Vorschau anfordern',
+    directTitle: 'Lieber direkt?',
+    call: 'Anrufen',
+    whatsapp: 'WhatsApp schreiben',
+    email: 'E-Mail schreiben',
+    nextTitle: 'So geht es weiter',
+    next: [
+      'Wir melden uns persönlich bei Ihnen.',
+      'Innerhalb von 3 Werktagen bekommen Sie Ihre Vorschau per WhatsApp oder E-Mail.',
+      'Gefällt sie Ihnen, besprechen wir den Rest in 30 Minuten.'
+    ],
+    calendarTitle: 'Gleich einen Termin ausmachen',
+    calendarLead: 'Wählen Sie eine Zeit für das Gespräch. Am Telefon oder bei Ihnen im Betrieb.',
+    calendarFrameTitle: 'Termin mit TreeTech wählen',
+    calendarExternal: 'Kalender in neuem Fenster öffnen'
   },
   en: {
-    eyebrow: 'Free 15-minute analysis',
-    title: 'Review your website and processes together.',
-    lead:
-      'We review your website, customer acquisition, or internal workflows and show 2–3 concrete improvement opportunities.',
-    calendarTitle: 'Choose a free TreeTech analysis slot',
-    fallback: 'Send two suitable time slots. We will confirm the 15-minute analysis by email.',
-    cta: 'Request a slot by email'
+    title: 'Your free preview.',
+    lead: 'Your business name and town are enough. Within 3 working days you see what your website could look like. You only pay if you like it.',
+    formTitle: 'Request your preview',
+    directTitle: 'Prefer to talk?',
+    call: 'Call',
+    whatsapp: 'Message on WhatsApp',
+    email: 'Send an email',
+    nextTitle: 'What happens next',
+    next: [
+      'We get back to you personally.',
+      'Within 3 working days you receive your preview via WhatsApp or email.',
+      'If you like it, we go through the rest in 30 minutes.'
+    ],
+    calendarTitle: 'Book a call right away',
+    calendarLead: 'Pick a time for the call. By phone or at your business.',
+    calendarFrameTitle: 'Book a time with TreeTech',
+    calendarExternal: 'Open calendar in a new window'
   },
   ru: {
-    eyebrow: 'Бесплатный 15-минутный анализ',
-    title: 'Коротко разберём ваш сайт и процессы.',
-    lead:
-      'Мы рассмотрим сайт, привлечение клиентов или внутренние процессы и покажем 2–3 конкретные возможности улучшения.',
-    calendarTitle: 'Выбрать время для бесплатного анализа TreeTech',
-    fallback: 'Отправьте два удобных окна. Мы подтвердим 15-минутный анализ по e-mail.',
-    cta: 'Запросить время по e-mail'
+    title: 'Ваше бесплатное превью.',
+    lead: 'Достаточно названия бизнеса и города. Через 3 рабочих дня вы увидите, каким может быть ваш сайт. Платите, только если понравится.',
+    formTitle: 'Запросить превью',
+    directTitle: 'Удобнее напрямую?',
+    call: 'Позвонить',
+    whatsapp: 'Написать в WhatsApp',
+    email: 'Написать на e-mail',
+    nextTitle: 'Что будет дальше',
+    next: [
+      'Мы лично свяжемся с вами.',
+      'В течение 3 рабочих дней вы получите превью в WhatsApp или на e-mail.',
+      'Если понравится, обсудим остальное за 30 минут.'
+    ],
+    calendarTitle: 'Сразу записаться на разговор',
+    calendarLead: 'Выберите время для разговора. По телефону или у вас на месте.',
+    calendarFrameTitle: 'Выбрать время с TreeTech',
+    calendarExternal: 'Открыть календарь в новом окне'
   }
-} satisfies Record<Locale, Record<string, string>>;
+};
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const rawLocale = (await params).locale;
@@ -82,93 +110,104 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
 }
 
 export default async function ContactPage({params}: PageProps) {
-  const locale = (await params).locale as Locale;
+  const rawLocale = (await params).locale;
+
+  if (!hasLocale(routing.locales, rawLocale)) {
+    notFound();
+  }
+
+  const locale = rawLocale;
   setRequestLocale(locale);
-  const content = siteContent[locale];
-  const booking = bookingContent[locale];
-  const calendarUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || process.env.NEXT_PUBLIC_CAL_URL;
+  const text = copy[locale];
+  const calUrl = process.env.NEXT_PUBLIC_CAL_URL || siteConfig.calUrl;
+  const calEmbed = `${calUrl}?embed=true&theme=light&layout=month_view`;
+  const direct = 'flex min-h-14 items-center gap-3 rounded-[12px] border-2 border-foreground bg-surface px-4 py-3 text-base font-bold text-foreground transition-colors hover:bg-background';
 
   return (
-    <section className="dark-band scanline relative overflow-hidden py-20 text-foreground sm:py-24">
-      <div className="saas-grid absolute inset-0 opacity-45" />
-      <div className="absolute inset-0 hidden" />
-      <Container className="relative">
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-          <FadeIn>
-            <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 font-bold text-sm text-accent">
-              {content.common.nextStep}
-            </p>
-            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.04] text-foreground sm:text-7xl">
-              {content.contact.title}
-            </h1>
-            <p className="mt-6 text-pretty text-lg leading-8 text-muted sm:text-xl">
-              {content.contact.lead}
-            </p>
+    <section className="py-10 sm:py-16">
+      <Container>
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
+          <div>
+            <h1 className="text-balance text-[42px] leading-[1.02] text-foreground sm:text-6xl">{text.title}</h1>
+            <p className="mt-4 max-w-[34em] text-pretty text-lg leading-relaxed text-muted">{text.lead}</p>
 
-            <div className="mt-8 grid gap-3">
-              <div className="terminal-card flex gap-3 rounded-[1.25rem] p-4">
-                <Mail className="mt-0.5 h-5 w-5 text-accent" aria-hidden="true" />
-                <a href={`mailto:${siteConfig.email}`} className="text-sm font-semibold text-foreground">
-                  {siteConfig.email}
+            <h2 className="mt-10 text-xl text-foreground">{text.directTitle}</h2>
+            <div className="mt-4 grid gap-3">
+              <a className={direct} href={phoneHref} data-track="phone_click">
+                <Phone className="h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
+                <span>
+                  {text.call}
+                  <span className="block text-sm font-semibold text-muted">{siteConfig.phone}</span>
+                </span>
+              </a>
+              <a
+                className={direct}
+                href={whatsappHref(homeHandwerk[locale].whatsappMessage)}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track="whatsapp_click"
+              >
+                <MessageCircle className="h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
+                {text.whatsapp}
+              </a>
+              <a className={direct} href={`mailto:${siteConfig.email}`} data-track="email_click">
+                <Mail className="h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
+                <span className="min-w-0">
+                  {text.email}
+                  <span className="block break-all text-sm font-semibold text-muted">{siteConfig.email}</span>
+                </span>
+              </a>
+            </div>
+
+            <h2 className="mt-10 text-xl text-foreground">{text.nextTitle}</h2>
+            <ol className="mt-4 grid gap-4">
+              {text.next.map((item, index) => (
+                <li key={item} className="grid grid-cols-[40px_1fr] items-start gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-base font-extrabold text-white">
+                    {index + 1}
+                  </span>
+                  <span className="pt-2 text-base text-foreground">{item}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div>
+            <section id="audit-call" className="scroll-mt-28">
+              <h2 className="mb-4 text-2xl text-foreground sm:text-3xl">{text.formTitle}</h2>
+              <ContactForm />
+            </section>
+
+            <details className="group mt-6 rounded-[14px] border-2 border-border bg-surface open:border-foreground">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 [&::-webkit-details-marker]:hidden">
+                <span className="flex items-start gap-3">
+                  <CalendarCheck className="mt-0.5 h-6 w-6 shrink-0 text-accent" aria-hidden="true" />
+                  <span>
+                    <span className="block text-lg font-bold text-foreground">{text.calendarTitle}</span>
+                    <span className="mt-1 block text-[15px] text-muted">{text.calendarLead}</span>
+                  </span>
+                </span>
+                <ChevronDown className="h-6 w-6 shrink-0 transition group-open:rotate-180" aria-hidden="true" />
+              </summary>
+              <div className="border-t border-border p-2 sm:p-3">
+                <iframe
+                  src={calEmbed}
+                  title={text.calendarFrameTitle}
+                  loading="lazy"
+                  className="h-[640px] w-full rounded-[10px] bg-white"
+                />
+                <a
+                  href={calUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-track="calendar_open"
+                  className="mt-2 inline-flex min-h-11 items-center px-3 text-[15px] font-bold text-accent hover:underline"
+                >
+                  {text.calendarExternal}
                 </a>
               </div>
-              <div className="terminal-card flex gap-3 rounded-[1.25rem] p-4">
-                <MapPin className="mt-0.5 h-5 w-5 text-accent" aria-hidden="true" />
-                <p className="text-sm leading-6 text-muted">{content.contact.details}</p>
-              </div>
-            </div>
-
-            <div className="mt-8 grid gap-3">
-              {contactSignals[locale].map((signal, index) => (
-                <FadeIn key={signal.text} delay={index * 0.06}>
-                  <div className="terminal-card flex gap-3 rounded-[1.25rem] p-4">
-                    <signal.icon className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
-                    <p className="text-sm font-semibold leading-6 text-foreground">{signal.text}</p>
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={0.1}>
-            <div className="relative">
-              <div className="absolute -inset-3 rounded-[2rem] bg-accent/10 blur-2xl" aria-hidden="true" />
-              <section
-                id="audit-call"
-                className="relative mb-6 scroll-mt-24 rounded-[1.25rem] border border-accent/25 bg-accent/[0.08] p-5"
-              >
-                <p className="inline-flex rounded-full border border-accent/25 bg-accent/[0.08] px-3 py-1.5 font-bold text-xs text-accent">
-                  {booking.eyebrow}
-                </p>
-                <h2 className="mt-4 text-2xl font-semibold text-foreground">{booking.title}</h2>
-                <p className="mt-3 text-sm leading-7 text-muted">{booking.lead}</p>
-                {calendarUrl ? (
-                  <iframe
-                    src={calendarUrl}
-                    title={booking.calendarTitle}
-                    loading="lazy"
-                    className="mt-5 h-[520px] w-full rounded-[1rem] border border-border bg-white"
-                    allow="camera; microphone; fullscreen"
-                  />
-                ) : (
-                  <div className="mt-5 rounded-[1rem] border border-border bg-surface p-4">
-                    <p className="text-sm leading-7 text-muted">{booking.fallback}</p>
-                    <a
-                      href={`mailto:${siteConfig.email}?subject=Kostenlose TreeTech Analyse`}
-                      className="mt-4 inline-flex min-h-14 items-center justify-center gap-2 rounded-[12px] bg-accent px-6 py-3.5 text-base font-bold text-white transition hover:bg-[var(--accent-strong)]"
-                    >
-                      <CalendarCheck className="h-4 w-4" aria-hidden="true" />
-                      {booking.cta}
-                    </a>
-                  </div>
-                )}
-              </section>
-              <h2 className="relative mb-4 text-2xl font-semibold text-foreground">
-                {content.contact.formTitle}
-              </h2>
-              <ContactForm />
-            </div>
-          </FadeIn>
+            </details>
+          </div>
         </div>
       </Container>
     </section>

@@ -5,15 +5,23 @@ import {useLocale, useTranslations} from 'next-intl';
 import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 
+import {phonePattern} from '@/lib/contact-options';
 import {cn} from '@/lib/utils';
 
 type ContactFormValues = {
   name: string;
+  phone: string;
   email: string;
+  company: string;
   message: string;
   websiteUrl: string;
   startedAt: number;
 };
+
+const emptyValues = {name: '', phone: '', email: '', company: '', message: '', websiteUrl: ''};
+
+const inputClass =
+  'h-14 w-full rounded-[12px] border-2 border-border bg-surface px-4 text-base text-foreground outline-none transition placeholder:text-muted/70 focus:border-foreground';
 
 export function ContactForm() {
   const t = useTranslations('contactForm');
@@ -27,13 +35,7 @@ export function ContactForm() {
     reset,
     formState: {errors, isSubmitting}
   } = useForm<ContactFormValues>({
-    defaultValues: {
-      name: '',
-      email: '',
-      message: '',
-      websiteUrl: '',
-      startedAt
-    }
+    defaultValues: {...emptyValues, startedAt}
   });
 
   async function onSubmit(values: ContactFormValues) {
@@ -46,24 +48,17 @@ export function ContactForm() {
       },
       body: JSON.stringify({
         ...values,
-        company: '',
-        budget: 'automation',
+        budget: 'web',
         metadata: {source: 'free_analysis', locale}
       })
-    });
+    }).catch(() => null);
 
-    if (!response.ok) {
+    if (!response?.ok) {
       setStatus('error');
       return;
     }
 
-    reset({
-      name: '',
-      email: '',
-      message: '',
-      websiteUrl: '',
-      startedAt
-    });
+    reset({...emptyValues, startedAt});
     setStatus('success');
     window.dispatchEvent(
       new CustomEvent('treetech:analytics', {
@@ -76,8 +71,12 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="terminal-window shine-surface rounded-[1.25rem] p-5 sm:p-6">
-      <div className="grid gap-4 sm:grid-cols-2">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="rounded-[14px] border-2 border-foreground bg-surface p-5 sm:p-6"
+      noValidate
+    >
+      <div className="grid gap-4">
         <Field label={t('name')} error={errors.name?.message}>
           <input
             {...register('name', {
@@ -87,57 +86,78 @@ export function ContactForm() {
             })}
             autoComplete="name"
             placeholder={t('namePlaceholder')}
-            className="h-12 w-full rounded-[0.9rem] border border-border bg-surface px-3 text-sm text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-surface focus:ring-4 focus:ring-accent/10"
+            className={inputClass}
           />
         </Field>
-        <Field label={t('email')} error={errors.email?.message}>
+        <Field label={t('company')} error={errors.company?.message}>
           <input
-            {...register('email', {
-              required: t('errors.email'),
-              maxLength: {value: 160, message: t('errors.email')},
-              pattern: {
-                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: t('errors.email')
-              }
+            {...register('company', {
+              required: t('errors.company'),
+              minLength: {value: 2, message: t('errors.company')},
+              maxLength: {value: 160, message: t('errors.company')}
             })}
-            type="email"
-            autoComplete="email"
-            placeholder={t('emailPlaceholder')}
-            className="h-12 w-full rounded-[0.9rem] border border-border bg-surface px-3 text-sm text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-surface focus:ring-4 focus:ring-accent/10"
+            autoComplete="organization"
+            placeholder={t('companyPlaceholder')}
+            className={inputClass}
+          />
+        </Field>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label={t('phone')} error={errors.phone?.message}>
+            <input
+              {...register('phone', {
+                pattern: {value: phonePattern, message: t('errors.phone')},
+                validate: (value, all) => Boolean(value.trim() || all.email.trim()) || t('errors.reachable')
+              })}
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              placeholder={t('phonePlaceholder')}
+              className={inputClass}
+            />
+          </Field>
+          <Field label={t('email')} error={errors.email?.message}>
+            <input
+              {...register('email', {
+                maxLength: {value: 160, message: t('errors.email')},
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: t('errors.email')
+                }
+              })}
+              type="email"
+              autoComplete="email"
+              placeholder={t('emailPlaceholder')}
+              className={inputClass}
+            />
+          </Field>
+        </div>
+        <p className="-mt-2 text-sm text-muted">{t('reachableHint')}</p>
+        <Field label={`${t('message')} (${t('optional')})`} error={errors.message?.message}>
+          <input
+            {...register('message', {maxLength: {value: 2000, message: t('errors.message')}})}
+            placeholder={t('messagePlaceholder')}
+            className={inputClass}
           />
         </Field>
       </div>
 
-      <Field label={t('message')} error={errors.message?.message} className="mt-4">
-        <textarea
-          {...register('message', {
-            required: t('errors.message'),
-            minLength: {value: 20, message: t('errors.message')},
-            maxLength: {value: 2000, message: t('errors.message')}
-          })}
-          rows={6}
-          placeholder={t('messagePlaceholder')}
-          className="w-full resize-none rounded-[0.9rem] border border-border bg-surface px-3 py-3 text-sm leading-6 text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-surface focus:ring-4 focus:ring-accent/10"
-        />
-      </Field>
-
-      <input {...register('websiteUrl')} tabIndex={-1} autoComplete="off" className="hidden" />
+      <input {...register('websiteUrl')} tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
       <input type="hidden" {...register('startedAt', {valueAsNumber: true})} value={startedAt} readOnly />
 
-      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-5 grid gap-3">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex min-h-14 items-center justify-center gap-2 rounded-[12px] bg-accent px-6 py-3.5 text-base font-bold text-white transition hover:bg-[var(--accent-strong)] disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-[12px] bg-accent px-6 py-3.5 text-base font-bold text-white transition hover:bg-[var(--accent-strong)] disabled:cursor-not-allowed disabled:opacity-70"
         >
-          <Send className="h-4 w-4" aria-hidden="true" />
+          <Send className="h-5 w-5" aria-hidden="true" />
           <span>{isSubmitting ? t('submitting') : t('submit')}</span>
         </button>
         {status ? (
           <p
             className={cn(
-              'text-sm font-medium',
-              status === 'success' ? 'text-accent' : 'text-red-400'
+              'rounded-[10px] px-4 py-3 text-base font-semibold',
+              status === 'success' ? 'bg-accent/[0.08] text-accent' : 'bg-red-50 text-red-700'
             )}
             role="status"
           >
@@ -159,9 +179,9 @@ type FieldProps = {
 function Field({label, error, children, className}: FieldProps) {
   return (
     <label className={cn('block', className)}>
-      <span className="mb-2 block text-sm font-semibold text-foreground">{label}</span>
+      <span className="mb-2 block text-base font-bold text-foreground">{label}</span>
       {children}
-      {error ? <span className="mt-2 block text-sm text-red-400">{error}</span> : null}
+      {error ? <span className="mt-2 block text-sm font-semibold text-red-700">{error}</span> : null}
     </label>
   );
 }

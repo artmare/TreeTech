@@ -18,20 +18,20 @@
     "copyright": "All rights reserved."
   },
   "contactForm": {
-    "name": "Name",
+    "name": "Your name",
     "email": "Email",
-    "company": "Company",
+    "company": "Business and town",
     "budget": "Project type",
-    "message": "What is the project about?",
-    "submit": "Send inquiry",
+    "message": "Website or Google profile, if you have one",
+    "submit": "Get my free preview",
     "submitting": "Sending",
-    "success": "Thank you, your inquiry has arrived. We will get back to you shortly.",
-    "error": "The inquiry could not be sent. Please try again or contact us directly by email.",
+    "success": "Thank you! Your request has arrived. We will get back to you personally.",
+    "error": "That did not work. Please call us: +43 660 9557357",
     "budgetPlaceholder": "Please select",
-    "namePlaceholder": "Alex Miller",
-    "emailPlaceholder": "name@company.at",
-    "companyPlaceholder": "Your company name",
-    "messagePlaceholder": "One sentence is enough: which website, inquiry, or task should improve?",
+    "namePlaceholder": "Thomas Huber",
+    "emailPlaceholder": "office@business.at",
+    "companyPlaceholder": "Elektro Huber, Mödling",
+    "messagePlaceholder": "e.g. elektro-huber.at or your Google Maps listing",
     "budgets": {
       "automation": "AI automation",
       "web": "Website or online shop",
@@ -41,10 +41,17 @@
     },
     "errors": {
       "name": "Please enter your name.",
-      "email": "Please enter a valid email address.",
+      "email": "Please check the email address.",
       "budget": "Please choose a project type.",
-      "message": "Please describe your project in at least 20 characters."
-    }
+      "message": "Please use at most 2000 characters.",
+      "phone": "Please check the phone number.",
+      "reachable": "Please enter a phone number or an email.",
+      "company": "Please tell us your business and town."
+    },
+    "phone": "Phone",
+    "reachableHint": "Phone or email is enough.",
+    "optional": "optional",
+    "phonePlaceholder": "+43 660 123 45 67"
   },
   "assistant": {
     "open": "Ask AI",

@@ -18,20 +18,20 @@
     "copyright": "Alle Rechte vorbehalten."
   },
   "contactForm": {
-    "name": "Name",
+    "name": "Ihr Name",
     "email": "E-Mail",
-    "company": "Firma oder Betrieb",
+    "company": "Betrieb und Ort",
     "budget": "Projektart",
-    "message": "Worum geht es?",
-    "submit": "Anfrage abschicken",
+    "message": "Website oder Google-Profil, falls vorhanden",
+    "submit": "Kostenlose Vorschau anfordern",
     "submitting": "Wird gesendet",
-    "success": "Danke, Ihre Anfrage ist angekommen. Wir melden uns zeitnah.",
-    "error": "Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es noch einmal oder schreiben Sie direkt per E-Mail.",
+    "success": "Danke! Ihre Anfrage ist angekommen. Wir melden uns persönlich bei Ihnen.",
+    "error": "Das hat nicht geklappt. Rufen Sie uns bitte an: +43 660 9557357",
     "budgetPlaceholder": "Bitte auswählen",
-    "namePlaceholder": "Max Mustermann",
-    "emailPlaceholder": "name@betrieb.at",
-    "companyPlaceholder": "Name Ihres Unternehmens",
-    "messagePlaceholder": "Ein Satz reicht: welche Website, Anfrage oder Aufgabe soll verbessert werden?",
+    "namePlaceholder": "Thomas Huber",
+    "emailPlaceholder": "office@betrieb.at",
+    "companyPlaceholder": "Elektro Huber, Mödling",
+    "messagePlaceholder": "z. B. elektro-huber.at oder Ihr Eintrag bei Google Maps",
     "budgets": {
       "automation": "AI-Automatisierung",
       "web": "Website oder Online-Shop",
@@ -41,10 +41,17 @@
     },
     "errors": {
       "name": "Bitte geben Sie Ihren Namen ein.",
-      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "email": "Bitte prüfen Sie die E-Mail-Adresse.",
       "budget": "Bitte wählen Sie eine Projektart aus.",
-      "message": "Bitte beschreiben Sie Ihr Projekt in mindestens 20 Zeichen."
-    }
+      "message": "Bitte höchstens 2000 Zeichen.",
+      "phone": "Bitte prüfen Sie die Telefonnummer.",
+      "reachable": "Bitte geben Sie eine Telefonnummer oder eine E-Mail an.",
+      "company": "Bitte nennen Sie Ihren Betrieb und den Ort."
+    },
+    "phone": "Telefon",
+    "reachableHint": "Telefon oder E-Mail genügt.",
+    "optional": "optional",
+    "phonePlaceholder": "0660 123 45 67"
   },
   "assistant": {
     "open": "AI fragen",

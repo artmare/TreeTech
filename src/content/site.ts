@@ -10,6 +10,8 @@ export const siteConfig = {
   phone: '+43 660 9557357',
   /** Digits only, international format, used for tel: and wa.me links. */
   phoneDigits: '436609557357',
+  /** Public Cal.com booking page for the 30-minute call. NEXT_PUBLIC_CAL_URL overrides it. */
+  calUrl: 'https://cal.com/artem-karnaukhov-rneqin/treetech-website-analyse',
   region: {de: 'Wien und Niederösterreich', en: 'Vienna and Lower Austria', ru: 'Вена и Нижняя Австрия'},
   googleSiteVerification: 'PdjQivxgyQpk4Qxzy2-3pMhBPW2pZreWQYBlrry2Gyw'
 };
@@ -653,9 +655,9 @@ export const siteContent = withLocaleFallbacks({
       portfolioTitle: 'Portfolio | TreeTech Webstudio',
       portfolioDescription:
         'Beispielprojekte für österreichische Branchen: Ordination, Kanzlei, Hotel, Immobilien und Fitnessstudio.',
-      contactTitle: 'Kontakt | TreeTech',
+      contactTitle: 'Kostenlose Website-Vorschau anfordern | TreeTech',
       contactDescription:
-        'Starten Sie Ihr Digitalprojekt mit TreeTech. Wir melden uns mit einer klaren Einschätzung und einem passenden nächsten Schritt.'
+        'Name Ihres Betriebs und Ort genügen. Ihre kostenlose Website-Vorschau bekommen Sie in 3 Werktagen. Anrufen, WhatsApp oder Formular.'
     },
     common: {
       eyebrow: 'Websites · Automation · Software',
@@ -783,9 +785,9 @@ export const siteContent = withLocaleFallbacks({
       portfolioTitle: 'Portfolio | TreeTech web studio',
       portfolioDescription:
         'Sample projects for Austrian industries: dental clinic, law firm, hotel, real estate, and fitness studio.',
-      contactTitle: 'Contact | TreeTech',
+      contactTitle: 'Get a free website preview | TreeTech',
       contactDescription:
-        'Start your digital project with TreeTech. We will reply with a clear assessment and the right next step.'
+        'Your business name and town are enough. You get your free website preview within 3 working days. Call, WhatsApp or use the form.'
     },
     common: {
       eyebrow: 'Websites · Automation · Software',
@@ -913,9 +915,9 @@ export const siteContent = withLocaleFallbacks({
       portfolioTitle: 'Портфолио | Веб-студия TreeTech',
       portfolioDescription:
         'Примеры проектов для австрийских отраслей: клиника, юридическая фирма, отель, недвижимость и фитнес-студия.',
-      contactTitle: 'Контакт | TreeTech',
+      contactTitle: 'Бесплатное превью сайта | TreeTech',
       contactDescription:
-        'Начните цифровой проект с TreeTech. Мы ответим с понятной оценкой и следующим шагом.'
+        'Достаточно названия бизнеса и города. Бесплатное превью сайта будет у вас через 3 рабочих дня. Звонок, WhatsApp или форма.'
     },
     common: {
       eyebrow: 'Сайты · Автоматизация · ПО',
