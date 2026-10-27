@@ -29,7 +29,8 @@ export function SiteHeader({locale}: SiteHeaderProps) {
   const [open, setOpen] = useState(false);
   const languageOptions = routing.locales.filter((item) => item !== locale);
 
-  if (isDemoSitePath(pathname)) {
+  // The home page renders its own light header and footer.
+  if (isDemoSitePath(pathname) || pathname === '/') {
     return null;
   }
 

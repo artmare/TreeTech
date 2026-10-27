@@ -12,7 +12,8 @@ export function SiteFooter() {
   const nav = useTranslations('nav');
   const pathname = usePathname();
 
-  if (isDemoSitePath(pathname)) {
+  // The home page renders its own light header and footer.
+  if (isDemoSitePath(pathname) || pathname === '/') {
     return null;
   }
 

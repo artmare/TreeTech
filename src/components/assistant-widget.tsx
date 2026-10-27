@@ -346,7 +346,13 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
   }
 
   return (
-    <div className="fixed inset-x-4 bottom-4 z-[70] sm:inset-x-auto sm:right-5">
+    <div
+      className={cn(
+        'pointer-events-none fixed inset-x-4 z-[70] sm:inset-x-auto sm:right-5 md:bottom-4',
+        // On phones the sticky contact bar sits at the bottom, so the closed launcher floats above it.
+        open ? 'bottom-4' : 'bottom-[100px]'
+      )}
+    >
       <AnimatePresence mode="wait">
         {open ? (
         <motion.section
@@ -355,7 +361,7 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
           animate={reduceMotion ? {opacity: 1} : {opacity: 1, y: 0, scale: 1}}
           exit={reduceMotion ? {opacity: 0} : {opacity: 0, y: 12, scale: 0.98}}
           transition={{duration: 0.22, ease: 'easeOut'}}
-          className="ml-auto flex h-[min(720px,calc(100svh-2rem))] w-full flex-col overflow-hidden rounded-[1.25rem] border border-white/12 bg-[#070806]/96 text-foreground shadow-[0_24px_90px_rgba(0,0,0,0.48)] backdrop-blur-2xl sm:w-[420px]"
+          className="pointer-events-auto ml-auto flex h-[min(720px,calc(100svh-2rem))] w-full flex-col overflow-hidden rounded-[1.25rem] border border-white/12 bg-[#070806]/96 text-foreground shadow-[0_24px_90px_rgba(0,0,0,0.48)] backdrop-blur-2xl sm:w-[420px]"
           aria-label={t('title')}
         >
           <header className="flex min-h-16 items-center justify-between gap-3 border-b border-white/10 px-4">

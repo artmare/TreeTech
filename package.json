@@ -18,6 +18,7 @@
     "lint": "eslint . --max-warnings=0"
   },
   "dependencies": {
+    "@fontsource-variable/archivo": "^5.3.0",
     "@hookform/resolvers": "^5.2.2",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.468.0",

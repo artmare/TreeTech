@@ -3,9 +3,12 @@ import {NextIntlClientProvider, hasLocale} from 'next-intl';
 import {getMessages, setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 
+// Self-hosted variable font (weight and width axes), used by the home page and contact bar.
+import '@fontsource-variable/archivo/wdth.css';
 import '@/app/globals.css';
 import {AnalyticsLoader} from '@/components/analytics-loader';
 import {AssistantWidgetLoader} from '@/components/assistant-widget-loader';
+import {MobileContactBar} from '@/components/mobile-contact-bar';
 import {SiteFooter} from '@/components/site-footer';
 import {SiteHeader} from '@/components/site-header';
 import {siteConfig} from '@/content/site';
@@ -62,6 +65,7 @@ export default async function LocaleLayout({children, params}: Props) {
           <SiteHeader locale={locale as Locale} />
           <main>{children}</main>
           <SiteFooter />
+          <MobileContactBar locale={locale as Locale} />
           <AnalyticsLoader />
           <AssistantWidgetLoader locale={locale as Locale} />
         </NextIntlClientProvider>
