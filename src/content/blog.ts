@@ -1,4 +1,5 @@
 import type {Locale} from '@/i18n/routing';
+import {withLocaleFallbacks} from '@/i18n/localized';
 
 export type BlogPost = {
   slug: string;
@@ -16,7 +17,7 @@ export type BlogPost = {
   }>;
 };
 
-export const blogContent = {
+export const blogContent = withLocaleFallbacks({
   de: {
     metadata: {
       title: 'Blog / Insights | TreeTech',
@@ -82,10 +83,43 @@ export const blogContent = {
     relatedCtaLead:
       'Send a short note about the task that costs time. TreeTech will check whether a website, CRM, AI assistant, or workflow automation is the right next step.',
     relatedCta: 'Discuss project'
+  },
+  ru: {
+    metadata: {
+      title: 'Блог / Insights | TreeTech',
+      description:
+        'Практичные статьи об AI-автоматизации, CRM-автоматизации, веб-разработке и цифровых процессах для компаний в Австрии.'
+    },
+    heroEyebrow: 'Блог / Insights',
+    heroTitle: 'Практичные идеи для автоматизации, сайтов и цифровых процессов.',
+    heroLead:
+      'Блог TreeTech объясняет, как малый и средний бизнес в Австрии может экономить время, быстрее обрабатывать заявки и понятнее управлять внутренними процессами с помощью AI, CRM-интеграций и современных сайтов.',
+    introTitle: 'О чем мы пишем',
+    introLead:
+      'Без buzzwords: конкретные сценарии, какие задачи можно автоматизировать, как сайт может давать больше заявок и когда AI-ассистенты действительно помогают в ежедневной работе.',
+    allArticles: 'Все статьи',
+    featured: 'Рекомендуемый старт',
+    readArticle: 'Читать статью',
+    backToBlog: 'Назад к блогу',
+    published: 'Опубликовано',
+    readingTimeLabel: 'Время чтения',
+    systemTitle: 'Как публиковать новые статьи',
+    systemLead:
+      'Новые статьи ведутся как структурированные записи в одном content-файле. Так блог, SEO-данные, sitemap и страницы статей остаются версионированными вместе.',
+    systemSteps: [
+      'Откройте src/content/blog.ts.',
+      'Скопируйте существующую запись в blogPosts.',
+      'Измените slug, дату, заголовок, SEO-описание, теги и разделы.',
+      'После сохранения статья автоматически появится на /de/blog, /en/blog и /ru/blog, а также получит отдельную страницу.'
+    ],
+    relatedCtaTitle: 'Нужно автоматизировать процесс в вашем бизнесе?',
+    relatedCtaLead:
+      'Коротко напишите, какая задача забирает время. TreeTech проверит, что лучше подойдет: сайт, CRM, AI-ассистент или workflow-автоматизация.',
+    relatedCta: 'Обсудить проект'
   }
-} satisfies Record<Locale, Record<string, unknown>>;
+}) satisfies Record<Locale, Record<string, unknown>>;
 
-export const blogPosts: BlogPost[] = [
+export const blogPosts: BlogPost[] = withLocaleFallbacks([
   {
     slug: 'business-processes-to-automate-first',
     publishedAt: '2026-06-19',
@@ -597,14 +631,20 @@ export const blogPosts: BlogPost[] = [
       }
     ]
   }
-];
+]);
 
 export function getBlogPostBySlug(slug: string) {
   return blogPosts.find((post) => post.slug === slug);
 }
 
 export function getFormattedPostDate(post: BlogPost, locale: Locale) {
-  return new Intl.DateTimeFormat(locale === 'de' ? 'de-AT' : 'en-US', {
+  const dateLocales = {
+    de: 'de-AT',
+    en: 'en-US',
+    ru: 'ru-RU'
+  } satisfies Record<Locale, string>;
+
+  return new Intl.DateTimeFormat(dateLocales[locale], {
     day: '2-digit',
     month: 'long',
     year: 'numeric'

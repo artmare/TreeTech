@@ -18,6 +18,24 @@ type PageProps = {
   params: Promise<{locale: string; serviceSlug: string}>;
 };
 
+const serviceDetailLabels = {
+  de: {
+    viewExamples: 'Beispielprojekte ansehen',
+    faqTitle: 'Häufige Fragen',
+    faqLead: 'Antworten auf typische Fragen zu Kosten, Ablauf, bestehenden Tools und Support.'
+  },
+  en: {
+    viewExamples: 'View example projects',
+    faqTitle: 'Frequently asked questions',
+    faqLead: 'Answers to common questions about cost, process, existing tools, and support.'
+  },
+  ru: {
+    viewExamples: 'Посмотреть примеры проектов',
+    faqTitle: 'Частые вопросы',
+    faqLead: 'Ответы на типичные вопросы о стоимости, процессе, существующих инструментах и поддержке.'
+  }
+} satisfies Record<Locale, {viewExamples: string; faqTitle: string; faqLead: string}>;
+
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) =>
     servicePages.map((page) => ({locale, serviceSlug: page.slug}))
@@ -58,6 +76,7 @@ export default async function ServiceLandingPage({params}: PageProps) {
 
   setRequestLocale(locale);
   const content = servicePageContent[locale];
+  const labels = serviceDetailLabels[locale];
   const cards = [
     {label: content.forWhom, text: page.audience[locale], icon: UsersRound},
     {label: content.problem, text: page.problem[locale], icon: Target},
@@ -98,7 +117,7 @@ export default async function ServiceLandingPage({params}: PageProps) {
                 {content.cta}
               </ButtonLink>
               <ButtonLink href="/portfolio" variant="secondary">
-                {locale === 'de' ? 'Beispielprojekte ansehen' : 'View example projects'}
+                {labels.viewExamples}
               </ButtonLink>
             </div>
           </FadeIn>
@@ -156,10 +175,8 @@ export default async function ServiceLandingPage({params}: PageProps) {
         <Container>
           <SectionHeading
             eyebrow="faq"
-            title={locale === 'de' ? 'Häufige Fragen' : 'Frequently asked questions'}
-            lead={locale === 'de'
-              ? 'Antworten auf typische Fragen zu Kosten, Ablauf, bestehenden Tools und Support.'
-              : 'Answers to common questions about cost, process, existing tools, and support.'}
+            title={labels.faqTitle}
+            lead={labels.faqLead}
           />
           <div className="mt-10 grid gap-4 lg:grid-cols-2">
             {faqItems.slice(0, 6).map((item, index) => (

@@ -4,14 +4,14 @@ import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 
-import {AgencyDashboard} from '@/components/agency-dashboard';
+import {AgencyDashboardLazy} from '@/components/agency-dashboard-lazy';
 import {FadeIn} from '@/components/motion/fade-in';
-import {OfferCard} from '@/components/offer-card';
 import {PortfolioCard} from '@/components/portfolio-card';
+import {PrimaryServiceCard} from '@/components/primary-service-card';
 import {ButtonLink} from '@/components/ui/button-link';
 import {Container} from '@/components/ui/container';
 import {SectionHeading} from '@/components/ui/section-heading';
-import {audienceItems, automationExamples, faqItems, offers, portfolioProjects, pricePackages, processSteps, siteContent} from '@/content/site';
+import {audienceItems, automationExamples, faqItems, portfolioProjects, pricePackages, primaryServiceOffers, processSteps, siteContent} from '@/content/site';
 import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
 
@@ -22,43 +22,61 @@ type PageProps = {
 const outcomeCards = {
   de: [
     {
-      icon: Bot,
-      title: 'AI dort, wo sie Arbeit spart',
-      text: 'Automatische Antworten, Dokumente, interne Assistenten und Datenanalysen werden direkt an reale Abläufe gekoppelt.'
+      icon: MonitorSmartphone,
+      title: 'Ihre Website bringt kaum Anfragen',
+      text: 'Das Angebot ist nicht schnell genug verständlich oder der Weg zum Kontakt bleibt unklar.'
     },
     {
-      icon: Code2,
-      title: 'Websysteme statt Einzelseiten',
-      text: 'Websites, Apps und Portale bekommen klare Rollen: verkaufen, erfassen, steuern, verbinden oder automatisieren.'
+      icon: Bot,
+      title: 'Kunden warten zu lange',
+      text: 'Wiederkehrende Fragen und Anfragen bleiben im Postfach liegen oder hängen an einzelnen Personen.'
     },
     {
       icon: PlugZap,
-      title: 'Tools sauber verbunden',
-      text: 'Formulare, CRM, E-Mail, ERP und externe Services fließen in eine nachvollziehbare digitale Prozesskette.'
+      title: 'Ihre Tools arbeiten getrennt',
+      text: 'Informationen werden zwischen E-Mail, Excel, CRM und Kalender immer wieder manuell übertragen.'
     }
   ],
   en: [
     {
       icon: Bot,
-      title: 'AI where it saves work',
-      text: 'Automated replies, documents, internal assistants, and data analysis connect directly to real workflows.'
+      title: 'Your website brings too few inquiries',
+      text: 'The offer is not clear quickly enough or the path to contact remains confusing.'
     },
     {
       icon: Code2,
-      title: 'Web systems, not isolated pages',
-      text: 'Websites, apps, and portals get clear jobs: sell, capture, manage, connect, or automate.'
+      title: 'Customers wait too long',
+      text: 'Recurring questions and inquiries remain in inboxes or depend on individual people.'
     },
     {
       icon: PlugZap,
-      title: 'Tools connected cleanly',
-      text: 'Forms, CRM, email, ERP, and external services flow into one understandable digital process chain.'
+      title: 'Your tools work separately',
+      text: 'Information is repeatedly copied by hand between email, spreadsheets, CRM, and calendars.'
+    }
+  ],
+  ru: [
+    {
+      icon: Bot,
+      title: 'Сайт приносит слишком мало заявок',
+      text: 'Предложение сложно понять быстро, а путь к контакту остаётся неясным.'
+    },
+    {
+      icon: Code2,
+      title: 'Клиенты слишком долго ждут',
+      text: 'Повторяющиеся вопросы и заявки остаются в почте или зависят от отдельных сотрудников.'
+    },
+    {
+      icon: PlugZap,
+      title: 'Инструменты работают раздельно',
+      text: 'Информацию постоянно переносят вручную между e-mail, таблицами, CRM и календарём.'
     }
   ]
 } satisfies Record<Locale, Array<{icon: typeof Bot; title: string; text: string}>>;
 
 const workflowLabels = {
   de: ['Workflow audit', 'System map', 'Interface', 'Automation', 'Launch'],
-  en: ['Workflow audit', 'System map', 'Interface', 'Automation', 'Launch']
+  en: ['Workflow audit', 'System map', 'Interface', 'Automation', 'Launch'],
+  ru: ['Аудит процесса', 'Карта системы', 'Интерфейс', 'Автоматизация', 'Запуск']
 } satisfies Record<Locale, string[]>;
 
 const heroOutcomes = {
@@ -71,8 +89,34 @@ const heroOutcomes = {
     'We automate manual business workflows',
     'We build websites and web applications',
     'We connect forms, CRM, AI, and internal tools'
+  ],
+  ru: [
+    'Автоматизируем ручные бизнес-процессы',
+    'Создаем сайты и веб-приложения',
+    'Связываем формы, CRM, AI и внутренние инструменты'
   ]
 } satisfies Record<Locale, string[]>;
+
+const heroLabels = {
+  de: {
+    cta: 'Kostenlose Analyse',
+    micro: 'Ohne Verpflichtung. Antwort innerhalb von 2 Stunden.',
+    terminal1: 'website -> anfrage -> CRM -> termin',
+    terminal2: '2–3 konkrete Verbesserungsmöglichkeiten'
+  },
+  en: {
+    cta: 'Free analysis',
+    micro: 'No obligation. Reply within 2 hours.',
+    terminal1: 'audit funnel: website -> chat -> CRM',
+    terminal2: '2–3 concrete improvement opportunities'
+  },
+  ru: {
+    cta: 'Бесплатный анализ',
+    micro: 'Без обязательств. Ответ в течение 2 часов.',
+    terminal1: 'audit funnel: website -> chat -> CRM',
+    terminal2: '2–3 конкретные возможности улучшения'
+  }
+} satisfies Record<Locale, Record<string, string>>;
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const rawLocale = (await params).locale;
@@ -102,9 +146,48 @@ export default async function HomePage({params}: PageProps) {
   setRequestLocale(locale);
   const content = siteContent[locale];
   const automationLabels = {
-    process: locale === 'de' ? 'Prozess' : 'Process',
-    benefit: locale === 'de' ? 'Business-Nutzen' : 'Business benefit'
-  };
+    de: {process: 'Prozess', benefit: 'Business-Nutzen'},
+    en: {process: 'Process', benefit: 'Business benefit'},
+    ru: {process: 'Процесс', benefit: 'Польза для бизнеса'}
+  } satisfies Record<Locale, {process: string; benefit: string}>;
+  const homeLabels = {
+    de: {
+      automationExamples: 'automation examples',
+      fit: 'fit',
+      budgetTitle: 'Startangebote und Budgetrahmen.',
+      budgetLead:
+        'Orientierungen für den Einstieg. Nach einer kurzen Ersteinschätzung empfehlen wir ehrlich, ob ein Sprint reicht oder ein größerer Aufbau sinnvoll ist.',
+      seo: 'seo',
+      faqTitle: 'Häufige Fragen',
+      faqLead:
+        'Antworten auf typische Fragen zu Websites, AI-Automation, CRM-Verbindungen und Zusammenarbeit.',
+      serviceDetails: 'Details öffnen'
+    },
+    en: {
+      automationExamples: 'automation examples',
+      fit: 'fit',
+      budgetTitle: 'Starting offers and budget ranges.',
+      budgetLead:
+        'Orientation ranges for getting started. After a short first assessment, we honestly recommend whether a sprint is enough or a larger setup makes sense.',
+      seo: 'seo',
+      faqTitle: 'Frequently asked questions',
+      faqLead:
+        'Answers to common questions about websites, AI automation, CRM connections, and collaboration.',
+      serviceDetails: 'Open details'
+    },
+    ru: {
+      automationExamples: 'примеры автоматизации',
+      fit: 'для кого',
+      budgetTitle: 'Стартовые предложения и бюджетные рамки.',
+      budgetLead:
+        'Ориентиры для начала. После короткой первичной оценки мы честно скажем, хватит ли спринта или нужен более крупный запуск.',
+      seo: 'seo',
+      faqTitle: 'Частые вопросы',
+      faqLead:
+        'Ответы на типичные вопросы о сайтах, AI-автоматизации, CRM-интеграциях и сотрудничестве.',
+      serviceDetails: 'Открыть детали'
+    }
+  } satisfies Record<Locale, Record<string, string>>;
   const proofCards = [
     {icon: Bot, text: content.home.heroTrust[0]},
     {icon: MonitorSmartphone, text: content.home.heroTrust[1]},
@@ -115,30 +198,26 @@ export default async function HomePage({params}: PageProps) {
     <>
       <section className="dark-band scanline relative isolate overflow-hidden text-white">
         <div className="dark-grid absolute inset-0 opacity-45" />
-        <Container className="relative grid min-h-[calc(100svh-78px)] gap-12 py-16 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:py-20">
-          <FadeIn className="max-w-5xl">
+        <Container className="relative grid min-h-[calc(88svh-78px)] gap-10 py-14 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:py-16">
+          <FadeIn className="max-w-4xl">
             <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 font-mono text-sm text-accent">
               {content.home.heroBadge}
             </p>
-            <div className="mt-6 rounded-[1rem] border border-white/10 bg-white/[0.04] p-3 font-mono text-xs text-white/62 sm:max-w-xl">
-              <p><span className="text-accent">&gt;</span> load services: ai_automation web_development custom_apps</p>
-              <p className="mt-1"><span className="text-accent">&gt;</span> target: austrian_business_clients</p>
-            </div>
-            <h1 className="mt-6 max-w-5xl text-balance text-5xl font-semibold leading-[1.01] text-white sm:text-6xl lg:text-7xl">
+            <h1 className="mt-6 max-w-5xl text-balance text-4xl font-semibold leading-[1.03] text-white sm:text-6xl lg:text-7xl">
               {content.home.heroTitle}
             </h1>
-            <p className="mt-6 max-w-2xl text-pretty text-lg leading-8 text-white/72 sm:text-xl">
+            <p className="mt-6 max-w-2xl text-pretty text-lg leading-8 text-white/74 sm:text-xl">
               {content.home.heroLead}
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/contact" variant="accent">
-                {content.common.primaryCta}
+            <div className="mt-8">
+              <ButtonLink href="/contact#audit-call" variant="accent">
+                {heroLabels[locale].cta}
               </ButtonLink>
-              <ButtonLink href="/portfolio" variant="secondary">
-                {content.common.secondaryCta}
-              </ButtonLink>
+              <p className="mt-3 text-sm font-medium leading-6 text-white/62">
+                {heroLabels[locale].micro}
+              </p>
             </div>
-            <ul className="mt-8 grid max-w-2xl gap-3">
+            <ul className="mt-7 grid max-w-2xl gap-3">
               {heroOutcomes[locale].map((item) => (
                 <li key={item} className="flex gap-3 text-sm font-semibold leading-6 text-white/76">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
@@ -146,9 +225,13 @@ export default async function HomePage({params}: PageProps) {
                 </li>
               ))}
             </ul>
+            <div className="mt-7 max-w-md rounded-[0.9rem] border border-white/10 bg-white/[0.035] p-3 font-mono text-xs leading-6 text-white/58">
+              <p><span className="text-accent">&gt;</span> {heroLabels[locale].terminal1}</p>
+              <p><span className="text-accent">&gt;</span> {heroLabels[locale].terminal2}</p>
+            </div>
           </FadeIn>
-          <FadeIn delay={0.12} className="lg:self-start lg:pt-10">
-            <AgencyDashboard locale={locale} />
+          <FadeIn delay={0.12} className="lg:self-center">
+            <AgencyDashboardLazy locale={locale} />
           </FadeIn>
         </Container>
       </section>
@@ -194,7 +277,7 @@ export default async function HomePage({params}: PageProps) {
       <section className="warm-band py-16">
         <Container>
           <SectionHeading
-            eyebrow="automation examples"
+            eyebrow={homeLabels[locale].automationExamples}
             title={content.home.automationTitle}
             lead={content.home.automationLead}
           />
@@ -207,11 +290,11 @@ export default async function HomePage({params}: PageProps) {
                     {example.title[locale]}
                   </h3>
                   <p className="mt-4 font-mono text-xs uppercase tracking-[0.16em] text-accent">
-                    {automationLabels.process}
+                    {automationLabels[locale].process}
                   </p>
                   <p className="mt-2 text-sm leading-7 text-muted">{example.process[locale]}</p>
                   <p className="mt-4 font-mono text-xs uppercase tracking-[0.16em] text-accent">
-                    {automationLabels.benefit}
+                    {automationLabels[locale].benefit}
                   </p>
                   <p className="mt-2 text-sm leading-7 text-muted">{example.benefit[locale]}</p>
                 </article>
@@ -225,7 +308,7 @@ export default async function HomePage({params}: PageProps) {
         <Container>
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
             <SectionHeading
-              eyebrow="fit"
+              eyebrow={homeLabels[locale].fit}
               title={content.home.audienceTitle}
               lead={content.home.audienceLead}
             />
@@ -253,13 +336,14 @@ export default async function HomePage({params}: PageProps) {
             title={content.home.servicesTitle}
             lead={content.home.servicesLead}
           />
-          <div className="mt-10 grid gap-5 lg:grid-cols-2">
-            {offers.map((offer, index) => (
-              <FadeIn key={offer.chapter} delay={index * 0.08}>
-                <OfferCard
+          <div className="mt-10 grid gap-5 lg:grid-cols-3">
+            {primaryServiceOffers.map((offer, index) => (
+              <FadeIn key={offer.id} delay={index * 0.08}>
+                <PrimaryServiceCard
                   offer={offer}
                   locale={locale}
                   ctaLabel={content.common.requestPackage}
+                  detailLabel={homeLabels[locale].serviceDetails}
                 />
               </FadeIn>
             ))}
@@ -272,10 +356,8 @@ export default async function HomePage({params}: PageProps) {
         <Container className="relative">
           <SectionHeading
             eyebrow="budget"
-            title={locale === 'de' ? 'Startangebote und Budgetrahmen.' : 'Starting offers and budget ranges.'}
-            lead={locale === 'de'
-              ? 'Orientierungen für den Einstieg. Nach einer kurzen Ersteinschätzung empfehlen wir ehrlich, ob ein Sprint reicht oder ein größerer Aufbau sinnvoll ist.'
-              : 'Orientation ranges for getting started. After a short first assessment, we honestly recommend whether a sprint is enough or a larger setup makes sense.'}
+            title={homeLabels[locale].budgetTitle}
+            lead={homeLabels[locale].budgetLead}
           />
           <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {pricePackages.map((item, index) => (
@@ -315,6 +397,9 @@ export default async function HomePage({params}: PageProps) {
               </FadeIn>
             ))}
           </div>
+          <p className="mt-8 max-w-3xl rounded-[1rem] border border-white/10 bg-white/[0.06] px-4 py-3 text-sm leading-7 text-white/68">
+            {content.portfolio.disclaimer}
+          </p>
         </Container>
       </section>
 
@@ -358,7 +443,7 @@ export default async function HomePage({params}: PageProps) {
         <Container>
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
             <SectionHeading
-              eyebrow="seo"
+              eyebrow={homeLabels[locale].seo}
               title={content.home.seoTitle}
               lead={content.home.seoLead}
             />
@@ -384,10 +469,8 @@ export default async function HomePage({params}: PageProps) {
         <Container>
           <SectionHeading
             eyebrow="faq"
-            title={locale === 'de' ? 'Häufige Fragen' : 'Frequently asked questions'}
-            lead={locale === 'de'
-              ? 'Antworten auf typische Fragen zu Websites, AI-Automation, CRM-Verbindungen und Zusammenarbeit.'
-              : 'Answers to common questions about websites, AI automation, CRM connections, and collaboration.'}
+            title={homeLabels[locale].faqTitle}
+            lead={homeLabels[locale].faqLead}
           />
           <div className="mt-10 grid gap-4 lg:grid-cols-2">
             {faqItems.map((item, index) => (

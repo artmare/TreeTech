@@ -9,7 +9,7 @@ import {ProjectPreview} from '@/components/project-preview';
 import {ButtonLink} from '@/components/ui/button-link';
 import {Container} from '@/components/ui/container';
 import {demoSiteLabels} from '@/content/demo-sites';
-import {getProjectBySlug, portfolioProjects, siteContent} from '@/content/site';
+import {getPortfolioCaseStudy, getProjectBySlug, portfolioProjects, siteContent} from '@/content/site';
 import {Link} from '@/i18n/navigation';
 import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
@@ -54,10 +54,11 @@ export default async function PortfolioDetailPage({params}: PageProps) {
     notFound();
   }
 
+  const caseStudy = getPortfolioCaseStudy(project);
   const storyCards = [
-    {label: content.portfolio.problem, text: project.problem[locale], icon: Target},
-    {label: content.portfolio.solution, text: project.solution[locale], icon: Wrench},
-    {label: content.portfolio.result, text: project.metric[locale], icon: TrendingUp}
+    {label: content.portfolio.problem, text: caseStudy.problem[locale], icon: Target},
+    {label: content.portfolio.solution, text: caseStudy.solution[locale], icon: Wrench},
+    {label: content.portfolio.result, text: caseStudy.resultMetric[locale], icon: TrendingUp}
   ];
 
   return (

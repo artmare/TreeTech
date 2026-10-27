@@ -4,6 +4,8 @@ import {getMessages, setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 
 import '@/app/globals.css';
+import {AnalyticsLoader} from '@/components/analytics-loader';
+import {AssistantWidgetLoader} from '@/components/assistant-widget-loader';
 import {SiteFooter} from '@/components/site-footer';
 import {SiteHeader} from '@/components/site-header';
 import {siteConfig} from '@/content/site';
@@ -46,7 +48,7 @@ export default async function LocaleLayout({children, params}: Props) {
       'Business process automation',
       'Custom web applications'
     ],
-    inLanguage: ['de-AT', 'en']
+    inLanguage: ['de-AT', 'en', 'ru-RU']
   };
 
   return (
@@ -60,6 +62,8 @@ export default async function LocaleLayout({children, params}: Props) {
           <SiteHeader locale={locale as Locale} />
           <main>{children}</main>
           <SiteFooter />
+          <AnalyticsLoader />
+          <AssistantWidgetLoader locale={locale as Locale} />
         </NextIntlClientProvider>
       </body>
     </html>

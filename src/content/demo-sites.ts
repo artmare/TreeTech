@@ -1,4 +1,5 @@
 import type {Locale} from '@/i18n/routing';
+import {withLocaleFallbacks} from '@/i18n/localized';
 
 type Localized<T> = Record<Locale, T>;
 
@@ -52,7 +53,7 @@ export type DemoSite = {
   copy: Localized<DemoSiteCopy>;
 };
 
-export const demoSiteLabels = {
+export const demoSiteLabels = withLocaleFallbacks({
   de: {
     viewDemo: 'Demo-Website ansehen',
     demoEyebrow: 'Live-Demo',
@@ -68,10 +69,18 @@ export const demoSiteLabels = {
     storageTitle: 'Storage strategy',
     storageText:
       'This demo is stored as typed content and statically generated. That keeps the portfolio fast, translatable, and maintainable without an extra database.'
+  },
+  ru: {
+    viewDemo: 'Посмотреть demo-сайт',
+    demoEyebrow: 'Live demo',
+    backToCase: 'Назад к кейсу',
+    storageTitle: 'Стратегия хранения',
+    storageText:
+      'Это demo хранится как типизированный content-файл и генерируется статически. Так портфолио остается быстрым, переводимым и поддерживаемым без отдельной базы данных.'
   }
-} satisfies Localized<Record<string, string>>;
+}) satisfies Localized<Record<string, string>>;
 
-export const demoSites: DemoSite[] = [
+export const demoSites: DemoSite[] = withLocaleFallbacks([
   {
     slug: 'alpendent',
     brand: 'AlpenDent',
@@ -652,7 +661,7 @@ export const demoSites: DemoSite[] = [
       }
     }
   }
-];
+]);
 
 export function getDemoSiteBySlug(slug: string) {
   return demoSites.find((site) => site.slug === slug);

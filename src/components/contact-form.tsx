@@ -1,18 +1,15 @@
 'use client';
 
 import {Send} from 'lucide-react';
-import {useTranslations} from 'next-intl';
+import {useLocale, useTranslations} from 'next-intl';
 import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 
-import {budgetValues, type BudgetValue} from '@/lib/contact-options';
 import {cn} from '@/lib/utils';
 
 type ContactFormValues = {
   name: string;
   email: string;
-  company: string;
-  budget: '' | BudgetValue;
   message: string;
   websiteUrl: string;
   startedAt: number;
@@ -20,6 +17,7 @@ type ContactFormValues = {
 
 export function ContactForm() {
   const t = useTranslations('contactForm');
+  const locale = useLocale();
   const [status, setStatus] = useState<'success' | 'error' | null>(null);
   const [startedAt] = useState(() => Date.now());
 
@@ -32,8 +30,6 @@ export function ContactForm() {
     defaultValues: {
       name: '',
       email: '',
-      company: '',
-      budget: '',
       message: '',
       websiteUrl: '',
       startedAt
@@ -48,7 +44,12 @@ export function ContactForm() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(values)
+      body: JSON.stringify({
+        ...values,
+        company: '',
+        budget: 'automation',
+        metadata: {source: 'free_analysis', locale}
+      })
     });
 
     if (!response.ok) {
@@ -59,13 +60,19 @@ export function ContactForm() {
     reset({
       name: '',
       email: '',
-      company: '',
-      budget: '',
       message: '',
       websiteUrl: '',
       startedAt
     });
     setStatus('success');
+    window.dispatchEvent(
+      new CustomEvent('treetech:analytics', {
+        detail: {
+          name: 'contact_form_submitted',
+          params: {source: 'free_analysis'}
+        }
+      })
+    );
   }
 
   return (
@@ -98,34 +105,6 @@ export function ContactForm() {
             placeholder={t('emailPlaceholder')}
             className="h-12 w-full rounded-[0.9rem] border border-white/10 bg-white/[0.055] px-3 text-sm text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-white/[0.08] focus:ring-4 focus:ring-accent/10"
           />
-        </Field>
-      </div>
-
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
-        <Field label={t('company')} error={errors.company?.message}>
-          <input
-            {...register('company', {
-              maxLength: 160
-            })}
-            autoComplete="organization"
-            placeholder={t('companyPlaceholder')}
-            className="h-12 w-full rounded-[0.9rem] border border-white/10 bg-white/[0.055] px-3 text-sm text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:bg-white/[0.08] focus:ring-4 focus:ring-accent/10"
-          />
-        </Field>
-        <Field label={t('budget')} error={errors.budget?.message}>
-          <select
-            {...register('budget', {
-              validate: (value) => (value && budgetValues.includes(value)) || t('errors.budget')
-            })}
-            className="h-12 w-full rounded-[0.9rem] border border-white/10 bg-[#11150f] px-3 text-sm text-foreground outline-none transition focus:border-accent/50 focus:bg-[#151b12] focus:ring-4 focus:ring-accent/10"
-          >
-            <option value="">{t('budgetPlaceholder')}</option>
-            {budgetValues.map((budget) => (
-              <option key={budget} value={budget}>
-                {t(`budgets.${budget}`)}
-              </option>
-            ))}
-          </select>
         </Field>
       </div>
 

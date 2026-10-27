@@ -31,6 +31,14 @@ const portfolioBrief = {
       'How structure, copy, and calls to action guide visitors toward inquiry.',
       'How the finished demo page could feel for a similar industry.'
     ]
+  },
+  ru: {
+    title: 'Что смотреть в каждом проекте',
+    items: [
+      'Какая исходная ситуация была у бизнеса и как сайт на нее отвечает.',
+      'Как структура, тексты и CTA ведут посетителя к заявке.',
+      'Как готовая демо-страница может выглядеть для похожей отрасли.'
+    ]
   }
 } satisfies Record<Locale, {title: string; items: string[]}>;
 
@@ -97,6 +105,9 @@ export default async function PortfolioPage({params}: PageProps) {
               </FadeIn>
             ))}
           </div>
+          <p className="mt-8 max-w-3xl rounded-[1rem] border border-white/10 bg-white/[0.035] px-4 py-3 text-sm leading-7 text-muted">
+            {content.portfolio.disclaimer}
+          </p>
         </Container>
       </section>
     </>

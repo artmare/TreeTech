@@ -26,6 +26,16 @@ const showcaseCopy = {
     painPoints: ['Inquiries sit in email inboxes', 'Data gets copied more than once', 'Website, CRM, and team work separately'],
     builds: ['Website or web app with clear user journeys', 'AI assistant for recurring questions and tasks', 'Automation for CRM, documents, and internal handovers'],
     outcomes: ['Fewer manual steps', 'Faster response to new leads', 'A system the team can actually understand']
+  },
+  ru: {
+    eyebrow: 'Образ проекта',
+    title: 'Разрозненная работа превращается в понятный цифровой процесс.',
+    incoming: 'Типичная стартовая ситуация',
+    system: 'Что TreeTech из этого строит',
+    result: 'Что становится лучше после запуска',
+    painPoints: ['Заявки остаются в почте', 'Данные копируются несколько раз', 'Сайт, CRM и команда работают отдельно'],
+    builds: ['Сайт или веб-приложение с понятным путем пользователя', 'AI-ассистент для повторяющихся вопросов и задач', 'Автоматизация для CRM, документов и внутренних передач'],
+    outcomes: ['Меньше ручных шагов', 'Быстрее реакция на новые лиды', 'Система, которую команда понимает в ежедневной работе']
   }
 } satisfies Record<Locale, {
   eyebrow: string;

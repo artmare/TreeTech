@@ -50,13 +50,18 @@ export default async function BlogPage({params}: PageProps) {
   const locale = rawLocale;
   setRequestLocale(locale);
   const content = blogContent[locale];
+  const schemaLanguages = {
+    de: 'de-AT',
+    en: 'en',
+    ru: 'ru-RU'
+  } satisfies Record<typeof locale, string>;
   const [featuredPost, ...posts] = blogPosts;
   const blogJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
     name: content.metadata.title,
     description: content.metadata.description,
-    inLanguage: locale === 'de' ? 'de-AT' : 'en',
+    inLanguage: schemaLanguages[locale],
     blogPost: blogPosts.map((post) => ({
       '@type': 'BlogPosting',
       headline: post.title[locale],

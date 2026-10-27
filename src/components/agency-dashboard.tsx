@@ -15,6 +15,9 @@ const copy = {
   },
   en: {
     label: 'Animated TreeTech workflow system'
+  },
+  ru: {
+    label: 'Анимированная workflow-система TreeTech'
   }
 } satisfies Record<Locale, {label: string}>;
 
@@ -35,13 +38,26 @@ export function AgencyDashboard({locale}: AgencyDashboardProps) {
     const targetPointer = new THREE.Vector2(0, 0);
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      alpha: true,
-      antialias: true,
-      preserveDrawingBuffer: true,
-      powerPreference: 'high-performance'
-    });
+    const context = createWebGLContext(canvas);
+
+    if (!context) {
+      return undefined;
+    }
+
+    let renderer: THREE.WebGLRenderer;
+
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        context,
+        alpha: true,
+        antialias: true,
+        preserveDrawingBuffer: false,
+        powerPreference: 'high-performance'
+      });
+    } catch {
+      return undefined;
+    }
 
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
     renderer.setClearColor(0x000000, 0);
@@ -177,44 +193,21 @@ export function AgencyDashboard({locale}: AgencyDashboardProps) {
       root.add(line);
     }
 
-    const particleGeometry = new THREE.BufferGeometry();
-    const particleCount = 140;
-    const positions = new Float32Array(particleCount * 3);
-
-    for (let index = 0; index < particleCount; index += 1) {
-      const radius = 2.4 + Math.random() * 2.5;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-
-      positions[index * 3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[index * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta) * 0.72;
-      positions[index * 3 + 2] = radius * Math.cos(phi) * 0.72;
-    }
-
-    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    const particles = new THREE.Points(
-      particleGeometry,
-      new THREE.PointsMaterial({
-        color: 0xd6ff63,
-        size: 0.03,
-        transparent: true,
-        opacity: 0.42,
-        sizeAttenuation: true
-      })
-    );
-    root.add(particles);
-
     const startedAt = window.performance.now();
 
     const resize = () => {
       const parent = canvas.parentElement;
       const width = parent?.clientWidth || canvas.clientWidth || 640;
       const height = parent?.clientHeight || canvas.clientHeight || 480;
+      const compact = width < 640;
 
       renderer.setSize(width, height, false);
       camera.aspect = width / height;
+      camera.fov = compact ? 45 : 38;
+      camera.position.set(0, compact ? 0.12 : 0.55, compact ? 8.8 : 8.2);
       camera.updateProjectionMatrix();
+      root.scale.setScalar(compact ? 0.92 : 1.08);
+      root.position.set(0, compact ? 0.16 : 0, 0);
     };
 
     const observer = new ResizeObserver(resize);
@@ -244,7 +237,6 @@ export function AgencyDashboard({locale}: AgencyDashboardProps) {
       innerCore.rotation.y = -elapsed * 0.7;
       wireCore.rotation.x = -elapsed * 0.26;
       wireCore.rotation.z = elapsed * 0.2;
-      particles.rotation.y = -elapsed * 0.05;
 
       rings[0].rotation.z = elapsed * 0.55;
       rings[1].rotation.x = Math.PI / 2.9 + elapsed * 0.22;
@@ -285,13 +277,41 @@ export function AgencyDashboard({locale}: AgencyDashboardProps) {
   }, []);
 
   return (
-    <div id="hero-3d" className="relative -mx-6 min-h-[22rem] overflow-hidden sm:mx-0 sm:min-h-[30rem] lg:min-h-[34rem]" aria-label={content.label}>
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_46%,rgba(214,255,99,0.22),transparent_18rem),radial-gradient(circle_at_70%_30%,rgba(55,255,208,0.12),transparent_16rem)]" />
-      <div className="pointer-events-none absolute inset-x-8 top-1/2 h-px bg-gradient-to-r from-transparent via-accent/28 to-transparent" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[20rem] w-[20rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/10 sm:h-[28rem] sm:w-[28rem]" />
-      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full touch-none" aria-hidden="true" />
+    <div
+      id="hero-3d"
+      className="relative z-10 -mx-6 h-[40svh] min-h-[15rem] max-h-[18rem] overflow-hidden sm:mx-0 sm:h-auto sm:min-h-[30rem] sm:max-h-none lg:min-h-[34rem]"
+      role="img"
+      aria-label={content.label}
+    >
+      <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center opacity-80" aria-hidden="true">
+        <div className="relative h-56 w-56 sm:h-80 sm:w-80">
+          <span className="absolute inset-8 rounded-full border border-accent/30 shadow-[0_0_80px_rgba(214,255,99,0.16)]" />
+          <span className="absolute inset-0 rounded-full border border-white/10" />
+          <span className="absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-[2rem] bg-accent/35 blur-xl" />
+          <span className="absolute left-1/2 top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-[1.25rem] border border-accent/50 bg-accent/20" />
+        </div>
+      </div>
+      <canvas ref={canvasRef} className="absolute inset-0 z-10 h-full w-full touch-none" aria-hidden="true" />
     </div>
   );
+}
+
+function createWebGLContext(canvas: HTMLCanvasElement) {
+  const attributes = {
+    alpha: true,
+    antialias: true,
+    powerPreference: 'high-performance'
+  } satisfies WebGLContextAttributes;
+
+  try {
+    return (
+      canvas.getContext('webgl2', attributes) ||
+      canvas.getContext('webgl', attributes) ||
+      canvas.getContext('experimental-webgl', attributes)
+    ) as WebGLRenderingContext | WebGL2RenderingContext | null;
+  } catch {
+    return null;
+  }
 }
 
 function createCylinderLine(
