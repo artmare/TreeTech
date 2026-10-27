@@ -73,19 +73,22 @@ main h2 {
   letter-spacing: -0.01em;
 }
 
-a {
-  text-decoration: none;
-}
+/* In a layer, so Tailwind utilities (font-bold, underline, colors) still win over the reset. */
+@layer base {
+  a {
+    text-decoration: none;
+  }
 
-a:not([class]) {
-  color: inherit;
-}
+  a:not([class]) {
+    color: inherit;
+  }
 
-button,
-input,
-select,
-textarea {
-  font: inherit;
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
 }
 
 ::selection {

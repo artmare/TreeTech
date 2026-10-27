@@ -1,3 +1,4 @@
+import {contactPhone, phoneHref, whatsappHref} from '@/content/contact-links';
 import type {Locale} from '@/i18n/routing';
 import {withLocaleFallbacks} from '@/i18n/localized';
 import {formatEur, formatPackagePrice, founderOffer, getPackage, hourlyRate, type PackageId} from '@/content/pricing';
@@ -6,22 +7,16 @@ export const siteConfig = {
   name: 'TreeTech',
   url: 'https://treetech.at',
   email: 'office@treetech.at',
-  /** Displayed phone number. Change it here and it changes everywhere. */
-  phone: '+43 660 9557357',
-  /** Digits only, international format, used for tel: and wa.me links. */
-  phoneDigits: '436609557357',
+  /** Change the number in src/content/contact-links.ts and it changes everywhere. */
+  phone: contactPhone.display,
+  phoneDigits: contactPhone.digits,
   /** Public Cal.com booking page for the 30-minute call. NEXT_PUBLIC_CAL_URL overrides it. */
   calUrl: 'https://cal.com/artem-karnaukhov-rneqin/treetech-website-analyse',
   region: {de: 'Wien und Niederösterreich', en: 'Vienna and Lower Austria', ru: 'Вена и Нижняя Австрия'},
   googleSiteVerification: 'PdjQivxgyQpk4Qxzy2-3pMhBPW2pZreWQYBlrry2Gyw'
 };
 
-export const phoneHref = `tel:+${siteConfig.phoneDigits}`;
-
-export function whatsappHref(message?: string) {
-  const base = `https://wa.me/${siteConfig.phoneDigits}`;
-  return message ? `${base}?text=${encodeURIComponent(message)}` : base;
-}
+export {phoneHref, whatsappHref};
 
 export type LocalizedText = Record<Locale, string>;
 export type LocalizedList = Record<Locale, string[]>;

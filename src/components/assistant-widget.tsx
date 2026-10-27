@@ -1,23 +1,12 @@
 'use client';
 
-import {
-  Bot,
-  CalendarCheck,
-  CheckCircle2,
-  ClipboardList,
-  Loader2,
-  MessageCircle,
-  Minus,
-  Send,
-  Sparkles,
-  Trash2,
-  X
-} from 'lucide-react';
+import {CheckCircle2, ClipboardList, Loader2, MessageCircle, Minus, Phone, Send, Trash2, X} from 'lucide-react';
 import {AnimatePresence, motion, useReducedMotion} from 'framer-motion';
 import {useLocale, useTranslations} from 'next-intl';
 import {type FormEvent, type ReactNode, useEffect, useMemo, useRef, useState} from 'react';
 
-import {type BudgetValue} from '@/lib/contact-options';
+import {phoneHref, whatsappHref} from '@/content/contact-links';
+import {phonePattern} from '@/lib/contact-options';
 import {isDemoSitePath} from '@/lib/demo-routes';
 import {cn} from '@/lib/utils';
 import {usePathname} from '@/i18n/navigation';
@@ -35,24 +24,17 @@ type AssistantWidgetProps = {
 
 type LeadFormValues = {
   name: string;
-  email: string;
-  message: string;
+  company: string;
+  reach: string;
 };
 
-type QualificationState = {
-  businessType?: string;
-  projectType?: BudgetValue;
-  projectLabel?: string;
-  urgency?: string;
-};
-
-type QualificationField = keyof QualificationState;
+type QualificationField = 'businessType' | 'situation' | 'urgency';
+type QualificationState = Partial<Record<QualificationField, string>> & {care?: boolean};
 
 type QualificationOption = {
   field: QualificationField;
-  value: string;
   label: string;
-  budget?: BudgetValue;
+  care?: boolean;
 };
 
 type QualificationStep = {
@@ -65,18 +47,28 @@ type AnalyticsWindow = Window & {
   gtag?: (...args: unknown[]) => void;
 };
 
+type Translate = ReturnType<typeof useTranslations>;
+
 const maxClientMessages = 12;
-const pressable =
-  'motion-safe:active:scale-[0.97] motion-safe:active:brightness-110 motion-safe:active:transition-transform';
+const fieldOrder: QualificationField[] = ['businessType', 'situation', 'urgency'];
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const iconButton =
+  'flex h-10 w-10 items-center justify-center rounded-[10px] text-muted transition hover:bg-background hover:text-foreground';
+const optionButton =
+  'min-h-11 rounded-[10px] border-2 border-border bg-surface px-3 py-2 text-left text-sm font-semibold leading-5 text-foreground transition hover:border-foreground disabled:cursor-not-allowed disabled:opacity-60';
+const primaryButton =
+  'inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-[12px] bg-accent px-4 py-2 text-base font-bold text-white transition hover:bg-[var(--accent-strong)] disabled:cursor-not-allowed disabled:opacity-70';
+const secondaryButton =
+  'inline-flex min-h-12 items-center justify-center gap-2 rounded-[12px] border-2 border-foreground bg-surface px-3 py-2 text-[15px] font-bold text-foreground transition hover:bg-background';
 
 export function AssistantWidget({locale}: AssistantWidgetProps) {
   const t = useTranslations('assistant');
-  const contactT = useTranslations('contactForm');
   const reduceMotion = useReducedMotion();
   const activeLocale = useLocale() as Locale;
   const pathname = usePathname();
-  const storageKey = `treetech-assistant:v2:${locale}`;
-  const bookingHref = `/${locale}/contact#audit-call`;
+  // v3: niche rewrite, older conversations about other topics are dropped.
+  const storageKey = `treetech-assistant:v3:${locale}`;
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const streamedContentRef = useRef('');
   const [open, setOpen] = useState(false);
@@ -85,43 +77,32 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
   const [qualification, setQualification] = useState<QualificationState>({});
   const [loaded, setLoaded] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [leadOpen, setLeadOpen] = useState(false);
-  const [leadStatus, setLeadStatus] = useState<'success' | 'error' | null>(null);
+  const [leadSending, setLeadSending] = useState(false);
+  const [leadStatus, setLeadStatus] = useState<'success' | 'invalid' | 'error' | null>(null);
   const [leadStartedAt, setLeadStartedAt] = useState(() => Date.now());
-  const [leadValues, setLeadValues] = useState<LeadFormValues>({
-    name: '',
-    email: '',
-    message: ''
-  });
+  const [leadValues, setLeadValues] = useState<LeadFormValues>({name: '', company: '', reach: ''});
 
   const qualificationSteps = useMemo(() => createQualificationSteps(t), [t]);
-  const qualificationSummary = useMemo(
-    () => createQualificationSummary(qualification, t),
-    [qualification, t]
-  );
-  const quickPrompts = useMemo(
-    () => [t('prompt1'), t('prompt2'), t('prompt3')],
-    [t]
-  );
+  const qualificationSummary = useMemo(() => createQualificationSummary(qualification, t), [qualification, t]);
+  const quickPrompts = useMemo(() => [t('prompt1'), t('prompt2'), t('prompt3')], [t]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      const stored = window.localStorage.getItem(storageKey);
-
-      if (stored) {
-        try {
+      try {
+        const stored = window.localStorage.getItem(storageKey);
+        if (stored) {
           const parsed = JSON.parse(stored) as ChatMessage[];
           const validMessages = parsed.filter(isChatMessage).slice(-maxClientMessages);
-
-          if (validMessages.length > 0) {
-            setMessages(validMessages);
-          }
-        } catch {
+          if (validMessages.length > 0) setMessages(validMessages);
+        }
+      } catch {
+        try {
           window.localStorage.removeItem(storageKey);
+        } catch {
+          // Storage can be blocked (private mode); the chat still works without it.
         }
       }
-
       setLoaded(true);
     }, 0);
 
@@ -129,17 +110,16 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
   }, [storageKey]);
 
   useEffect(() => {
-    if (!loaded) {
-      return;
-    }
-
-    window.localStorage.setItem(storageKey, JSON.stringify(messages.slice(-maxClientMessages)));
+    if (!loaded) return;
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify(messages.slice(-maxClientMessages)));
+    } catch {
+          // Storage can be blocked (private mode); the chat still works without it.
+        }
   }, [loaded, messages, storageKey]);
 
   useEffect(() => {
-    if (open) {
-      bottomRef.current?.scrollIntoView({block: 'end'});
-    }
+    if (open) bottomRef.current?.scrollIntoView({block: 'end'});
   }, [messages, open, leadOpen]);
 
   if (isDemoSitePath(pathname) || activeLocale !== locale) {
@@ -147,76 +127,65 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
   }
 
   function resetChat() {
-    const greeting = createGreeting(t('greeting'));
-    setMessages([greeting]);
+    setMessages([createGreeting(t('greeting'))]);
     setQualification({});
-    setError(null);
     setInput('');
-    window.localStorage.removeItem(storageKey);
+    setLeadOpen(false);
+    setLeadStatus(null);
+    try {
+      window.localStorage.removeItem(storageKey);
+    } catch {
+          // Storage can be blocked (private mode); the chat still works without it.
+        }
   }
 
   function handleQualificationSelect(option: QualificationOption) {
-    const nextQualification = applyQualificationOption(qualification, option);
-    const nextAssistantMessage = getNextQualificationMessage(nextQualification, t);
+    const next: QualificationState = {
+      ...qualification,
+      [option.field]: option.label,
+      ...(option.field === 'situation' ? {care: Boolean(option.care)} : {})
+    };
+    const nextStep = fieldOrder.find((field) => !next[field]);
+    const reply =
+      nextStep === 'situation'
+        ? t('qualifierNextProject')
+        : nextStep === 'urgency'
+          ? t('qualifierNextUrgency')
+          : next.care
+            ? t('qualifierCompleteCare')
+            : t('qualifierComplete');
 
-    setQualification(nextQualification);
-    setMessages((currentMessages) => {
-      const additions: ChatMessage[] = [
-        {
-          id: createId(),
-          role: 'user',
-          content: `${getQualificationFieldLabel(option.field, t)}: ${option.label}`
-        }
-      ];
+    setQualification(next);
+    setMessages((current) =>
+      [
+        ...current,
+        {id: createId(), role: 'user' as const, content: option.label},
+        {id: createId(), role: 'assistant' as const, content: reply}
+      ].slice(-maxClientMessages)
+    );
 
-      if (nextAssistantMessage) {
-        additions.push({
-          id: createId(),
-          role: 'assistant',
-          content: nextAssistantMessage
-        });
-      }
-
-      return [...currentMessages, ...additions].slice(-maxClientMessages);
-    });
-
-    if (isQualificationComplete(nextQualification)) {
-      trackEvent('assistant_dialog_completed', {locale});
-    }
+    if (!nextStep) trackEvent('assistant_dialog_completed', {locale});
   }
 
   function openLeadForm() {
     setLeadStatus(null);
     setLeadStartedAt(Date.now());
-    setLeadValues((values) => ({
-      ...values,
-      message: values.message || createLeadBrief(messages, t('leadSource'), qualificationSummary)
-    }));
     setLeadOpen(true);
-    trackEvent('assistant_email_offer_opened', {locale});
+    trackEvent('assistant_lead_opened', {locale});
   }
 
   async function submitMessage(text?: string) {
     const content = (text ?? input).trim();
-
-    if (!content || isStreaming) {
-      return;
-    }
+    if (!content || isStreaming) return;
 
     setInput('');
-    setError(null);
-
-    const userMessage: ChatMessage = {
-      id: createId(),
-      role: 'user',
-      content
-    };
-    const assistantMessage: ChatMessage = {
-      id: createId(),
-      role: 'assistant',
-      content: ''
-    };
+    const userMessage: ChatMessage = {id: createId(), role: 'user', content};
+    const assistantMessage: ChatMessage = {id: createId(), role: 'assistant', content: ''};
     const nextMessages = [...messages, userMessage, assistantMessage].slice(-maxClientMessages);
+    const setAssistantContent = (value: string) =>
+      setMessages((current) =>
+        current.map((message) => (message.id === assistantMessage.id ? {...message, content: value} : message))
+      );
 
     setMessages(nextMessages);
     setIsStreaming(true);
@@ -229,14 +198,11 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
           locale,
           messages: nextMessages
             .filter((message) => message.content.trim().length > 0)
-            .slice(-maxClientMessages)
-            .map(({role, content}) => ({role, content}))
+            .map(({role, content: value}) => ({role, content: value}))
         })
       });
 
-      if (!response.ok || !response.body) {
-        throw new Error(t('error'));
-      }
+      if (!response.ok || !response.body) throw new Error('assistant_failed');
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
@@ -244,39 +210,15 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
 
       while (true) {
         const {value, done} = await reader.read();
-
-        if (done) {
-          break;
-        }
-
+        if (done) break;
         streamedContentRef.current += decoder.decode(value, {stream: true});
-        setMessages((currentMessages) =>
-          currentMessages.map((message) =>
-            message.id === assistantMessage.id
-              ? {...message, content: streamedContentRef.current}
-              : message
-          )
-        );
+        setAssistantContent(streamedContentRef.current);
       }
 
       streamedContentRef.current += decoder.decode();
-
-      setMessages((currentMessages) =>
-        currentMessages.map((message) =>
-          message.id === assistantMessage.id
-            ? {...message, content: streamedContentRef.current || t('emptyResponse')}
-            : message
-        )
-      );
+      setAssistantContent(streamedContentRef.current || t('emptyResponse'));
     } catch {
-      setError(t('error'));
-      setMessages((currentMessages) =>
-        currentMessages.map((message) =>
-          message.id === assistantMessage.id
-            ? {...message, content: t('error')}
-            : message
-        )
-      );
+      setAssistantContent(t('error'));
     } finally {
       setIsStreaming(false);
     }
@@ -286,34 +228,36 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
     event.preventDefault();
     setLeadStatus(null);
 
-    const message = leadValues.message.trim();
+    const name = leadValues.name.trim();
+    const company = leadValues.company.trim();
+    const reach = leadValues.reach.trim();
+    const isEmail = emailPattern.test(reach);
+    const isPhone = phonePattern.test(reach);
 
-    if (
-      leadValues.name.trim().length < 2 ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(leadValues.email.trim()) ||
-      message.length < 20
-    ) {
-      setLeadStatus('error');
+    if (name.length < 2 || company.length < 2 || (!isEmail && !isPhone)) {
+      setLeadStatus('invalid');
       return;
     }
 
+    setLeadSending(true);
     const transcript = createMetadataTranscript(messages);
     const response = await fetch('/api/contact', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        name: leadValues.name.trim(),
-        email: leadValues.email.trim(),
-        company: '',
-        budget: deriveBudget(qualification),
-        message: createStoredLeadMessage(message, qualificationSummary, transcript, t('leadSource')),
+        name,
+        company,
+        email: isEmail ? reach : '',
+        phone: isEmail ? '' : reach,
+        budget: 'web',
+        message: createStoredLeadMessage(qualificationSummary, transcript, t('leadSource')),
         metadata: {
           source: 'assistant',
           locale,
           bookingIntent: false,
           qualification: {
             businessType: qualification.businessType,
-            projectType: qualification.projectLabel || qualification.projectType,
+            projectType: qualification.situation,
             urgency: qualification.urgency
           },
           transcript
@@ -321,277 +265,187 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
         websiteUrl: '',
         startedAt: leadStartedAt
       })
-    });
+    }).catch(() => null);
+    setLeadSending(false);
 
-    if (!response.ok) {
+    if (!response?.ok) {
       setLeadStatus('error');
       return;
     }
 
-    setLeadStatus('success');
-    setLeadValues({
-      name: '',
-      email: '',
-      message: ''
-    });
-    setMessages((currentMessages) => [
-      ...currentMessages,
-      {
-        id: createId(),
-        role: 'assistant',
-        content: t('leadSuccess')
-      }
-    ]);
+    setLeadStatus(null);
+    setLeadOpen(false);
+    setLeadValues({name: '', company: '', reach: ''});
+    setMessages((current) => [...current, {id: createId(), role: 'assistant' as const, content: t('leadSuccess')}]);
     trackEvent('assistant_lead_submitted', {locale});
   }
 
   return (
     <div
       className={cn(
-        'theme-dark pointer-events-none fixed inset-x-4 z-[70] sm:inset-x-auto sm:right-5 md:bottom-4',
+        'pointer-events-none fixed inset-x-4 z-[70] sm:inset-x-auto sm:right-5 md:bottom-4',
         // On phones the sticky contact bar sits at the bottom, so the closed launcher floats above it.
         open ? 'bottom-4' : 'bottom-[100px]'
       )}
     >
       <AnimatePresence mode="wait">
         {open ? (
-        <motion.section
-          key="assistant-panel"
-          initial={reduceMotion ? false : {opacity: 0, y: 18, scale: 0.97}}
-          animate={reduceMotion ? {opacity: 1} : {opacity: 1, y: 0, scale: 1}}
-          exit={reduceMotion ? {opacity: 0} : {opacity: 0, y: 12, scale: 0.98}}
-          transition={{duration: 0.22, ease: 'easeOut'}}
-          className="pointer-events-auto ml-auto flex h-[min(720px,calc(100svh-2rem))] w-full flex-col overflow-hidden rounded-[1.25rem] border border-white/12 bg-[#070806]/96 text-foreground shadow-[0_24px_90px_rgba(0,0,0,0.48)] backdrop-blur-2xl sm:w-[420px]"
-          aria-label={t('title')}
-        >
-          <header className="flex min-h-16 items-center justify-between gap-3 border-b border-white/10 px-4">
-            <div className="flex min-w-0 items-center gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent text-[#070806]">
-                <Bot className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <div className="min-w-0">
-                <h2 className="truncate text-sm font-semibold">{t('title')}</h2>
-                <p className="truncate text-xs text-muted">{t('subtitle')}</p>
-              </div>
-            </div>
-            <div className="flex shrink-0 items-center gap-1">
-              <button
-                type="button"
-                onClick={resetChat}
-                className={cn(
-                  'flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.055] text-muted transition hover:border-accent/40 hover:text-accent',
-                  pressable
-                )}
-                aria-label={t('clear')}
-                title={t('clear')}
-              >
-                <Trash2 className="h-4 w-4" aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className={cn(
-                  'flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.055] text-muted transition hover:border-accent/40 hover:text-accent',
-                  pressable
-                )}
-                aria-label={t('minimize')}
-                title={t('minimize')}
-              >
-                <Minus className="h-4 w-4" aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className={cn(
-                  'flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.055] text-muted transition hover:border-accent/40 hover:text-accent sm:hidden',
-                  pressable
-                )}
-                aria-label={t('close')}
-                title={t('close')}
-              >
-                <X className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
-          </header>
-
-          <div className="flex-1 overflow-y-auto px-4 py-4">
-            <div className="grid gap-3">
-              <AnimatePresence initial={false}>
-              {messages.map((message) => (
-                <motion.article
-                  key={message.id}
-                  layout
-                  initial={reduceMotion ? false : {opacity: 0, y: 10, scale: 0.98}}
-                  animate={reduceMotion ? {opacity: 1} : {opacity: 1, y: 0, scale: 1}}
-                  exit={reduceMotion ? {opacity: 0} : {opacity: 0, y: -6, scale: 0.98}}
-                  transition={{duration: 0.18, ease: 'easeOut'}}
-                  className={cn(
-                    'max-w-[88%] rounded-[1rem] px-4 py-3 text-sm leading-6',
-                    message.role === 'user'
-                      ? 'ml-auto bg-accent text-[#070806]'
-                      : 'mr-auto border border-white/10 bg-white/[0.06] text-foreground'
-                  )}
-                >
-                  {message.content ? (
-                    <p className="whitespace-pre-wrap">{renderAssistantText(message.content)}</p>
-                  ) : (
-                    <span className="inline-flex items-center gap-2 text-muted">
-                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-                      {t('thinking')}
-                    </span>
-                  )}
-                </motion.article>
-              ))}
-              </AnimatePresence>
-            </div>
-
-            {!leadOpen ? (
-              <div className="mt-4 grid gap-3">
-                <QualificationPanel
-                  steps={qualificationSteps}
-                  qualification={qualification}
-                  summary={qualificationSummary}
-                  bookingHref={bookingHref}
-                  t={t}
-                  onSelect={handleQualificationSelect}
-                  onProposal={openLeadForm}
-                />
-                <div className="grid gap-2 sm:grid-cols-3">
-                  {quickPrompts.map((prompt) => (
-                    <button
-                      key={prompt}
-                      type="button"
-                      onClick={() => submitMessage(prompt)}
-                      disabled={isStreaming}
-                      className={cn(
-                        'min-h-10 rounded-[0.85rem] border border-white/10 bg-white/[0.045] px-3 py-2 text-left text-xs font-medium leading-5 text-muted transition hover:border-accent/30 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60',
-                        pressable
-                      )}
-                    >
-                      {prompt}
-                    </button>
-                  ))}
+          <motion.section
+            key="assistant-panel"
+            initial={reduceMotion ? false : {opacity: 0, y: 18}}
+            animate={{opacity: 1, y: 0}}
+            exit={reduceMotion ? {opacity: 0} : {opacity: 0, y: 12}}
+            transition={{duration: 0.2, ease: 'easeOut'}}
+            className="pointer-events-auto ml-auto flex h-[min(720px,calc(100svh-2rem))] w-full flex-col overflow-hidden rounded-[16px] border-2 border-foreground bg-surface text-foreground shadow-[6px_6px_0_rgba(28,34,32,0.9)] sm:w-[400px]"
+            aria-label={t('title')}
+          >
+            <header className="flex min-h-16 items-center justify-between gap-3 border-b-2 border-foreground bg-background px-4">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent text-white">
+                  <MessageCircle className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <div className="min-w-0">
+                  <h2 className="truncate text-base font-extrabold">{t('title')}</h2>
+                  <p className="truncate text-sm text-muted">{t('subtitle')}</p>
                 </div>
               </div>
-            ) : (
-              <LeadForm
-                values={leadValues}
-                setValues={setLeadValues}
-                status={leadStatus}
-                contactT={contactT}
-                t={t}
-                summary={qualificationSummary}
-                onClose={() => setLeadOpen(false)}
-                onSubmit={submitLead}
-              />
-            )}
+              <div className="flex shrink-0 items-center">
+                <button type="button" onClick={resetChat} className={iconButton} aria-label={t('clear')} title={t('clear')}>
+                  <Trash2 className="h-[18px] w-[18px]" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className={iconButton}
+                  aria-label={t('minimize')}
+                  title={t('minimize')}
+                >
+                  <Minus className="hidden h-5 w-5 sm:block" aria-hidden="true" />
+                  <X className="h-5 w-5 sm:hidden" aria-hidden="true" />
+                </button>
+              </div>
+            </header>
 
-            {error ? (
-              <p className="mt-3 rounded-[0.85rem] border border-red-400/20 bg-red-500/10 px-3 py-2 text-sm text-red-300">
-                {error}
-              </p>
-            ) : null}
-            <div ref={bottomRef} />
-          </div>
+            <div className="flex-1 overflow-y-auto px-4 py-4">
+              <div className="grid gap-3">
+                {messages.map((message) => (
+                  <article
+                    key={message.id}
+                    className={cn(
+                      'max-w-[88%] rounded-[14px] px-4 py-3 text-[15px] leading-6',
+                      message.role === 'user'
+                        ? 'ml-auto rounded-br-[4px] bg-accent text-white'
+                        : 'mr-auto rounded-bl-[4px] bg-background text-foreground'
+                    )}
+                  >
+                    {message.content ? (
+                      <p className="whitespace-pre-wrap">{renderAssistantText(message.content)}</p>
+                    ) : (
+                      <span className="inline-flex items-center gap-2 text-muted">
+                        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                        {t('thinking')}
+                      </span>
+                    )}
+                  </article>
+                ))}
+              </div>
 
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              submitMessage();
-            }}
-            className="border-t border-white/10 p-3"
-          >
-            <label className="sr-only" htmlFor="assistant-message">
-              {t('inputLabel')}
-            </label>
-            <div className="flex items-center gap-2 rounded-[1.1rem] border border-white/10 bg-white/[0.065] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition focus-within:border-accent/50 focus-within:bg-white/[0.08] focus-within:ring-4 focus-within:ring-accent/10">
-              <input
-                id="assistant-message"
-                type="text"
-                value={input}
-                onChange={(event) => setInput(event.target.value)}
-                maxLength={1600}
-                placeholder={t('placeholder')}
-                className="h-11 min-w-0 flex-1 bg-transparent px-2 text-sm leading-6 text-foreground outline-none placeholder:text-muted/70"
-              />
-              <button
-                type="submit"
-                disabled={!input.trim() || isStreaming}
-                className={cn(
-                  'flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent text-[#070806] transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-60',
-                  pressable
-                )}
-                aria-label={t('send')}
-                title={t('send')}
-              >
-                {isStreaming ? (
-                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-                ) : (
-                  <Send className="h-4 w-4" aria-hidden="true" />
-                )}
-              </button>
+              {leadOpen ? (
+                <LeadForm
+                  values={leadValues}
+                  setValues={setLeadValues}
+                  status={leadStatus}
+                  sending={leadSending}
+                  t={t}
+                  onClose={() => setLeadOpen(false)}
+                  onSubmit={submitLead}
+                />
+              ) : (
+                <div className="mt-4 grid gap-3">
+                  <QualificationPanel
+                    steps={qualificationSteps}
+                    qualification={qualification}
+                    summary={qualificationSummary}
+                    locale={locale}
+                    t={t}
+                    onSelect={handleQualificationSelect}
+                    onRequest={openLeadForm}
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    {quickPrompts.map((prompt) => (
+                      <button
+                        key={prompt}
+                        type="button"
+                        onClick={() => submitMessage(prompt)}
+                        disabled={isStreaming}
+                        className="min-h-10 rounded-full border-2 border-border bg-surface px-3 py-1.5 text-sm font-semibold text-foreground transition hover:border-foreground disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {prompt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div ref={bottomRef} />
             </div>
-          </form>
-        </motion.section>
-      ) : (
-        <motion.button
-          key="assistant-launcher"
-          initial={reduceMotion ? false : {opacity: 0, y: 10, scale: 0.94}}
-          animate={reduceMotion ? {opacity: 1} : {opacity: 1, y: 0, scale: 1}}
-          exit={reduceMotion ? {opacity: 0} : {opacity: 0, y: 8, scale: 0.96}}
-          whileTap={reduceMotion ? undefined : {scale: 0.96}}
-          transition={{duration: 0.18, ease: 'easeOut'}}
-          type="button"
-          onClick={() => {
-            setOpen(true);
-            trackEvent('assistant_opened', {locale});
-          }}
-          className="pointer-events-auto relative isolate ml-auto flex min-h-14 items-center gap-3 overflow-visible rounded-full border border-accent/30 bg-[#070806]/92 px-4 py-2 text-sm font-semibold text-foreground opacity-100 shadow-[0_18px_58px_rgba(0,0,0,0.38)] backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-accent/60 hover:text-accent"
-          aria-label={t('open')}
-        >
-          <motion.span
-            aria-hidden="true"
-            className="pointer-events-none absolute -inset-1 -z-10 rounded-full border border-accent/35"
-            animate={
-              reduceMotion
-                ? {opacity: 0.2}
-                : {
-                    opacity: [0.28, 0.08, 0.28],
-                    scale: [0.98, 1.18, 0.98]
-                  }
-            }
-            transition={{duration: 2.4, ease: 'easeInOut', repeat: reduceMotion ? 0 : Infinity}}
-          />
-          <motion.span
-            aria-hidden="true"
-            className="pointer-events-none absolute -inset-2 -z-20 rounded-full bg-accent/10 blur-lg"
-            animate={
-              reduceMotion
-                ? {opacity: 0.16}
-                : {
-                    opacity: [0.12, 0.3, 0.12],
-                    scale: [0.94, 1.08, 0.94]
-                  }
-            }
-            transition={{duration: 3.2, ease: 'easeInOut', repeat: reduceMotion ? 0 : Infinity}}
-          />
-          <motion.span
-            className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-accent text-[#070806]"
-            animate={reduceMotion ? undefined : {y: [0, -2, 0], scale: [1, 1.08, 1]}}
-            transition={{duration: 1.9, ease: 'easeInOut', repeat: Infinity}}
+
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                submitMessage();
+              }}
+              className="border-t-2 border-foreground p-3"
+            >
+              <label className="sr-only" htmlFor="assistant-message">
+                {t('inputLabel')}
+              </label>
+              <div className="flex items-center gap-2 rounded-[12px] border-2 border-border bg-surface p-1.5 transition focus-within:border-foreground">
+                <input
+                  id="assistant-message"
+                  type="text"
+                  value={input}
+                  onChange={(event) => setInput(event.target.value)}
+                  maxLength={1600}
+                  placeholder={t('placeholder')}
+                  className="h-11 min-w-0 flex-1 bg-transparent px-2 text-base text-foreground outline-none placeholder:text-muted/70"
+                />
+                <button
+                  type="submit"
+                  disabled={!input.trim() || isStreaming}
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] bg-accent text-white transition hover:bg-[var(--accent-strong)] disabled:cursor-not-allowed disabled:opacity-50"
+                  aria-label={t('send')}
+                  title={t('send')}
+                >
+                  {isStreaming ? (
+                    <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+                  ) : (
+                    <Send className="h-5 w-5" aria-hidden="true" />
+                  )}
+                </button>
+              </div>
+            </form>
+          </motion.section>
+        ) : (
+          <motion.button
+            key="assistant-launcher"
+            initial={reduceMotion ? false : {opacity: 0, y: 10}}
+            animate={{opacity: 1, y: 0}}
+            exit={reduceMotion ? {opacity: 0} : {opacity: 0, y: 8}}
+            transition={{duration: 0.18, ease: 'easeOut'}}
+            type="button"
+            onClick={() => {
+              setOpen(true);
+              trackEvent('assistant_opened', {locale});
+            }}
+            className="pointer-events-auto ml-auto flex min-h-14 items-center gap-2.5 rounded-full border-2 border-foreground bg-surface p-1.5 text-base font-bold text-foreground shadow-[3px_3px_0_rgba(28,34,32,0.9)] transition hover:bg-background sm:pr-5"
+            aria-label={t('open')}
           >
-            <MessageCircle className="h-5 w-5" aria-hidden="true" />
-          </motion.span>
-          <span className="relative z-10 hidden sm:inline">{t('open')}</span>
-          <motion.span
-            className="relative z-10 text-accent"
-            animate={reduceMotion ? undefined : {rotate: [0, 14, -8, 0], scale: [1, 1.18, 1]}}
-            transition={{duration: 2.1, ease: 'easeInOut', repeat: Infinity}}
-          >
-            <Sparkles className="h-4 w-4" aria-hidden="true" />
-          </motion.span>
-        </motion.button>
-      )}
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-white">
+              <MessageCircle className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <span className="hidden sm:inline">{t('open')}</span>
+          </motion.button>
+        )}
       </AnimatePresence>
     </div>
   );
@@ -601,62 +455,40 @@ type QualificationPanelProps = {
   steps: QualificationStep[];
   qualification: QualificationState;
   summary: string;
-  bookingHref: string;
-  t: ReturnType<typeof useTranslations>;
+  locale: Locale;
+  t: Translate;
   onSelect: (option: QualificationOption) => void;
-  onProposal: () => void;
+  onRequest: () => void;
 };
 
-function QualificationPanel({
-  steps,
-  qualification,
-  summary,
-  bookingHref,
-  t,
-  onSelect,
-  onProposal
-}: QualificationPanelProps) {
-  const activeStep = getActiveQualificationStep(steps, qualification);
+function QualificationPanel({steps, qualification, summary, locale, t, onSelect, onRequest}: QualificationPanelProps) {
+  const activeStep = steps.find((step) => !qualification[step.field]);
   const complete = !activeStep;
 
   return (
-    <section className="rounded-[1rem] border border-white/10 bg-white/[0.045] p-3">
+    <section className="rounded-[14px] border-2 border-border p-3">
       <div className="flex items-start gap-3">
-        <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-[#070806]">
-          {complete ? (
-            <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
-          ) : (
-            <ClipboardList className="h-4 w-4" aria-hidden="true" />
-          )}
+        <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground text-white">
+          {complete ? <CheckCircle2 className="h-4 w-4" aria-hidden="true" /> : <ClipboardList className="h-4 w-4" aria-hidden="true" />}
         </span>
         <div className="min-w-0">
-          <h3 className="text-sm font-semibold text-foreground">{t('qualifierTitle')}</h3>
-          <p className="mt-1 text-xs leading-5 text-muted">
-            {complete ? t('qualifierComplete') : t('qualifierIntro')}
-          </p>
+          <h3 className="text-base font-bold text-foreground">{t('qualifierTitle')}</h3>
+          {complete ? null : <p className="mt-0.5 text-sm leading-5 text-muted">{t('qualifierIntro')}</p>}
         </div>
       </div>
 
       {summary ? (
-        <p className="mt-3 rounded-[0.85rem] border border-accent/20 bg-accent/[0.07] px-3 py-2 text-xs leading-5 text-accent">
-          <span className="font-semibold">{t('qualifierSummaryTitle')}:</span> {summary}
+        <p className="mt-3 rounded-[10px] bg-accent/[0.08] px-3 py-2 text-sm leading-5 text-accent">
+          <span className="font-bold">{t('qualifierSummaryTitle')}:</span> {summary}
         </p>
       ) : null}
 
       {activeStep ? (
         <div className="mt-3">
-          <p className="text-sm font-semibold leading-6 text-foreground">{activeStep.question}</p>
+          <p className="text-[15px] font-bold leading-6 text-foreground">{activeStep.question}</p>
           <div className="mt-2 grid gap-2">
             {activeStep.options.map((option) => (
-              <button
-                key={`${option.field}-${option.value}`}
-                type="button"
-                onClick={() => onSelect(option)}
-                className={cn(
-                  'min-h-10 rounded-[0.85rem] border border-white/10 bg-white/[0.05] px-3 py-2 text-left text-xs font-semibold leading-5 text-muted transition hover:border-accent/40 hover:bg-accent/[0.08] hover:text-foreground',
-                  pressable
-                )}
-              >
+              <button key={option.label} type="button" onClick={() => onSelect(option)} className={optionButton}>
                 {option.label}
               </button>
             ))}
@@ -664,29 +496,30 @@ function QualificationPanel({
         </div>
       ) : (
         <div className="mt-3 grid gap-2">
-          <a
-            href={bookingHref}
-            onClick={() => trackEvent('assistant_booking_clicked')}
-            className={cn(
-              'inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-[#070806] transition hover:bg-white',
-              pressable
-            )}
-          >
-            <CalendarCheck className="h-4 w-4" aria-hidden="true" />
-            {t('bookCall')}
-          </a>
-          <button
-            type="button"
-            onClick={onProposal}
-            className={cn(
-              'inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-accent/30 bg-accent/[0.09] px-4 py-2 text-sm font-semibold text-accent transition hover:bg-accent hover:text-[#070806]',
-              pressable
-            )}
-          >
-            <Send className="h-4 w-4" aria-hidden="true" />
-            {t('proposalByEmail')}
+          <button type="button" onClick={onRequest} className={primaryButton}>
+            {qualification.care ? t('requestCare') : t('requestPreview')}
           </button>
-          <p className="text-center text-xs leading-5 text-muted">{t('bookingTrust')}</p>
+          <div className="grid grid-cols-2 gap-2">
+            <a href={phoneHref} className={secondaryButton} data-track="phone_click">
+              <Phone className="h-4 w-4" aria-hidden="true" />
+              {t('callNow')}
+            </a>
+            <a
+              href={whatsappHref(t('whatsappMessage'))}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={secondaryButton}
+              data-track="whatsapp_click"
+            >
+              <MessageCircle className="h-4 w-4" aria-hidden="true" />
+              {t('whatsapp')}
+            </a>
+          </div>
+          {qualification.care ? null : (
+            <p className="text-center text-sm leading-5 text-muted" lang={locale}>
+              {t('bookingTrust')}
+            </p>
+          )}
         </div>
       )}
     </section>
@@ -696,87 +529,56 @@ function QualificationPanel({
 type LeadFormProps = {
   values: LeadFormValues;
   setValues: React.Dispatch<React.SetStateAction<LeadFormValues>>;
-  status: 'success' | 'error' | null;
-  contactT: ReturnType<typeof useTranslations>;
-  t: ReturnType<typeof useTranslations>;
-  summary: string;
+  status: 'success' | 'invalid' | 'error' | null;
+  sending: boolean;
+  t: Translate;
   onClose: () => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 };
 
-function LeadForm({values, setValues, status, contactT, t, summary, onClose, onSubmit}: LeadFormProps) {
+function LeadForm({values, setValues, status, sending, t, onClose, onSubmit}: LeadFormProps) {
   return (
-    <form onSubmit={onSubmit} className="mt-4 rounded-[1rem] border border-white/10 bg-white/[0.045] p-3">
-      <div className="mb-3 flex items-center justify-between gap-3">
+    <form onSubmit={onSubmit} className="mt-4 rounded-[14px] border-2 border-foreground p-3" noValidate>
+      <div className="mb-3 flex items-start justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold text-foreground">{t('leadTitle')}</p>
-          <p className="mt-1 text-xs leading-5 text-muted">{t('leadHelp')}</p>
+          <p className="text-base font-bold text-foreground">{t('leadTitle')}</p>
+          <p className="mt-1 text-sm leading-5 text-muted">{t('leadHelp')}</p>
         </div>
-        <button
-          type="button"
-          onClick={onClose}
-          className={cn(
-            'flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-muted transition hover:text-accent',
-            pressable
-          )}
-          aria-label={t('closeLead')}
-          title={t('closeLead')}
-        >
-          <X className="h-4 w-4" aria-hidden="true" />
+        <button type="button" onClick={onClose} className={iconButton} aria-label={t('closeLead')} title={t('closeLead')}>
+          <X className="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3">
         <LeadInput
-          label={contactT('name')}
+          label={t('leadName')}
           value={values.name}
           onChange={(value) => setValues((current) => ({...current, name: value}))}
           autoComplete="name"
-          placeholder={contactT('namePlaceholder')}
+          placeholder={t('leadNamePlaceholder')}
         />
         <LeadInput
-          label={contactT('email')}
-          value={values.email}
-          onChange={(value) => setValues((current) => ({...current, email: value}))}
-          autoComplete="email"
-          placeholder={contactT('emailPlaceholder')}
-          type="email"
+          label={t('leadCompany')}
+          value={values.company}
+          onChange={(value) => setValues((current) => ({...current, company: value}))}
+          autoComplete="organization"
+          placeholder={t('leadCompanyPlaceholder')}
+        />
+        <LeadInput
+          label={t('leadReach')}
+          value={values.reach}
+          onChange={(value) => setValues((current) => ({...current, reach: value}))}
+          autoComplete="tel"
+          inputMode="tel"
+          placeholder={t('leadReachPlaceholder')}
         />
       </div>
-      {summary ? (
-        <p className="mt-3 rounded-[0.85rem] border border-accent/20 bg-accent/[0.07] px-3 py-2 text-xs leading-5 text-accent">
-          {summary}
-        </p>
-      ) : null}
-      <label className="mt-3 block">
-        <span className="mb-1.5 block text-xs font-semibold text-foreground">{t('leadMessageLabel')}</span>
-        <textarea
-          value={values.message}
-          onChange={(event) => setValues((current) => ({...current, message: event.target.value}))}
-          rows={4}
-          maxLength={2000}
-          placeholder={contactT('messagePlaceholder')}
-          className="w-full resize-none rounded-[0.85rem] border border-white/10 bg-white/[0.055] px-3 py-3 text-sm leading-6 text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:ring-4 focus:ring-accent/10"
-        />
-      </label>
-      <button
-        type="submit"
-        className={cn(
-          'mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-[#070806] transition hover:bg-white',
-          pressable
-        )}
-      >
-        <Send className="h-4 w-4" aria-hidden="true" />
-        {t('sendLead')}
+      <button type="submit" disabled={sending} className={cn(primaryButton, 'mt-3')}>
+        {sending ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <Send className="h-5 w-5" aria-hidden="true" />}
+        {sending ? t('sending') : t('sendLead')}
       </button>
-      {status ? (
-        <p
-          className={cn(
-            'mt-3 text-sm font-medium',
-            status === 'success' ? 'text-accent' : 'text-red-300'
-          )}
-          role="status"
-        >
-          {status === 'success' ? t('leadSuccess') : t('leadError')}
+      {status === 'invalid' || status === 'error' ? (
+        <p className="mt-3 rounded-[10px] bg-red-50 px-3 py-2 text-sm font-semibold text-red-700" role="status">
+          {status === 'invalid' ? t('leadError') : t('leadSendError')}
         </p>
       ) : null}
     </form>
@@ -788,242 +590,116 @@ type LeadInputProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
-  type?: string;
   autoComplete?: string;
+  inputMode?: 'text' | 'tel';
 };
 
-function LeadInput({label, value, onChange, placeholder, type = 'text', autoComplete}: LeadInputProps) {
+function LeadInput({label, value, onChange, placeholder, autoComplete, inputMode = 'text'}: LeadInputProps) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-semibold text-foreground">{label}</span>
+      <span className="mb-1.5 block text-sm font-bold text-foreground">{label}</span>
       <input
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        type={type}
         autoComplete={autoComplete}
+        inputMode={inputMode}
         placeholder={placeholder}
-        className="h-11 w-full rounded-[0.85rem] border border-white/10 bg-white/[0.055] px-3 text-sm text-foreground outline-none transition placeholder:text-muted/70 focus:border-accent/50 focus:ring-4 focus:ring-accent/10"
+        className="h-12 w-full rounded-[10px] border-2 border-border bg-surface px-3 text-base text-foreground outline-none transition placeholder:text-muted/70 focus:border-foreground"
       />
     </label>
   );
 }
 
 function createGreeting(content: string): ChatMessage {
-  return {
-    id: 'assistant-greeting',
-    role: 'assistant',
-    content
-  };
+  return {id: 'assistant-greeting', role: 'assistant', content};
 }
 
-function createLeadBrief(messages: ChatMessage[], sourceLabel: string, qualificationSummary: string) {
-  const userMessages = messages
-    .filter((message) => message.role === 'user')
-    .slice(-4)
-    .map((message) => message.content.trim())
-    .filter(Boolean);
-  const parts = [sourceLabel, qualificationSummary, ...userMessages].filter(Boolean);
-
-  return parts.length > 0 ? `${parts.join('\n\n')}\n\n` : `${sourceLabel}\n\n`;
-}
-
-function createQualificationSteps(t: ReturnType<typeof useTranslations>): QualificationStep[] {
+function createQualificationSteps(t: Translate): QualificationStep[] {
   return [
     {
       field: 'businessType',
       question: t('qualifierBusinessQuestion'),
       options: [
-        {field: 'businessType', value: 'clinic', label: t('qualifierBusinessClinic')},
-        {field: 'businessType', value: 'legal', label: t('qualifierBusinessLegal')},
-        {field: 'businessType', value: 'hotel', label: t('qualifierBusinessHotel')},
-        {field: 'businessType', value: 'service', label: t('qualifierBusinessService')}
-      ]
+        t('qualifierBusinessElectric'),
+        t('qualifierBusinessPlumbing'),
+        t('qualifierBusinessBuild'),
+        t('qualifierBusinessCar'),
+        t('qualifierBusinessOther')
+      ].map((label) => ({field: 'businessType' as const, label}))
     },
     {
-      field: 'projectType',
+      field: 'situation',
       question: t('qualifierProjectQuestion'),
       options: [
-        {
-          field: 'projectType',
-          value: 'ai-website',
-          label: t('qualifierProjectWebsite'),
-          budget: 'web'
-        },
-        {
-          field: 'projectType',
-          value: 'lead-automation',
-          label: t('qualifierProjectLeads'),
-          budget: 'automation'
-        },
-        {
-          field: 'projectType',
-          value: 'documents',
-          label: t('qualifierProjectDocs'),
-          budget: 'workflow'
-        },
-        {
-          field: 'projectType',
-          value: 'assistant',
-          label: t('qualifierProjectAssistant'),
-          budget: 'integration'
-        }
+        {field: 'situation', label: t('qualifierProjectNone')},
+        {field: 'situation', label: t('qualifierProjectOld')},
+        {field: 'situation', label: t('qualifierProjectNoLeads')},
+        {field: 'situation', label: t('qualifierProjectCare'), care: true}
       ]
     },
     {
       field: 'urgency',
       question: t('qualifierUrgencyQuestion'),
-      options: [
-        {field: 'urgency', value: 'now', label: t('qualifierUrgencyNow')},
-        {field: 'urgency', value: 'month', label: t('qualifierUrgencyMonth')},
-        {field: 'urgency', value: 'later', label: t('qualifierUrgencyLater')}
-      ]
+      options: [t('qualifierUrgencyNow'), t('qualifierUrgencyMonth'), t('qualifierUrgencyLater')].map((label) => ({
+        field: 'urgency' as const,
+        label
+      }))
     }
   ];
 }
 
-function applyQualificationOption(
-  qualification: QualificationState,
-  option: QualificationOption
-): QualificationState {
-  if (option.field === 'projectType') {
-    return {
-      ...qualification,
-      projectType: option.budget || 'automation',
-      projectLabel: option.label
-    };
-  }
-
-  return {
-    ...qualification,
-    [option.field]: option.label
+function createQualificationSummary(qualification: QualificationState, t: Translate) {
+  const labels: Record<QualificationField, string> = {
+    businessType: t('qualifierBusinessLabel'),
+    situation: t('qualifierProjectLabel'),
+    urgency: t('qualifierUrgencyLabel')
   };
-}
 
-function getActiveQualificationStep(steps: QualificationStep[], qualification: QualificationState) {
-  if (!qualification.businessType) {
-    return steps.find((step) => step.field === 'businessType');
-  }
-
-  if (!qualification.projectType) {
-    return steps.find((step) => step.field === 'projectType');
-  }
-
-  if (!qualification.urgency) {
-    return steps.find((step) => step.field === 'urgency');
-  }
-
-  return null;
-}
-
-function getNextQualificationMessage(
-  qualification: QualificationState,
-  t: ReturnType<typeof useTranslations>
-) {
-  if (!qualification.projectType) {
-    return t('qualifierNextProject');
-  }
-
-  if (!qualification.urgency) {
-    return t('qualifierNextUrgency');
-  }
-
-  return t('qualifierComplete');
-}
-
-function getQualificationFieldLabel(
-  field: QualificationField,
-  t: ReturnType<typeof useTranslations>
-) {
-  if (field === 'businessType') {
-    return t('qualifierBusinessLabel');
-  }
-
-  if (field === 'projectType' || field === 'projectLabel') {
-    return t('qualifierProjectLabel');
-  }
-
-  return t('qualifierUrgencyLabel');
-}
-
-function createQualificationSummary(
-  qualification: QualificationState,
-  t: ReturnType<typeof useTranslations>
-) {
-  return [
-    qualification.businessType
-      ? `${t('qualifierBusinessLabel')}: ${qualification.businessType}`
-      : '',
-    qualification.projectLabel
-      ? `${t('qualifierProjectLabel')}: ${qualification.projectLabel}`
-      : '',
-    qualification.urgency ? `${t('qualifierUrgencyLabel')}: ${qualification.urgency}` : ''
-  ]
-    .filter(Boolean)
+  return fieldOrder
+    .filter((field) => qualification[field])
+    .map((field) => `${labels[field]}: ${qualification[field]}`)
     .join(' | ');
-}
-
-function isQualificationComplete(qualification: QualificationState) {
-  return Boolean(qualification.businessType && qualification.projectType && qualification.urgency);
-}
-
-function deriveBudget(qualification: QualificationState): BudgetValue {
-  return qualification.projectType || 'automation';
 }
 
 function createMetadataTranscript(messages: ChatMessage[]) {
   return messages
     .filter((message) => message.content.trim().length > 0)
     .slice(-maxClientMessages)
-    .map((message) => ({
-      role: message.role,
-      content: message.content.trim().slice(0, 420)
-    }));
+    .map((message) => ({role: message.role, content: message.content.trim().slice(0, 420)}));
 }
 
 function createStoredLeadMessage(
-  message: string,
   qualificationSummary: string,
   transcript: Array<{role: 'assistant' | 'user'; content: string}>,
   sourceLabel: string
 ) {
   const compactTranscript = transcript
+    .filter((item) => item.role === 'user')
     .slice(-6)
-    .map((item) => `${item.role}: ${item.content}`)
+    .map((item) => `- ${item.content}`)
     .join('\n');
 
-  return [message, qualificationSummary, sourceLabel, compactTranscript]
-    .filter(Boolean)
-    .join('\n\n---\n')
-    .slice(0, 2000);
+  return [sourceLabel, qualificationSummary, compactTranscript].filter(Boolean).join('\n\n').slice(0, 2000);
 }
 
 function trackEvent(name: string, params?: Record<string, string | number | boolean>) {
-  if (typeof window === 'undefined') {
-    return;
-  }
-
-  const analyticsWindow = window as AnalyticsWindow;
-  analyticsWindow.gtag?.('event', name, params || {});
+  if (typeof window === 'undefined') return;
+  (window as AnalyticsWindow).gtag?.('event', name, params || {});
 }
 
 function renderAssistantText(content: string) {
   const nodes: ReactNode[] = [];
-  const parts = content.split(/(\*\*[^*]+\*\*)/g);
 
-  parts.forEach((part, index) => {
-    if (!part) {
-      return;
-    }
-
+  content.split(/(\*\*[^*]+\*\*)/g).forEach((part, index) => {
+    if (!part) return;
     if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
       nodes.push(
-        <strong key={`${part}-${index}`} className="font-semibold text-foreground">
+        <strong key={`${part}-${index}`} className="font-bold">
           {part.slice(2, -2)}
         </strong>
       );
       return;
     }
-
     nodes.push(part);
   });
 
@@ -1031,10 +707,7 @@ function renderAssistantText(content: string) {
 }
 
 function isChatMessage(value: unknown): value is ChatMessage {
-  if (!value || typeof value !== 'object') {
-    return false;
-  }
-
+  if (!value || typeof value !== 'object') return false;
   const candidate = value as ChatMessage;
   return (
     typeof candidate.id === 'string' &&
