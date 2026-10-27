@@ -84,21 +84,21 @@ export function AnalyticsLoader() {
   }
 
   return (
-    <div className="fixed inset-x-4 bottom-20 z-[65] mx-auto max-w-xl rounded-[1rem] border border-white/12 bg-[#070806]/95 p-4 text-sm text-white shadow-[0_18px_58px_rgba(0,0,0,0.38)] backdrop-blur-xl sm:bottom-5 sm:left-5 sm:right-auto sm:mx-0">
+    <div className="fixed inset-x-4 bottom-[168px] z-[65] mx-auto max-w-xl rounded-[14px] border-2 border-[#1C2220] bg-white p-4 text-sm text-[#1C2220] shadow-[4px_4px_0_#1C2220] sm:left-5 sm:right-auto sm:mx-0 md:bottom-5">
       <p className="font-semibold">{consentCopy.title}</p>
-      <p className="mt-2 leading-6 text-white/68">{consentCopy.body}</p>
-      <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+      <p className="mt-1.5 leading-5 text-[#59625E]">{consentCopy.body}</p>
+      <div className="mt-3 grid grid-cols-2 gap-2 sm:flex">
         <button
           type="button"
           onClick={() => updateConsent('granted')}
-          className="inline-flex min-h-10 items-center justify-center rounded-full bg-accent px-4 py-2 text-sm font-semibold text-[#070806] transition hover:bg-white"
+          className="inline-flex min-h-11 items-center justify-center rounded-[10px] bg-[#1F5A42] px-4 py-2 text-sm font-bold text-white transition hover:bg-[#163F2F]"
         >
           {consentCopy.accept}
         </button>
         <button
           type="button"
           onClick={() => updateConsent('denied')}
-          className="inline-flex min-h-10 items-center justify-center rounded-full border border-white/12 bg-white/[0.055] px-4 py-2 text-sm font-semibold text-white/78 transition hover:border-accent/40 hover:text-accent"
+          className="inline-flex min-h-11 items-center justify-center rounded-[10px] border-2 border-[#1C2220] bg-white px-4 py-2 text-sm font-bold text-[#1C2220] transition hover:bg-[#F2F3EF]"
         >
           {consentCopy.decline}
         </button>

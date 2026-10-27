@@ -13,6 +13,7 @@
 }
 
 :root {
+  --font-archivo: 'Archivo Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --background: #070806;
   --foreground: #f4f2e8;
   --surface: #0d100d;
