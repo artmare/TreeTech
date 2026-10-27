@@ -267,7 +267,7 @@ main h2 {
 main h1,
 main h2 {
   overflow-wrap: break-word;
-  hyphens: auto;
+  hyphens: manual;
 }
 
 @media (max-width: 639px) {
