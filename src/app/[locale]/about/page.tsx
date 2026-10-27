@@ -48,22 +48,22 @@ export default async function AboutPage({params}: PageProps) {
 
   return (
     <>
-      <section className="dark-band relative isolate overflow-hidden py-20 text-white sm:py-24">
+      <section className="dark-band relative isolate overflow-hidden py-20 text-foreground sm:py-24">
         <div className="dark-grid absolute inset-0 opacity-35" />
         <Container className="relative grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <FadeIn>
-            <p className="inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-semibold text-accent">
+            <p className="inline-flex rounded-full border border-border bg-surface px-3 py-2 text-sm font-semibold text-accent">
               {content.common.eyebrow}
             </p>
-            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.04] text-white sm:text-7xl">
+            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.04] text-foreground sm:text-7xl">
               {content.about.title}
             </h1>
-            <p className="mt-6 max-w-3xl text-pretty text-lg leading-8 text-white/72 sm:text-xl">
+            <p className="mt-6 max-w-3xl text-pretty text-lg leading-8 text-muted sm:text-xl">
               {content.about.lead}
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
               {studioSignals[locale].map((item) => (
-                <div key={item} className="rounded-[1rem] border border-white/10 bg-white/[0.07] p-4 font-mono text-sm text-white backdrop-blur">
+                <div key={item} className="rounded-[1rem] border border-border bg-surface p-4 font-bold text-sm text-foreground backdrop-blur">
                   {item}
                 </div>
               ))}
@@ -114,7 +114,7 @@ export default async function AboutPage({params}: PageProps) {
             {processSteps.map((step, index) => (
               <FadeIn key={step.title[locale]} delay={index * 0.08}>
                 <article className="terminal-card h-full rounded-[1.25rem] p-5">
-                  <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-full border border-accent/20 bg-accent/[0.08] font-mono text-sm text-accent">
+                  <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-full border border-accent/20 bg-accent/[0.08] font-bold text-sm text-accent">
                     {index + 1}
                   </div>
                   <h3 className="text-lg font-semibold text-foreground">{step.title[locale]}</h3>

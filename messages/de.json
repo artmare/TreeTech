@@ -9,10 +9,11 @@
     "analysis": "Kostenlose Vorschau",
     "menu": "Menü öffnen",
     "close": "Menü schließen",
-    "language": "Sprache wechseln"
+    "language": "Sprache wechseln",
+    "call": "Anrufen"
   },
   "footer": {
-    "tagline": "AI-Automatisierung, Websites, Web-Apps und Workflow-Systeme für österreichische Betriebe.",
+    "tagline": "Websites für Handwerk und Werkstätten in Wien und Niederösterreich. Fixpreise, Texte inklusive, in 7 Tagen online.",
     "cta": "Sprechen wir über Ihr nächstes digitales System.",
     "copyright": "Alle Rechte vorbehalten."
   },

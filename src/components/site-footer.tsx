@@ -2,10 +2,17 @@
 
 import {useTranslations} from 'next-intl';
 
-import {LogoMark} from '@/components/logo-mark';
-import {siteConfig} from '@/content/site';
+import {phoneHref, siteConfig} from '@/content/site';
 import {Link, usePathname} from '@/i18n/navigation';
 import {isDemoSitePath} from '@/lib/demo-routes';
+
+const footerLinks = [
+  {href: '/services', key: 'services'},
+  {href: '/portfolio', key: 'portfolio'},
+  {href: '/about', key: 'about'},
+  {href: '/blog', key: 'blog'},
+  {href: '/contact', key: 'contact'}
+] as const;
 
 export function SiteFooter() {
   const t = useTranslations('footer');
@@ -18,48 +25,41 @@ export function SiteFooter() {
   }
 
   return (
-    <footer className="border-t border-white/10 bg-[#07110f] text-white">
-      <div className="dark-grid mx-auto grid w-full max-w-7xl gap-10 px-5 py-14 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(28rem,0.95fr)] lg:px-8">
+    <footer className="border-t-2 border-foreground bg-background text-foreground">
+      <div className="mx-auto grid w-full max-w-[1160px] gap-8 px-6 py-12 md:grid-cols-[1fr_auto] md:px-12">
         <div className="min-w-0">
-          <Link href="/" className="inline-flex items-center gap-3" aria-label={siteConfig.name}>
-            <LogoMark className="h-14 w-44" />
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-[22px] font-extrabold text-foreground [font-stretch:118%]"
+            aria-label={siteConfig.name}
+          >
+            <i className="inline-block h-[22px] w-3 rounded-[2px] bg-accent" aria-hidden="true" />
+            TreeTech
           </Link>
-          <p className="mt-5 max-w-md text-sm leading-7 text-white/68">{t('tagline')}</p>
-          <p className="mt-8 text-sm text-white/60">
+          <p className="mt-3 max-w-md text-[15px] leading-relaxed text-muted">{t('tagline')}</p>
+          <p className="mt-4 grid gap-1 text-[15px] font-bold">
+            <a className="w-fit text-accent hover:underline" href={phoneHref} data-track="phone_click">
+              {siteConfig.phone}
+            </a>
+            <a className="w-fit break-all text-accent hover:underline" href={`mailto:${siteConfig.email}`}>
+              {siteConfig.email}
+            </a>
+          </p>
+          <p className="mt-6 text-sm text-muted">
             &copy; {new Date().getFullYear()} TreeTech. {t('copyright')}
           </p>
         </div>
-        <div className="grid min-w-0 gap-5 sm:grid-cols-[minmax(0,1.2fr)_minmax(9rem,0.8fr)]">
-          <div className="min-w-0 rounded-[1rem] border border-white/10 bg-white/[0.06] p-5">
-            <p className="text-sm font-semibold text-white">{t('cta')}</p>
-            <a
-              className="mt-3 block max-w-full break-words text-sm font-semibold leading-6 text-accent [overflow-wrap:anywhere]"
-              href={`mailto:${siteConfig.email}`}
-            >
-              {siteConfig.email}
-            </a>
-          </div>
-          <div className="grid gap-1 rounded-[1rem] border border-white/10 bg-white/[0.04] p-2 text-sm text-white/70">
+        <nav className="grid content-start gap-x-8 sm:grid-cols-2" aria-label="Footer">
+          {footerLinks.map((item) => (
             <Link
-              href="/services"
-              className="flex min-h-11 items-center rounded-[0.75rem] px-4 py-3 font-medium transition hover:bg-white/[0.07] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              key={item.key}
+              href={item.href}
+              className="flex min-h-11 items-center text-[15px] font-semibold text-foreground transition hover:text-accent"
             >
-              {nav('services')}
+              {nav(item.key)}
             </Link>
-            <Link
-              href="/portfolio"
-              className="flex min-h-11 items-center rounded-[0.75rem] px-4 py-3 font-medium transition hover:bg-white/[0.07] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            >
-              {nav('portfolio')}
-            </Link>
-            <Link
-              href="/contact"
-              className="flex min-h-11 items-center rounded-[0.75rem] px-4 py-3 font-medium transition hover:bg-white/[0.07] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            >
-              {nav('contact')}
-            </Link>
-          </div>
-        </div>
+          ))}
+        </nav>
       </div>
     </footer>
   );

@@ -1,10 +1,10 @@
 'use client';
 
-import {Globe2, Menu, X} from 'lucide-react';
+import {Globe2, Menu, Phone, X} from 'lucide-react';
 import {useTranslations} from 'next-intl';
 import {useState} from 'react';
 
-import {LogoMark} from '@/components/logo-mark';
+import {phoneHref, siteConfig} from '@/content/site';
 import {localeLabels, localeShortLabels, routing, type Locale} from '@/i18n/routing';
 import {Link, usePathname} from '@/i18n/navigation';
 import {isDemoSitePath} from '@/lib/demo-routes';
@@ -35,65 +35,66 @@ export function SiteHeader({locale}: SiteHeaderProps) {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#070806]/78 backdrop-blur-2xl">
-      <div className="mx-auto flex h-[78px] w-full max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center" aria-label="TreeTech">
-          <LogoMark
-            priority
-            className="h-14 w-40 drop-shadow-[0_0_22px_rgba(55,255,208,0.18)] sm:w-48"
-          />
+    <header className="sticky top-0 z-50 border-b-2 border-foreground bg-background/95 backdrop-blur">
+      <div className="mx-auto flex h-[72px] w-full max-w-[1160px] items-center justify-between gap-4 px-6 md:px-12">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-[22px] font-extrabold text-foreground [font-stretch:118%]"
+          aria-label="TreeTech"
+        >
+          <i className="inline-block h-[22px] w-3 rounded-[2px] bg-accent" aria-hidden="true" />
+          TreeTech
         </Link>
 
-        <nav className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/[0.055] p-1 shadow-sm lg:flex" aria-label="Main navigation">
-          {navItems.map((item) => {
-            const active =
-              item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
+        <nav className="hidden items-center gap-7 text-base font-semibold lg:flex" aria-label="Main navigation">
+          {navItems
+            .filter((item) => item.href !== '/')
+            .map((item) => {
+              const active = pathname.startsWith(item.href);
 
-            return (
-              <Link
-                key={item.key}
-                href={item.href}
-                aria-current={active ? 'page' : undefined}
-                className={cn(
-                  'rounded-full px-3.5 py-2 text-sm font-semibold transition',
-                  active
-                    ? 'bg-accent !text-[#070806] shadow-sm hover:bg-accent hover:!text-[#070806]'
-                    : 'text-muted hover:bg-white/10 hover:text-white'
-                )}
-              >
-                {t(item.key)}
-              </Link>
-            );
-          })}
+              return (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  className={cn(
+                    'py-2 transition-colors hover:text-accent',
+                    active ? 'text-accent underline decoration-2 underline-offset-8' : 'text-foreground'
+                  )}
+                >
+                  {t(item.key)}
+                </Link>
+              );
+            })}
         </nav>
 
         <div className="flex items-center gap-2">
-          <div
-            className="hidden min-h-10 items-center gap-1 rounded-full border border-white/10 bg-white/[0.055] p-1 text-sm font-semibold text-foreground shadow-sm sm:flex"
-            aria-label={t('language')}
-          >
-            <Globe2 className="h-4 w-4" aria-hidden="true" />
+          <div className="hidden items-center text-sm font-bold sm:flex" aria-label={t('language')}>
             {languageOptions.map((item) => (
               <Link
                 key={item}
                 href={pathname}
                 locale={item}
-                className="rounded-full px-2 py-1.5 transition hover:bg-white/10 hover:text-accent"
+                className="inline-flex min-h-11 min-w-9 items-center justify-center rounded-[8px] text-muted transition hover:bg-surface hover:text-foreground"
                 aria-label={`${t('language')}: ${localeLabels[item]}`}
               >
                 {localeShortLabels[item]}
               </Link>
             ))}
           </div>
-          <Link
-            href="/contact#audit-call"
-            className="hidden min-h-11 items-center justify-center rounded-full bg-accent px-4 py-2 text-sm font-semibold !text-[#070806] shadow-[0_14px_32px_rgba(214,255,99,0.14)] transition hover:-translate-y-0.5 hover:bg-white sm:inline-flex"
+          <a
+            href={phoneHref}
+            data-track="phone_click"
+            className="inline-flex min-h-11 items-center gap-2 rounded-[10px] border-2 border-foreground px-3 py-2 text-[15px] font-bold text-foreground transition hover:bg-surface md:px-4"
+            aria-label={`${t('call')}: ${siteConfig.phone}`}
           >
-            {t('analysis')}
-          </Link>
+            <Phone className="h-[18px] w-[18px]" aria-hidden="true" />
+            <span className="hidden md:inline">{t('call')}</span>
+            <span className="hidden xl:inline">{siteConfig.phone}</span>
+          </a>
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-foreground shadow-sm lg:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-[10px] border-2 border-foreground text-foreground lg:hidden"
             onClick={() => setOpen((value) => !value)}
             aria-label={open ? t('close') : t('menu')}
             aria-expanded={open}
@@ -104,26 +105,26 @@ export function SiteHeader({locale}: SiteHeaderProps) {
       </div>
 
       {open ? (
-        <div className="overflow-hidden border-t border-white/10 bg-[#070806] lg:hidden">
-          <nav className="mx-auto grid max-w-7xl gap-2 px-5 py-4 sm:px-6" aria-label="Mobile navigation">
+        <div className="border-t border-border bg-background lg:hidden">
+          <nav className="mx-auto grid max-w-[1160px] gap-1 px-6 py-4" aria-label="Mobile navigation">
             {navItems.map((item) => (
               <Link
                 key={item.key}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="rounded-[1rem] border border-white/10 bg-white/[0.055] px-4 py-3 text-base font-semibold text-foreground shadow-sm"
+                className="flex min-h-12 items-center border-b border-border text-lg font-bold text-foreground"
               >
                 {t(item.key)}
               </Link>
             ))}
-            <div className="mt-1 grid gap-2 sm:grid-cols-2" aria-label={t('language')}>
+            <div className="mt-3 flex gap-2" aria-label={t('language')}>
               {languageOptions.map((item) => (
                 <Link
                   key={item}
                   href={pathname}
                   locale={item}
                   onClick={() => setOpen(false)}
-                  className="inline-flex items-center justify-center gap-2 rounded-[1rem] border border-white/10 bg-white/[0.055] px-4 py-3 text-sm font-semibold text-foreground"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[10px] border-2 border-foreground bg-surface px-4 text-sm font-bold text-foreground"
                   aria-label={`${t('language')}: ${localeLabels[item]}`}
                 >
                   <Globe2 className="h-4 w-4" aria-hidden="true" />

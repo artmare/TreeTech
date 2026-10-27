@@ -90,12 +90,12 @@ export default async function BlogPostPage({params}: PageProps) {
         dangerouslySetInnerHTML={{__html: JSON.stringify(articleJsonLd)}}
       />
 
-      <section className="dark-band relative overflow-hidden py-10 text-white sm:py-14">
+      <section className="dark-band relative overflow-hidden py-10 text-foreground sm:py-14">
         <div className="dark-grid absolute inset-0 opacity-30" />
         <Container className="relative">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-white/70 transition hover:text-white"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-muted transition hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             <span>{content.backToBlog}</span>
@@ -104,20 +104,20 @@ export default async function BlogPostPage({params}: PageProps) {
       </section>
 
       <article>
-        <section className="dark-band scanline relative overflow-hidden pb-16 text-white">
+        <section className="dark-band scanline relative overflow-hidden pb-16 text-foreground">
           <div className="dark-grid absolute inset-0 opacity-35" />
           <Container className="relative">
             <FadeIn className="max-w-4xl">
-              <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 font-mono text-sm text-accent">
+              <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 font-bold text-sm text-accent">
                 {post.category[locale]}
               </p>
-              <h1 className="mt-6 break-words text-balance text-5xl font-semibold leading-[1.03] text-white sm:text-7xl">
+              <h1 className="mt-6 break-words text-balance text-5xl font-semibold leading-[1.03] text-foreground sm:text-7xl">
                 {post.title[locale]}
               </h1>
-              <p className="mt-6 text-pretty text-lg leading-8 text-white/72 sm:text-xl">
+              <p className="mt-6 text-pretty text-lg leading-8 text-muted sm:text-xl">
                 {post.excerpt[locale]}
               </p>
-              <div className="mt-8 flex flex-wrap gap-4 text-sm font-semibold text-white/70">
+              <div className="mt-8 flex flex-wrap gap-4 text-sm font-semibold text-muted">
                 <span>{content.published}: {getFormattedPostDate(post, locale)}</span>
                 <span className="inline-flex items-center gap-2">
                   <Clock className="h-4 w-4 text-accent" aria-hidden="true" />
@@ -133,7 +133,7 @@ export default async function BlogPostPage({params}: PageProps) {
             <div className="mx-auto grid max-w-4xl gap-12">
               {post.sections.map((section, index) => (
                 <FadeIn key={section.heading[locale]} delay={index * 0.06}>
-                  <section className="border-b border-white/10 pb-10 last:border-b-0 last:pb-0">
+                  <section className="border-b border-border pb-10 last:border-b-0 last:pb-0">
                     <h2 className="break-words text-balance text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
                       {section.heading[locale]}
                     </h2>
@@ -152,7 +152,7 @@ export default async function BlogPostPage({params}: PageProps) {
                 {post.tags[locale].map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex min-h-10 items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-semibold text-muted"
+                    className="inline-flex min-h-10 items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-sm font-semibold text-muted"
                   >
                     <Tags className="h-4 w-4 text-accent" aria-hidden="true" />
                     {tag}

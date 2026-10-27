@@ -67,21 +67,21 @@ export default async function PortfolioPage({params}: PageProps) {
 
   return (
     <>
-      <section className="dark-band relative overflow-hidden py-20 text-white sm:py-24">
+      <section className="dark-band relative overflow-hidden py-20 text-foreground sm:py-24">
         <div className="dark-grid absolute inset-0 opacity-35" />
         <Container className="relative">
           <SectionHeading
             eyebrow={content.common.eyebrow}
             title={content.portfolio.title}
             lead={content.portfolio.lead}
-            className="[&_h2]:text-white [&_p]:text-white/72 [&_p:first-child]:border-white/15 [&_p:first-child]:bg-white/10 [&_p:first-child]:text-accent"
+            className="[&_h2]:text-foreground [&_p]:text-muted [&_p:first-child]:border-border [&_p:first-child]:bg-surface [&_p:first-child]:text-accent"
           />
           <FadeIn delay={0.1}>
-            <div className="mt-10 max-w-3xl rounded-[1.25rem] border border-white/10 bg-white/[0.06] p-5 backdrop-blur sm:p-6">
-              <p className="text-base font-semibold text-white">{portfolioBrief[locale].title}</p>
+            <div className="mt-10 max-w-3xl rounded-[1.25rem] border border-border bg-surface p-5 backdrop-blur sm:p-6">
+              <p className="text-base font-semibold text-foreground">{portfolioBrief[locale].title}</p>
               <ul className="mt-4 grid gap-3">
                 {portfolioBrief[locale].items.map((item) => (
-                  <li key={item} className="flex gap-3 border-t border-white/10 pt-3 text-sm leading-6 text-white/72 first:border-t-0 first:pt-0">
+                  <li key={item} className="flex gap-3 border-t border-border pt-3 text-sm leading-6 text-muted first:border-t-0 first:pt-0">
                     <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
                     <span>{item}</span>
                   </li>
@@ -105,7 +105,7 @@ export default async function PortfolioPage({params}: PageProps) {
               </FadeIn>
             ))}
           </div>
-          <p className="mt-8 max-w-3xl rounded-[1rem] border border-white/10 bg-white/[0.035] px-4 py-3 text-sm leading-7 text-muted">
+          <p className="mt-8 max-w-3xl rounded-[1rem] border border-border bg-surface px-4 py-3 text-sm leading-7 text-muted">
             {content.portfolio.disclaimer}
           </p>
         </Container>

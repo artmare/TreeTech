@@ -63,12 +63,12 @@ export default async function PortfolioDetailPage({params}: PageProps) {
 
   return (
     <>
-      <section className="dark-band relative overflow-hidden py-10 text-white sm:py-14">
+      <section className="dark-band relative overflow-hidden py-10 text-foreground sm:py-14">
         <div className="dark-grid absolute inset-0 opacity-30" />
         <Container className="relative">
           <Link
             href="/portfolio"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-white/70 transition hover:text-white"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-muted transition hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             <span>{content.common.backToPortfolio}</span>
@@ -76,36 +76,36 @@ export default async function PortfolioDetailPage({params}: PageProps) {
         </Container>
       </section>
 
-      <section className="dark-band relative overflow-hidden pb-16 text-white">
+      <section className="dark-band relative overflow-hidden pb-16 text-foreground">
         <div className="dark-grid absolute inset-0 opacity-30" />
         <Container className="relative">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <FadeIn>
-              <p className="inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-2 text-sm font-semibold text-accent">
+              <p className="inline-flex rounded-full border border-border bg-surface px-3 py-2 text-sm font-semibold text-accent">
                 {project.industry[locale]}
               </p>
-              <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.03] text-white sm:text-7xl">
+              <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.03] text-foreground sm:text-7xl">
                 {project.name}
               </h1>
-              <p className="mt-6 text-pretty text-lg leading-8 text-white/72 sm:text-xl">
+              <p className="mt-6 text-pretty text-lg leading-8 text-muted sm:text-xl">
                 {project.description[locale]}
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <ButtonLink href={`/portfolio/${project.slug}/site`} variant="accent">
                   {demoLabels.viewDemo}
                 </ButtonLink>
-                <ButtonLink href="/contact" variant="secondary" className="!border-white/20 !bg-white/10 !text-white hover:!bg-accent hover:!text-[#070806]">
+                <ButtonLink href="/contact" variant="secondary">
                   {content.common.primaryCta}
                 </ButtonLink>
               </div>
-              <div className="mt-8 grid grid-cols-2 gap-4 border-t border-white/12 pt-6">
+              <div className="mt-8 grid grid-cols-2 gap-4 border-t border-border pt-6">
                 <div>
-                  <p className="text-sm text-white/55">{content.portfolio.location}</p>
-                  <p className="mt-1 font-semibold text-white">{project.location}</p>
+                  <p className="text-sm text-muted">{content.portfolio.location}</p>
+                  <p className="mt-1 font-semibold text-foreground">{project.location}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-white/55">{content.portfolio.year}</p>
-                  <p className="mt-1 font-semibold text-white">{project.year}</p>
+                  <p className="text-sm text-muted">{content.portfolio.year}</p>
+                  <p className="mt-1 font-semibold text-foreground">{project.year}</p>
                 </div>
               </div>
             </FadeIn>
@@ -123,7 +123,7 @@ export default async function PortfolioDetailPage({params}: PageProps) {
               <FadeIn key={card.label} delay={index * 0.08}>
                 <article className="terminal-card h-full rounded-[1.25rem] p-6">
                   <card.icon className="h-6 w-6 text-accent" aria-hidden="true" />
-                  <p className="mt-5 font-mono text-sm uppercase tracking-[0.14em] text-accent">
+                  <p className="mt-5 font-bold text-sm text-accent">
                     {card.label}
                   </p>
                   <p className="mt-4 text-base leading-8 text-muted">{card.text}</p>
@@ -166,11 +166,11 @@ export default async function PortfolioDetailPage({params}: PageProps) {
 
       <section className="py-20">
         <Container>
-          <FadeIn className="dark-band relative overflow-hidden rounded-[1.5rem] p-6 text-white shadow-[0_24px_80px_rgba(16,21,18,0.2)] sm:p-8 lg:p-10">
+          <FadeIn className="dark-band relative overflow-hidden rounded-[1.5rem] p-6 text-foreground shadow-[0_24px_80px_rgba(16,21,18,0.2)] sm:p-8 lg:p-10">
             <div className="dark-grid absolute inset-0 opacity-30" />
             <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
-                <p className="text-sm font-bold uppercase tracking-[0.14em] text-accent">
+                <p className="text-sm font-bold text-accent">
                   {content.portfolio.ctaTitle}
                 </p>
                 <h2 className="mt-3 text-balance text-3xl font-semibold">
@@ -183,7 +183,7 @@ export default async function PortfolioDetailPage({params}: PageProps) {
                 </ButtonLink>
                 <Link
                   href="/contact"
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-accent hover:text-[#070806]"
+                  className="inline-flex min-h-14 items-center justify-center gap-2 rounded-[12px] border-2 border-foreground bg-surface px-6 py-3.5 text-base font-bold text-foreground transition-colors hover:bg-background"
                 >
                   <span>{content.common.primaryCta}</span>
                   <ExternalLink className="h-4 w-4" aria-hidden="true" />

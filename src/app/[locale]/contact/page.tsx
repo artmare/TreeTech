@@ -89,19 +89,19 @@ export default async function ContactPage({params}: PageProps) {
   const calendarUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || process.env.NEXT_PUBLIC_CAL_URL;
 
   return (
-    <section className="dark-band scanline relative overflow-hidden py-20 text-white sm:py-24">
+    <section className="dark-band scanline relative overflow-hidden py-20 text-foreground sm:py-24">
       <div className="saas-grid absolute inset-0 opacity-45" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_90%_10%,rgba(214,255,99,0.14),transparent_26rem)]" />
+      <div className="absolute inset-0 hidden" />
       <Container className="relative">
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
           <FadeIn>
-            <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 font-mono text-sm text-accent">
+            <p className="inline-flex rounded-full border border-accent/20 bg-accent/[0.08] px-3 py-2 font-bold text-sm text-accent">
               {content.common.nextStep}
             </p>
-            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.04] text-white sm:text-7xl">
+            <h1 className="mt-5 text-balance text-5xl font-semibold leading-[1.04] text-foreground sm:text-7xl">
               {content.contact.title}
             </h1>
-            <p className="mt-6 text-pretty text-lg leading-8 text-white/72 sm:text-xl">
+            <p className="mt-6 text-pretty text-lg leading-8 text-muted sm:text-xl">
               {content.contact.lead}
             </p>
 
@@ -137,25 +137,25 @@ export default async function ContactPage({params}: PageProps) {
                 id="audit-call"
                 className="relative mb-6 scroll-mt-24 rounded-[1.25rem] border border-accent/25 bg-accent/[0.08] p-5"
               >
-                <p className="inline-flex rounded-full border border-accent/25 bg-[#070806]/40 px-3 py-1.5 font-mono text-xs text-accent">
+                <p className="inline-flex rounded-full border border-accent/25 bg-accent/[0.08] px-3 py-1.5 font-bold text-xs text-accent">
                   {booking.eyebrow}
                 </p>
-                <h2 className="mt-4 text-2xl font-semibold text-white">{booking.title}</h2>
-                <p className="mt-3 text-sm leading-7 text-white/72">{booking.lead}</p>
+                <h2 className="mt-4 text-2xl font-semibold text-foreground">{booking.title}</h2>
+                <p className="mt-3 text-sm leading-7 text-muted">{booking.lead}</p>
                 {calendarUrl ? (
                   <iframe
                     src={calendarUrl}
                     title={booking.calendarTitle}
                     loading="lazy"
-                    className="mt-5 h-[520px] w-full rounded-[1rem] border border-white/10 bg-white"
+                    className="mt-5 h-[520px] w-full rounded-[1rem] border border-border bg-white"
                     allow="camera; microphone; fullscreen"
                   />
                 ) : (
-                  <div className="mt-5 rounded-[1rem] border border-white/10 bg-white/[0.055] p-4">
-                    <p className="text-sm leading-7 text-white/72">{booking.fallback}</p>
+                  <div className="mt-5 rounded-[1rem] border border-border bg-surface p-4">
+                    <p className="text-sm leading-7 text-muted">{booking.fallback}</p>
                     <a
                       href={`mailto:${siteConfig.email}?subject=Kostenlose TreeTech Analyse`}
-                      className="mt-4 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-[#070806] transition hover:bg-white"
+                      className="mt-4 inline-flex min-h-14 items-center justify-center gap-2 rounded-[12px] bg-accent px-6 py-3.5 text-base font-bold text-white transition hover:bg-[var(--accent-strong)]"
                     >
                       <CalendarCheck className="h-4 w-4" aria-hidden="true" />
                       {booking.cta}
@@ -163,7 +163,7 @@ export default async function ContactPage({params}: PageProps) {
                   </div>
                 )}
               </section>
-              <h2 className="relative mb-4 text-2xl font-semibold text-white">
+              <h2 className="relative mb-4 text-2xl font-semibold text-foreground">
                 {content.contact.formTitle}
               </h2>
               <ContactForm />
