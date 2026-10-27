@@ -1,26 +1,28 @@
 # TreeTech
 
-TreeTech builds AI automation systems, CRM workflows, websites, custom web applications and business process automation for companies in Austria.
+TreeTech is a small web studio for trades and workshops (electricians, plumbers, heating engineers, roofers, painters, tilers and car workshops) in Vienna and Lower Austria. We build the website before the customer says yes: the preview is free, the site goes live in 7 days, the copy is included.
 
-## Website
+## Key facts
 
-- [Production site](https://treetech.at/)
-- [German homepage](https://treetech.at/de)
-- [English homepage](https://treetech.at/en)
-- [Russian homepage](https://treetech.at/ru)
+- Region: Vienna (Wien) and Lower Austria (Niederösterreich)
+- Free website preview within 3 working days, pay only if you like it
+- Website Start: fixed price from 990 EUR, up to 5 pages, copy included, live in 7 days
+- Care plan from 39 EUR per month: hosting, small changes via WhatsApp, monthly report
+- Every site includes call and WhatsApp buttons, inquiry with photo, Google Business Profile setup, legal notice and privacy policy
+- Languages: German, English, Russian
+
+## Pages
+
+- [Home (German)](https://treetech.at/de)
+- [Services and prices](https://treetech.at/de/services)
+- [Websites for tradespeople](https://treetech.at/de/websites-fuer-handwerker)
+- [Websites for car workshops](https://treetech.at/de/websites-fuer-kfz-werkstaetten)
+- [Example website: electrician](https://treetech.at/de/portfolio/elektro-huber/site)
+- [Guides](https://treetech.at/de/blog)
+- [Contact and free preview](https://treetech.at/de/contact)
 - [Sitemap](https://treetech.at/sitemap.xml)
-
-## Services
-
-- AI automation
-- Business process automation
-- CRM workflows and integrations
-- Websites and landing pages
-- Custom web applications
-- AI chatbots and internal assistants
-- Lead management and contact workflows
 
 ## Contact
 
+- Phone and WhatsApp: +43 660 9557357
 - Email: office@treetech.at
-- [Contact page](https://treetech.at/de/contact)
