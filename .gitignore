@@ -12,3 +12,6 @@ pnpm-debug.log*
 *.tsbuildinfo
 
 .vercel
+
+# Local agent/tool artifacts
+.codex/
