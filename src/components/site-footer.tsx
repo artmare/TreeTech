@@ -11,7 +11,10 @@ const footerLinks = [
   {href: '/portfolio', key: 'portfolio'},
   {href: '/about', key: 'about'},
   {href: '/blog', key: 'blog'},
-  {href: '/contact', key: 'contact'}
+  {href: '/contact', key: 'contact'},
+  {href: '/impressum', key: 'imprint'},
+  {href: '/datenschutz', key: 'privacy'},
+  {href: '/agb', key: 'terms'}
 ] as const;
 
 export function SiteFooter() {

@@ -5,6 +5,7 @@ import {useLocale, useTranslations} from 'next-intl';
 import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 
+import {Link} from '@/i18n/navigation';
 import {phonePattern} from '@/lib/contact-options';
 import {cn} from '@/lib/utils';
 
@@ -153,6 +154,13 @@ export function ContactForm() {
           <Send className="h-5 w-5" aria-hidden="true" />
           <span>{isSubmitting ? t('submitting') : t('submit')}</span>
         </button>
+        <p className="text-sm leading-snug text-muted">
+          {t('privacyNote')}{' '}
+          <Link href="/datenschutz" className="font-semibold text-accent underline underline-offset-2">
+            {t('privacyLink')}
+          </Link>
+          .
+        </p>
         {status ? (
           <p
             className={cn(

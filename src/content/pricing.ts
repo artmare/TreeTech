@@ -64,8 +64,8 @@ export const paymentTerms: Text = {
   ru: '50 % при заказе, 50 % при запуске. По запросу можно в 2 платежа. Пакеты Pflege расторгаются помесячно.'
 };
 
-// TODO(legal): once the Gewerbe is registered, add the Kleinunternehmerregelung
-// wording here ("umsatzsteuerbefreit gemäß Kleinunternehmerregelung").
+// TODO(legal): once it is clear whether the owner uses the Kleinunternehmerregelung
+// (see legalEntity.kleinunternehmer in legal.ts), add the matching VAT wording here.
 export const vatNote: Text = {
   de: 'Alle Preise sind Endpreise, ohne versteckte Kosten.',
   en: 'All prices are final prices, with no hidden costs.',

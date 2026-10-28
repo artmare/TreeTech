@@ -396,6 +396,9 @@ export default async function HomePage({params}: PageProps) {
           <Link href="/portfolio">{nav('portfolio')}</Link>
           <Link href="/about">{nav('about')}</Link>
           <Link href="/contact">{nav('contact')}</Link>
+          <Link href="/impressum">{nav('imprint')}</Link>
+          <Link href="/datenschutz">{nav('privacy')}</Link>
+          <Link href="/agb">{nav('terms')}</Link>
         </nav>
       </footer>
     </div>
