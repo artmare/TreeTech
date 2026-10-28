@@ -90,9 +90,9 @@ export function ElektroDemo({site, locale}: {site: DemoSite; locale: Locale}) {
             <span className="whitespace-nowrap text-base font-extrabold uppercase tracking-wide text-[#14324f] [font-stretch:105%] sm:text-lg">{site.brand}</span>
           </a>
           <nav className="hidden gap-6 text-[15px] font-semibold md:flex">
-            <a href="#leistungen" className="hover:text-[#e8590c]">{copy.nav[0]}</a>
-            <a href="#ablauf" className="hover:text-[#e8590c]">{copy.nav[2]}</a>
-            <a href="#anfrage" className="hover:text-[#e8590c]">{copy.nav[3]}</a>
+            <a href="#leistungen" className="hover:text-[#c2410c]">{copy.nav[0]}</a>
+            <a href="#ablauf" className="hover:text-[#c2410c]">{copy.nav[2]}</a>
+            <a href="#anfrage" className="hover:text-[#c2410c]">{copy.nav[3]}</a>
           </nav>
           <div className="flex items-center gap-2">
             {otherLocales.map((item) => (
@@ -108,7 +108,7 @@ export function ElektroDemo({site, locale}: {site: DemoSite; locale: Locale}) {
             ))}
             <a
               href="#anfrage"
-              className="inline-flex min-h-11 items-center gap-2 rounded-[8px] bg-[#e8590c] px-4 text-[15px] font-bold text-white hover:bg-[#cf4f0a]"
+              className="inline-flex min-h-11 items-center gap-2 rounded-[8px] bg-[#c2410c] px-4 text-[15px] font-bold text-white hover:bg-[#9a3412]"
             >
               <Phone className="h-4 w-4" aria-hidden="true" />
               <span className="hidden sm:inline">{demoPhone}</span>
@@ -127,7 +127,7 @@ export function ElektroDemo({site, locale}: {site: DemoSite; locale: Locale}) {
             <div className="mt-7 grid gap-3 sm:flex">
               <a
                 href="#anfrage"
-                className="inline-flex min-h-14 items-center justify-center gap-2 rounded-[10px] bg-[#e8590c] px-6 text-lg font-bold text-white hover:bg-[#cf4f0a]"
+                className="inline-flex min-h-14 items-center justify-center gap-2 rounded-[10px] bg-[#c2410c] px-6 text-lg font-bold text-white hover:bg-[#9a3412]"
               >
                 <Phone className="h-5 w-5" aria-hidden="true" />
                 {copy.primaryCta}
@@ -160,7 +160,7 @@ export function ElektroDemo({site, locale}: {site: DemoSite; locale: Locale}) {
               const Icon = serviceIcons[index % serviceIcons.length];
               return (
                 <article key={service.title} className="rounded-[12px] border border-[#e3e7ec] bg-white p-6">
-                  <Icon className="h-7 w-7 text-[#e8590c]" aria-hidden="true" />
+                  <Icon className="h-7 w-7 text-[#c2410c]" aria-hidden="true" />
                   <h3 className="mt-3 text-xl font-bold">{service.title}</h3>
                   <p className="mt-2 text-[16px] leading-relaxed text-[#556170]">{service.text}</p>
                 </article>
@@ -178,7 +178,7 @@ export function ElektroDemo({site, locale}: {site: DemoSite; locale: Locale}) {
           </div>
           <div>
             <h2 className="flex items-center gap-2 text-2xl">
-              <MapPin className="h-6 w-6 text-[#e8590c]" aria-hidden="true" />
+              <MapPin className="h-6 w-6 text-[#c2410c]" aria-hidden="true" />
               {text.area}
             </h2>
             <p className="mt-2 text-[16px] text-[#556170]">{text.areaText}</p>
@@ -211,7 +211,7 @@ export function ElektroDemo({site, locale}: {site: DemoSite; locale: Locale}) {
           </ol>
 
           <div className="mt-12 rounded-[12px] border-2 border-dashed border-[#cfd5dd] bg-white p-6">
-            <p className="flex items-center gap-1 text-[#e8590c]" aria-hidden="true">
+            <p className="flex items-center gap-1 text-[#c2410c]" aria-hidden="true">
               {[0, 1, 2, 3, 4].map((item) => (
                 <Star key={item} className="h-5 w-5 fill-current" />
               ))}
@@ -260,7 +260,7 @@ export function ElektroDemo({site, locale}: {site: DemoSite; locale: Locale}) {
               {text.form.photo}
               <input type="file" accept="image/*" className="sr-only" />
             </label>
-            <button type="submit" className="min-h-14 rounded-[10px] bg-[#e8590c] text-lg font-bold text-white hover:bg-[#cf4f0a]">
+            <button type="submit" className="min-h-14 rounded-[10px] bg-[#c2410c] text-lg font-bold text-white hover:bg-[#9a3412]">
               {copy.contactButton}
             </button>
             {sent ? (
@@ -290,7 +290,7 @@ export function ElektroDemo({site, locale}: {site: DemoSite; locale: Locale}) {
 
       {/* The phone bar is the key feature we sell: always one tap to call. */}
       <nav className="fixed inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-2 border-t border-[#e3e7ec] bg-white p-3 md:hidden">
-        <a href="#anfrage" className="flex min-h-14 items-center justify-center gap-2 rounded-[10px] bg-[#e8590c] text-base font-bold text-white">
+        <a href="#anfrage" className="flex min-h-14 items-center justify-center gap-2 rounded-[10px] bg-[#c2410c] text-base font-bold text-white">
           <Phone className="h-5 w-5" aria-hidden="true" />
           {text.call}
         </a>

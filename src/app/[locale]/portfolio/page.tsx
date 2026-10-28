@@ -6,7 +6,6 @@ import {setRequestLocale} from 'next-intl/server';
 import {FadeIn} from '@/components/motion/fade-in';
 import {PortfolioCard} from '@/components/portfolio-card';
 import {Container} from '@/components/ui/container';
-import {SectionHeading} from '@/components/ui/section-heading';
 import {portfolioProjects, siteContent} from '@/content/site';
 import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
@@ -67,14 +66,12 @@ export default async function PortfolioPage({params}: PageProps) {
 
   return (
     <>
-      <section className="dark-band relative overflow-hidden py-20 text-foreground sm:py-24">
-        <div className="dark-grid absolute inset-0 opacity-35" />
-        <Container className="relative">
-          <SectionHeading
-            title={content.portfolio.title}
-            lead={content.portfolio.lead}
-            className="[&_h2]:text-foreground [&_p]:text-muted [&_p:first-child]:border-border [&_p:first-child]:bg-surface [&_p:first-child]:text-accent"
-          />
+      <section className="border-b-2 border-foreground py-12 sm:py-16">
+        <Container>
+          <h1 className="max-w-4xl text-balance text-[42px] leading-[1.02] text-foreground sm:text-6xl">
+            {content.portfolio.title}
+          </h1>
+          <p className="mt-4 max-w-[38em] text-pretty text-lg leading-relaxed text-muted">{content.portfolio.lead}</p>
           <FadeIn delay={0.1}>
             <div className="mt-10 max-w-3xl rounded-[1.25rem] border border-border bg-surface p-5 backdrop-blur sm:p-6">
               <p className="text-base font-semibold text-foreground">{portfolioBrief[locale].title}</p>
@@ -93,7 +90,7 @@ export default async function PortfolioPage({params}: PageProps) {
 
       <section className="py-16">
         <Container>
-          <div className="grid gap-5 lg:grid-cols-2">
+          <div className="grid gap-5 lg:grid-cols-2 [&>*]:min-w-0">
             {portfolioProjects.map((project, index) => (
               <FadeIn key={project.slug} delay={index * 0.06}>
                 <PortfolioCard
