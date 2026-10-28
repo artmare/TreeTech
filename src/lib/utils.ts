@@ -11,7 +11,8 @@ const softHyphenWords: Array<[string, string]> = [
   ['Arbeitswerkzeug', 'Arbeits\u00ADwerkzeug'],
   ['Unternehmensprofil', 'Unternehmens\u00ADprofil'],
   ['Handwerksbetriebs', 'Handwerks\u00ADbetriebs'],
-  ['Geschäftsprozesse', 'Geschäfts\u00ADprozesse']
+  ['Geschäftsprozesse', 'Geschäfts\u00ADprozesse'],
+  ['Unternehmensgegenstand', 'Unternehmens\u00ADgegenstand']
 ];
 
 /** Adds soft hyphens to long German words so big headlines break at sensible places on phones. */
