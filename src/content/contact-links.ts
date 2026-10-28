@@ -9,6 +9,8 @@ export const contactPhone = {
   digits: '436609557357'
 };
 
+export const contactEmail = 'office@treetech.at';
+
 export const phoneHref = `tel:+${contactPhone.digits}`;
 
 export function whatsappHref(message?: string) {

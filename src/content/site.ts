@@ -1,4 +1,4 @@
-import {contactPhone, phoneHref, whatsappHref} from '@/content/contact-links';
+import {contactEmail, contactPhone, phoneHref, whatsappHref} from '@/content/contact-links';
 import type {Locale} from '@/i18n/routing';
 import {withLocaleFallbacks} from '@/i18n/localized';
 import {formatEur, formatPackagePrice, founderOffer, getPackage, hourlyRate, type PackageId} from '@/content/pricing';
@@ -6,7 +6,7 @@ import {formatEur, formatPackagePrice, founderOffer, getPackage, hourlyRate, typ
 export const siteConfig = {
   name: 'TreeTech',
   url: 'https://treetech.at',
-  email: 'office@treetech.at',
+  email: contactEmail,
   /** Change the number in src/content/contact-links.ts and it changes everywhere. */
   phone: contactPhone.display,
   phoneDigits: contactPhone.digits,

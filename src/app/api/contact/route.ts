@@ -102,33 +102,30 @@ export async function POST(request: Request) {
     return NextResponse.json({ok: true});
   }
 
-  let storedRequestId: string;
+  // A lead must never get lost: if the CRM is down, we still send the notification email.
+  let storedRequestId: string | null = null;
+  let storageError: unknown = null;
 
   try {
     const storedRequest = await createLeadFromContact(data, request);
     storedRequestId = storedRequest.id;
   } catch (error) {
-    console.error(
-      'Contact request storage failed:',
-      error instanceof Error ? error.message : error
-    );
-
-    return NextResponse.json(
-      {ok: false, message: 'Contact request could not be saved.'},
-      {status: error instanceof LeadStorageError ? 503 : 500}
-    );
+    storageError = error;
+    console.error('Contact request storage failed:', error instanceof Error ? error.message : error);
   }
 
   const resend = getResend();
   const to = process.env.CONTACT_TO_EMAIL;
   const from = process.env.CONTACT_FROM_EMAIL || 'TreeTech <office@treetech.at>';
 
+  let notified = false;
+
   if (resend && to) {
     const result = await resend.emails.send({
       from,
       to,
       ...(data.email ? {replyTo: data.email} : {}),
-      subject: `TreeTech Anfrage: ${data.company || data.name}`,
+      subject: `${storedRequestId ? '' : '[NICHT IM CRM] '}TreeTech Anfrage: ${data.company || data.name}`,
       text: [
         `Name: ${data.name}`,
         `Telefon: ${data.phone || '-'}`,
@@ -147,13 +144,25 @@ export async function POST(request: Request) {
         <p><strong>Projektart:</strong> ${escapeHtml(data.budget)}</p>
         <p>${escapeHtml(data.message || '').replaceAll('\n', '<br />')}</p>
       `
+    }).catch((error: unknown) => {
+      console.error('contact_notification_failed', error instanceof Error ? error.message : 'unknown');
+      return {data: null};
     });
 
-    if (result.data?.id) {
+    notified = Boolean(result.data?.id);
+
+    if (result.data?.id && storedRequestId) {
       await markLeadEmailSent(storedRequestId, result.data.id).catch((error) => {
         console.error('crm_email_activity_failed', error instanceof Error ? error.message : 'unknown');
       });
     }
+  }
+
+  if (!storedRequestId && !notified) {
+    return NextResponse.json(
+      {ok: false, message: 'Contact request could not be saved.'},
+      {status: storageError instanceof LeadStorageError ? 503 : 500}
+    );
   }
 
   if (resend && data.email) {
@@ -179,6 +188,9 @@ export async function POST(request: Request) {
         <p><strong>${escapeHtml(confirmation.responseTime)}</strong></p>
         <p>TreeTech<br /><a href="mailto:office@treetech.at">office@treetech.at</a></p>
       `
+    }).catch((error: unknown) => {
+      // The lead is already saved; a failed confirmation must not fail the request.
+      console.error('contact_confirmation_failed', error instanceof Error ? error.message : 'unknown');
     });
   }
 

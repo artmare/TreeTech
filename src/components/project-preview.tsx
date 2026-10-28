@@ -31,12 +31,12 @@ export function ProjectPreview({project, locale = 'en', size = 'card'}: ProjectP
       className={cn(
         'group relative aspect-[16/10] overflow-hidden border border-white/12 bg-gradient-to-br shadow-[0_24px_70px_rgba(0,0,0,0.24)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_32px_90px_rgba(0,0,0,0.32)]',
         project.gradient,
-        large ? 'min-h-[420px] rounded-[1.25rem]' : 'min-h-[220px] rounded-[1.1rem]'
+        large ? 'min-h-[420px] rounded-[1.25rem]' : 'rounded-[1.1rem]'
       )}
     >
       <Image
         src={`/portfolio-previews/${project.slug}.webp`}
-        alt={`${project.name} demo website preview`}
+        alt={project.name}
         fill
         priority={large}
         quality={large ? 82 : 74}

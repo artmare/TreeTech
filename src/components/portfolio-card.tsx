@@ -16,11 +16,11 @@ export function PortfolioCard({project, locale, cta}: PortfolioCardProps) {
   const conceptLabel = {de: 'Demo-Konzept', en: 'Demo concept', ru: 'Демо-концепт'}[locale];
   const goalLabel = {de: 'Ziel', en: 'Goal', ru: 'Цель'}[locale];
   return (
-    <article className="group terminal-card grid h-full gap-4 rounded-[1.25rem] p-3 transition duration-300 md:grid-cols-[0.72fr_1fr] md:items-stretch lg:block">
+    <article className="group terminal-card grid h-full gap-4 rounded-[1.25rem] p-3 transition duration-300 md:grid-cols-[0.72fr_1fr] md:items-stretch lg:block [&>*]:min-w-0">
       <ProjectPreview project={project} locale={locale} />
       <div className="flex flex-col p-2 lg:p-4">
         <div className="flex items-center justify-between gap-4 lg:mt-2">
-          <p className="font-mono text-xs text-accent">
+          <p className="text-sm font-bold text-accent">
             {conceptLabel} · {project.industry[locale]}
           </p>
           <span className="text-sm text-muted">{project.location}</span>

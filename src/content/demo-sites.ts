@@ -103,7 +103,7 @@ const demoSiteList = withLocaleFallbacks([
       text: '#14202e',
       muted: '#556170',
       primary: '#14324f',
-      accent: '#e8590c',
+      accent: '#c2410c',
       hero: '#14324f'
     },
     copy: {
@@ -272,7 +272,7 @@ const demoSiteList = withLocaleFallbacks([
         process: [
           {title: 'Anfrage', text: 'Patienten senden online ihr Anliegen und erhalten eine zeitnahe Rückmeldung.'},
           {title: 'Erstgespräch', text: 'Die Ordination klärt Beschwerden, Wünsche und passende Behandlungsschritte.'},
-          {title: 'Behandlung', text: 'Jede Massnahme wird verständlich erklärt und sorgfältig umgesetzt.'}
+          {title: 'Behandlung', text: 'Jede Maßnahme wird verständlich erklärt und sorgfältig umgesetzt.'}
         ],
         testimonial:
           'Die neue Website nimmt die Unsicherheit vor dem ersten Besuch. Genau das wollten wir erreichen.',

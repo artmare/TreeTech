@@ -1,5 +1,6 @@
 import type {Locale} from '@/i18n/routing';
 import {handwerkPosts} from '@/content/blog-handwerk';
+import {limitedBlogPosts} from '@/content/blog-locales';
 import {withLocaleFallbacks} from '@/i18n/localized';
 
 export type BlogPost = {
@@ -119,8 +120,6 @@ export const blogContent = withLocaleFallbacks({
 const generalPosts: BlogPost[] = withLocaleFallbacks([
   {
     slug: 'business-processes-to-automate-first',
-    // Older general articles, written in German and English only.
-    locales: ['de', 'en'],
     publishedAt: '2026-06-19',
     category: {de: 'Business Automation', en: 'Business Automation'},
     title: {
@@ -222,8 +221,6 @@ const generalPosts: BlogPost[] = withLocaleFallbacks([
   },
   {
     slug: 'ai-tools-for-companies',
-    // Older general articles, written in German and English only.
-    locales: ['de', 'en'],
     publishedAt: '2026-06-19',
     category: {de: 'AI für Unternehmen', en: 'AI for Companies'},
     title: {
@@ -325,8 +322,6 @@ const generalPosts: BlogPost[] = withLocaleFallbacks([
   },
   {
     slug: 'crm-automation-for-small-businesses',
-    // Older general articles, written in German and English only.
-    locales: ['de', 'en'],
     publishedAt: '2026-06-19',
     category: {de: 'CRM Automation', en: 'CRM Automation'},
     title: {
@@ -430,8 +425,6 @@ const generalPosts: BlogPost[] = withLocaleFallbacks([
   },
   {
     slug: 'modern-websites-for-austrian-businesses',
-    // Older general articles, written in German and English only.
-    locales: ['de', 'en'],
     publishedAt: '2026-06-19',
     category: {de: 'Web Development Austria', en: 'Web Development Austria'},
     title: {
@@ -535,8 +528,6 @@ const generalPosts: BlogPost[] = withLocaleFallbacks([
   },
   {
     slug: 'save-time-with-ai-automation',
-    // Older general articles, written in German and English only.
-    locales: ['de', 'en'],
     publishedAt: '2026-06-19',
     category: {de: 'Workflow Automation', en: 'Workflow Automation'},
     title: {
@@ -640,7 +631,10 @@ const generalPosts: BlogPost[] = withLocaleFallbacks([
   }
 ]);
 
-export const blogPosts: BlogPost[] = [...handwerkPosts, ...generalPosts];
+export const blogPosts: BlogPost[] = [...handwerkPosts, ...generalPosts].map((post) => ({
+  ...post,
+  locales: limitedBlogPosts[post.slug]
+}));
 
 export function isPostInLocale(post: BlogPost, locale: Locale) {
   return !post.locales || post.locales.includes(locale);
