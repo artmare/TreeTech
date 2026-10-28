@@ -78,6 +78,9 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
   const [loaded, setLoaded] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const [leadOpen, setLeadOpen] = useState(false);
+  // Once the visitor types a question, the click questionnaire steps aside so the chat has room.
+  const [chatMode, setChatMode] = useState(false);
+  const [viewport, setViewport] = useState<{top: number; height: number} | null>(null);
   const [leadSending, setLeadSending] = useState(false);
   const [leadStatus, setLeadStatus] = useState<'success' | 'invalid' | 'error' | null>(null);
   const [leadStartedAt, setLeadStartedAt] = useState(() => Date.now());
@@ -127,6 +130,28 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
     if (open) bottomRef.current?.scrollIntoView({block: 'end'});
   }, [messages, open, leadOpen]);
 
+  // Phones: keep the open chat inside the visible area, above the on-screen keyboard.
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!open || !vv) return;
+
+    const update = () => {
+      if (window.innerWidth >= 640) {
+        setViewport(null);
+        return;
+      }
+      setViewport({top: vv.offsetTop, height: vv.height});
+    };
+
+    update();
+    vv.addEventListener('resize', update);
+    vv.addEventListener('scroll', update);
+    return () => {
+      vv.removeEventListener('resize', update);
+      vv.removeEventListener('scroll', update);
+    };
+  }, [open]);
+
   if (isDemoSitePath(pathname) || activeLocale !== locale) {
     return null;
   }
@@ -137,6 +162,7 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
     setInput('');
     setLeadOpen(false);
     setLeadStatus(null);
+    setChatMode(false);
     try {
       window.localStorage.removeItem(storageKey);
     } catch {
@@ -184,6 +210,7 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
     if (!content || isStreaming) return;
 
     setInput('');
+    setChatMode(true);
     const userMessage: ChatMessage = {id: createId(), role: 'user', content};
     const assistantMessage: ChatMessage = {id: createId(), role: 'assistant', content: ''};
     const nextMessages = [...messages, userMessage, assistantMessage].slice(-maxClientMessages);
@@ -221,7 +248,7 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
       }
 
       streamedContentRef.current += decoder.decode();
-      setAssistantContent(streamedContentRef.current || t('emptyResponse'));
+      setAssistantContent(streamedContentRef.current || t('error'));
     } catch {
       setAssistantContent(t('error'));
     } finally {
@@ -292,6 +319,7 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
         // On phones the sticky contact bar sits at the bottom, so the closed launcher floats above it.
         open ? 'bottom-4' : 'bottom-[100px]'
       )}
+      style={open && viewport ? {top: viewport.top + 8, bottom: 'auto'} : undefined}
     >
       <AnimatePresence mode="wait">
         {open ? (
@@ -301,7 +329,8 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
             animate={{opacity: 1, y: 0}}
             exit={reduceMotion ? {opacity: 0} : {opacity: 0, y: 12}}
             transition={{duration: 0.2, ease: 'easeOut'}}
-            className="pointer-events-auto ml-auto flex h-[min(720px,calc(100svh-2rem))] w-full flex-col overflow-hidden rounded-[16px] border-2 border-foreground bg-surface text-foreground shadow-[6px_6px_0_rgba(28,34,32,0.9)] sm:w-[400px]"
+            style={viewport ? {height: viewport.height - 16} : undefined}
+            className="pointer-events-auto ml-auto flex h-[min(720px,calc(100dvh-2rem))] w-full flex-col overflow-hidden rounded-[16px] border-2 border-foreground bg-surface text-foreground shadow-[6px_6px_0_rgba(28,34,32,0.9)] sm:w-[400px]"
             aria-label={t('title')}
           >
             <header className="flex min-h-16 items-center justify-between gap-3 border-b-2 border-foreground bg-background px-4">
@@ -365,7 +394,7 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
                   onClose={() => setLeadOpen(false)}
                   onSubmit={submitLead}
                 />
-              ) : (
+              ) : chatMode ? null : (
                 <div className="mt-4 grid gap-3">
                   <QualificationPanel
                     steps={qualificationSteps}
@@ -394,12 +423,39 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
               <div ref={bottomRef} />
             </div>
 
+            {chatMode && !leadOpen ? (
+              <div className="flex gap-2 border-t border-border px-3 pt-3">
+                <button
+                  type="button"
+                  onClick={openLeadForm}
+                  className="inline-flex min-h-10 flex-1 items-center justify-center rounded-[10px] bg-accent px-3 text-sm font-bold text-white transition hover:bg-[var(--accent-strong)]"
+                >
+                  {t('previewShort')}
+                </button>
+                <a
+                  href={phoneHref}
+                  data-track="phone_click"
+                  className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-[10px] border-2 border-foreground px-3 text-sm font-bold text-foreground transition hover:bg-background"
+                >
+                  <Phone className="h-4 w-4" aria-hidden="true" />
+                  {t('callShort')}
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setChatMode(false)}
+                  className="inline-flex min-h-10 items-center justify-center rounded-[10px] px-2 text-sm font-semibold text-muted transition hover:text-foreground"
+                >
+                  {t('showQuestions')}
+                </button>
+              </div>
+            ) : null}
+
             <form
               onSubmit={(event) => {
                 event.preventDefault();
                 submitMessage();
               }}
-              className="border-t-2 border-foreground p-3"
+              className={cn('p-3', chatMode && !leadOpen ? '' : 'border-t-2 border-foreground')}
             >
               <label className="sr-only" htmlFor="assistant-message">
                 {t('inputLabel')}
@@ -410,9 +466,13 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
                   type="text"
                   value={input}
                   onChange={(event) => setInput(event.target.value)}
+                  onFocus={() => {
+                    setChatMode(true);
+                    window.setTimeout(() => bottomRef.current?.scrollIntoView({block: 'end'}), 250);
+                  }}
                   maxLength={1600}
                   placeholder={t('placeholder')}
-                  className="h-11 min-w-0 flex-1 bg-transparent px-2 text-base text-foreground outline-none placeholder:text-muted/70"
+                  className="h-11 min-w-0 flex-1 bg-transparent px-2 text-base text-foreground outline-none placeholder:text-muted/70 focus-visible:outline-none"
                 />
                 <button
                   type="submit"

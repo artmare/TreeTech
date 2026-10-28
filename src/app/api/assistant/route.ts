@@ -60,6 +60,9 @@ function getClient() {
   client ||= new OpenAI({
     apiKey: process.env.OPENROUTER_API_KEY,
     baseURL: process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1',
+    // No retries on the same model: if it is busy, we move on to the next free model instead.
+    maxRetries: 0,
+    timeout: 20_000,
     defaultHeaders: {
       'HTTP-Referer': 'https://treetech.at',
       'X-Title': 'TreeTech Website Assistant'
@@ -145,50 +148,78 @@ export async function POST(request: Request) {
   }
 
   const {locale} = parsed.data;
-  const [model, ...fallbacks] = getModels();
+  const models = getModels();
   const messages = [
     {role: 'system' as const, content: buildAssistantInstructions(locale)},
-    ...parsed.data.messages.slice(-maxHistoryMessages).map((message) => ({
+    // The chat starts with a greeting from the assistant; models expect the user to speak first.
+    ...dropLeadingAssistant(parsed.data.messages.slice(-maxHistoryMessages)).map((message) => ({
       role: message.role,
       content: message.content
     }))
   ];
+  const encoder = new TextEncoder();
+  // Some providers of Gemma models reject a system message, so it goes in front of the first question.
+  const messagesFor = (model: string) => {
+    if (!/gemma/i.test(model)) {
+      return messages;
+    }
+    const [system, first, ...rest] = messages;
+    return [{role: 'user' as const, content: `${system.content}\n\n---\n\n${first.content}`}, ...rest];
+  };
 
-  try {
-    const stream = await openai.chat.completions.create({
-      model,
-      messages,
-      stream: true,
-      temperature: 0.3,
-      max_tokens: 400,
-      // OpenRouter tries these when the first model is busy or no longer free.
-      ...(fallbacks.length > 0 ? {models: [model, ...fallbacks]} : {})
-    } as OpenAI.Chat.ChatCompletionCreateParamsStreaming);
+  /**
+   * Free models come and go, are sometimes overloaded, and reasoning models can use up the
+   * whole budget on thinking. So we try the models one after another until one actually
+   * produces answer text. Nothing is sent to the browser before a model has answered.
+   */
+  const readable = new ReadableStream({
+    async start(controller) {
+      for (const model of models) {
+        let sent = 0;
 
-    const encoder = new TextEncoder();
-
-    const readable = new ReadableStream({
-      async start(controller) {
         try {
+          const stream = await openai.chat.completions.create({
+            model,
+            messages: messagesFor(model),
+            stream: true,
+            temperature: 0.3,
+            max_tokens: 1200,
+            // OpenRouter: think little, and never send the thinking text.
+            reasoning: {effort: 'low', exclude: true}
+          } as OpenAI.Chat.ChatCompletionCreateParamsStreaming);
+
           for await (const chunk of stream) {
-            // Reasoning models also send `delta.reasoning`; only the answer goes to the visitor.
             const text = chunk.choices[0]?.delta?.content;
             if (text) {
+              sent += text.length;
               controller.enqueue(encoder.encode(text));
             }
           }
 
-          controller.close();
+          if (sent > 0) {
+            console.info('assistant_answered', {model});
+            controller.close();
+            return;
+          }
+
+          console.warn('assistant_empty_answer', {model});
         } catch (error) {
-          console.error(
-            'Assistant stream failed:',
-            error instanceof Error ? error.message : error
-          );
-          controller.error(error);
+          console.warn('assistant_model_failed', {model, reason: error instanceof Error ? error.message : 'unknown'});
+
+          if (sent > 0) {
+            // Part of an answer is already on screen: end it there instead of mixing two models.
+            controller.close();
+            return;
+          }
         }
       }
-    });
 
+      // Every model failed: the widget shows its own message with the phone number.
+      controller.close();
+    }
+  });
+
+  try {
     return new Response(readable, {
       headers: {
         'Cache-Control': 'no-store',
@@ -207,6 +238,11 @@ export async function POST(request: Request) {
       {status: 500}
     );
   }
+}
+
+function dropLeadingAssistant<T extends {role: string}>(items: T[]) {
+  const firstUser = items.findIndex((item) => item.role === 'user');
+  return firstUser === -1 ? [] : items.slice(firstUser);
 }
 
 function getRequestIp(request: Request) {

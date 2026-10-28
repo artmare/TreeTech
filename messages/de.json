@@ -115,6 +115,9 @@
     "bookingTrust": "Kostenlos. Sie zahlen nur, wenn Ihnen der Entwurf gefällt.",
     "whatsappMessage": "Hallo TreeTech, ich hätte gern eine kostenlose Vorschau für meine Website.",
     "qualifierCompleteCare": "Danke. Dafür gibt es unsere Pflege. Hinterlassen Sie kurz Ihre Daten, wir sehen uns Ihre Seite an und melden uns.",
-    "requestCare": "Seite ansehen lassen"
+    "requestCare": "Seite ansehen lassen",
+    "callShort": "Anrufen",
+    "showQuestions": "Schnell-Check",
+    "previewShort": "Vorschau anfordern"
   }
 }
