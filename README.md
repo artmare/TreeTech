@@ -107,7 +107,8 @@ Assistant leads include compact qualification data and a bounded transcript. Ori
 | Variable | Purpose |
 | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Canonical production URL |
-| `OPENAI_API_KEY` | Server-only website assistant |
+| `OPENROUTER_API_KEY` | Server-only website assistant (free models via OpenRouter) |
+| `OPENROUTER_MODELS` | Optional: comma-separated model list, first one is tried first |
 | `NEXT_PUBLIC_CALENDLY_URL` | Optional booking embed |
 | `NEXT_PUBLIC_CLARITY_PROJECT_ID` | Optional consent-gated Clarity |
 | `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Server-side Google identity |

@@ -117,11 +117,11 @@ export default async function BlogPostPage({params}: PageProps) {
 
         <div className="bg-surface py-12 sm:py-16">
           <Container>
-            <div className="mx-auto grid max-w-[44rem] gap-10">
+            <div className="mx-auto grid max-w-[44rem] gap-10 [&>section]:min-w-0">
               {post.sections.map((section) => (
                 <section key={section.heading[locale]}>
                   <h2 className="text-balance text-[26px] leading-tight text-foreground sm:text-[32px]">
-                    {section.heading[locale]}
+                    {softHyphens(section.heading[locale])}
                   </h2>
                   <div className="mt-4 grid gap-4">
                     {section.body[locale].map((paragraph) => (

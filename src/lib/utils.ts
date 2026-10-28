@@ -7,7 +7,11 @@ const softHyphenWords: Array<[string, string]> = [
   ['Webentwicklung', 'Web\u00ADentwicklung'],
   ['Automatisierung', 'Automati\u00ADsierung'],
   ['Unternehmen', 'Unter\u00ADnehmen'],
-  ['Tourismusbetriebe', 'Tourismus\u00ADbetriebe']
+  ['Tourismusbetriebe', 'Tourismus\u00ADbetriebe'],
+  ['Arbeitswerkzeug', 'Arbeits\u00ADwerkzeug'],
+  ['Unternehmensprofil', 'Unternehmens\u00ADprofil'],
+  ['Handwerksbetriebs', 'Handwerks\u00ADbetriebs'],
+  ['Geschäftsprozesse', 'Geschäfts\u00ADprozesse']
 ];
 
 /** Adds soft hyphens to long German words so big headlines break at sensible places on phones. */

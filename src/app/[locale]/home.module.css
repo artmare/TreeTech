@@ -70,20 +70,22 @@
 .sub { font-size: 18px; margin: var(--s3) 0 0; max-width: 34em; }
 .ctas { display: grid; gap: var(--s2); margin-top: var(--s5); }
 .ctas2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); }
+.hero > *, .ctas2 > * { min-width: 0; }
+.ctas2 .btn { padding-left: 12px; padding-right: 12px; }
 .micro { font-size: 15px; color: var(--stein); margin: var(--s2) 0 0; text-align: center; }
 .stage { display: flex; flex-direction: column; align-items: center; gap: var(--s3); padding: var(--s1) 0 0; }
 .phonewrap { position: relative; padding: 0 28px 22px 0; }
-.phone { width: 248px; border: 10px solid var(--graphit); border-radius: 34px; background: #fff; overflow: hidden; box-shadow: 0 30px 60px -30px rgba(28, 34, 32, .45); }
+.phone { width: min(248px, calc(100vw - 96px)); border: 10px solid var(--graphit); border-radius: 34px; background: #fff; overflow: hidden; box-shadow: 0 30px 60px -30px rgba(28, 34, 32, .45); }
 .phBar { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px 10px; border-bottom: 1px solid #e6e9e5; }
 .phLogo { font-weight: 800; font-size: 13px; font-stretch: 112%; color: #14324f; }
-.phCall { background: #e8590c; color: #fff; font-weight: 700; font-size: 10px; padding: 5px 9px; border-radius: 6px; }
+.phCall { background: #c2410c; color: #fff; font-weight: 700; font-size: 10px; padding: 5px 9px; border-radius: 6px; }
 .phHero { background: #14324f; color: #fff; padding: 18px 14px 20px; }
 .phHero b { display: block; font-stretch: 115%; font-weight: 800; font-size: 19px; line-height: 1.1; }
 .phHero span { display: block; font-size: 10.5px; opacity: .8; margin-top: 8px; line-height: 1.4; }
-.phHero .phBtn { display: block; margin-top: 12px; background: #e8590c; color: #fff; text-align: center; font-weight: 700; font-size: 11px; padding: 9px; border-radius: 6px; opacity: 1; }
+.phHero .phBtn { display: block; margin-top: 12px; background: #c2410c; color: #fff; text-align: center; font-weight: 700; font-size: 11px; padding: 9px; border-radius: 6px; opacity: 1; }
 .phList { padding: 12px 14px 16px; display: grid; gap: 8px; }
 .phItem { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; font-weight: 600; border-bottom: 1px solid #eef0ed; padding-bottom: 7px; }
-.phItem em { font-style: normal; color: #7a8480; font-weight: 500; }
+.phItem em { font-style: normal; color: #5f6965; font-weight: 500; }
 .stamp { position: absolute; right: 0; bottom: 0; transform: rotate(-8deg); background: var(--signal); color: var(--graphit); border: 3px solid var(--graphit); border-radius: 12px; padding: 10px 14px 9px; text-align: center; box-shadow: 4px 4px 0 var(--graphit); }
 .stamp b { display: block; font-stretch: 120%; font-weight: 900; font-size: 19px; line-height: 1.05; }
 .stamp small { display: block; font-size: 11px; font-weight: 700; margin-top: 4px; }
@@ -172,11 +174,12 @@
   .callchip .num, .callchip .label { display: inline; }
   .tt a.callchip { padding: 10px 16px; }
   .btn { white-space: nowrap; }
-  .hero { grid-template-columns: 1.15fr .85fr; align-items: center; padding: 56px 0 88px; padding-left: var(--g); padding-right: var(--g); }
+  .hero { padding: 56px 0 88px; padding-left: var(--g); padding-right: var(--g); }
   .hero h1 { font-size: 68px; }
   .sub { font-size: 20px; }
   .ctas2 { grid-template-columns: auto auto; justify-content: start; }
-  .ctas { grid-template-columns: auto auto; justify-content: start; align-items: center; }
+  .ctas2 .btn { padding-left: 24px; padding-right: 24px; }
+  .ctas { display: flex; flex-wrap: wrap; align-items: center; }
   .micro { text-align: left; }
   .sec { padding: 96px 0; }
   .h2 { font-size: 44px; }
@@ -195,4 +198,8 @@
 }
 @media (min-width: 760px) and (max-width: 979px) {
   .nav { display: none; }
+}
+/* Two columns in the hero only when there is room for the buttons and the phone. */
+@media (min-width: 980px) {
+  .hero { grid-template-columns: 1.15fr .85fr; align-items: center; }
 }

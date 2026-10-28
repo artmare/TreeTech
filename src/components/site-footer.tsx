@@ -2,7 +2,7 @@
 
 import {useTranslations} from 'next-intl';
 
-import {phoneHref, siteConfig} from '@/content/site';
+import {contactEmail, contactPhone, phoneHref} from '@/content/contact-links';
 import {Link, usePathname} from '@/i18n/navigation';
 import {isDemoSitePath} from '@/lib/demo-routes';
 
@@ -31,7 +31,7 @@ export function SiteFooter() {
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-[22px] font-extrabold text-foreground [font-stretch:118%]"
-            aria-label={siteConfig.name}
+            aria-label="TreeTech"
           >
             <i className="inline-block h-[22px] w-3 rounded-[2px] bg-accent" aria-hidden="true" />
             TreeTech
@@ -39,10 +39,10 @@ export function SiteFooter() {
           <p className="mt-3 max-w-md text-[15px] leading-relaxed text-muted">{t('tagline')}</p>
           <p className="mt-4 grid gap-1 text-[15px] font-bold">
             <a className="w-fit text-accent hover:underline" href={phoneHref} data-track="phone_click">
-              {siteConfig.phone}
+              {contactPhone.display}
             </a>
-            <a className="w-fit break-all text-accent hover:underline" href={`mailto:${siteConfig.email}`}>
-              {siteConfig.email}
+            <a className="w-fit break-all text-accent hover:underline" href={`mailto:${contactEmail}`}>
+              {contactEmail}
             </a>
           </p>
           <p className="mt-6 text-sm text-muted">

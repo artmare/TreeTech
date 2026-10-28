@@ -31,18 +31,42 @@ type RateLimitEntry = {
 };
 
 const rateLimit = new Map<string, RateLimitEntry>();
-let openaiClient: OpenAI | null = null;
+let client: OpenAI | null = null;
 
-function getOpenAI() {
-  if (!process.env.OPENAI_API_KEY) {
+/**
+ * Free models on OpenRouter, tried in this order. The list of free models changes often:
+ * set OPENROUTER_MODELS in Vercel (comma separated) to change it without a deploy of new code.
+ * "openrouter/free" picks any available free model and is the last resort.
+ */
+const defaultFreeModels = [
+  'google/gemma-4-31b-it:free',
+  'nvidia/nemotron-3-super-120b-a12b:free',
+  'openrouter/free'
+];
+
+function getModels() {
+  const fromEnv = (process.env.OPENROUTER_MODELS || '')
+    .split(',')
+    .map((model) => model.trim())
+    .filter(Boolean);
+  return fromEnv.length > 0 ? fromEnv : defaultFreeModels;
+}
+
+function getClient() {
+  if (!process.env.OPENROUTER_API_KEY) {
     return null;
   }
 
-  if (!openaiClient) {
-    openaiClient = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
-  }
+  client ||= new OpenAI({
+    apiKey: process.env.OPENROUTER_API_KEY,
+    baseURL: process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1',
+    defaultHeaders: {
+      'HTTP-Referer': 'https://treetech.at',
+      'X-Title': 'TreeTech Website Assistant'
+    }
+  });
 
-  return openaiClient;
+  return client;
 }
 
 export async function POST(request: Request) {
@@ -111,7 +135,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const openai = getOpenAI();
+  const openai = getClient();
 
   if (!openai) {
     return NextResponse.json(
@@ -121,36 +145,36 @@ export async function POST(request: Request) {
   }
 
   const {locale} = parsed.data;
-  const input = parsed.data.messages.slice(-maxHistoryMessages).map((message) => ({
-    role: message.role,
-    content: message.content,
-    type: 'message' as const
-  }));
+  const [model, ...fallbacks] = getModels();
+  const messages = [
+    {role: 'system' as const, content: buildAssistantInstructions(locale)},
+    ...parsed.data.messages.slice(-maxHistoryMessages).map((message) => ({
+      role: message.role,
+      content: message.content
+    }))
+  ];
 
   try {
-    const stream = await openai.responses.create({
-      model: 'gpt-5.5',
-      instructions: buildAssistantInstructions(locale),
-      input,
+    const stream = await openai.chat.completions.create({
+      model,
+      messages,
       stream: true,
-      store: false,
-      reasoning: {effort: 'low'},
-      text: {verbosity: 'low'},
-      prompt_cache_key: `treetech-assistant-${locale}`
-    });
+      temperature: 0.3,
+      max_tokens: 400,
+      // OpenRouter tries these when the first model is busy or no longer free.
+      ...(fallbacks.length > 0 ? {models: [model, ...fallbacks]} : {})
+    } as OpenAI.Chat.ChatCompletionCreateParamsStreaming);
 
     const encoder = new TextEncoder();
 
     const readable = new ReadableStream({
       async start(controller) {
         try {
-          for await (const event of stream) {
-            if (event.type === 'response.output_text.delta') {
-              controller.enqueue(encoder.encode(event.delta));
-            }
-
-            if (event.type === 'response.failed') {
-              throw new Error(event.response.error?.message || 'Assistant response failed.');
+          for await (const chunk of stream) {
+            // Reasoning models also send `delta.reasoning`; only the answer goes to the visitor.
+            const text = chunk.choices[0]?.delta?.content;
+            if (text) {
+              controller.enqueue(encoder.encode(text));
             }
           }
 

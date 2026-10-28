@@ -4,7 +4,8 @@ import {Globe2, Menu, Phone, X} from 'lucide-react';
 import {useTranslations} from 'next-intl';
 import {useState} from 'react';
 
-import {phoneHref, siteConfig} from '@/content/site';
+import {localizedSwitchPath} from '@/content/blog-locales';
+import {contactPhone, phoneHref} from '@/content/contact-links';
 import {localeLabels, localeShortLabels, routing, type Locale} from '@/i18n/routing';
 import {Link, usePathname} from '@/i18n/navigation';
 import {isDemoSitePath} from '@/lib/demo-routes';
@@ -73,7 +74,7 @@ export function SiteHeader({locale}: SiteHeaderProps) {
             {languageOptions.map((item) => (
               <Link
                 key={item}
-                href={pathname}
+                href={localizedSwitchPath(pathname, item)}
                 locale={item}
                 className="inline-flex min-h-11 min-w-9 items-center justify-center rounded-[8px] text-muted transition hover:bg-surface hover:text-foreground"
                 aria-label={`${t('language')}: ${localeLabels[item]}`}
@@ -86,11 +87,11 @@ export function SiteHeader({locale}: SiteHeaderProps) {
             href={phoneHref}
             data-track="phone_click"
             className="inline-flex min-h-11 items-center gap-2 rounded-[10px] border-2 border-foreground px-3 py-2 text-[15px] font-bold text-foreground transition hover:bg-surface md:px-4"
-            aria-label={`${t('call')}: ${siteConfig.phone}`}
+            aria-label={`${t('call')}: ${contactPhone.display}`}
           >
             <Phone className="h-[18px] w-[18px]" aria-hidden="true" />
             <span className="hidden md:inline">{t('call')}</span>
-            <span className="hidden xl:inline">{siteConfig.phone}</span>
+            <span className="hidden xl:inline">{contactPhone.display}</span>
           </a>
           <button
             type="button"
@@ -121,7 +122,7 @@ export function SiteHeader({locale}: SiteHeaderProps) {
               {languageOptions.map((item) => (
                 <Link
                   key={item}
-                  href={pathname}
+                  href={localizedSwitchPath(pathname, item)}
                   locale={item}
                   onClick={() => setOpen(false)}
                   className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[10px] border-2 border-foreground bg-surface px-4 text-sm font-bold text-foreground"
