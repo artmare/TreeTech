@@ -90,6 +90,11 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
   useEffect(() => {
     const timer = window.setTimeout(() => {
       try {
+        // Drop chats saved by older versions of the assistant (other topics, old prices).
+        Object.keys(window.localStorage)
+          .filter((key) => key.startsWith('treetech-assistant') && !key.startsWith('treetech-assistant:v3:'))
+          .forEach((key) => window.localStorage.removeItem(key));
+
         const stored = window.localStorage.getItem(storageKey);
         if (stored) {
           const parsed = JSON.parse(stored) as ChatMessage[];
