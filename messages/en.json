@@ -115,6 +115,9 @@
     "bookingTrust": "Free. You only pay if you like the draft.",
     "whatsappMessage": "Hello TreeTech, I would like a free preview of a website for my business.",
     "qualifierCompleteCare": "Thanks. That is what our care plan is for. Leave your details, we will look at your site and get back to you.",
-    "requestCare": "Have us look at my site"
+    "requestCare": "Have us look at my site",
+    "callShort": "Call",
+    "showQuestions": "Quick check",
+    "previewShort": "Get preview"
   }
 }
