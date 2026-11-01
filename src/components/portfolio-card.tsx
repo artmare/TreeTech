@@ -2,6 +2,7 @@ import {ArrowUpRight} from 'lucide-react';
 
 import type {Locale} from '@/i18n/routing';
 import {Link} from '@/i18n/navigation';
+import {formatPackagePrice, getPackage} from '@/content/pricing';
 import type {PortfolioProject} from '@/content/site';
 
 import {ProjectPreview} from './project-preview';
@@ -15,6 +16,8 @@ type PortfolioCardProps = {
 export function PortfolioCard({project, locale, cta}: PortfolioCardProps) {
   const conceptLabel = {de: 'Demo-Konzept', en: 'Demo concept', ru: 'Демо-концепт'}[locale];
   const goalLabel = {de: 'Ziel', en: 'Goal', ru: 'Цель'}[locale];
+  const packageLabel = {de: 'Paket', en: 'Package', ru: 'Пакет'}[locale];
+  const pkg = getPackage(project.packageId);
   return (
     <article className="group terminal-card grid h-full gap-4 rounded-[1.25rem] p-3 transition duration-300 md:grid-cols-[0.72fr_1fr] md:items-stretch lg:block [&>*]:min-w-0">
       <ProjectPreview project={project} locale={locale} />
@@ -32,6 +35,9 @@ export function PortfolioCard({project, locale, cta}: PortfolioCardProps) {
         <div className="mt-4 rounded-[1rem] border border-border bg-surface px-3 py-3 text-sm font-semibold leading-6 text-foreground">
           <span className="text-accent">{goalLabel}:</span> {project.metric[locale]}
         </div>
+        <p className="mt-3 text-sm text-muted">
+          {packageLabel}: <span className="font-semibold text-foreground">{pkg.name}</span> · {formatPackagePrice(pkg, locale)}
+        </p>
         <Link
           href={`/portfolio/${project.slug}`}
           className="mt-4 inline-flex min-h-14 w-fit items-center gap-2 rounded-[12px] bg-accent px-6 py-3.5 text-base font-bold text-white transition hover:bg-[var(--accent-strong)] lg:mt-5"

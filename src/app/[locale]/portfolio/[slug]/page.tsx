@@ -9,10 +9,13 @@ import {ProjectPreview} from '@/components/project-preview';
 import {ButtonLink} from '@/components/ui/button-link';
 import {Container} from '@/components/ui/container';
 import {demoSiteLabels} from '@/content/demo-sites';
+import {formatPackagePrice, getPackage} from '@/content/pricing';
 import {getPortfolioCaseStudy, getProjectBySlug, portfolioProjects, siteContent} from '@/content/site';
 import {Link} from '@/i18n/navigation';
 import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
+
+const packageLabel = {de: 'Paket', en: 'Package', ru: 'Пакет'} satisfies Record<Locale, string>;
 
 type PageProps = {
   params: Promise<{locale: string; slug: string}>;
@@ -55,6 +58,7 @@ export default async function PortfolioDetailPage({params}: PageProps) {
   }
 
   const caseStudy = getPortfolioCaseStudy(project);
+  const projectPackage = getPackage(project.packageId);
   const storyCards = [
     {label: content.portfolio.problem, text: caseStudy.problem[locale], icon: Target},
     {label: content.portfolio.solution, text: caseStudy.solution[locale], icon: Wrench},
@@ -104,8 +108,10 @@ export default async function PortfolioDetailPage({params}: PageProps) {
                   <p className="mt-1 font-semibold text-foreground">{project.location}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted">{content.portfolio.year}</p>
-                  <p className="mt-1 font-semibold text-foreground">{project.year}</p>
+                  <p className="text-sm text-muted">{packageLabel[locale]}</p>
+                  <p className="mt-1 font-semibold text-foreground">
+                    {projectPackage.name} · {formatPackagePrice(projectPackage, locale)}
+                  </p>
                 </div>
               </div>
             </FadeIn>

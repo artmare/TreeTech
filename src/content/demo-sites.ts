@@ -51,6 +51,92 @@ export type DemoSite = {
     hero: string;
   };
   copy: Localized<DemoSiteCopy>;
+  /** Trade demos (Handwerk) are rendered by `HandwerkDemo` from this config. */
+  handwerk: HandwerkConfig;
+};
+
+export type HandwerkIcon =
+  | 'zap'
+  | 'wrench'
+  | 'shield'
+  | 'star'
+  | 'droplets'
+  | 'flame'
+  | 'bath'
+  | 'thermometer'
+  | 'car'
+  | 'gauge'
+  | 'tire'
+  | 'hammer'
+  | 'ruler'
+  | 'sofa'
+  | 'kitchen'
+  | 'roller'
+  | 'brush'
+  | 'layers'
+  | 'house'
+  | 'storm';
+
+export type HandwerkFormField = {
+  label: string;
+  type?: 'text' | 'tel' | 'date' | 'textarea' | 'select';
+  placeholder?: string;
+  options?: string[];
+  /** Spans both form columns. */
+  wide?: boolean;
+};
+
+export type HandwerkAside =
+  | {type: 'stats'}
+  | {type: 'prices'; title: string; note: string; items: {label: string; price: number}[]}
+  | {
+      type: 'calculator';
+      title: string;
+      label: string;
+      unit: string;
+      min: number;
+      max: number;
+      step: number;
+      defaultValue: number;
+      /** Euro per unit, lower and upper bound of the estimate. */
+      rateLow: number;
+      rateHigh: number;
+      resultLabel: string;
+      note: string;
+    };
+
+export type HandwerkCopy = {
+  areaText: string;
+  towns: string[];
+  hours: string;
+  trust?: string[];
+  emergency?: {title: string; text: string};
+  aside?: HandwerkAside;
+  gallery?: {title: string; text: string; photoLabel: string; items: {title: string; meta: string}[]};
+  form: {fields: HandwerkFormField[]; photo?: string};
+};
+
+export type HandwerkConfig = {
+  /** True when the demo has its own Russian text. Otherwise /ru shows the German version. */
+  russian?: boolean;
+  icon: HandwerkIcon;
+  serviceIcons: HandwerkIcon[];
+  secondaryIcon?: 'camera' | 'calendar';
+  /** Fictional phone number, used only inside the example site. */
+  phone: string;
+  theme: {
+    primary: string;
+    accent: string;
+    accentStrong: string;
+    onDark: string;
+    footer: string;
+    background: string;
+    text: string;
+    muted: string;
+    border: string;
+    chip: string;
+  };
+  copy: Localized<HandwerkCopy>;
 };
 
 export const demoSiteLabels = withLocaleFallbacks({
@@ -77,7 +163,16 @@ export const demoSiteLabels = withLocaleFallbacks({
   }
 }) satisfies Localized<Record<string, string>>;
 
-const demoSiteList = withLocaleFallbacks([
+/** Trade demos are written in German and English. On /ru they show the German text, as an Austrian business would. */
+function deAsRu<T>(value: {de: T; en: T}): Localized<T> {
+  return {...value, ru: value.de};
+}
+
+/**
+ * Example sites for the trades TreeTech targets (Handwerk in Wien and Niederösterreich).
+ * All businesses, phone numbers and prices are made up.
+ */
+export const demoSites: DemoSite[] = [
   {
     slug: 'elektro-huber',
     brand: 'Elektro Huber',
@@ -206,612 +301,934 @@ const demoSiteList = withLocaleFallbacks([
         contactText: 'Пришлите фото и адрес. Перезвоним в течение 30 минут.',
         contactButton: 'Отправить заявку'
       }
+    },
+    handwerk: {
+      russian: true,
+      icon: 'zap',
+      serviceIcons: ['zap', 'wrench', 'shield', 'star'],
+      phone: '02236 000 000',
+      theme: {
+        primary: '#14324f',
+        accent: '#c2410c',
+        accentStrong: '#9a3412',
+        onDark: '#ffb37a',
+        footer: '#0f2338',
+        background: '#f5f6f8',
+        text: '#14202e',
+        muted: '#556170',
+        border: '#e3e7ec',
+        chip: '#eef1f5'
+      },
+      copy: {
+        de: {
+          areaText: 'Wir sind schnell bei Ihnen in',
+          towns: ['Mödling', 'Brunn am Gebirge', 'Maria Enzersdorf', 'Perchtoldsdorf', 'Guntramsdorf', 'Baden', 'Wien Liesing'],
+          hours: 'Mo bis Fr 7 bis 19 Uhr',
+          form: {
+            fields: [
+              {label: 'Name'},
+              {label: 'Telefon', type: 'tel'},
+              {label: 'Adresse', wide: true},
+              {label: 'Was ist los?', type: 'textarea', placeholder: 'z. B. Sicherung fliegt im Bad immer raus', wide: true}
+            ],
+            photo: 'Foto hinzufügen'
+          }
+        },
+        en: {
+          areaText: 'We are with you quickly in',
+          towns: ['Mödling', 'Brunn am Gebirge', 'Maria Enzersdorf', 'Perchtoldsdorf', 'Guntramsdorf', 'Baden', 'Vienna Liesing'],
+          hours: 'Mon to Fri 7am to 7pm',
+          form: {
+            fields: [
+              {label: 'Name'},
+              {label: 'Phone', type: 'tel'},
+              {label: 'Address', wide: true},
+              {label: 'What is wrong?', type: 'textarea', placeholder: 'e.g. the fuse in the bathroom keeps tripping', wide: true}
+            ],
+            photo: 'Add photo'
+          }
+        },
+        ru: {
+          areaText: 'Быстро приедем в',
+          towns: ['Мёдлинг', 'Брунн-ам-Гебирге', 'Мария-Энцерсдорф', 'Перхтольдсдорф', 'Гунтрамсдорф', 'Баден', 'Вена-Лизинг'],
+          hours: 'пн–пт 7:00–19:00',
+          form: {
+            fields: [
+              {label: 'Имя'},
+              {label: 'Телефон', type: 'tel'},
+              {label: 'Адрес', wide: true},
+              {label: 'Что случилось?', type: 'textarea', placeholder: 'например, в ванной всё время выбивает автомат', wide: true}
+            ],
+            photo: 'Добавить фото'
+          }
+        }
+      }
     }
   },
   {
-    slug: 'alpendent',
-    brand: 'AlpenDent',
-    location: 'Innsbruck',
+    slug: 'installateur-novak',
+    brand: 'Installateur Novak',
+    location: 'Wien Favoriten',
     industry: {
-      de: 'Zahnordination',
-      en: 'Dental clinic',
-      ru: 'Стоматология'
+      de: 'Installateur',
+      en: 'Plumber and heating',
+      ru: 'Сантехник и отопление'
     },
     metaTitle: {
-      de: 'AlpenDent Demo-Website | TreeTech Portfolio',
-      en: 'AlpenDent Demo Website | TreeTech Portfolio',
-      ru: 'AlpenDent, пример сайта | TreeTech'
+      de: 'Installateur Novak Beispiel-Website | TreeTech',
+      en: 'Installateur Novak example website | TreeTech',
+      ru: 'Installateur Novak, пример сайта | TreeTech'
     },
     metaDescription: {
-      de: 'Zweisprachige Demo-Website für eine moderne Zahnordination in Innsbruck.',
-      en: 'Bilingual demo website for a modern dental clinic in Innsbruck.',
-      ru: 'Пример сайта для современной стоматологии в Инсбруке. Сайт на немецком, как для настоящей австрийской клиники.'
+      de: 'Beispiel-Website für einen Installateur in Wien: Notdienst-Hinweis, Anfrage mit Foto und Dringlichkeit, Referenzen und Einsatzgebiet. Ein erfundener Betrieb, gebaut von TreeTech.',
+      en: 'Example website for a plumber in Vienna: emergency notice, inquiry with photo and urgency, references and service area. A made-up business built by TreeTech.',
+      ru: 'Пример сайта для сантехника в Вене: аварийный выезд, заявка с фото и срочностью, примеры работ и район выезда. Вымышленная фирма, сайт сделал TreeTech.'
     },
     theme: {
-      background: '#f3fbfa',
+      background: '#f4f7f6',
       surface: '#ffffff',
       text: '#10201f',
-      muted: '#5c706e',
-      primary: '#0d766f',
-      accent: '#9be7dd',
-      hero: 'linear-gradient(135deg, #e8fffb 0%, #ffffff 45%, #dff4ff 100%)'
+      muted: '#4d5f5d',
+      primary: '#0f3d3e',
+      accent: '#b45309',
+      hero: '#0f3d3e'
     },
-    copy: {
+    copy: deAsRu({
       de: {
-        nav: ['Behandlungen', 'Ordination', 'Ablauf', 'Kontakt'],
-        eyebrow: 'Zahnarztpraxis in Innsbruck',
-        title: 'Ruhige Zahnmedizin für ein gutes Gefühl vor dem Termin.',
-        lead:
-          'AlpenDent verbindet moderne Zahnmedizin mit klarer Beratung und einer Atmosphäre, in der sich Patientinnen und Patienten gut aufgehoben fühlen.',
-        primaryCta: 'Termin anfragen',
-        secondaryCta: 'Behandlungen ansehen',
+        nav: ['Leistungen', 'Referenzen', 'Ablauf', 'Kontakt'],
+        eyebrow: 'Installateur in Wien Favoriten und Umgebung',
+        title: 'Therme kalt? Rohr undicht? Wir sind schnell da.',
+        lead: 'Sanitär, Heizung und Thermenservice für Wohnungen, Häuser und Hausverwaltungen. Unterwegs in allen Bezirken südlich der Donau.',
+        primaryCta: 'Jetzt anrufen',
+        secondaryCta: 'Foto vom Schaden senden',
         stats: [
-          {value: '24h', label: 'Rückmeldung bei Online-Anfragen'},
-          {value: '4.9', label: 'Patientenzufriedenheit'},
-          {value: 'DE/EN', label: 'Betreuung auf zwei Sprachen'}
+          {value: '60 min', label: 'Anfahrt im Notfall'},
+          {value: 'Fixpreis', label: 'vor Arbeitsbeginn'},
+          {value: '24/7', label: 'Notdienst bei Rohrbruch'}
         ],
-        introTitle: 'Vertrauen beginnt vor dem ersten Besuch.',
-        introText:
-          'Die Website führt neue Patientinnen und Patienten ruhig durch Leistungen, Team und Terminoptionen. Jede Sektion beantwortet eine konkrete Frage, bevor sie zur Anfrage führt.',
-        servicesTitle: 'Leistungen mit klarer Orientierung',
+        introTitle: 'Ehrliche Preise, saubere Arbeit.',
+        introText: 'Bevor wir anfangen, wissen Sie, was es kostet. Wir arbeiten mit Schuhüberziehern, decken ab und nehmen alte Teile mit.',
+        servicesTitle: 'Was wir für Sie machen',
         services: [
-          {
-            title: 'Prophylaxe & Mundhygiene',
-            text: 'Schonende Betreuung, transparente Empfehlungen und regelmäßige Vorsorge für langfristige Zahngesundheit.'
-          },
-          {
-            title: 'Ästhetische Zahnmedizin',
-            text: 'Bleaching, Veneers und unauffällige Korrekturen mit einem natürlichen Ergebnis im Fokus.'
-          },
-          {
-            title: 'Akute Beschwerden',
-            text: 'Schnelle Einschätzung, klare Kommunikation und planbare nächste Schritte bei Schmerzen.'
-          }
+          {title: 'Rohrbruch und Wasserschaden', text: 'Wir finden das Leck, stoppen das Wasser und dokumentieren den Schaden für Ihre Versicherung.'},
+          {title: 'Thermenservice', text: 'Wartung, Reparatur und Tausch für Vaillant, Junkers, Buderus und andere Marken.'},
+          {title: 'Badsanierung', text: 'Vom alten Bad zur bodenebenen Dusche, mit einem Ansprechpartner für alle Gewerke.'},
+          {title: 'Heizung und Wärmepumpe', text: 'Heizkörper, Fußbodenheizung und der Umstieg von Gas auf Wärmepumpe, mit Förderberatung.'}
         ],
-        processTitle: 'So läuft der erste Termin',
+        processTitle: 'So einfach geht es',
         process: [
-          {title: 'Anfrage', text: 'Patienten senden online ihr Anliegen und erhalten eine zeitnahe Rückmeldung.'},
-          {title: 'Erstgespräch', text: 'Die Ordination klärt Beschwerden, Wünsche und passende Behandlungsschritte.'},
-          {title: 'Behandlung', text: 'Jede Maßnahme wird verständlich erklärt und sorgfältig umgesetzt.'}
+          {title: 'Anrufen oder Foto schicken', text: 'Ein Foto vom Typenschild der Therme oder vom Schaden spart oft eine zweite Anfahrt.'},
+          {title: 'Fixpreis vor Ort', text: 'Wir schauen es uns an und nennen den Preis, bevor wir anfangen.'},
+          {title: 'Repariert und dokumentiert', text: 'Sie bekommen Rechnung und Fotos, auf Wunsch direkt an Hausverwaltung oder Versicherung.'}
         ],
-        testimonial:
-          'Die neue Website nimmt die Unsicherheit vor dem ersten Besuch. Genau das wollten wir erreichen.',
-        testimonialAuthor: 'Dr. Lena Hofer, Leitung AlpenDent',
-        contactTitle: 'Bereit für einen ruhigen ersten Schritt?',
-        contactText: 'Senden Sie Ihre Anfrage direkt an die Ordination. AlpenDent meldet sich mit passenden Terminvorschlägen.',
-        contactButton: 'Jetzt Termin anfragen'
+        testimonial: 'Hier stehen auf Ihrer Website später Ihre echten Google-Bewertungen.',
+        testimonialAuthor: 'Platz für Ihre Bewertungen',
+        contactTitle: 'Was ist passiert?',
+        contactText: 'Beschreiben Sie kurz das Problem und schicken Sie ein Foto. Im Notfall bitte gleich anrufen.',
+        contactButton: 'Anfrage senden'
       },
       en: {
-        nav: ['Treatments', 'Clinic', 'Process', 'Contact'],
-        eyebrow: 'Dental clinic in Innsbruck',
-        title: 'Calm dental care that feels reassuring before the appointment.',
-        lead:
-          'AlpenDent combines modern dentistry with clear guidance and an atmosphere where patients feel genuinely looked after.',
-        primaryCta: 'Request appointment',
-        secondaryCta: 'View treatments',
+        nav: ['Services', 'References', 'Process', 'Contact'],
+        eyebrow: 'Plumber in Vienna Favoriten and nearby',
+        title: 'Boiler cold? Pipe leaking? We are there fast.',
+        lead: 'Plumbing, heating and boiler service for flats, houses and property managers. Working in every district south of the Danube.',
+        primaryCta: 'Call now',
+        secondaryCta: 'Send a photo of the damage',
         stats: [
-          {value: '24h', label: 'Reply time for online requests'},
-          {value: '4.9', label: 'Patient satisfaction'},
-          {value: 'DE/EN', label: 'Care in two languages'}
+          {value: '60 min', label: 'to arrive in an emergency'},
+          {value: 'Fixed price', label: 'before we start'},
+          {value: '24/7', label: 'emergency service for burst pipes'}
         ],
-        introTitle: 'Trust begins before the first visit.',
-        introText:
-          'The website guides new patients calmly through services, team, and appointment options. Every section answers a real question before leading to inquiry.',
-        servicesTitle: 'Services with clear orientation',
+        introTitle: 'Honest prices, clean work.',
+        introText: 'Before we start, you know what it costs. We wear shoe covers, protect the floor and take the old parts with us.',
+        servicesTitle: 'What we do for you',
         services: [
-          {
-            title: 'Prevention & hygiene',
-            text: 'Gentle care, transparent recommendations, and regular prevention for long-term dental health.'
-          },
-          {
-            title: 'Aesthetic dentistry',
-            text: 'Whitening, veneers, and subtle corrections with a natural-looking result in focus.'
-          },
-          {
-            title: 'Acute discomfort',
-            text: 'Fast assessment, clear communication, and planable next steps when pain appears.'
-          }
+          {title: 'Burst pipes and water damage', text: 'We find the leak, stop the water and document the damage for your insurer.'},
+          {title: 'Boiler service', text: 'Maintenance, repair and replacement for Vaillant, Junkers, Buderus and other brands.'},
+          {title: 'Bathroom renovation', text: 'From an old bathroom to a walk-in shower, with one contact for every trade.'},
+          {title: 'Heating and heat pumps', text: 'Radiators, underfloor heating and switching from gas to a heat pump, with subsidy advice.'}
         ],
-        processTitle: 'How the first appointment works',
+        processTitle: 'Simple as that',
         process: [
-          {title: 'Request', text: 'Patients submit their concern online and receive a timely reply.'},
-          {title: 'Consultation', text: 'The clinic clarifies symptoms, wishes, and suitable treatment steps.'},
-          {title: 'Treatment', text: 'Every measure is explained clearly and carried out carefully.'}
+          {title: 'Call or send a photo', text: 'A photo of the boiler label or the damage often saves a second trip.'},
+          {title: 'Fixed price on site', text: 'We take a look and name the price before we start.'},
+          {title: 'Repaired and documented', text: 'You get the invoice and photos, sent straight to your property manager or insurer if you like.'}
         ],
-        testimonial:
-          'The new website reduces uncertainty before the first visit. That was exactly what we wanted.',
-        testimonialAuthor: 'Dr. Lena Hofer, AlpenDent clinic lead',
-        contactTitle: 'Ready for a calm first step?',
-        contactText: 'Send your request directly to the clinic. AlpenDent will reply with suitable appointment options.',
-        contactButton: 'Request appointment now'
+        testimonial: 'Your real Google reviews will appear here on your website.',
+        testimonialAuthor: 'Space for your reviews',
+        contactTitle: 'What happened?',
+        contactText: 'Describe the problem briefly and send a photo. In an emergency, please call right away.',
+        contactButton: 'Send request'
       }
+    }),
+    handwerk: {
+      icon: 'droplets',
+      serviceIcons: ['droplets', 'flame', 'bath', 'thermometer'],
+      phone: '01 000 00 10',
+      theme: {
+        primary: '#0f3d3e',
+        accent: '#b45309',
+        accentStrong: '#92400e',
+        onDark: '#fcd34d',
+        footer: '#0a2a2b',
+        background: '#f4f7f6',
+        text: '#10201f',
+        muted: '#4d5f5d',
+        border: '#d9e3e1',
+        chip: '#e6efed'
+      },
+      copy: deAsRu({
+        de: {
+          areaText: 'Wir sind schnell bei Ihnen in',
+          towns: ['Favoriten', 'Simmering', 'Meidling', 'Liesing', 'Wieden', 'Margareten', 'Hietzing', 'Vösendorf'],
+          hours: 'Mo bis Fr 7 bis 18 Uhr, Notdienst rund um die Uhr',
+          trust: ['Konzessionierter Betrieb', 'Fixpreis vor Arbeitsbeginn', 'Alle Thermenmarken'],
+          emergency: {title: 'Rohrbruch oder Therme aus?', text: 'Notdienst in ganz Wien, auch an Sonn- und Feiertagen.'},
+          gallery: {
+            title: 'Aus unserer Arbeit',
+            text: 'Hier zeigen Sie Ihre eigenen Fotos: vorher, nachher, mit Bezirk.',
+            photoLabel: 'Ihr Foto',
+            items: [
+              {title: 'Badsanierung, Wien 10', meta: 'Bodenebene Dusche, 6 m², in 9 Arbeitstagen'},
+              {title: 'Thermentausch, Wien 12', meta: 'Brennwerttherme, an einem Tag erledigt'},
+              {title: 'Wärmepumpe, Wien 23', meta: 'Einfamilienhaus, Förderantrag inklusive'}
+            ]
+          },
+          form: {
+            fields: [
+              {label: 'Name'},
+              {label: 'Telefon', type: 'tel'},
+              {label: 'Adresse und Bezirk'},
+              {label: 'Worum geht es?', type: 'select', placeholder: 'Bitte wählen', options: ['Rohrbruch oder Wasserschaden', 'Therme oder Heizung', 'Bad oder WC', 'Etwas anderes']},
+              {label: 'Wie dringend?', type: 'select', placeholder: 'Bitte wählen', options: ['Notfall, heute', 'Diese Woche', 'Hat Zeit'], wide: true},
+              {label: 'Was ist los?', type: 'textarea', placeholder: 'z. B. Therme zeigt Fehler F28, kein Warmwasser', wide: true}
+            ],
+            photo: 'Foto hinzufügen'
+          }
+        },
+        en: {
+          areaText: 'We are with you quickly in',
+          towns: ['Favoriten', 'Simmering', 'Meidling', 'Liesing', 'Wieden', 'Margareten', 'Hietzing', 'Vösendorf'],
+          hours: 'Mon to Fri 7am to 6pm, emergency service around the clock',
+          trust: ['Licensed business', 'Fixed price before we start', 'All boiler brands'],
+          emergency: {title: 'Burst pipe or boiler down?', text: 'Emergency service across Vienna, Sundays and holidays included.'},
+          gallery: {
+            title: 'Recent work',
+            text: 'This is where your own photos go: before, after, with the district.',
+            photoLabel: 'Your photo',
+            items: [
+              {title: 'Bathroom renovation, Vienna 10', meta: 'Walk-in shower, 6 m², in 9 working days'},
+              {title: 'Boiler replacement, Vienna 12', meta: 'Condensing boiler, done in one day'},
+              {title: 'Heat pump, Vienna 23', meta: 'Detached house, subsidy application included'}
+            ]
+          },
+          form: {
+            fields: [
+              {label: 'Name'},
+              {label: 'Phone', type: 'tel'},
+              {label: 'Address and district'},
+              {label: 'What is it about?', type: 'select', placeholder: 'Please choose', options: ['Burst pipe or water damage', 'Boiler or heating', 'Bathroom or toilet', 'Something else']},
+              {label: 'How urgent?', type: 'select', placeholder: 'Please choose', options: ['Emergency, today', 'This week', 'No rush'], wide: true},
+              {label: 'What is wrong?', type: 'textarea', placeholder: 'e.g. boiler shows error F28, no hot water', wide: true}
+            ],
+            photo: 'Add photo'
+          }
+        }
+      })
     }
   },
   {
-    slug: 'vienna-legal',
-    brand: 'Vienna Legal',
-    location: 'Wien',
+    slug: 'kfz-berger',
+    brand: 'KFZ Berger',
+    location: 'Wien Floridsdorf',
     industry: {
-      de: 'Rechtsanwaltskanzlei',
-      en: 'Law firm',
-      ru: 'Адвокатская контора'
+      de: 'Kfz-Werkstatt',
+      en: 'Car repair shop',
+      ru: 'Автомастерская'
     },
     metaTitle: {
-      de: 'Vienna Legal Demo-Website | TreeTech Portfolio',
-      en: 'Vienna Legal Demo Website | TreeTech Portfolio',
-      ru: 'Vienna Legal, пример сайта | TreeTech'
+      de: 'KFZ Berger Beispiel-Website | TreeTech',
+      en: 'KFZ Berger example website | TreeTech',
+      ru: 'KFZ Berger, пример сайта | TreeTech'
     },
     metaDescription: {
-      de: 'Zweisprachige Demo-Website für eine seriöse Wiener Rechtsanwaltskanzlei.',
-      en: 'Bilingual demo website for a composed Vienna law firm.',
-      ru: 'Пример сайта для адвокатской конторы в Вене. Сайт на немецком, как для настоящей австрийской фирмы.'
+      de: 'Beispiel-Website für eine Kfz-Werkstatt in Wien: Richtpreise, Online-Terminanfrage mit Kennzeichen und Wunschtag. Ein erfundener Betrieb, gebaut von TreeTech.',
+      en: 'Example website for a car repair shop in Vienna: guide prices, online appointment request with plate number and preferred day. A made-up business built by TreeTech.',
+      ru: 'Пример сайта для автомастерской в Вене: ориентировочные цены, онлайн-запись с номером машины и желаемым днём. Вымышленная фирма, сайт сделал TreeTech.'
     },
     theme: {
-      background: '#f6f4ef',
+      background: '#f4f4f5',
       surface: '#ffffff',
-      text: '#15171f',
-      muted: '#646875',
-      primary: '#1d2f6f',
-      accent: '#c89b3c',
-      hero: 'linear-gradient(135deg, #111827 0%, #1d2f6f 54%, #f2d28b 100%)'
+      text: '#18181b',
+      muted: '#52525b',
+      primary: '#1f2328',
+      accent: '#c8102e',
+      hero: '#1f2328'
     },
-    copy: {
+    copy: deAsRu({
       de: {
-        nav: ['Fachgebiete', 'Kanzlei', 'Ablauf', 'Kontakt'],
-        eyebrow: 'Kanzlei für Wirtschafts- und Immobilienrecht',
-        title: 'Klare rechtliche Orientierung, bevor es kompliziert wird.',
-        lead:
-          'Vienna Legal begleitet Unternehmen, Eigentümer und Privatpersonen mit präziser Beratung und einem diskreten Weg zum Erstgespräch.',
-        primaryCta: 'Erstgespräch anfragen',
-        secondaryCta: 'Fachgebiete ansehen',
+        nav: ['Leistungen', 'Referenzen', 'Ablauf', 'Termin'],
+        eyebrow: 'Kfz-Werkstatt in Wien Floridsdorf',
+        title: 'Pickerl fällig? Termin in zwei Minuten.',
+        lead: 'Service, Pickerl, Reifen und Reparaturen für alle Marken. Fixpreis vorher, das Auto meist am selben Tag zurück.',
+        primaryCta: 'Jetzt anrufen',
+        secondaryCta: 'Termin anfragen',
         stats: [
-          {value: '3', label: 'Kernbereiche'},
-          {value: '48h', label: 'Rückmeldung auf Anfragen'},
-          {value: 'DE/EN', label: 'Mandantenkommunikation'}
+          {value: 'Alle Marken', label: 'Pkw und Kleintransporter'},
+          {value: 'Fixpreis', label: 'bevor wir anfangen'},
+          {value: 'Gleicher Tag', label: 'für Service und Pickerl'}
         ],
-        introTitle: 'Seriös, klar und ohne juristische Nebelwand.',
-        introText:
-          'Die Website erklärt Fachgebiete in verständlicher Sprache und führt Mandantinnen und Mandanten zu einem sicheren ersten Kontakt.',
-        servicesTitle: 'Fachgebiete',
+        introTitle: 'Sie wissen vorher, was es kostet.',
+        introText: 'Wir rufen an, bevor wir etwas machen, das nicht vereinbart ist. Alte Teile bekommen Sie auf Wunsch zurück.',
+        servicesTitle: 'Was wir für Sie machen',
         services: [
-          {
-            title: 'Wirtschaftsrecht',
-            text: 'Verträge, Gesellschaftsfragen und laufende rechtliche Begleitung für Unternehmen.'
-          },
-          {
-            title: 'Immobilienrecht',
-            text: 'Kauf, Bestand, Entwicklung und Streitfragen mit Fokus auf saubere Entscheidungen.'
-          },
-          {
-            title: 'Konfliktlösung',
-            text: 'Strategische Einschätzung, Verhandlung und gerichtliche Vertretung, wenn es nötig ist.'
-          }
+          {title: 'Pickerl (§57a)', text: 'Begutachtung im Haus. Kleine Mängel beheben wir gleich mit, damit Sie nicht zweimal kommen.'},
+          {title: 'Service nach Herstellervorgabe', text: 'Ölservice und Inspektion. Die Herstellergarantie bleibt erhalten.'},
+          {title: 'Reifen und Einlagerung', text: 'Wechseln, wuchten und einlagern. Termin meist in derselben Woche.'},
+          {title: 'Reparatur und Diagnose', text: 'Bremsen, Kupplung, Fehlerspeicher. Immer mit Kostenvoranschlag.'}
         ],
-        processTitle: 'Vom Anliegen zur Einschätzung',
+        processTitle: 'So läuft es ab',
         process: [
-          {title: 'Kurz schildern', text: 'Mandanten beschreiben ihr Anliegen sicher und knapp über das Formular.'},
-          {title: 'Prüfen', text: 'Die Kanzlei klärt Zuständigkeit, Dringlichkeit und die passende Vorgehensweise.'},
-          {title: 'Beraten', text: 'Im Erstgespräch entstehen klare Optionen, Risiken und nächste Schritte.'}
+          {title: 'Termin anfragen', text: 'Online oder per Telefon, mit Kennzeichen und Wunschtag.'},
+          {title: 'Auto abgeben', text: 'In der Früh vorbeibringen. Wir rufen mit dem Fixpreis an.'},
+          {title: 'Abholen', text: 'Meist am selben Tag. Rechnung und Servicebuch liegen im Auto.'}
         ],
-        testimonial:
-          'Die Seite wirkt wie unsere Kanzlei: ruhig, präzise und auf den Punkt.',
-        testimonialAuthor: 'Mag. Thomas Berger, Partner Vienna Legal',
-        contactTitle: 'Ihr Anliegen braucht eine klare Einschätzung?',
-        contactText: 'Senden Sie eine kurze Beschreibung. Vienna Legal meldet sich diskret mit dem passenden nächsten Schritt.',
-        contactButton: 'Kontakt aufnehmen'
+        testimonial: 'Hier stehen auf Ihrer Website später Ihre echten Google-Bewertungen.',
+        testimonialAuthor: 'Platz für Ihre Bewertungen',
+        contactTitle: 'Termin anfragen',
+        contactText: 'Kennzeichen, Wunschtag und Anliegen. Wir bestätigen den Termin am selben Werktag.',
+        contactButton: 'Termin anfragen'
       },
       en: {
-        nav: ['Practice areas', 'Firm', 'Process', 'Contact'],
-        eyebrow: 'Commercial and real estate law firm',
-        title: 'Clear legal orientation before things become complicated.',
-        lead:
-          'Vienna Legal supports companies, owners, and private clients with precise advice and a discreet path to the first consultation.',
-        primaryCta: 'Request consultation',
-        secondaryCta: 'View practice areas',
+        nav: ['Services', 'References', 'Process', 'Appointment'],
+        eyebrow: 'Car repair shop in Vienna Floridsdorf',
+        title: 'MOT due? Book in two minutes.',
+        lead: 'Service, roadworthiness test, tyres and repairs for every make. Fixed price upfront, car usually back the same day.',
+        primaryCta: 'Call now',
+        secondaryCta: 'Request an appointment',
         stats: [
-          {value: '3', label: 'Core areas'},
-          {value: '48h', label: 'Response time'},
-          {value: 'DE/EN', label: 'Client communication'}
+          {value: 'All makes', label: 'cars and small vans'},
+          {value: 'Fixed price', label: 'before we start'},
+          {value: 'Same day', label: 'for service and MOT'}
         ],
-        introTitle: 'Composed, clear, and free of legal fog.',
-        introText:
-          'The website explains practice areas in understandable language and guides potential clients toward a confident first contact.',
-        servicesTitle: 'Practice areas',
+        introTitle: 'You know the cost upfront.',
+        introText: 'We call before doing anything that was not agreed. You get the old parts back if you want them.',
+        servicesTitle: 'What we do for you',
         services: [
-          {
-            title: 'Commercial law',
-            text: 'Contracts, corporate matters, and ongoing legal support for businesses.'
-          },
-          {
-            title: 'Real estate law',
-            text: 'Purchase, lease, development, and disputes with a focus on clean decisions.'
-          },
-          {
-            title: 'Dispute resolution',
-            text: 'Strategic assessment, negotiation, and court representation when needed.'
-          }
+          {title: 'Roadworthiness test (§57a)', text: 'Tested in-house. We fix small defects right away so you do not have to come twice.'},
+          {title: 'Manufacturer service', text: 'Oil service and inspection. Your manufacturer warranty stays valid.'},
+          {title: 'Tyres and storage', text: 'Change, balance and store. Usually booked within the same week.'},
+          {title: 'Repair and diagnostics', text: 'Brakes, clutch, fault memory. Always with a quote.'}
         ],
-        processTitle: 'From concern to assessment',
+        processTitle: 'How it works',
         process: [
-          {title: 'Describe briefly', text: 'Clients outline their concern securely and concisely through the form.'},
-          {title: 'Review', text: 'The firm checks fit, urgency, and the right way forward.'},
-          {title: 'Advise', text: 'The first consultation clarifies options, risks, and next steps.'}
+          {title: 'Request a slot', text: 'Online or by phone, with plate number and preferred day.'},
+          {title: 'Drop off the car', text: 'Bring it in the morning. We call you with the fixed price.'},
+          {title: 'Pick it up', text: 'Usually the same day. Invoice and service book are in the car.'}
         ],
-        testimonial:
-          'The website feels like our firm: calm, precise, and to the point.',
-        testimonialAuthor: 'Mag. Thomas Berger, partner at Vienna Legal',
-        contactTitle: 'Does your matter need a clear assessment?',
-        contactText: 'Send a short description. Vienna Legal will reply discreetly with the right next step.',
-        contactButton: 'Get in touch'
+        testimonial: 'Your real Google reviews will appear here on your website.',
+        testimonialAuthor: 'Space for your reviews',
+        contactTitle: 'Request an appointment',
+        contactText: 'Plate number, preferred day and what you need. We confirm on the same working day.',
+        contactButton: 'Request appointment'
       }
+    }),
+    handwerk: {
+      icon: 'car',
+      serviceIcons: ['shield', 'gauge', 'tire', 'wrench'],
+      secondaryIcon: 'calendar',
+      phone: '01 000 00 21',
+      theme: {
+        primary: '#1f2328',
+        accent: '#c8102e',
+        accentStrong: '#9b0c23',
+        onDark: '#f5b942',
+        footer: '#141619',
+        background: '#f4f4f5',
+        text: '#18181b',
+        muted: '#52525b',
+        border: '#e0e0e4',
+        chip: '#ececef'
+      },
+      copy: deAsRu({
+        de: {
+          areaText: 'Unsere Kundschaft kommt vor allem aus',
+          towns: ['Floridsdorf', 'Donaustadt', 'Brigittenau', 'Stammersdorf', 'Strebersdorf', 'Gerasdorf', 'Langenzersdorf'],
+          hours: 'Mo bis Fr 7:30 bis 17:30 Uhr, Sa nach Vereinbarung',
+          trust: ['§57a-Prüfstelle', 'Alle Marken', 'Ersatzauto auf Anfrage'],
+          aside: {
+            type: 'prices',
+            title: 'Richtpreise',
+            note: 'Endpreise inkl. MwSt. Den Fixpreis nennen wir, nachdem wir das Auto gesehen haben.',
+            items: [
+              {label: 'Pickerl-Begutachtung', price: 69},
+              {label: 'Reifenwechsel', price: 39},
+              {label: 'Klimaservice', price: 89},
+              {label: 'Ölservice', price: 129}
+            ]
+          },
+          form: {
+            fields: [
+              {label: 'Name'},
+              {label: 'Telefon', type: 'tel'},
+              {label: 'Kennzeichen', placeholder: 'z. B. W-12345A'},
+              {label: 'Marke und Modell', placeholder: 'z. B. VW Golf, 2017'},
+              {label: 'Wunschtermin', type: 'date'},
+              {label: 'Anliegen', type: 'select', placeholder: 'Bitte wählen', options: ['Pickerl', 'Service', 'Reifen', 'Reparatur', 'Etwas anderes']},
+              {label: 'Bemerkung', type: 'textarea', placeholder: 'z. B. Quietschen beim Bremsen', wide: true}
+            ],
+            photo: 'Foto vom Schaden (optional)'
+          }
+        },
+        en: {
+          areaText: 'Most of our customers come from',
+          towns: ['Floridsdorf', 'Donaustadt', 'Brigittenau', 'Stammersdorf', 'Strebersdorf', 'Gerasdorf', 'Langenzersdorf'],
+          hours: 'Mon to Fri 7:30am to 5:30pm, Sat by appointment',
+          trust: ['Licensed §57a test centre', 'All makes', 'Courtesy car on request'],
+          aside: {
+            type: 'prices',
+            title: 'Guide prices',
+            note: 'Final prices incl. VAT. We confirm the fixed price once we have seen the car.',
+            items: [
+              {label: 'Roadworthiness test', price: 69},
+              {label: 'Tyre change', price: 39},
+              {label: 'Air-con service', price: 89},
+              {label: 'Oil service', price: 129}
+            ]
+          },
+          form: {
+            fields: [
+              {label: 'Name'},
+              {label: 'Phone', type: 'tel'},
+              {label: 'Plate number', placeholder: 'e.g. W-12345A'},
+              {label: 'Make and model', placeholder: 'e.g. VW Golf, 2017'},
+              {label: 'Preferred date', type: 'date'},
+              {label: 'What do you need?', type: 'select', placeholder: 'Please choose', options: ['Roadworthiness test', 'Service', 'Tyres', 'Repair', 'Something else']},
+              {label: 'Notes', type: 'textarea', placeholder: 'e.g. squeaking when braking', wide: true}
+            ],
+            photo: 'Photo of the damage (optional)'
+          }
+        }
+      })
     }
   },
   {
-    slug: 'bergblick-hotel',
-    brand: 'Bergblick Hotel',
-    location: 'Salzkammergut',
+    slug: 'tischlerei-gruber',
+    brand: 'Tischlerei Gruber',
+    location: 'Korneuburg',
     industry: {
-      de: 'Alpines Hotel',
-      en: 'Alpine hotel',
-      ru: 'Альпийский отель'
+      de: 'Tischlerei',
+      en: 'Joinery',
+      ru: 'Столярная мастерская'
     },
     metaTitle: {
-      de: 'Bergblick Hotel Demo-Website | TreeTech Portfolio',
-      en: 'Bergblick Hotel Demo Website | TreeTech Portfolio',
-      ru: 'Bergblick Hotel, пример сайта | TreeTech'
+      de: 'Tischlerei Gruber Beispiel-Website | TreeTech',
+      en: 'Tischlerei Gruber example website | TreeTech',
+      ru: 'Tischlerei Gruber, пример сайта | TreeTech'
     },
     metaDescription: {
-      de: 'Zweisprachige Demo-Website für ein alpines Hotel im Salzkammergut.',
-      en: 'Bilingual demo website for an alpine hotel in the Salzkammergut.',
-      ru: 'Пример сайта для альпийского отеля в Зальцкаммергуте. Сайт на немецком, как для настоящего австрийского отеля.'
+      de: 'Beispiel-Website für eine Tischlerei in Korneuburg: Referenzgalerie, Anfrage mit Foto oder Skizze, Leistungen und Einsatzgebiet. Ein erfundener Betrieb, gebaut von TreeTech.',
+      en: 'Example website for a joinery in Korneuburg: project gallery, inquiry with photo or sketch, services and service area. A made-up business built by TreeTech.',
+      ru: 'Пример сайта для столярной мастерской в Корнойбурге: галерея работ, заявка с фото или эскизом, услуги и район работы. Вымышленная фирма, сайт сделал TreeTech.'
     },
     theme: {
-      background: '#f5f8f3',
+      background: '#f7f3ec',
       surface: '#ffffff',
-      text: '#172018',
-      muted: '#63705f',
-      primary: '#2f6b45',
-      accent: '#8ecae6',
-      hero: 'linear-gradient(135deg, #2f6b45 0%, #8ecae6 52%, #fff7df 100%)'
+      text: '#241a12',
+      muted: '#6b5a4a',
+      primary: '#3b2a1e',
+      accent: '#2f6b4f',
+      hero: '#3b2a1e'
     },
-    copy: {
+    copy: deAsRu({
       de: {
-        nav: ['Zimmer', 'Erlebnisse', 'Angebote', 'Anfrage'],
-        eyebrow: 'Alpines Hideaway im Salzkammergut',
-        title: 'Urlaub mit Weitblick, Ruhe und einem klaren Weg zur Direktanfrage.',
-        lead:
-          'Das Bergblick Hotel verbindet alpine Erholung, regionale Küche und persönlichen Service für Gäste, die bewusst buchen.',
-        primaryCta: 'Aufenthalt anfragen',
-        secondaryCta: 'Zimmer entdecken',
+        nav: ['Leistungen', 'Referenzen', 'Ablauf', 'Kontakt'],
+        eyebrow: 'Tischlerei in Korneuburg und im Weinviertel',
+        title: 'Möbel, die genau in Ihren Raum passen.',
+        lead: 'Küchen, Einbauschränke und Möbel nach Maß. Geplant bei Ihnen zu Hause, gebaut in unserer Werkstatt, montiert von uns.',
+        primaryCta: 'Jetzt anrufen',
+        secondaryCta: 'Foto oder Skizze senden',
         stats: [
-          {value: '32', label: 'Zimmer & Suiten'},
-          {value: '4', label: 'Jahreszeiten-Angebote'},
-          {value: 'DE/EN', label: 'Gästekommunikation'}
+          {value: 'Seit 1978', label: 'Familienbetrieb in 3. Generation'},
+          {value: '3D-Planung', label: 'kostenlos vor dem Auftrag'},
+          {value: '8 Wochen', label: 'typische Lieferzeit für eine Küche'}
         ],
-        introTitle: 'Inspiration und Buchungsabsicht gehören zusammen.',
-        introText:
-          'Die Website zeigt Atmosphäre, Zimmer und Region emotional, führt aber immer wieder sauber zur Direktanfrage.',
-        servicesTitle: 'Was Gäste erwartet',
+        introTitle: 'Vom ersten Maß bis zur letzten Schraube.',
+        introText: 'Sie haben einen Ansprechpartner: den Tischler, der misst, plant und am Ende selbst montiert. Kein Callcenter, keine Subfirmen.',
+        servicesTitle: 'Was wir für Sie bauen',
         services: [
-          {
-            title: 'Zimmer mit Ausblick',
-            text: 'Ruhige Zimmer, helle Materialien und Balkone mit Blick in die Berge.'
-          },
-          {
-            title: 'Regionale Kulinarik',
-            text: 'Frühstück, Abendmenüs und Produkte aus der Region mit persönlicher Handschrift.'
-          },
-          {
-            title: 'Sommer & Winter',
-            text: 'Wandern, Seen, Skitage und Wellnessmomente mit passenden saisonalen Angeboten.'
-          }
+          {title: 'Küchen nach Maß', text: 'Auch für Dachschrägen und Altbau. Mit Geräten Ihrer Wahl.'},
+          {title: 'Einbauschränke', text: 'Nischen, Schrägen und Vorräume voll genutzt, bis unter die Decke.'},
+          {title: 'Möbel und Innenausbau', text: 'Tische, Betten, Wandverkleidungen und Türen aus Eiche, Nuss oder Lärche.'},
+          {title: 'Reparatur und Aufarbeitung', text: 'Alte Möbel und Holzfenster wieder schön machen, statt neu zu kaufen.'}
         ],
-        processTitle: 'Direkt anfragen ohne Umwege',
+        processTitle: 'So entsteht Ihr Möbel',
         process: [
-          {title: 'Zeitraum wählen', text: 'Gäste geben Reisedaten, Personen und Wünsche an.'},
-          {title: 'Angebot erhalten', text: 'Das Hotel sendet ein persönliches Angebot statt anonymer Standardpreise.'},
-          {title: 'Aufenthalt fixieren', text: 'Die Buchung wird direkt und nachvollziehbar abgeschlossen.'}
+          {title: 'Aufmaß bei Ihnen', text: 'Wir kommen vorbei, messen genau und hören zu, was Sie brauchen.'},
+          {title: 'Planung mit 3D-Ansicht', text: 'Sie sehen vorher, wie es aussieht, und bekommen einen Fixpreis.'},
+          {title: 'Fertigung und Montage', text: 'In unserer Werkstatt gebaut und meist an einem Tag bei Ihnen montiert.'}
         ],
-        testimonial:
-          'Die Website fühlt sich nach Urlaub an und macht Direktanfragen viel einfacher.',
-        testimonialAuthor: 'Maria Leitner, Gastgeberin Bergblick Hotel',
-        contactTitle: 'Planen Sie Ihre Auszeit in den Bergen?',
-        contactText: 'Fragen Sie Ihren Wunschzeitraum direkt an. Das Bergblick Team sendet ein persönliches Angebot.',
-        contactButton: 'Aufenthalt anfragen'
+        testimonial: 'Hier stehen auf Ihrer Website später Ihre echten Google-Bewertungen.',
+        testimonialAuthor: 'Platz für Ihre Bewertungen',
+        contactTitle: 'Was planen Sie?',
+        contactText: 'Ein Handyfoto vom Raum und ungefähre Maße reichen für eine erste Einschätzung.',
+        contactButton: 'Anfrage senden'
       },
       en: {
-        nav: ['Rooms', 'Experiences', 'Offers', 'Inquiry'],
-        eyebrow: 'Alpine hideaway in the Salzkammergut',
-        title: 'A stay with mountain views, calm, and a clear path to direct inquiry.',
-        lead:
-          'Bergblick Hotel combines alpine relaxation, regional cuisine, and personal service for guests who book intentionally.',
-        primaryCta: 'Request a stay',
-        secondaryCta: 'Explore rooms',
+        nav: ['Services', 'References', 'Process', 'Contact'],
+        eyebrow: 'Joinery in Korneuburg and the Weinviertel',
+        title: 'Furniture that fits your room exactly.',
+        lead: 'Kitchens, fitted wardrobes and custom furniture. Planned in your home, built in our workshop, installed by us.',
+        primaryCta: 'Call now',
+        secondaryCta: 'Send a photo or sketch',
         stats: [
-          {value: '32', label: 'Rooms & suites'},
-          {value: '4', label: 'Seasonal offers'},
-          {value: 'DE/EN', label: 'Guest communication'}
+          {value: 'Since 1978', label: 'family business, third generation'},
+          {value: '3D planning', label: 'free before you order'},
+          {value: '8 weeks', label: 'typical lead time for a kitchen'}
         ],
-        introTitle: 'Inspiration and booking intent belong together.',
-        introText:
-          'The website presents atmosphere, rooms, and region emotionally while consistently guiding guests toward direct inquiry.',
-        servicesTitle: 'What guests can expect',
+        introTitle: 'From the first measurement to the last screw.',
+        introText: 'You have one contact: the joiner who measures, plans and installs it himself. No call centre, no subcontractors.',
+        servicesTitle: 'What we build for you',
         services: [
-          {
-            title: 'Rooms with a view',
-            text: 'Quiet rooms, bright materials, and balconies facing the mountains.'
-          },
-          {
-            title: 'Regional cuisine',
-            text: 'Breakfast, dinner menus, and local products with a personal signature.'
-          },
-          {
-            title: 'Summer & winter',
-            text: 'Hiking, lakes, ski days, and wellness moments with seasonal offers.'
-          }
+          {title: 'Custom kitchens', text: 'Also for sloped ceilings and old buildings. With the appliances you choose.'},
+          {title: 'Fitted wardrobes', text: 'Niches, slopes and hallways fully used, right up to the ceiling.'},
+          {title: 'Furniture and interiors', text: 'Tables, beds, wall panelling and doors in oak, walnut or larch.'},
+          {title: 'Repair and restoration', text: 'Make old furniture and wooden windows beautiful again instead of buying new.'}
         ],
-        processTitle: 'Direct inquiry without detours',
+        processTitle: 'How your furniture is made',
         process: [
-          {title: 'Choose dates', text: 'Guests enter travel dates, people, and personal wishes.'},
-          {title: 'Receive offer', text: 'The hotel sends a personal offer instead of anonymous standard prices.'},
-          {title: 'Confirm stay', text: 'The booking is completed directly and transparently.'}
+          {title: 'We measure at your place', text: 'We come by, measure precisely and listen to what you need.'},
+          {title: 'Planning with a 3D view', text: 'You see how it will look and get a fixed price.'},
+          {title: 'Build and install', text: 'Built in our workshop and usually installed in a single day.'}
         ],
-        testimonial:
-          'The website feels like a holiday and makes direct inquiries much easier.',
-        testimonialAuthor: 'Maria Leitner, host at Bergblick Hotel',
-        contactTitle: 'Planning your mountain getaway?',
-        contactText: 'Request your preferred dates directly. The Bergblick team will send a personal offer.',
-        contactButton: 'Request a stay'
+        testimonial: 'Your real Google reviews will appear here on your website.',
+        testimonialAuthor: 'Space for your reviews',
+        contactTitle: 'What are you planning?',
+        contactText: 'A phone photo of the room and rough measurements are enough for a first estimate.',
+        contactButton: 'Send request'
       }
+    }),
+    handwerk: {
+      icon: 'hammer',
+      serviceIcons: ['kitchen', 'layers', 'sofa', 'ruler'],
+      phone: '02262 000 000',
+      theme: {
+        primary: '#3b2a1e',
+        accent: '#2f6b4f',
+        accentStrong: '#245540',
+        onDark: '#e8c99b',
+        footer: '#2a1d14',
+        background: '#f7f3ec',
+        text: '#241a12',
+        muted: '#6b5a4a',
+        border: '#e4d9c8',
+        chip: '#efe6d8'
+      },
+      copy: deAsRu({
+        de: {
+          areaText: 'Wir planen und montieren in',
+          towns: ['Korneuburg', 'Stockerau', 'Bisamberg', 'Langenzersdorf', 'Leobendorf', 'Hollabrunn', 'Wien Floridsdorf'],
+          hours: 'Mo bis Do 7 bis 16 Uhr, Fr 7 bis 12 Uhr',
+          trust: ['Eigene Werkstatt', 'Heimische Hölzer', 'Montage durch unser Team'],
+          gallery: {
+            title: 'Aus unserer Werkstatt',
+            text: 'Auf Ihrer Website stehen hier Fotos Ihrer eigenen Arbeiten.',
+            photoLabel: 'Ihr Foto',
+            items: [
+              {title: 'Küche in Eiche', meta: 'Korneuburg, Altbau mit Dachschräge'},
+              {title: 'Einbauschrank im Vorraum', meta: 'Stockerau, 4,1 m bis unter die Decke'},
+              {title: 'Esstisch aus Nuss', meta: 'Wien 21, für zehn Personen'}
+            ]
+          },
+          form: {
+            fields: [
+              {label: 'Name'},
+              {label: 'Telefon oder E-Mail'},
+              {label: 'Ort'},
+              {label: 'Was planen Sie?', type: 'select', placeholder: 'Bitte wählen', options: ['Küche', 'Einbauschrank', 'Möbel', 'Innenausbau', 'Reparatur']},
+              {label: 'Raum und ungefähre Maße', type: 'textarea', placeholder: 'z. B. Dachschräge im Schlafzimmer, 3,2 m breit', wide: true}
+            ],
+            photo: 'Foto oder Skizze hinzufügen'
+          }
+        },
+        en: {
+          areaText: 'We plan and install in',
+          towns: ['Korneuburg', 'Stockerau', 'Bisamberg', 'Langenzersdorf', 'Leobendorf', 'Hollabrunn', 'Vienna Floridsdorf'],
+          hours: 'Mon to Thu 7am to 4pm, Fri 7am to 12pm',
+          trust: ['Our own workshop', 'Local timber', 'Installed by our team'],
+          gallery: {
+            title: 'From our workshop',
+            text: 'On your website this is where photos of your own work go.',
+            photoLabel: 'Your photo',
+            items: [
+              {title: 'Oak kitchen', meta: 'Korneuburg, old building with sloped ceiling'},
+              {title: 'Hallway wardrobe', meta: 'Stockerau, 4.1 m up to the ceiling'},
+              {title: 'Walnut dining table', meta: 'Vienna 21, seats ten'}
+            ]
+          },
+          form: {
+            fields: [
+              {label: 'Name'},
+              {label: 'Phone or email'},
+              {label: 'Town'},
+              {label: 'What are you planning?', type: 'select', placeholder: 'Please choose', options: ['Kitchen', 'Fitted wardrobe', 'Furniture', 'Interior fit-out', 'Repair']},
+              {label: 'Room and rough measurements', type: 'textarea', placeholder: 'e.g. sloped ceiling in the bedroom, 3.2 m wide', wide: true}
+            ],
+            photo: 'Add a photo or sketch'
+          }
+        }
+      })
     }
   },
   {
-    slug: 'greenhaus-immobilien',
-    brand: 'GreenHaus Immobilien',
-    location: 'Graz',
+    slug: 'malerei-steiner',
+    brand: 'Malerei Steiner',
+    location: 'Wien Donaustadt',
     industry: {
-      de: 'Immobilienagentur',
-      en: 'Real estate agency',
-      ru: 'Агентство недвижимости'
+      de: 'Maler und Anstreicher',
+      en: 'Painter and decorator',
+      ru: 'Маляр'
     },
     metaTitle: {
-      de: 'GreenHaus Immobilien Demo-Website | TreeTech Portfolio',
-      en: 'GreenHaus Immobilien Demo Website | TreeTech Portfolio',
-      ru: 'GreenHaus Immobilien, пример сайта | TreeTech'
+      de: 'Malerei Steiner Beispiel-Website | TreeTech',
+      en: 'Malerei Steiner example website | TreeTech',
+      ru: 'Malerei Steiner, пример сайта | TreeTech'
     },
     metaDescription: {
-      de: 'Zweisprachige Demo-Website für eine Immobilienagentur in Graz.',
-      en: 'Bilingual demo website for a real estate agency in Graz.',
-      ru: 'Пример сайта для агентства недвижимости в Граце. Сайт на немецком, как для настоящей австрийской фирмы.'
+      de: 'Beispiel-Website für einen Malerbetrieb in Wien: Richtpreis-Rechner, Anfrage mit Fotos, Leistungen und Einsatzgebiet. Ein erfundener Betrieb, gebaut von TreeTech.',
+      en: 'Example website for a painter in Vienna: price estimator, inquiry with photos, services and service area. A made-up business built by TreeTech.',
+      ru: 'Пример сайта для малярной фирмы в Вене: калькулятор цены, заявка с фото, услуги и район выезда. Вымышленная фирма, сайт сделал TreeTech.'
     },
     theme: {
-      background: '#f8f7f1',
+      background: '#f6f6f9',
       surface: '#ffffff',
-      text: '#182019',
-      muted: '#667064',
-      primary: '#3a7d44',
-      accent: '#d7b46a',
-      hero: 'linear-gradient(135deg, #f7f2dc 0%, #ffffff 44%, #dcefdc 100%)'
+      text: '#1c1d29',
+      muted: '#575a6e',
+      primary: '#2b2d42',
+      accent: '#2563eb',
+      hero: '#2b2d42'
     },
-    copy: {
+    copy: deAsRu({
       de: {
-        nav: ['Objekte', 'Bewertung', 'Maklerteam', 'Kontakt'],
-        eyebrow: 'Immobilienvermittlung in Graz',
-        title: 'Immobilien hochwertig präsentieren und Eigentümern Vertrauen geben.',
-        lead:
-          'GreenHaus Immobilien verbindet Marktkenntnis, saubere Objektpräsentation und persönliche Beratung für Kauf, Verkauf und Bewertung.',
-        primaryCta: 'Immobilie bewerten',
-        secondaryCta: 'Objekte ansehen',
+        nav: ['Leistungen', 'Referenzen', 'Ablauf', 'Kontakt'],
+        eyebrow: 'Maler und Anstreicher in Wien Donaustadt',
+        title: 'Frisch ausgemalt, ohne Chaos in der Wohnung.',
+        lead: 'Wohnungen, Stiegenhäuser und Fassaden. Wir decken ab, rücken die Möbel und hinterlassen alles besenrein.',
+        primaryCta: 'Jetzt anrufen',
+        secondaryCta: 'Fotos der Räume senden',
         stats: [
-          {value: '18', label: 'aktive Objekte'},
-          {value: '72h', label: 'erste Bewertung'},
-          {value: 'DE/EN', label: 'Exposes & Beratung'}
+          {value: '20 Jahre', label: 'Meisterbetrieb'},
+          {value: 'Fixpreis', label: 'nach kurzer Besichtigung'},
+          {value: '2 Wochen', label: 'typische Wartezeit'}
         ],
-        introTitle: 'Ein Immobilienauftritt muss zwei Zielgruppen führen.',
-        introText:
-          'Käufer wollen schnell passende Objekte verstehen. Eigentümern muss die Website Kompetenz und Diskretion vermitteln.',
-        servicesTitle: 'Leistungen für Eigentümer und Käufer',
+        introTitle: 'Pünktlich, sauber, zum vereinbarten Preis.',
+        introText: 'Sie bekommen einen Fixpreis und einen fixen Termin. Wenn wir gehen, steht jedes Möbelstück wieder an seinem Platz.',
+        servicesTitle: 'Was wir für Sie machen',
         services: [
-          {
-            title: 'Immobilienbewertung',
-            text: 'Realistische Einschätzung mit Marktbezug, Lageanalyse und klarem nächsten Schritt.'
-          },
-          {
-            title: 'Verkauf & Vermarktung',
-            text: 'Präzise Objektaufbereitung, hochwertige Exposes und strukturierte Anfrageführung.'
-          },
-          {
-            title: 'Käuferberatung',
-            text: 'Begleitung von der ersten Besichtigung bis zur fundierten Kaufentscheidung.'
-          }
+          {title: 'Wohnung ausmalen', text: 'Wände und Decken, auch kurzfristig vor dem Ein- oder Auszug.'},
+          {title: 'Lackieren', text: 'Türen, Fenster, Heizkörper und Geländer wie neu.'},
+          {title: 'Spachteln und Tapezieren', text: 'Glatte Wände, Risse saniert, Vliestapeten sauber verklebt.'},
+          {title: 'Fassade und Stiegenhaus', text: 'Für Häuser und Hausverwaltungen, mit Gerüst und Genehmigung.'}
         ],
-        processTitle: 'Vom Objekt zur qualifizierten Anfrage',
+        processTitle: 'So einfach geht es',
         process: [
-          {title: 'Objekt verstehen', text: 'Eckdaten, Lage und Zielgruppe werden sauber aufgenommen.'},
-          {title: 'Wertigkeit zeigen', text: 'Das Objekt wird strukturiert, klar und hochwertig präsentiert.'},
-          {title: 'Anfragen qualifizieren', text: 'Kontaktwege trennen Käuferanfragen und Eigentümergespräche.'}
+          {title: 'Fotos schicken', text: 'Ein paar Handyfotos und die Wohnfläche reichen für einen ersten Richtpreis.'},
+          {title: 'Besichtigung und Fixpreis', text: 'Wir kommen kurz vorbei und nennen den fixen Preis und Termin.'},
+          {title: 'Ausmalen und aufräumen', text: 'Abdecken, malen, Möbel zurück. Sie kommen in eine fertige Wohnung.'}
         ],
-        testimonial:
-          'Unsere Objekte wirken online endlich so hochwertig, wie sie es tatsächlich sind.',
-        testimonialAuthor: 'Sophie Krainer, GreenHaus Immobilien',
-        contactTitle: 'Möchten Sie eine Immobilie einschätzen lassen?',
-        contactText: 'Senden Sie die wichtigsten Eckdaten. GreenHaus meldet sich mit einer ersten Orientierung.',
-        contactButton: 'Bewertung anfragen'
+        testimonial: 'Hier stehen auf Ihrer Website später Ihre echten Google-Bewertungen.',
+        testimonialAuthor: 'Platz für Ihre Bewertungen',
+        contactTitle: 'Welche Räume sollen neu werden?',
+        contactText: 'Schicken Sie Fotos und die ungefähre Fläche. Wir melden uns innerhalb eines Werktags.',
+        contactButton: 'Anfrage senden'
       },
       en: {
-        nav: ['Listings', 'Valuation', 'Agents', 'Contact'],
-        eyebrow: 'Real estate agency in Graz',
-        title: 'Present properties with quality and give owners confidence.',
-        lead:
-          'GreenHaus Immobilien combines market knowledge, precise property presentation, and personal advice for buying, selling, and valuation.',
-        primaryCta: 'Request valuation',
-        secondaryCta: 'View listings',
+        nav: ['Services', 'References', 'Process', 'Contact'],
+        eyebrow: 'Painter and decorator in Vienna Donaustadt',
+        title: 'Freshly painted, without chaos in your flat.',
+        lead: 'Flats, stairwells and façades. We cover everything, move the furniture and leave the place swept clean.',
+        primaryCta: 'Call now',
+        secondaryCta: 'Send photos of the rooms',
         stats: [
-          {value: '18', label: 'active listings'},
-          {value: '72h', label: 'first valuation'},
-          {value: 'DE/EN', label: 'exposes & advice'}
+          {value: '20 years', label: 'master business'},
+          {value: 'Fixed price', label: 'after a short visit'},
+          {value: '2 weeks', label: 'typical waiting time'}
         ],
-        introTitle: 'A real estate website must guide two audiences.',
-        introText:
-          'Buyers need to understand suitable properties quickly. Owners need the website to signal expertise and discretion.',
-        servicesTitle: 'Services for owners and buyers',
+        introTitle: 'On time, clean, at the agreed price.',
+        introText: 'You get a fixed price and a fixed date. When we leave, every piece of furniture is back in its place.',
+        servicesTitle: 'What we do for you',
         services: [
-          {
-            title: 'Property valuation',
-            text: 'Realistic assessment with market context, location analysis, and a clear next step.'
-          },
-          {
-            title: 'Sales & marketing',
-            text: 'Precise property preparation, premium exposes, and structured inquiry handling.'
-          },
-          {
-            title: 'Buyer guidance',
-            text: 'Support from the first viewing through to a confident purchase decision.'
-          }
+          {title: 'Painting flats', text: 'Walls and ceilings, also at short notice before moving in or out.'},
+          {title: 'Lacquering', text: 'Doors, windows, radiators and railings like new.'},
+          {title: 'Filling and wallpapering', text: 'Smooth walls, cracks repaired, wallpaper hung cleanly.'},
+          {title: 'Façades and stairwells', text: 'For houses and property managers, with scaffolding and permits.'}
         ],
-        processTitle: 'From property to qualified inquiry',
+        processTitle: 'Simple as that',
         process: [
-          {title: 'Understand property', text: 'Key data, location, and audience are captured cleanly.'},
-          {title: 'Show value', text: 'The property is presented clearly, structurally, and with quality.'},
-          {title: 'Qualify inquiries', text: 'Contact paths separate buyer inquiries from owner conversations.'}
+          {title: 'Send photos', text: 'A few phone photos and the floor area are enough for a first guide price.'},
+          {title: 'Visit and fixed price', text: 'We come by briefly and name the fixed price and date.'},
+          {title: 'Paint and tidy up', text: 'Cover, paint, furniture back. You come home to a finished flat.'}
         ],
-        testimonial:
-          'Our listings finally feel online as premium as they are in reality.',
-        testimonialAuthor: 'Sophie Krainer, GreenHaus Immobilien',
-        contactTitle: 'Would you like to assess a property?',
-        contactText: 'Send the key details. GreenHaus will reply with a first orientation.',
-        contactButton: 'Request valuation'
+        testimonial: 'Your real Google reviews will appear here on your website.',
+        testimonialAuthor: 'Space for your reviews',
+        contactTitle: 'Which rooms need a refresh?',
+        contactText: 'Send photos and the rough floor area. We get back to you within one working day.',
+        contactButton: 'Send request'
       }
+    }),
+    handwerk: {
+      icon: 'roller',
+      serviceIcons: ['roller', 'brush', 'layers', 'house'],
+      phone: '01 000 00 22',
+      theme: {
+        primary: '#2b2d42',
+        accent: '#2563eb',
+        accentStrong: '#1d4ed8',
+        onDark: '#fde68a',
+        footer: '#1d1e2c',
+        background: '#f6f6f9',
+        text: '#1c1d29',
+        muted: '#575a6e',
+        border: '#e0e1e9',
+        chip: '#ebecf3'
+      },
+      copy: deAsRu({
+        de: {
+          areaText: 'Wir malen vor allem in',
+          towns: ['Donaustadt', 'Floridsdorf', 'Leopoldstadt', 'Brigittenau', 'Landstraße', 'Groß-Enzersdorf', 'Raasdorf'],
+          hours: 'Mo bis Fr 7 bis 17 Uhr',
+          trust: ['Meisterbetrieb', 'Abdecken und Möbelrücken inklusive', 'Fixer Termin'],
+          aside: {
+            type: 'calculator',
+            title: 'Was kostet das Ausmalen?',
+            label: 'Wohnfläche',
+            unit: 'm²',
+            min: 30,
+            max: 150,
+            step: 5,
+            defaultValue: 70,
+            rateLow: 9,
+            rateHigh: 13,
+            resultLabel: 'Richtwert inkl. Material und Abdecken',
+            note: 'Unverbindlich. Den Fixpreis bekommen Sie nach einer kurzen Besichtigung.'
+          },
+          form: {
+            fields: [
+              {label: 'Name'},
+              {label: 'Telefon', type: 'tel'},
+              {label: 'Adresse und Bezirk'},
+              {label: 'Wohnfläche ungefähr', placeholder: 'z. B. 70 m²'},
+              {label: 'Was soll gemacht werden?', type: 'textarea', placeholder: 'z. B. 3 Zimmer ausmalen, Decken weiß, eine Wand farbig', wide: true}
+            ],
+            photo: 'Fotos hinzufügen'
+          }
+        },
+        en: {
+          areaText: 'We mostly work in',
+          towns: ['Donaustadt', 'Floridsdorf', 'Leopoldstadt', 'Brigittenau', 'Landstraße', 'Groß-Enzersdorf', 'Raasdorf'],
+          hours: 'Mon to Fri 7am to 5pm',
+          trust: ['Master business', 'Covering and moving furniture included', 'Fixed date'],
+          aside: {
+            type: 'calculator',
+            title: 'What does painting cost?',
+            label: 'Floor area',
+            unit: 'm²',
+            min: 30,
+            max: 150,
+            step: 5,
+            defaultValue: 70,
+            rateLow: 9,
+            rateHigh: 13,
+            resultLabel: 'Guide price incl. materials and covering',
+            note: 'Non-binding. You get the fixed price after a short visit.'
+          },
+          form: {
+            fields: [
+              {label: 'Name'},
+              {label: 'Phone', type: 'tel'},
+              {label: 'Address and district'},
+              {label: 'Approximate floor area', placeholder: 'e.g. 70 m²'},
+              {label: 'What should be done?', type: 'textarea', placeholder: 'e.g. paint 3 rooms, white ceilings, one coloured wall', wide: true}
+            ],
+            photo: 'Add photos'
+          }
+        }
+      })
     }
   },
   {
-    slug: 'kraftwerk-fitness',
-    brand: 'KraftWerk Fitness',
-    location: 'Linz',
+    slug: 'dach-hofer',
+    brand: 'Dach Hofer',
+    location: 'Klosterneuburg',
     industry: {
-      de: 'Fitnessstudio',
-      en: 'Fitness studio',
-      ru: 'Фитнес-студия'
+      de: 'Dachdecker und Spengler',
+      en: 'Roofer and tinsmith',
+      ru: 'Кровельщик и жестянщик'
     },
     metaTitle: {
-      de: 'KraftWerk Fitness Demo-Website | TreeTech Portfolio',
-      en: 'KraftWerk Fitness Demo Website | TreeTech Portfolio',
-      ru: 'KraftWerk Fitness, пример сайта | TreeTech'
+      de: 'Dach Hofer Beispiel-Website | TreeTech',
+      en: 'Dach Hofer example website | TreeTech',
+      ru: 'Dach Hofer, пример сайта | TreeTech'
     },
     metaDescription: {
-      de: 'Zweisprachige Demo-Website für ein Fitnessstudio in Linz.',
-      en: 'Bilingual demo website for a fitness studio in Linz.',
-      ru: 'Пример сайта для фитнес-студии в Линце. Сайт на немецком, как для настоящей австрийской студии.'
+      de: 'Beispiel-Website für einen Dachdecker in Klosterneuburg: Sturmschaden-Hinweis, Anfrage mit Foto und Dringlichkeit, Referenzen. Ein erfundener Betrieb, gebaut von TreeTech.',
+      en: 'Example website for a roofer in Klosterneuburg: storm damage notice, inquiry with photo and urgency, references. A made-up business built by TreeTech.',
+      ru: 'Пример сайта для кровельщика в Клостернойбурге: срочный выезд после бури, заявка с фото и срочностью, примеры работ. Вымышленная фирма, сайт сделал TreeTech.'
     },
     theme: {
-      background: '#111111',
-      surface: '#1b1b1b',
-      text: '#ffffff',
-      muted: '#c7c7c7',
-      primary: '#ef4444',
-      accent: '#facc15',
-      hero: 'linear-gradient(135deg, #111111 0%, #3f1111 52%, #ef4444 100%)'
+      background: '#f5f5f3',
+      surface: '#ffffff',
+      text: '#1d2223',
+      muted: '#596163',
+      primary: '#2d3436',
+      accent: '#b4531f',
+      hero: '#2d3436'
     },
-    copy: {
+    copy: deAsRu({
       de: {
-        nav: ['Training', 'Kurse', 'Coaches', 'Probetraining'],
-        eyebrow: 'Fitnessstudio in Linz',
-        title: 'Training, das Energie macht und den Einstieg leicht hält.',
-        lead:
-          'KraftWerk Fitness verbindet starke Trainingsbereiche, motivierende Coaches und einen klaren Weg zum Probetraining.',
-        primaryCta: 'Probetraining buchen',
-        secondaryCta: 'Kurse ansehen',
+        nav: ['Leistungen', 'Referenzen', 'Ablauf', 'Kontakt'],
+        eyebrow: 'Dachdecker und Spengler in Klosterneuburg',
+        title: 'Dach undicht? Wir schauen es uns heute an.',
+        lead: 'Reparatur, Sanierung und Spenglerarbeiten im Bezirk Tulln und im Norden von Wien. Mit Fotos vom Dach, damit Sie sehen, was wir sehen.',
+        primaryCta: 'Jetzt anrufen',
+        secondaryCta: 'Foto vom Schaden senden',
         stats: [
-          {value: '45+', label: 'Kurse pro Woche'},
-          {value: '7', label: 'Coaches'},
-          {value: 'DE/EN', label: 'Trainingseinweisung'}
+          {value: 'Gleicher Tag', label: 'Notsicherung bei Sturm'},
+          {value: 'Fotobericht', label: 'für Sie und die Versicherung'},
+          {value: '10 Jahre', label: 'Garantie auf Neueindeckung'}
         ],
-        introTitle: 'Der erste Besuch entscheidet über die Mitgliedschaft.',
-        introText:
-          'Die Website nimmt Interessenten schnell mit: Was kann ich trainieren, wer begleitet mich, und wie komme ich zum Probetraining?',
-        servicesTitle: 'Training für unterschiedliche Ziele',
+        introTitle: 'Sie sehen, was am Dach los ist.',
+        introText: 'Wir fotografieren jede Stelle und erklären, was dringend ist und was warten kann. So entscheiden Sie selbst.',
+        servicesTitle: 'Was wir für Sie machen',
         services: [
-          {
-            title: 'Strength Zone',
-            text: 'Freihantelbereich, Maschinen und Planbegleitung für messbare Fortschritte.'
-          },
-          {
-            title: 'Functional Classes',
-            text: 'Kraft, Ausdauer und Beweglichkeit in kompakten Einheiten mit Coach.'
-          },
-          {
-            title: 'Personal Coaching',
-            text: 'Individuelle Betreuung für Einstieg, Technik und langfristige Motivation.'
-          }
+          {title: 'Sturmschaden und Notdienst', text: 'Ziegel verrutscht, Blech lose: Wir sichern das Dach sofort.'},
+          {title: 'Dachsanierung', text: 'Neueindeckung mit Dämmung, auf Wunsch mit Förderantrag.'},
+          {title: 'Spenglerarbeiten', text: 'Dachrinnen, Kamineinfassungen und Blechdächer aus Kupfer oder Zink.'},
+          {title: 'Dach-Check und Wartung', text: 'Jährliche Kontrolle mit Fotobericht, bevor kleine Schäden teuer werden.'}
         ],
-        processTitle: 'Vom Interesse zum ersten Training',
+        processTitle: 'So läuft es ab',
         process: [
-          {title: 'Slot buchen', text: 'Interessenten wählen online einen passenden Probetraining-Termin.'},
-          {title: 'Studio erleben', text: 'Ein Coach zeigt Bereiche, Kurse und sinnvolle Einstiegsoptionen.'},
-          {title: 'Plan starten', text: 'Nach dem Probetraining gibt es einen klaren Plan für die ersten Wochen.'}
+          {title: 'Anrufen oder Foto schicken', text: 'Ein Foto vom Fleck an der Decke oder vom Dach hilft schon weiter.'},
+          {title: 'Besichtigung mit Fotobericht', text: 'Wir steigen aufs Dach und zeigen Ihnen jede Stelle auf Fotos.'},
+          {title: 'Reparatur zum Fixpreis', text: 'Sie bekommen ein klares Angebot. Altmaterial nehmen wir mit.'}
         ],
-        testimonial:
-          'Die Website bringt die Energie des Studios auf den Punkt und macht Probetrainings sichtbar.',
-        testimonialAuthor: 'Markus Steiner, Gründer KraftWerk Fitness',
-        contactTitle: 'Bereit für Ihr erstes Training?',
-        contactText: 'Buchen Sie ein unverbindliches Probetraining und lernen Sie Studio, Coaches und Trainingsmöglichkeiten kennen.',
-        contactButton: 'Probetraining buchen'
+        testimonial: 'Hier stehen auf Ihrer Website später Ihre echten Google-Bewertungen.',
+        testimonialAuthor: 'Platz für Ihre Bewertungen',
+        contactTitle: 'Wo ist das Problem?',
+        contactText: 'Schicken Sie ein Foto und Ihre Adresse. Bei Sturmschaden rufen wir am selben Tag zurück.',
+        contactButton: 'Anfrage senden'
       },
       en: {
-        nav: ['Training', 'Classes', 'Coaches', 'Trial session'],
-        eyebrow: 'Fitness studio in Linz',
-        title: 'Training that creates energy and makes starting easy.',
-        lead:
-          'KraftWerk Fitness combines strong training zones, motivating coaches, and a clear path to the first trial session.',
-        primaryCta: 'Book trial session',
-        secondaryCta: 'View classes',
+        nav: ['Services', 'References', 'Process', 'Contact'],
+        eyebrow: 'Roofer and tinsmith in Klosterneuburg',
+        title: 'Roof leaking? We look at it today.',
+        lead: 'Repairs, renovation and sheet metal work in the Tulln district and the north of Vienna. With photos of the roof, so you see what we see.',
+        primaryCta: 'Call now',
+        secondaryCta: 'Send a photo of the damage',
         stats: [
-          {value: '45+', label: 'classes per week'},
-          {value: '7', label: 'coaches'},
-          {value: 'DE/EN', label: 'training intro'}
+          {value: 'Same day', label: 'emergency cover after storms'},
+          {value: 'Photo report', label: 'for you and your insurer'},
+          {value: '10 years', label: 'warranty on a new roof'}
         ],
-        introTitle: 'The first visit decides the membership.',
-        introText:
-          'The website quickly answers what prospects care about: what can I train, who guides me, and how do I book a trial session?',
-        servicesTitle: 'Training for different goals',
+        introTitle: 'You see what is going on up there.',
+        introText: 'We photograph every spot and explain what is urgent and what can wait. So you decide yourself.',
+        servicesTitle: 'What we do for you',
         services: [
-          {
-            title: 'Strength zone',
-            text: 'Free weights, machines, and plan guidance for measurable progress.'
-          },
-          {
-            title: 'Functional classes',
-            text: 'Strength, endurance, and mobility in compact coached sessions.'
-          },
-          {
-            title: 'Personal coaching',
-            text: 'Individual support for getting started, technique, and long-term motivation.'
-          }
+          {title: 'Storm damage and emergencies', text: 'Tiles slipped, metal loose: we secure the roof right away.'},
+          {title: 'Roof renovation', text: 'New roofing with insulation, with a subsidy application if you like.'},
+          {title: 'Sheet metal work', text: 'Gutters, chimney flashing and metal roofs in copper or zinc.'},
+          {title: 'Roof check and maintenance', text: 'Yearly inspection with a photo report, before small damage gets expensive.'}
         ],
-        processTitle: 'From interest to first training',
+        processTitle: 'How it works',
         process: [
-          {title: 'Book a slot', text: 'Prospects choose a suitable trial-session appointment online.'},
-          {title: 'Experience the studio', text: 'A coach presents areas, classes, and useful starting options.'},
-          {title: 'Start a plan', text: 'After the trial, members receive a clear plan for the first weeks.'}
+          {title: 'Call or send a photo', text: 'A photo of the stain on the ceiling or of the roof already helps.'},
+          {title: 'Inspection with photo report', text: 'We climb up and show you every spot in photos.'},
+          {title: 'Repair at a fixed price', text: 'You get a clear quote. We take the old material with us.'}
         ],
-        testimonial:
-          'The website captures the studio energy and makes trial sessions visible.',
-        testimonialAuthor: 'Markus Steiner, founder of KraftWerk Fitness',
-        contactTitle: 'Ready for your first training?',
-        contactText: 'Book a non-binding trial session and get to know the studio, coaches, and training options.',
-        contactButton: 'Book trial session'
+        testimonial: 'Your real Google reviews will appear here on your website.',
+        testimonialAuthor: 'Space for your reviews',
+        contactTitle: 'Where is the problem?',
+        contactText: 'Send a photo and your address. For storm damage we call back the same day.',
+        contactButton: 'Send request'
       }
+    }),
+    handwerk: {
+      icon: 'house',
+      serviceIcons: ['storm', 'house', 'droplets', 'shield'],
+      phone: '02243 000 000',
+      theme: {
+        primary: '#2d3436',
+        accent: '#b4531f',
+        accentStrong: '#8f3f15',
+        onDark: '#f0b48a',
+        footer: '#1f2526',
+        background: '#f5f5f3',
+        text: '#1d2223',
+        muted: '#596163',
+        border: '#dfe1de',
+        chip: '#ebece8'
+      },
+      copy: deAsRu({
+        de: {
+          areaText: 'Wir sind schnell bei Ihnen in',
+          towns: ['Klosterneuburg', 'Kierling', 'Kritzendorf', 'Tulln', 'Purkersdorf', 'Wien Döbling', 'Wien Floridsdorf'],
+          hours: 'Mo bis Fr 7 bis 17 Uhr, bei Sturm auch am Wochenende',
+          trust: ['Dachdecker- und Spenglermeister', 'Fotobericht bei jeder Besichtigung', 'Förderberatung'],
+          emergency: {title: 'Sturmschaden?', text: 'Wir sichern Ihr Dach noch am selben Tag und dokumentieren alles für die Versicherung.'},
+          gallery: {
+            title: 'Aus unserer Arbeit',
+            text: 'Hier zeigen Sie Ihre eigenen Fotos, am besten vorher und nachher.',
+            photoLabel: 'Ihr Foto',
+            items: [
+              {title: 'Neueindeckung mit Dämmung', meta: 'Klosterneuburg, Einfamilienhaus, 180 m²'},
+              {title: 'Dachrinne aus Kupfer', meta: 'Wien 19, Gründerzeithaus'},
+              {title: 'Sturmschaden gesichert', meta: 'Tulln, am selben Abend erledigt'}
+            ]
+          },
+          form: {
+            fields: [
+              {label: 'Name'},
+              {label: 'Telefon', type: 'tel'},
+              {label: 'Adresse', wide: true},
+              {label: 'Worum geht es?', type: 'select', placeholder: 'Bitte wählen', options: ['Sturmschaden', 'Undichte Stelle', 'Dachrinne oder Spengler', 'Sanierung', 'Dach-Check']},
+              {label: 'Wie dringend?', type: 'select', placeholder: 'Bitte wählen', options: ['Heute, es regnet rein', 'Diese Woche', 'Hat Zeit']},
+              {label: 'Was ist los?', type: 'textarea', placeholder: 'z. B. Wasserfleck an der Decke im Dachgeschoß', wide: true}
+            ],
+            photo: 'Foto hinzufügen'
+          }
+        },
+        en: {
+          areaText: 'We are with you quickly in',
+          towns: ['Klosterneuburg', 'Kierling', 'Kritzendorf', 'Tulln', 'Purkersdorf', 'Vienna Döbling', 'Vienna Floridsdorf'],
+          hours: 'Mon to Fri 7am to 5pm, at weekends after storms',
+          trust: ['Master roofer and tinsmith', 'Photo report at every visit', 'Subsidy advice'],
+          emergency: {title: 'Storm damage?', text: 'We secure your roof the same day and document everything for your insurer.'},
+          gallery: {
+            title: 'Recent work',
+            text: 'This is where your own photos go, ideally before and after.',
+            photoLabel: 'Your photo',
+            items: [
+              {title: 'New roof with insulation', meta: 'Klosterneuburg, detached house, 180 m²'},
+              {title: 'Copper gutter', meta: 'Vienna 19, period building'},
+              {title: 'Storm damage secured', meta: 'Tulln, done the same evening'}
+            ]
+          },
+          form: {
+            fields: [
+              {label: 'Name'},
+              {label: 'Phone', type: 'tel'},
+              {label: 'Address', wide: true},
+              {label: 'What is it about?', type: 'select', placeholder: 'Please choose', options: ['Storm damage', 'Leak', 'Gutter or sheet metal', 'Renovation', 'Roof check']},
+              {label: 'How urgent?', type: 'select', placeholder: 'Please choose', options: ['Today, water is coming in', 'This week', 'No rush']},
+              {label: 'What is wrong?', type: 'textarea', placeholder: 'e.g. water stain on the attic ceiling', wide: true}
+            ],
+            photo: 'Add photo'
+          }
+        }
+      })
     }
   }
-]);
-
-/**
- * The older example sites are written in German and English. On the Russian site they show the
- * German version, as a real Austrian business would have it; only the frame around them is Russian.
- */
-export const demoSites: DemoSite[] = demoSiteList.map((site) =>
-  site.slug === 'elektro-huber' ? site : {...site, copy: {...site.copy, ru: site.copy.de}}
-);
+];
 
 export function getDemoSiteBySlug(slug: string) {
   return demoSites.find((site) => site.slug === slug);

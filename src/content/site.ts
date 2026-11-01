@@ -79,6 +79,8 @@ export type PortfolioProject = {
   name: string;
   year: string;
   location: string;
+  /** The TreeTech package this example corresponds to. */
+  packageId: PackageId;
   industry: LocalizedText;
   description: LocalizedText;
   problem: LocalizedText;
@@ -649,7 +651,7 @@ export const siteContent = withLocaleFallbacks({
         `Alle Pakete mit Fixpreis: Websites ab ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'de')}, Pflege ab ${formatEur(getPackage('pflege').monthly ?? 0, 'de')} im Monat, Anfrage-Automation und eigene Software. Für Handwerk und Werkstätten in Wien und Niederösterreich.`,
       portfolioTitle: 'Portfolio | TreeTech Webstudio',
       portfolioDescription:
-        'Beispiel-Websites zum Anklicken: Elektriker, Ordination, Kanzlei, Hotel, Immobilien und Fitnessstudio. So sieht Ihre kostenlose Vorschau aus.',
+        'Beispiel-Websites für Handwerksbetriebe in Wien und Niederösterreich: Elektriker, Installateur, Kfz-Werkstatt, Tischlerei, Maler und Dachdecker. So sieht Ihre kostenlose Vorschau aus.',
       contactTitle: 'Kostenlose Website-Vorschau anfordern | TreeTech',
       contactDescription:
         'Name Ihres Betriebs und Ort genügen. Ihre kostenlose Website-Vorschau bekommen Sie in 3 Werktagen. Anrufen, WhatsApp oder Formular.'
@@ -684,9 +686,9 @@ export const siteContent = withLocaleFallbacks({
       servicesTitle: 'Was wir bauen.',
       servicesLead:
         'Drei klare Wege zum Ergebnis: mehr qualifizierte Anfragen, weniger Routine und passende Systeme für gewachsene Prozesse.',
-      portfolioTitle: 'Beispielprojekte für typische Branchen in Österreich.',
+      portfolioTitle: 'Beispiel-Websites für Handwerksbetriebe.',
       portfolioLead:
-        'Diese Demo-Projekte zeigen, wie TreeTech Struktur, Design und Anfrageführung für verschiedene Branchen umsetzt.',
+        'Elektriker, Installateur, Werkstatt, Tischlerei, Maler und Dachdecker: So sehen Websites aus, die Anrufe und Anfragen bringen.',
       processTitle: 'Ein Prozess wie ein sauberer System-Launch.',
       processLead:
         'Wir starten mit Abläufen, Zielen und Daten. Danach entstehen Struktur, Interface, Automatisierung und Launch in klaren Schritten.',
@@ -744,7 +746,7 @@ export const siteContent = withLocaleFallbacks({
       lead:
         'Öffnen Sie ein Beispiel und probieren Sie es am Handy aus. Genau so fühlt sich Ihre Vorschau an, nur mit Ihrem Betrieb.',
       disclaimer:
-        'Die Beispiele zeigen mögliche Lösungen für typische Branchen. Reale Kundenfälle werden ergänzt, sobald abgeschlossene Projekte mit freigegebenen Ergebnissen vorliegen.',
+        'Ihr Gewerk ist nicht dabei? Wir bauen Ihre Vorschau trotzdem, ob Fliesenleger, Schlosser, Gärtner oder Rauchfangkehrer. Echte Kundenprojekte zeigen wir hier, sobald sie online und freigegeben sind.',
       detailIntro: 'Projektüberblick',
       problem: 'Ausgangslage',
       solution: 'Lösung',
@@ -779,7 +781,7 @@ export const siteContent = withLocaleFallbacks({
         `Every package at a fixed price: websites from ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'en')}, care from ${formatEur(getPackage('pflege').monthly ?? 0, 'en')} a month, inquiry automation and custom software. For trades and workshops in Vienna and Lower Austria.`,
       portfolioTitle: 'Portfolio | TreeTech web studio',
       portfolioDescription:
-        'Example websites to click through: electrician, dental clinic, law firm, hotel, real estate and fitness studio. This is what your free preview looks like.',
+        'Example websites for trades in Vienna and Lower Austria: electrician, plumber, car repair shop, joinery, painter and roofer. This is what your free preview looks like.',
       contactTitle: 'Get a free website preview | TreeTech',
       contactDescription:
         'Your business name and town are enough. You get your free website preview within 3 working days. Call, WhatsApp or use the form.'
@@ -814,9 +816,9 @@ export const siteContent = withLocaleFallbacks({
       servicesTitle: 'What we build.',
       servicesLead:
         'Three clear paths to an outcome: more qualified inquiries, less routine work, and systems that fit established processes.',
-      portfolioTitle: 'Example projects for typical Austrian industries.',
+      portfolioTitle: 'Example websites for trades.',
       portfolioLead:
-        'These demo projects show how TreeTech handles structure, design, and inquiry guidance for different industries.',
+        'Electrician, plumber, garage, joinery, painter and roofer: this is what websites look like that bring in calls and inquiries.',
       processTitle: 'A process shaped like a clean system launch.',
       processLead:
         'We start with workflows, goals, and data. Then structure, interface, automation, and launch follow in clear steps.',
@@ -874,7 +876,7 @@ export const siteContent = withLocaleFallbacks({
       lead:
         'Open an example and try it on your phone. Your preview feels exactly like this, just with your business.',
       disclaimer:
-        'The examples below show possible solutions for typical industries. Real client cases will be added here as completed projects and approved results become available.',
+        'Your trade is not listed? We build your preview anyway, whether you lay tiles, work metal, tend gardens or sweep chimneys. Real client projects will appear here once they are live and approved.',
       detailIntro: 'Project overview',
       problem: 'Starting point',
       solution: 'Solution',
@@ -909,7 +911,7 @@ export const siteContent = withLocaleFallbacks({
         `Все пакеты с фиксированной ценой: сайты от ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'ru')}, поддержка от ${formatEur(getPackage('pflege').monthly ?? 0, 'ru')} в месяц, автоматизация заявок и собственное ПО. Для мастеров и автосервисов в Вене и Нижней Австрии.`,
       portfolioTitle: 'Портфолио | Веб-студия TreeTech',
       portfolioDescription:
-        'Примеры проектов для австрийских отраслей: клиника, юридическая фирма, отель, недвижимость и фитнес-студия.',
+        'Примеры сайтов для ремесленных фирм в Вене и Нижней Австрии: электрик, сантехник, автомастерская, столяр, маляр и кровельщик. Так выглядит ваше бесплатное превью.',
       contactTitle: 'Бесплатное превью сайта | TreeTech',
       contactDescription:
         'Достаточно названия бизнеса и города. Бесплатное превью сайта будет у вас через 3 рабочих дня. Звонок, WhatsApp или форма.'
@@ -944,9 +946,9 @@ export const siteContent = withLocaleFallbacks({
       servicesTitle: 'Что мы создаем.',
       servicesLead:
         'Три понятных пути к результату: больше качественных заявок, меньше рутины и системы под сложившиеся процессы.',
-      portfolioTitle: 'Примеры проектов для типичных отраслей в Австрии.',
+      portfolioTitle: 'Примеры сайтов для ремесленных фирм.',
       portfolioLead:
-        'Эти demo-проекты показывают, как TreeTech работает со структурой, дизайном и маршрутом заявки в разных отраслях.',
+        'Электрик, сантехник, мастерская, столяр, маляр и кровельщик: так выглядят сайты, которые приносят звонки и заявки.',
       processTitle: 'Процесс как аккуратный запуск системы.',
       processLead:
         'Мы начинаем с workflow, целей и данных. Потом идут структура, интерфейс, автоматизация и запуск понятными этапами.',
@@ -1004,7 +1006,7 @@ export const siteContent = withLocaleFallbacks({
       lead:
         'Откройте пример и попробуйте его с телефона. Ваше превью будет ощущаться так же, только с вашим бизнесом.',
       disclaimer:
-        'Ниже показаны примеры возможных решений для типичных отраслей. Реальные кейсы клиентов появятся здесь по мере завершения проектов и согласования результатов.',
+        'Вашего ремесла нет в списке? Превью всё равно сделаем: для плиточника, слесаря, садовника или трубочиста. Настоящие проекты клиентов покажем здесь, как только они будут онлайн и согласованы.',
       detailIntro: 'Обзор проекта',
       problem: 'Исходная ситуация',
       solution: 'Решение',
@@ -1034,6 +1036,7 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     name: 'Elektro Huber',
     year: '2026',
     location: 'Mödling',
+    packageId: 'websiteStart',
     industry: {
       de: 'Elektriker in Niederösterreich',
       en: 'Electrician in Lower Austria',
@@ -1078,244 +1081,249 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     accent: 'bg-orange-500'
   },
   {
-    slug: 'alpendent',
-    name: 'AlpenDent',
+    slug: 'installateur-novak',
+    name: 'Installateur Novak',
     year: '2026',
-    location: 'Innsbruck',
+    location: 'Wien Favoriten',
+    packageId: 'websiteBusiness',
     industry: {
-      de: 'Zahnordination in Tirol',
-      en: 'Dental clinic in Tyrol',
-      ru: 'Стоматология в Тироле'
+      de: 'Installateur in Wien',
+      en: 'Plumber in Vienna',
+      ru: 'Сантехник в Вене'
     },
     description: {
-      de: 'Ein ruhiger, vertrauenswürdiger Webauftritt für eine moderne Ordination mit klarer Terminführung und verständlichen Leistungsseiten.',
-      en: 'A calm, trustworthy website for a modern dental clinic with clear appointment guidance and easy-to-understand service pages.',
-      ru: 'Спокойный сайт, вызывающий доверие, для современной стоматологии: понятная запись и простые страницы услуг.'
+      de: 'So sieht eine Website Business für einen Installateur aus: Notdienst-Hinweis ganz oben, Anfrage mit Foto und Dringlichkeit, Referenzen mit Bezirk.',
+      en: 'This is what Website Business looks like for a plumber: emergency notice at the top, inquiry with photo and urgency, references by district.',
+      ru: 'Так выглядит Website Business для сантехника: аварийный выезд в самом верху, заявка с фото и срочностью, примеры работ по районам.'
     },
     problem: {
-      de: 'Die Ordination wirkte online zu austauschbar. Leistungen waren nicht schnell erfassbar, und neue Patientinnen und Patienten fanden den Weg zur Terminvereinbarung nicht klar genug.',
-      en: 'The clinic looked too generic online. Services were not easy to scan, and new patients did not have a clear path to booking an appointment.',
-      ru: 'Клиника выглядела в интернете слишком безлико. Услуги было трудно быстро понять, а новым пациентам не хватало понятного пути к записи.'
+      de: 'Bei Rohrbruch oder kalter Therme ruft man den Ersten an, der am Handy seriös wirkt. Viele Installateure sind dort nur mit einem Google-Eintrag ohne Website zu finden.',
+      en: 'With a burst pipe or a cold boiler, people call the first business that looks trustworthy on their phone. Many plumbers only have a Google listing without a website.',
+      ru: 'При прорыве трубы или холодном котле звонят первому, кто выглядит надёжно в телефоне. У многих сантехников есть только карточка в Google без сайта.'
     },
     solution: {
-      de: 'TreeTech entwickelte eine übersichtliche Struktur mit Behandlungsbereichen, Vertrauenselementen, ruhiger Bildsprache und wiederkehrenden Termin-CTAs.',
-      en: 'TreeTech created a clear structure with treatment areas, trust elements, calm visuals, and recurring appointment CTAs.',
-      ru: 'TreeTech сделал понятную структуру с направлениями лечения, элементами доверия, спокойными визуалами и повторяющимися кнопками записи.'
+      de: 'Notdienst-Leiste, Anruf-Knopf auf jeder Seite, eine Anfrage, die gleich nach Dringlichkeit fragt und ein Foto vom Schaden mitschickt, dazu Referenzen aus den eigenen Bezirken.',
+      en: 'An emergency bar, a call button on every page, an inquiry that asks for urgency and includes a photo of the damage, plus references from the districts you serve.',
+      ru: 'Полоса аварийного выезда, кнопка звонка на каждой странице, заявка со срочностью и фото поломки, а также примеры работ из своих районов.'
     },
     features: {
-      de: ['Leistungsseiten für Behandlungen', 'Team- und Ordinationsbereich', 'Termin-CTA auf allen Kernseiten', 'FAQ für neue Patientinnen und Patienten', 'Lokale SEO-Struktur für Innsbruck'],
-      en: ['Treatment service pages', 'Team and clinic section', 'Appointment CTA on key pages', 'FAQ for new patients', 'Local SEO structure for Innsbruck'],
-      ru: ['Страницы услуг по видам лечения','Раздел о команде и клинике','Кнопка записи на ключевых страницах','FAQ для новых пациентов','Локальное SEO для Инсбрука']
+      de: ['Notdienst-Hinweis über dem Hero', 'Anfrage mit Foto und Dringlichkeit', 'Referenzgalerie mit Bezirk', 'Eigene Seiten pro Leistung', 'Anruf-Leiste am Handy'],
+      en: ['Emergency notice above the hero', 'Inquiry with photo and urgency', 'Project gallery with district', 'One page per service', 'Call bar on mobile'],
+      ru: ['Аварийный выезд над главным экраном', 'Заявка с фото и срочностью', 'Галерея работ с районами', 'Отдельная страница на каждую услугу', 'Панель звонка на телефоне']
     },
     visualStyle: {
-      de: 'Helle Flächen, sanfte Mint- und Blautöne, großzügiger Weißraum und eine medizinische Typografie, die sauber, ruhig und hochwertig wirkt.',
-      en: 'Bright surfaces, soft mint and blue tones, generous whitespace, and medical typography that feels clean, calm, and premium.',
-      ru: 'Светлые поверхности, мягкие мятные и голубые тона, много воздуха и аккуратная типографика, которая выглядит чисто, спокойно и дорого.'
+      de: 'Tiefes Petrol und warmes Bernstein. Ruhig und vertrauenswürdig, mit klaren Signalfarben für den Notfall.',
+      en: 'Deep petrol and warm amber. Calm and trustworthy, with clear signal colours for emergencies.',
+      ru: 'Глубокий петроль и тёплый янтарь. Спокойно и надёжно, с понятными сигнальными цветами для срочных случаев.'
     },
     cta: {
-      de: 'Mehr Vertrauen vor dem ersten Termin und ein klarer Weg zur Anfrage.',
-      en: 'More trust before the first appointment and a clearer path to inquiry.',
-      ru: 'Больше доверия до первого визита и понятный путь к заявке.'
+      de: 'So eine Seite für Ihren Installationsbetrieb, als kostenlose Vorschau.',
+      en: 'A site like this for your plumbing business, as a free preview.',
+      ru: 'Такой сайт для вашей сантехнической фирмы, бесплатным превью.'
     },
     metric: {
-      de: 'Klarerer Weg vom ersten Besuch zur Terminvereinbarung.',
-      en: 'Clearer journey from first visit to appointment request.',
-      ru: 'Понятный путь от первого визита на сайт до записи.'
+      de: 'Notfall-Anrufe nicht an den Mitbewerber verlieren.',
+      en: 'Stop losing emergency calls to competitors.',
+      ru: 'Не отдавать срочные звонки конкурентам.'
     },
-    gradient: 'from-cyan-100 via-emerald-100 to-white',
-    accent: 'bg-cyan-500'
+    gradient: 'from-teal-900 via-teal-700 to-amber-200',
+    accent: 'bg-amber-500'
   },
   {
-    slug: 'vienna-legal',
-    name: 'Vienna Legal',
+    slug: 'kfz-berger',
+    name: 'KFZ Berger',
     year: '2026',
-    location: 'Wien',
+    location: 'Wien Floridsdorf',
+    packageId: 'websiteAbo',
     industry: {
-      de: 'Rechtsanwaltskanzlei in Wien',
-      en: 'Law firm in Vienna',
-      ru: 'Адвокатская контора в Вене'
+      de: 'Kfz-Werkstatt in Wien',
+      en: 'Car repair shop in Vienna',
+      ru: 'Автомастерская в Вене'
     },
     description: {
-      de: 'Ein seriöser Kanzlei-Auftritt, der Fachgebiete klar erklärt, Vertrauen schafft und den Erstkontakt diskret erleichtert.',
-      en: 'A composed law firm website that explains practice areas clearly, builds trust, and makes first contact discreet and simple.',
-      ru: 'Сдержанный сайт адвокатской конторы: понятно объясняет направления, вызывает доверие и делает первый контакт простым и деликатным.'
+      de: 'So sieht das Website-Abo für eine Werkstatt aus: Richtpreise gleich im ersten Bildschirm und eine Terminanfrage mit Kennzeichen und Wunschtag.',
+      en: 'This is what the website subscription looks like for a garage: guide prices on the first screen and an appointment request with plate number and preferred day.',
+      ru: 'Так выглядит Website-Abo для автомастерской: ориентировочные цены на первом экране и запись с номером машины и желаемым днём.'
     },
     problem: {
-      de: 'Die Kanzlei hatte starke Spezialisierungen, aber online fehlten klare Positionierung, nachvollziehbare Fachbereiche und ein sicher wirkender Weg zur Kontaktaufnahme.',
-      en: 'The firm had strong specializations, but the website lacked clear positioning, understandable practice areas, and a reassuring contact path.',
-      ru: 'У конторы были сильные специализации, но сайту не хватало чёткого позиционирования, понятных направлений и спокойного пути к контакту.'
+      de: 'Werkstätten verlieren Zeit am Telefon mit denselben Fragen: Was kostet das Pickerl, wann habt ihr Zeit? Kunden ohne Antwort fahren zur Kette.',
+      en: 'Garages lose time on the phone with the same questions: what does the test cost, when do you have time? Customers without an answer go to a chain.',
+      ru: 'Мастерские тратят время на телефоне на одни и те же вопросы: сколько стоит техосмотр, когда есть время? Кто не получил ответа, едет в сетевой сервис.'
     },
     solution: {
-      de: 'Wir ordneten Fachgebiete, Anwaltsporträts und Kontaktwege so, dass Mandantinnen und Mandanten rasch erkennen, ob die Kanzlei zur eigenen Situation passt.',
-      en: 'We structured practice areas, attorney profiles, and contact routes so potential clients quickly understand whether the firm fits their situation.',
-      ru: 'Мы выстроили направления практики, профили адвокатов и способы связи так, чтобы клиент быстро понял, подходит ли ему контора.'
+      de: 'Richtpreise für die häufigsten Arbeiten, eine Terminanfrage mit allen Angaben, die die Werkstatt braucht, und klare Öffnungszeiten. Ohne große Zahlung am Anfang.',
+      en: 'Guide prices for the most common jobs, an appointment request with everything the garage needs, and clear opening hours. Without a big upfront payment.',
+      ru: 'Ориентировочные цены на самые частые работы, запись со всеми данными, которые нужны мастерской, и понятные часы работы. Без крупной оплаты на старте.'
     },
     features: {
-      de: ['Fachgebietsseiten', 'Anwaltsporträts', 'Diskrete Kontaktführung', 'Mehrsprachige Struktur', 'Vertrauensmodule für Erstbesucher'],
-      en: ['Practice area pages', 'Attorney profiles', 'Discreet contact flow', 'Multilingual structure', 'Trust modules for first-time visitors'],
-      ru: ['Страницы направлений практики','Профили адвокатов','Деликатная форма связи','Многоязычная структура','Блоки доверия для новых посетителей']
+      de: ['Richtpreise im Hero', 'Terminanfrage mit Kennzeichen und Datum', 'Leistungen für alle Marken', 'Öffnungszeiten und Anfahrt', 'Pflege inklusive'],
+      en: ['Guide prices in the hero', 'Appointment request with plate and date', 'Services for every make', 'Opening hours and directions', 'Care plan included'],
+      ru: ['Цены на главном экране', 'Запись с номером машины и датой', 'Услуги для всех марок', 'Часы работы и как добраться', 'Pflege включена']
     },
     visualStyle: {
-      de: 'Dunkles Tintenblau, warme Goldakzente, feine Linien und eine ruhige Layoutsprache, die Kompetenz ohne Übertreibung vermittelt.',
-      en: 'Deep ink blue, warm gold accents, fine lines, and a calm layout language that communicates authority without overstatement.',
-      ru: 'Глубокий чернильно-синий, тёплые золотые акценты, тонкие линии и спокойная подача, которая передаёт авторитет без пафоса.'
+      de: 'Graphit und Signalrot, kräftige Schrift, klare Preise. Wirkt wie eine gut geführte Werkstatt: aufgeräumt und direkt.',
+      en: 'Graphite and signal red, strong type, clear prices. Feels like a well-run garage: tidy and direct.',
+      ru: 'Графит и сигнальный красный, крупный шрифт, понятные цены. Ощущается как хорошая мастерская: аккуратно и по делу.'
     },
     cta: {
-      de: 'Mehr Sicherheit vor dem ersten Beratungsgespräch.',
-      en: 'More confidence before the first consultation.',
-      ru: 'Больше уверенности до первой консультации.'
+      de: 'So eine Seite für Ihre Werkstatt, als kostenlose Vorschau.',
+      en: 'A site like this for your garage, as a free preview.',
+      ru: 'Такой сайт для вашей мастерской, бесплатным превью.'
     },
     metric: {
-      de: 'Schnelleres Verständnis der passenden Rechtsgebiete.',
-      en: 'Faster understanding of the right legal areas.',
-      ru: 'Быстрее понятно, какие правовые направления нужны.'
+      de: 'Weniger Preisfragen am Telefon, mehr fixe Termine.',
+      en: 'Fewer price questions on the phone, more booked slots.',
+      ru: 'Меньше вопросов о цене по телефону, больше записей.'
     },
-    gradient: 'from-slate-900 via-blue-900 to-amber-200',
-    accent: 'bg-amber-400'
+    gradient: 'from-zinc-900 via-zinc-700 to-red-300',
+    accent: 'bg-red-600'
   },
   {
-    slug: 'bergblick-hotel',
-    name: 'Bergblick Hotel',
+    slug: 'tischlerei-gruber',
+    name: 'Tischlerei Gruber',
     year: '2026',
-    location: 'Salzkammergut',
+    location: 'Korneuburg',
+    packageId: 'websiteBusiness',
     industry: {
-      de: 'Alpines Hotel',
-      en: 'Alpine hotel',
-      ru: 'Альпийский отель'
+      de: 'Tischlerei in Niederösterreich',
+      en: 'Joinery in Lower Austria',
+      ru: 'Столярная мастерская в Нижней Австрии'
     },
     description: {
-      de: 'Eine atmosphärische Hotelwebsite, die Zimmer, Region und Erlebnisse emotional zeigt und Gäste konsequent zur Direktanfrage führt.',
-      en: 'An atmospheric hotel website that presents rooms, region, and experiences emotionally while guiding guests toward direct inquiry.',
-      ru: 'Атмосферный сайт отеля: эмоционально показывает номера, регион и впечатления и ведёт гостей к прямой заявке.'
+      de: 'So sieht eine Website Business für eine Tischlerei aus: Referenzgalerie im Mittelpunkt, Anfrage mit Foto oder Skizze und Maßen, Einsatzgebiet im Weinviertel.',
+      en: 'This is what Website Business looks like for a joinery: project gallery at the centre, inquiry with photo or sketch and measurements, service area in the Weinviertel.',
+      ru: 'Так выглядит Website Business для столярной мастерской: галерея работ в центре, заявка с фото или эскизом и размерами, район работы в Вайнфиртеле.'
     },
     problem: {
-      de: 'Schöne Bilder waren vorhanden, aber Angebote, Zimmer und Buchungsargumente wirkten verstreut. Gäste fanden keinen klaren Weg von Inspiration zur Anfrage.',
-      en: 'Beautiful imagery existed, but offers, rooms, and booking arguments felt scattered. Guests had no clear path from inspiration to inquiry.',
-      ru: 'Красивые фото были, но предложения, номера и аргументы для бронирования были разбросаны. У гостей не было понятного пути от вдохновения к заявке.'
+      de: 'Maßmöbel verkauft man über Bilder. Gute Tischlereien zeigen ihre Arbeiten oft nur auf Instagram oder gar nicht, und Anfragen kommen ohne Maße und Fotos.',
+      en: 'Custom furniture sells through pictures. Good joiners often show their work only on Instagram or not at all, and inquiries arrive without measurements or photos.',
+      ru: 'Мебель на заказ продают картинки. Хорошие столяры часто показывают работы только в Instagram или нигде, а заявки приходят без размеров и фото.'
     },
     solution: {
-      de: 'TreeTech baute eine emotionale Startseite, modulare Zimmerbereiche, saisonale Angebote und einen durchgängigen Anfragefluss für Direktbuchungen.',
-      en: 'TreeTech built an emotional homepage, modular room sections, seasonal offers, and a consistent inquiry flow for direct bookings.',
-      ru: 'TreeTech сделал эмоциональную главную, модульные блоки номеров, сезонные предложения и единый путь к прямому бронированию.'
+      de: 'Eine Galerie mit eigenen Projekten samt Ort, der Weg vom Aufmaß bis zur Montage in drei Schritten und eine Anfrage, die gleich Raum, Maße und ein Foto abfragt.',
+      en: 'A gallery of your own projects with location, the path from measuring to installation in three steps, and an inquiry that asks for room, measurements and a photo.',
+      ru: 'Галерея своих проектов с местом, путь от замера до монтажа в трёх шагах и заявка, которая сразу спрашивает комнату, размеры и фото.'
     },
     features: {
-      de: ['Zimmer- und Suite-Karten', 'Erlebnisbereiche für Sommer und Winter', 'Saisonale Angebotsflächen', 'Direktanfrage-CTA', 'Regionale SEO-Module'],
-      en: ['Room and suite cards', 'Experience areas for summer and winter', 'Seasonal offer sections', 'Direct inquiry CTA', 'Regional SEO modules'],
-      ru: ['Карточки номеров и люксов','Разделы впечатлений для лета и зимы','Блоки сезонных предложений','Кнопка прямой заявки','Региональные SEO-блоки']
+      de: ['Referenzgalerie mit Ort', 'Anfrage mit Foto oder Skizze', 'Ablauf vom Aufmaß bis zur Montage', 'Eigene Seiten für Küchen und Schränke', 'Einsatzgebiet mit Orten'],
+      en: ['Project gallery with location', 'Inquiry with photo or sketch', 'Process from measuring to installation', 'Separate pages for kitchens and wardrobes', 'Service area with towns'],
+      ru: ['Галерея работ с местом', 'Заявка с фото или эскизом', 'Путь от замера до монтажа', 'Отдельные страницы для кухонь и шкафов', 'Район работы с городами']
     },
     visualStyle: {
-      de: 'Alpines Grün, helle Himmelstöne, großzügige Bildflächen und magazinartige Sektionen, die Urlaubswertigkeit vermitteln.',
-      en: 'Alpine green, bright sky tones, generous image areas, and magazine-like sections that communicate the value of a stay.',
-      ru: 'Альпийский зелёный, светлые небесные тона, большие фото и журнальные разделы, которые передают ценность отдыха.'
+      de: 'Dunkles Nussbraun, helles Naturweiß und ein Waldgrün für die Knöpfe. Warm und handwerklich, ohne rustikal zu wirken.',
+      en: 'Dark walnut, natural off-white and forest green for the buttons. Warm and crafted without looking rustic.',
+      ru: 'Тёмный орех, натуральный светлый фон и лесной зелёный для кнопок. Тепло и по-ремесленному, но без деревенщины.'
     },
     cta: {
-      de: 'Mehr Direktanfragen durch einen emotionalen, klaren Buchungsweg.',
-      en: 'More direct inquiries through an emotional, clear booking path.',
-      ru: 'Больше прямых заявок благодаря эмоциональному и понятному пути к бронированию.'
+      de: 'So eine Seite für Ihre Tischlerei, als kostenlose Vorschau.',
+      en: 'A site like this for your joinery, as a free preview.',
+      ru: 'Такой сайт для вашей мастерской, бесплатным превью.'
     },
     metric: {
-      de: 'Stärkere Verbindung aus Urlaubslust und Buchungsabsicht.',
-      en: 'Stronger connection between travel desire and booking intent.',
-      ru: 'Сильнее связь между желанием поехать и намерением забронировать.'
+      de: 'Anfragen kommen mit Foto und Maßen, nicht nur mit „Was kostet eine Küche?“.',
+      en: 'Inquiries arrive with photo and measurements, not just “how much is a kitchen?”.',
+      ru: 'Заявки приходят с фото и размерами, а не просто «сколько стоит кухня?».'
     },
-    gradient: 'from-emerald-800 via-sky-200 to-white',
-    accent: 'bg-emerald-500'
+    gradient: 'from-stone-900 via-amber-900 to-emerald-200',
+    accent: 'bg-emerald-600'
   },
   {
-    slug: 'greenhaus-immobilien',
-    name: 'GreenHaus Immobilien',
+    slug: 'malerei-steiner',
+    name: 'Malerei Steiner',
     year: '2026',
-    location: 'Graz',
+    location: 'Wien Donaustadt',
+    packageId: 'websiteStart',
     industry: {
-      de: 'Immobilienagentur in Graz',
-      en: 'Real estate agency in Graz',
-      ru: 'Агентство недвижимости в Граце'
+      de: 'Malerbetrieb in Wien',
+      en: 'Painter in Vienna',
+      ru: 'Маляр в Вене'
     },
     description: {
-      de: 'Eine hochwertige Immobilienwebsite, die Objekte sauber präsentiert und Eigentümerinnen und Eigentümer zur Bewertung anfragt.',
-      en: 'A premium real estate website that presents properties clearly and encourages owners to request a valuation.',
-      ru: 'Премиальный сайт агентства недвижимости: понятно показывает объекты и побуждает владельцев заказать оценку.'
+      de: 'So sieht eine Website Start für einen Maler aus: ein Richtpreis-Rechner gleich oben, Anfrage mit Fotos der Räume und ein klarer Ablauf.',
+      en: 'This is what Website Start looks like for a painter: a price estimator right at the top, an inquiry with photos of the rooms and a clear process.',
+      ru: 'Так выглядит Website Start для маляра: калькулятор цены прямо наверху, заявка с фото комнат и понятный порядок работы.'
     },
     problem: {
-      de: 'Die Agentur wollte hochwertiger wahrgenommen werden, hatte aber keine konsistente Objektpräsentation und zu wenig gezielte Anfragen von Verkäuferinnen und Verkäufern.',
-      en: 'The agency wanted to be perceived as more premium, but had inconsistent property presentation and too few targeted seller inquiries.',
-      ru: 'Агентство хотело выглядеть премиальнее, но объекты подавались непоследовательно, а целевых заявок от продавцов было мало.'
+      de: 'Die erste Frage ist immer: Was kostet das ungefähr? Ohne Antwort holen Kunden drei Angebote ein, und der Maler fährt umsonst zu Besichtigungen.',
+      en: 'The first question is always: roughly how much? Without an answer, customers collect three quotes and the painter drives to viewings for nothing.',
+      ru: 'Первый вопрос всегда: сколько примерно стоит? Без ответа клиенты собирают три предложения, а маляр зря ездит на осмотры.'
     },
     solution: {
-      de: 'Wir entwickelten Objektkarten, Bewertungs-CTAs, Maklerprofile und Vertrauensbereiche, die Käufer und Eigentümer getrennt, aber stimmig abholen.',
-      en: 'We developed listing cards, valuation CTAs, agent profiles, and trust sections that speak to buyers and owners separately but coherently.',
-      ru: 'Мы сделали карточки объектов, кнопки оценки, профили агентов и блоки доверия, которые обращаются к покупателям и владельцам отдельно, но согласованно.'
+      de: 'Ein einfacher Rechner nach Wohnfläche gibt einen ehrlichen Richtwert. Wer dann anfragt, schickt gleich Fotos und Fläche mit und weiß, womit er rechnen kann.',
+      en: 'A simple calculator by floor area gives an honest guide price. Anyone who then gets in touch sends photos and the area right away and knows what to expect.',
+      ru: 'Простой калькулятор по площади даёт честную ориентировочную цену. Кто после этого пишет, сразу присылает фото и площадь и понимает, на что рассчитывать.'
     },
     features: {
-      de: ['Objektübersicht', 'Immobilienbewertung als CTA', 'Maklerprofil', 'Vertrauensmodule', 'Lead-Formular für Eigentümer'],
-      en: ['Listing overview', 'Property valuation CTA', 'Agent profile', 'Trust modules', 'Owner lead form'],
-      ru: ['Обзор объектов','Кнопка оценки недвижимости','Профиль агента','Блоки доверия','Форма для владельцев']
+      de: ['Richtpreis-Rechner nach Wohnfläche', 'Anfrage mit Fotos', 'Ablauf in drei Schritten', 'Einsatzgebiet mit Bezirken', 'Anruf-Leiste am Handy'],
+      en: ['Price estimator by floor area', 'Inquiry with photos', 'Three-step process', 'Service area with districts', 'Call bar on mobile'],
+      ru: ['Калькулятор цены по площади', 'Заявка с фото', 'Порядок работы в трёх шагах', 'Район выезда с районами Вены', 'Панель звонка на телефоне']
     },
     visualStyle: {
-      de: 'Natürliche Grüntöne, warme neutrale Flächen, präzise Kartenlayouts und eine Bildsprache, die Wertigkeit statt Lautstärke vermittelt.',
-      en: 'Natural greens, warm neutral surfaces, precise card layouts, and visuals that communicate value rather than noise.',
-      ru: 'Природные зелёные, тёплые нейтральные поверхности, точные карточки и визуалы, которые передают ценность, а не шум.'
+      de: 'Dunkles Schiefergrau mit kräftigem Blau und einem Hauch Gelb. Frisch und sauber, wie eine frisch gemalte Wand.',
+      en: 'Dark slate with strong blue and a touch of yellow. Fresh and clean, like a newly painted wall.',
+      ru: 'Тёмный сланец с ярким синим и немного жёлтого. Свежо и чисто, как только что покрашенная стена.'
     },
     cta: {
-      de: 'Mehr qualifizierte Objekt- und Bewertungsanfragen.',
-      en: 'More qualified listing and valuation inquiries.',
-      ru: 'Больше качественных заявок на продажу и оценку.'
+      de: 'So eine Seite für Ihren Malerbetrieb, als kostenlose Vorschau.',
+      en: 'A site like this for your painting business, as a free preview.',
+      ru: 'Такой сайт для вашей малярной фирмы, бесплатным превью.'
     },
     metric: {
-      de: 'Höherwertige Wahrnehmung bei Eigentümern und Käufern.',
-      en: 'More premium perception among owners and buyers.',
-      ru: 'Более премиальное восприятие у владельцев и покупателей.'
+      de: 'Weniger Besichtigungen umsonst, weil der Preisrahmen vorher klar ist.',
+      en: 'Fewer wasted viewings, because the price range is clear upfront.',
+      ru: 'Меньше пустых выездов, потому что порядок цены понятен заранее.'
     },
-    gradient: 'from-lime-100 via-stone-100 to-emerald-200',
-    accent: 'bg-lime-500'
+    gradient: 'from-slate-800 via-blue-600 to-yellow-100',
+    accent: 'bg-blue-600'
   },
   {
-    slug: 'kraftwerk-fitness',
-    name: 'KraftWerk Fitness',
+    slug: 'dach-hofer',
+    name: 'Dach Hofer',
     year: '2026',
-    location: 'Linz',
+    location: 'Klosterneuburg',
+    packageId: 'websiteBusiness',
     industry: {
-      de: 'Fitnessstudio in Linz',
-      en: 'Fitness studio in Linz',
-      ru: 'Фитнес-студия в Линце'
+      de: 'Dachdecker in Niederösterreich',
+      en: 'Roofer in Lower Austria',
+      ru: 'Кровельщик в Нижней Австрии'
     },
     description: {
-      de: 'Eine dynamische Studio-Website mit klarem Probetraining-Fokus, Kursübersicht und Angeboten für neue Mitglieder.',
-      en: 'A dynamic studio website with a clear trial-session focus, class overview, and offers for new members.',
-      ru: 'Динамичный сайт студии с упором на пробное занятие, обзором тренировок и предложениями для новых участников.'
+      de: 'So sieht eine Website Business für einen Dachdecker aus: Sturmschaden-Hinweis, Anfrage mit Foto und Dringlichkeit, Referenzen vorher und nachher.',
+      en: 'This is what Website Business looks like for a roofer: storm damage notice, inquiry with photo and urgency, before-and-after references.',
+      ru: 'Так выглядит Website Business для кровельщика: срочный выезд после бури, заявка с фото и срочностью, примеры работ до и после.'
     },
     problem: {
-      de: 'Vor Ort hatte das Studio starke Energie, online fehlten aber klare Einstiegspunkte, eine verständliche Kursübersicht und ein motivierender Weg zum Probetraining.',
-      en: 'The studio had strong energy on site, but online it lacked clear entry points, an understandable class overview, and a motivating path to a trial session.',
-      ru: 'На месте у студии сильная энергия, но в интернете не хватало понятного входа, обзора тренировок и мотивирующего пути к пробному занятию.'
+      de: 'Nach einem Sturm suchen viele gleichzeitig nach einem Dachdecker. Wer dann nur eine alte Seite ohne klare Kontaktmöglichkeit hat, bekommt den Auftrag nicht.',
+      en: 'After a storm many people search for a roofer at the same time. A business with only an old site and no clear way to get in touch misses the job.',
+      ru: 'После бури многие одновременно ищут кровельщика. У кого только старый сайт без понятного контакта, тот заказ не получает.'
     },
     solution: {
-      de: 'TreeTech gestaltete eine kontrastreiche Seite mit Kursmodulen, Trainerbereichen, Preisankern und einem prominenten Probetraining-Flow.',
-      en: 'TreeTech designed a high-contrast site with class modules, trainer sections, membership decision points, and a prominent trial-session flow.',
-      ru: 'TreeTech сделал контрастный сайт с блоками тренировок, разделом тренеров, выбором абонемента и заметной записью на пробное занятие.'
+      de: 'Ein Sturmschaden-Hinweis ganz oben, eine Anfrage mit Foto, Adresse und Dringlichkeit und das Versprechen eines Fotoberichts, der auch der Versicherung hilft.',
+      en: 'A storm damage notice at the very top, an inquiry with photo, address and urgency, and the promise of a photo report that also helps with the insurer.',
+      ru: 'Предупреждение о срочном выезде после бури в самом верху, заявка с фото, адресом и срочностью и обещание фотоотчёта, который поможет и со страховой.'
     },
     features: {
-      de: ['Probetraining-CTA', 'Kursplan-Sektion', 'Trainerkarten', 'Preisanker für Mitgliedschaften', 'Mobile-first Navigation'],
-      en: ['Trial session CTA', 'Class schedule section', 'Trainer cards', 'Membership decision points', 'Mobile-first navigation'],
-      ru: ['Кнопка записи на пробное занятие','Расписание тренировок','Карточки тренеров','Выбор абонемента','Навигация для телефона']
+      de: ['Sturmschaden-Hinweis über dem Hero', 'Anfrage mit Foto und Dringlichkeit', 'Referenzen vorher und nachher', 'Eigene Seiten für Sanierung und Spengler', 'Einsatzgebiet mit Orten'],
+      en: ['Storm damage notice above the hero', 'Inquiry with photo and urgency', 'Before-and-after references', 'Separate pages for renovation and sheet metal', 'Service area with towns'],
+      ru: ['Срочный выезд над главным экраном', 'Заявка с фото и срочностью', 'Работы до и после', 'Отдельные страницы для ремонта кровли и жестяных работ', 'Район выезда с городами']
     },
     visualStyle: {
-      de: 'Starke Kontraste, elektrische Akzente, kompakte Module und sportliche Bewegungsflächen, ohne unseriös zu wirken.',
-      en: 'Strong contrast, electric accents, compact modules, and athletic motion surfaces without feeling gimmicky.',
-      ru: 'Сильный контраст, электрические акценты, компактные блоки и спортивная динамика без лишних эффектов.'
+      de: 'Schiefergrau wie ein Dach und Kupfer als Akzent, wie bei einer neuen Dachrinne. Solide und ruhig.',
+      en: 'Slate grey like a roof and copper as the accent, like a new gutter. Solid and calm.',
+      ru: 'Сланцевый серый, как кровля, и медь как акцент, как у нового водостока. Надёжно и спокойно.'
     },
     cta: {
-      de: 'Mehr Probetrainings durch einen schnellen, motivierenden Einstieg.',
-      en: 'More trial sessions through a fast, motivating entry point.',
-      ru: 'Больше пробных занятий благодаря быстрому и мотивирующему входу.'
+      de: 'So eine Seite für Ihren Dachdeckerbetrieb, als kostenlose Vorschau.',
+      en: 'A site like this for your roofing business, as a free preview.',
+      ru: 'Такой сайт для вашей кровельной фирмы, бесплатным превью.'
     },
     metric: {
-      de: 'Stärkerer Fokus auf Probetraining und Mitgliedschaften.',
-      en: 'Stronger focus on trial sessions and memberships.',
-      ru: 'Больше внимания к пробным занятиям и абонементам.'
+      de: 'Nach dem Sturm unter den Ersten sein, die angerufen werden.',
+      en: 'Be among the first to get the call after a storm.',
+      ru: 'После бури быть среди первых, кому звонят.'
     },
-    gradient: 'from-zinc-950 via-red-500 to-yellow-300',
-    accent: 'bg-red-500'
+    gradient: 'from-slate-800 via-slate-600 to-orange-300',
+    accent: 'bg-orange-600'
   }
 ]);
 
