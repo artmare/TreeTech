@@ -1,3 +1,3 @@
 export function isDemoSitePath(pathname: string) {
-  return /^\/portfolio\/[^/]+\/site\/?$/.test(pathname);
+  return /^\/portfolio\/[^/]+\/site(\/.*)?$/.test(pathname);
 }

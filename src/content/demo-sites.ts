@@ -53,6 +53,48 @@ export type DemoSite = {
   copy: Localized<DemoSiteCopy>;
   /** Trade demos (Handwerk) are rendered by `HandwerkDemo` from this config. */
   handwerk: HandwerkConfig;
+  /**
+   * Present on "Website Business" demos: a richer multi-page site with its own look.
+   * Without it the demo is a one-page "Website Start".
+   */
+  business?: BusinessConfig;
+};
+
+export type BusinessServicePage = {
+  slug: string;
+  intro: string;
+  bullets: string[];
+  price: string;
+};
+
+export type BusinessLocation = {
+  slug: string;
+  name: string;
+  text: string;
+  travel: string;
+};
+
+export type BusinessCopy = {
+  utility: string;
+  heroBadges: [string, string];
+  servicePages: BusinessServicePage[];
+  beforeAfter: {title: string; text: string};
+  about: {title: string; text: string; name: string; role: string; quote: string};
+  reviews: {name: string; place: string; text: string}[];
+  locationsTitle: string;
+  locationsText: string;
+  locations: BusinessLocation[];
+  faq: {q: string; a: string}[];
+  steps: {topic: string; topics: string[]; when: string; whens: string[]};
+  hours: [string, string][];
+};
+
+export type BusinessConfig = {
+  /** Visual direction, so Business demos never look like the same template. */
+  variant: 'friendly' | 'editorial' | 'bold';
+  illustration: 'bathroom' | 'kitchen' | 'roof';
+  rating: string;
+  copy: Localized<BusinessCopy>;
 };
 
 export type HandwerkIcon =
@@ -461,6 +503,153 @@ export const demoSites: DemoSite[] = [
         contactButton: 'Send request'
       }
     }),
+    business: {
+      variant: 'friendly',
+      illustration: 'bathroom',
+      rating: '4,9',
+      copy: deAsRu({
+        de: {
+          utility: 'Notdienst rund um die Uhr · alle Bezirke südlich der Donau',
+          heroBadges: ['Badsanierung in Wien 10', 'Techniker in 60 Minuten'],
+          servicePages: [
+            {
+              slug: 'rohrbruch-wasserschaden',
+              intro: 'Wasser tritt aus? Drehen Sie den Haupthahn zu und rufen Sie an. Wir sind im Notfall in rund 60 Minuten bei Ihnen, auch nachts und am Wochenende.',
+              bullets: ['Leckortung ohne unnötiges Stemmen', 'Sofortige Abdichtung und Trocknungsempfehlung', 'Fotodokumentation für die Versicherung', 'Abrechnung direkt mit der Hausverwaltung möglich'],
+              price: 'Notdienst-Pauschale ab 119 €'
+            },
+            {
+              slug: 'thermenservice',
+              intro: 'Eine gewartete Therme verbraucht weniger und fällt seltener aus. Wir warten und reparieren alle gängigen Marken und tauschen alte Geräte gegen sparsame Brennwerttechnik.',
+              bullets: ['Jährliche Wartung mit Abgasmessung und Protokoll', 'Reparatur mit Originalersatzteilen', 'Thermentausch meist an einem Tag', 'Erinnerung an den nächsten Termin per SMS'],
+              price: 'Wartung ab 149 €'
+            },
+            {
+              slug: 'badsanierung',
+              intro: 'Vom alten Bad mit Wanne zur bodenebenen Dusche. Wir koordinieren Installateur, Fliesenleger und Elektriker, Sie haben einen Ansprechpartner und einen Fixpreis.',
+              bullets: ['Planung mit 3D-Ansicht', 'Bodenebene Duschen und barrierefreie Bäder', 'Alle Gewerke aus einer Hand', 'Typische Bauzeit 8 bis 12 Arbeitstage'],
+              price: 'Komplettbad ab 14.900 €'
+            },
+            {
+              slug: 'heizung-waermepumpe',
+              intro: 'Raus aus Gas? Wir prüfen, ob eine Wärmepumpe für Ihr Haus passt, planen die Anlage und kümmern uns um die Förderung von Bund und Land.',
+              bullets: ['Heizlastberechnung vor Ort', 'Wärmepumpe, Fußbodenheizung, Heizkörpertausch', 'Förderantrag „Raus aus Öl und Gas“ inklusive', 'Wartungsvertrag auf Wunsch'],
+              price: 'Beratung vor Ort kostenlos'
+            }
+          ],
+          beforeAfter: {
+            title: 'Vorher, nachher. Schieben Sie selbst.',
+            text: 'Ein altes Bad mit Wanne wird zur bodenebenen Dusche. Auf Ihrer Website zeigen Sie hier Ihre eigenen Projekte, mit Bezirk und Bauzeit.'
+          },
+          about: {
+            title: 'Ein Familienbetrieb aus Favoriten.',
+            text: 'Seit 2009 sind wir in Wien unterwegs, heute mit sechs Technikern und zwei Servicewagen pro Bezirk. Wer anruft, spricht mit uns, nicht mit einem Callcenter.',
+            name: 'Marko Novak',
+            role: 'Installateur- und Heizungsbaumeister',
+            quote: 'Ich sage meinen Kunden vor der Arbeit, was es kostet. Wenn wir gehen, ist das Bad sauberer als vorher.'
+          },
+          reviews: [
+            {name: 'Sabine K.', place: 'Wien 10', text: 'Sonntagabend Rohrbruch, eine Stunde später war der Techniker da. Freundlich, schnell, Preis wie am Telefon gesagt.'},
+            {name: 'Thomas W.', place: 'Wien 12', text: 'Therme getauscht, alles an einem Tag. Die Förderung haben sie auch gleich erledigt.'},
+            {name: 'Hausverwaltung Prinz', place: 'Wien 4', text: 'Wir arbeiten seit Jahren zusammen. Rechnung mit Fotos, keine Rückfragen nötig.'}
+          ],
+          locationsTitle: 'Schnell bei Ihnen im Süden von Wien.',
+          locationsText: 'Für jeden Bezirk gibt es eine eigene Seite. So finden Sie Kundinnen und Kunden, die „Installateur Simmering“ suchen.',
+          locations: [
+            {slug: 'favoriten', name: 'Favoriten', text: 'Unsere Werkstatt ist in Favoriten. Hier sind wir im Notfall oft in einer halben Stunde bei Ihnen, egal ob Gemeindebau, Altbau oder Neubau am Hauptbahnhof.', travel: 'ca. 30 Minuten'},
+            {slug: 'simmering', name: 'Simmering', text: 'In Simmering betreuen wir viele Wohnhausanlagen und Einfamilienhäuser. Thermenwartung, Rohrbruch, Badsanierung: alles mit einem Anruf.', travel: 'ca. 40 Minuten'},
+            {slug: 'meidling', name: 'Meidling', text: 'Altbau in Meidling heißt oft alte Leitungen. Wir tauschen Steigleitungen, sanieren Bäder und warten Thermen in Wohnungen jeder Größe.', travel: 'ca. 40 Minuten'}
+          ],
+          faq: [
+            {q: 'Was kostet der Notdienst?', a: 'Die Notdienst-Pauschale beginnt bei 119 € und deckt Anfahrt und die erste halbe Stunde. Den Preis für die Reparatur sagen wir Ihnen, bevor wir anfangen.'},
+            {q: 'Rechnen Sie mit der Versicherung ab?', a: 'Wir dokumentieren den Schaden mit Fotos und schicken alles an Sie oder direkt an Ihre Versicherung bzw. Hausverwaltung.'},
+            {q: 'Welche Thermen warten Sie?', a: 'Vaillant, Junkers, Buderus, Viessmann, Baxi und die meisten anderen Marken. Ersatzteile haben wir für gängige Modelle im Wagen.'},
+            {q: 'Gibt es Förderungen für die Wärmepumpe?', a: 'Ja. Wir prüfen, welche Förderungen von Bund und Stadt Wien Sie bekommen, und stellen den Antrag mit Ihnen gemeinsam.'}
+          ],
+          steps: {
+            topic: 'Worum geht es?',
+            topics: ['Rohrbruch oder Wasserschaden', 'Therme oder Heizung', 'Bad oder WC', 'Etwas anderes'],
+            when: 'Wie dringend ist es?',
+            whens: ['Notfall, heute', 'Diese Woche', 'Hat Zeit']
+          },
+          hours: [
+            ['Mo bis Fr', '7 bis 18 Uhr'],
+            ['Samstag', '8 bis 12 Uhr'],
+            ['Notdienst', 'rund um die Uhr']
+          ]
+        },
+        en: {
+          utility: 'Emergency service around the clock · every district south of the Danube',
+          heroBadges: ['Bathroom renovation in Vienna 10', 'Technician in 60 minutes'],
+          servicePages: [
+            {
+              slug: 'rohrbruch-wasserschaden',
+              intro: 'Water leaking? Turn off the main valve and call us. In an emergency we are with you in about 60 minutes, at night and at weekends too.',
+              bullets: ['Leak detection without needless chiselling', 'Immediate sealing and drying advice', 'Photo documentation for your insurer', 'Billing straight to your property manager if you like'],
+              price: 'Emergency call-out from €119'
+            },
+            {
+              slug: 'thermenservice',
+              intro: 'A serviced boiler uses less and breaks down less often. We service and repair all common brands and replace old units with efficient condensing boilers.',
+              bullets: ['Yearly service with flue gas test and report', 'Repairs with original parts', 'Boiler replacement usually in one day', 'Text reminder for your next service'],
+              price: 'Service from €149'
+            },
+            {
+              slug: 'badsanierung',
+              intro: 'From an old bathroom with a tub to a walk-in shower. We coordinate plumber, tiler and electrician; you have one contact and a fixed price.',
+              bullets: ['Planning with a 3D view', 'Walk-in showers and accessible bathrooms', 'Every trade from one source', 'Typical build time 8 to 12 working days'],
+              price: 'Complete bathroom from €14,900'
+            },
+            {
+              slug: 'heizung-waermepumpe',
+              intro: 'Moving off gas? We check whether a heat pump suits your house, plan the system and handle the federal and state subsidies.',
+              bullets: ['Heat load calculation on site', 'Heat pumps, underfloor heating, new radiators', 'Subsidy application included', 'Maintenance contract on request'],
+              price: 'On-site advice free of charge'
+            }
+          ],
+          beforeAfter: {
+            title: 'Before and after. Slide it yourself.',
+            text: 'An old bathroom with a tub becomes a walk-in shower. On your website you show your own projects here, with district and build time.'
+          },
+          about: {
+            title: 'A family business from Favoriten.',
+            text: 'We have been working across Vienna since 2009, today with six technicians and two service vans per district. When you call, you talk to us, not a call centre.',
+            name: 'Marko Novak',
+            role: 'Master plumber and heating engineer',
+            quote: 'I tell my customers what it costs before we start. When we leave, the bathroom is cleaner than before.'
+          },
+          reviews: [
+            {name: 'Sabine K.', place: 'Vienna 10', text: 'Burst pipe on a Sunday evening, the technician arrived an hour later. Friendly, fast, price as quoted on the phone.'},
+            {name: 'Thomas W.', place: 'Vienna 12', text: 'Boiler replaced, all in one day. They handled the subsidy too.'},
+            {name: 'Prinz property management', place: 'Vienna 4', text: 'We have worked together for years. Invoices with photos, no follow-up questions needed.'}
+          ],
+          locationsTitle: 'Close to you in the south of Vienna.',
+          locationsText: 'Every district gets its own page. That is how you reach people searching for “plumber Simmering”.',
+          locations: [
+            {slug: 'favoriten', name: 'Favoriten', text: 'Our workshop is in Favoriten. Here we are often with you within half an hour in an emergency, whether council flat, period building or new build by the main station.', travel: 'about 30 minutes'},
+            {slug: 'simmering', name: 'Simmering', text: 'In Simmering we look after many housing estates and family homes. Boiler service, burst pipes, bathroom renovation: all with one call.', travel: 'about 40 minutes'},
+            {slug: 'meidling', name: 'Meidling', text: 'Period buildings in Meidling often mean old pipes. We replace risers, renovate bathrooms and service boilers in flats of every size.', travel: 'about 40 minutes'}
+          ],
+          faq: [
+            {q: 'What does the emergency service cost?', a: 'The emergency flat fee starts at €119 and covers travel and the first half hour. We tell you the repair price before we start.'},
+            {q: 'Do you bill the insurer?', a: 'We document the damage with photos and send everything to you or straight to your insurer or property manager.'},
+            {q: 'Which boilers do you service?', a: 'Vaillant, Junkers, Buderus, Viessmann, Baxi and most other brands. We carry parts for common models in the van.'},
+            {q: 'Are there subsidies for heat pumps?', a: 'Yes. We check which federal and City of Vienna subsidies you can get and file the application with you.'}
+          ],
+          steps: {
+            topic: 'What is it about?',
+            topics: ['Burst pipe or water damage', 'Boiler or heating', 'Bathroom or toilet', 'Something else'],
+            when: 'How urgent is it?',
+            whens: ['Emergency, today', 'This week', 'No rush']
+          },
+          hours: [
+            ['Mon to Fri', '7am to 6pm'],
+            ['Saturday', '8am to 12pm'],
+            ['Emergencies', 'around the clock']
+          ]
+        }
+      })
+    },
     handwerk: {
       icon: 'droplets',
       serviceIcons: ['droplets', 'flame', 'bath', 'thermometer'],
@@ -808,6 +997,153 @@ export const demoSites: DemoSite[] = [
         contactButton: 'Send request'
       }
     }),
+    business: {
+      variant: 'editorial',
+      illustration: 'kitchen',
+      rating: '5,0',
+      copy: deAsRu({
+        de: {
+          utility: 'Werkstatt und Schauraum in Korneuburg · Besichtigung nach Vereinbarung',
+          heroBadges: ['Küche in Eiche unter der Dachschräge, Korneuburg', 'Planung kostenlos'],
+          servicePages: [
+            {
+              slug: 'kuechen',
+              intro: 'Eine Küche nach Maß nutzt jeden Zentimeter, auch unter Schrägen und in Altbauten mit schiefen Wänden. Sie wählen Holz, Fronten und Geräte, wir bauen sie passend.',
+              bullets: ['Aufmaß und Beratung bei Ihnen zu Hause', '3D-Planung mit Fixpreis', 'Fronten in Massivholz, Furnier oder Lack', 'Montage und Geräteanschluss an einem Tag'],
+              price: 'Küchen ab 12.000 €'
+            },
+            {
+              slug: 'einbauschraenke',
+              intro: 'Einbauschränke machen aus schwierigen Ecken Stauraum: Nischen, Schrägen, lange Vorräume. Bis unter die Decke, mit Schiebe- oder Drehtüren.',
+              bullets: ['Millimetergenau für Ihren Raum', 'Innenausstattung nach Wunsch', 'Grifflose Fronten oder Griffleisten aus Holz', 'Lieferzeit rund 6 Wochen'],
+              price: 'ab 1.800 € pro Laufmeter'
+            },
+            {
+              slug: 'moebel-innenausbau',
+              intro: 'Tische, Betten, Bänke, Wandverkleidungen und Türen aus heimischem Holz. Jedes Stück wird in unserer Werkstatt in Korneuburg gebaut.',
+              bullets: ['Eiche, Nuss, Lärche und Zirbe aus Österreich', 'Geölte oder lackierte Oberflächen', 'Passend zu bestehenden Möbeln', 'Auch Einzelstücke und kleine Aufträge'],
+              price: 'Esstisch ab 2.400 €'
+            },
+            {
+              slug: 'reparatur-aufarbeitung',
+              intro: 'Ein guter Tisch hält Generationen. Wir schleifen, ölen und reparieren alte Möbel und Holzfenster, statt sie wegzuwerfen.',
+              bullets: ['Abholung und Lieferung im Bezirk', 'Kratzer, Wasserflecken und lose Verbindungen', 'Holzfenster abdichten und streichen', 'Ehrliche Einschätzung, ob es sich lohnt'],
+              price: 'Kostenvoranschlag kostenlos'
+            }
+          ],
+          beforeAfter: {
+            title: 'Aus der alten Küche wird Ihre.',
+            text: 'Schieben Sie den Regler: vorher die abgenutzte Einbauküche, nachher Eiche nach Maß. Auf Ihrer Website stehen hier Fotos Ihrer eigenen Projekte.'
+          },
+          about: {
+            title: 'Drei Generationen, eine Werkstatt.',
+            text: 'Großvater Gruber hat 1978 in Korneuburg angefangen. Heute arbeiten wir zu fünft, mit modernen Maschinen und demselben Anspruch: Möbel, die bleiben.',
+            name: 'Lena Gruber',
+            role: 'Tischlermeisterin, 3. Generation',
+            quote: 'Wir bauen nichts, was wir nicht selbst montieren würden. Darum kommt der Tischler, der plant, auch zur Montage.'
+          },
+          reviews: [
+            {name: 'Familie Berger', place: 'Stockerau', text: 'Die Küche passt perfekt unter die Schräge. Vom ersten Termin bis zur Montage genau so, wie besprochen.'},
+            {name: 'Martin H.', place: 'Wien 21', text: 'Unser Nusstisch ist ein Traum. Man merkt, dass hier Menschen mit Liebe zum Holz arbeiten.'},
+            {name: 'Claudia S.', place: 'Korneuburg', text: 'Alte Holzfenster aufgearbeitet statt getauscht. Günstiger und schöner, danke!'}
+          ],
+          locationsTitle: 'Zu Hause im Weinviertel.',
+          locationsText: 'Für jeden Ort eine eigene Seite. So findet Sie, wer „Tischler Stockerau“ oder „Küche nach Maß Hollabrunn“ sucht.',
+          locations: [
+            {slug: 'korneuburg', name: 'Korneuburg', text: 'Hier steht unsere Werkstatt. Kommen Sie vorbei, sehen Sie Holzmuster und fertige Stücke und besprechen Sie Ihr Projekt am Werktisch.', travel: 'vor Ort'},
+            {slug: 'stockerau', name: 'Stockerau', text: 'In Stockerau haben wir viele Küchen und Einbauschränke gebaut, vom Reihenhaus bis zur Altbauwohnung am Hauptplatz.', travel: 'ca. 15 Minuten'},
+            {slug: 'hollabrunn', name: 'Hollabrunn', text: 'Auch in Hollabrunn und Umgebung messen, planen und montieren wir. Für größere Projekte kommen wir gerne mehrmals vorbei.', travel: 'ca. 30 Minuten'}
+          ],
+          faq: [
+            {q: 'Was kostet eine Küche nach Maß?', a: 'Eine kleine Küche beginnt bei etwa 12.000 €, je nach Holz, Fronten und Geräten. Nach dem Aufmaß bekommen Sie einen Fixpreis.'},
+            {q: 'Wie lange dauert es?', a: 'Von der Planung bis zur Montage rechnen Sie bei einer Küche mit etwa acht Wochen, bei Einbauschränken mit sechs.'},
+            {q: 'Kann ich die Werkstatt besichtigen?', a: 'Gerne. Vereinbaren Sie einen Termin und sehen Sie Holzmuster, Oberflächen und Stücke, an denen wir gerade arbeiten.'},
+            {q: 'Bauen Sie auch alte Geräte ein?', a: 'Ja, wenn sie noch gut sind. Wir planen die Küche um Ihre Geräte herum oder beraten beim Neukauf.'}
+          ],
+          steps: {
+            topic: 'Was planen Sie?',
+            topics: ['Küche', 'Einbauschrank', 'Möbel oder Innenausbau', 'Reparatur'],
+            when: 'Wann soll es fertig sein?',
+            whens: ['In 2 Monaten', 'Dieses Jahr', 'Noch offen']
+          },
+          hours: [
+            ['Mo bis Do', '7 bis 16 Uhr'],
+            ['Freitag', '7 bis 12 Uhr'],
+            ['Schauraum', 'nach Vereinbarung']
+          ]
+        },
+        en: {
+          utility: 'Workshop and showroom in Korneuburg · visits by appointment',
+          heroBadges: ['Oak kitchen under a sloped ceiling, Korneuburg', 'Free planning'],
+          servicePages: [
+            {
+              slug: 'kuechen',
+              intro: 'A custom kitchen uses every centimetre, even under slopes and in old buildings with crooked walls. You choose wood, fronts and appliances; we build it to fit.',
+              bullets: ['Measuring and advice in your home', '3D planning with a fixed price', 'Fronts in solid wood, veneer or lacquer', 'Installation and appliance hook-up in one day'],
+              price: 'Kitchens from €12,000'
+            },
+            {
+              slug: 'einbauschraenke',
+              intro: 'Fitted wardrobes turn awkward corners into storage: niches, slopes, long hallways. Up to the ceiling, with sliding or hinged doors.',
+              bullets: ['Made to the millimetre for your room', 'Interior fittings as you like', 'Handleless fronts or wooden grips', 'Lead time around 6 weeks'],
+              price: 'from €1,800 per running metre'
+            },
+            {
+              slug: 'moebel-innenausbau',
+              intro: 'Tables, beds, benches, wall panelling and doors in local timber. Every piece is built in our Korneuburg workshop.',
+              bullets: ['Oak, walnut, larch and stone pine from Austria', 'Oiled or lacquered finishes', 'Matching your existing furniture', 'One-off pieces and small jobs welcome'],
+              price: 'Dining table from €2,400'
+            },
+            {
+              slug: 'reparatur-aufarbeitung',
+              intro: 'A good table lasts generations. We sand, oil and repair old furniture and wooden windows instead of throwing them away.',
+              bullets: ['Pick-up and delivery in the district', 'Scratches, water marks and loose joints', 'Sealing and painting wooden windows', 'Honest advice on whether it is worth it'],
+              price: 'Free quote'
+            }
+          ],
+          beforeAfter: {
+            title: 'Your old kitchen becomes yours.',
+            text: 'Move the slider: before, the worn fitted kitchen; after, custom oak. On your website this is where photos of your own projects go.'
+          },
+          about: {
+            title: 'Three generations, one workshop.',
+            text: 'Grandfather Gruber started in Korneuburg in 1978. Today we are five, with modern machines and the same standard: furniture that lasts.',
+            name: 'Lena Gruber',
+            role: 'Master joiner, third generation',
+            quote: 'We never build anything we would not install ourselves. That is why the joiner who plans it also comes to install it.'
+          },
+          reviews: [
+            {name: 'The Berger family', place: 'Stockerau', text: 'The kitchen fits perfectly under the slope. From the first visit to installation exactly as discussed.'},
+            {name: 'Martin H.', place: 'Vienna 21', text: 'Our walnut table is a dream. You can tell these people love wood.'},
+            {name: 'Claudia S.', place: 'Korneuburg', text: 'Old wooden windows restored instead of replaced. Cheaper and more beautiful, thank you!'}
+          ],
+          locationsTitle: 'At home in the Weinviertel.',
+          locationsText: 'One page per town. That is how people searching for “joiner Stockerau” or “custom kitchen Hollabrunn” find you.',
+          locations: [
+            {slug: 'korneuburg', name: 'Korneuburg', text: 'Our workshop is here. Drop by, see wood samples and finished pieces, and talk about your project at the workbench.', travel: 'on site'},
+            {slug: 'stockerau', name: 'Stockerau', text: 'We have built many kitchens and wardrobes in Stockerau, from terraced houses to period flats on the main square.', travel: 'about 15 minutes'},
+            {slug: 'hollabrunn', name: 'Hollabrunn', text: 'We measure, plan and install in Hollabrunn and the surrounding area too. For larger projects we are happy to visit several times.', travel: 'about 30 minutes'}
+          ],
+          faq: [
+            {q: 'What does a custom kitchen cost?', a: 'A small kitchen starts at about €12,000, depending on wood, fronts and appliances. After measuring you get a fixed price.'},
+            {q: 'How long does it take?', a: 'From planning to installation expect about eight weeks for a kitchen and six for fitted wardrobes.'},
+            {q: 'Can I visit the workshop?', a: 'Of course. Book a time and see wood samples, finishes and pieces we are working on.'},
+            {q: 'Can you fit my existing appliances?', a: 'Yes, if they are still good. We plan the kitchen around them or advise you on buying new.'}
+          ],
+          steps: {
+            topic: 'What are you planning?',
+            topics: ['Kitchen', 'Fitted wardrobe', 'Furniture or interior', 'Repair'],
+            when: 'When should it be ready?',
+            whens: ['In 2 months', 'This year', 'Not sure yet']
+          },
+          hours: [
+            ['Mon to Thu', '7am to 4pm'],
+            ['Friday', '7am to 12pm'],
+            ['Showroom', 'by appointment']
+          ]
+        }
+      })
+    },
     handwerk: {
       icon: 'hammer',
       serviceIcons: ['kitchen', 'layers', 'sofa', 'ruler'],
@@ -1152,6 +1488,153 @@ export const demoSites: DemoSite[] = [
         contactButton: 'Send request'
       }
     }),
+    business: {
+      variant: 'bold',
+      illustration: 'roof',
+      rating: '4,8',
+      copy: deAsRu({
+        de: {
+          utility: 'Sturmschaden? Notsicherung noch am selben Tag · 02243 000 000',
+          heroBadges: ['Neueindeckung in Klosterneuburg', 'über 600 Dächer im Bezirk Tulln'],
+          servicePages: [
+            {
+              slug: 'sturmschaden',
+              intro: 'Nach einem Sturm zählt jede Stunde. Wir sichern lose Ziegel und offene Stellen noch am selben Tag und dokumentieren alles für Ihre Versicherung.',
+              bullets: ['Notsicherung mit Plane oder Ersatzziegeln', 'Fotobericht für die Versicherung', 'Reparatur zum Fixpreis danach', 'Bei Sturm auch am Wochenende im Einsatz'],
+              price: 'Notsicherung ab 290 €'
+            },
+            {
+              slug: 'dachsanierung',
+              intro: 'Ein neues Dach mit guter Dämmung spart Heizkosten und hält Jahrzehnte. Wir decken neu, dämmen und kümmern uns um den Förderantrag.',
+              bullets: ['Ziegel, Betondachstein oder Blech', 'Aufsparrendämmung nach aktuellem Standard', 'Förderberatung und Antrag', '10 Jahre Garantie auf die Neueindeckung'],
+              price: 'ab 180 € pro m²'
+            },
+            {
+              slug: 'spenglerarbeiten',
+              intro: 'Dachrinnen, Kamineinfassungen, Gaupen und Blechdächer aus Kupfer, Zink oder Aluminium. Gefertigt in unserer eigenen Spenglerei.',
+              bullets: ['Dachrinnen und Fallrohre tauschen', 'Kamin- und Gaupeneinfassungen', 'Stehfalzdächer aus Kupfer und Zink', 'Reinigung und Laubschutz'],
+              price: 'Dachrinne ab 65 € pro Meter'
+            },
+            {
+              slug: 'dach-check',
+              intro: 'Kleine Schäden werden teuer, wenn man sie nicht sieht. Beim Dach-Check prüfen wir jede Stelle und schicken Ihnen einen Fotobericht.',
+              bullets: ['Kontrolle von Ziegeln, Rinnen und Einfassungen', 'Fotobericht mit Empfehlung', 'Kleine Reparaturen gleich vor Ort', 'Jährliche Erinnerung auf Wunsch'],
+              price: 'Dach-Check 149 €'
+            }
+          ],
+          beforeAfter: {
+            title: 'Vorher, nachher.',
+            text: 'Fehlende Ziegel, rostige Rinne, undichter Kamin. Und dasselbe Dach nach der Sanierung. Auf Ihrer Website stehen hier Ihre eigenen Fotos.'
+          },
+          about: {
+            title: 'Dachdecker und Spengler unter einem Dach.',
+            text: 'Seit 1996 in Klosterneuburg. Zwölf Leute, eigene Spenglerei, eigene Gerüste. So sind wir schnell und brauchen keine Subfirmen.',
+            name: 'Georg Hofer',
+            role: 'Dachdecker- und Spenglermeister',
+            quote: 'Ich zeige jedem Kunden Fotos vom eigenen Dach. Erst wenn Sie sehen, was los ist, entscheiden Sie.'
+          },
+          reviews: [
+            {name: 'Andreas P.', place: 'Klosterneuburg', text: 'Nach dem Sturm am Samstag angerufen, am Nachmittag war das Dach gesichert. Top!'},
+            {name: 'Elisabeth R.', place: 'Tulln', text: 'Neues Dach mit Dämmung, Förderung inklusive. Alles termingerecht und sauber.'},
+            {name: 'Hausverwaltung Mayr', place: 'Wien 19', text: 'Zuverlässig, Fotoberichte nach jedem Einsatz. So soll das sein.'}
+          ],
+          locationsTitle: 'Im Bezirk Tulln und im Norden von Wien.',
+          locationsText: 'Eigene Seiten für die wichtigsten Orte. So werden Sie bei „Dachdecker Tulln“ gefunden.',
+          locations: [
+            {slug: 'klosterneuburg', name: 'Klosterneuburg', text: 'Hier sind Werkstatt und Lager. Bei Sturmschaden in Klosterneuburg, Kierling oder Kritzendorf sind wir meist innerhalb von zwei Stunden am Dach.', travel: 'ca. 20 Minuten'},
+            {slug: 'tulln', name: 'Tulln', text: 'In Tulln und Umgebung sanieren wir viele Einfamilienhäuser und betreuen landwirtschaftliche Gebäude mit großen Dachflächen.', travel: 'ca. 35 Minuten'},
+            {slug: 'wien-doebling', name: 'Wien Döbling', text: 'Villen und Gründerzeithäuser in Döbling brauchen Erfahrung mit Kupfer, Gaupen und Denkmalschutz. Wir haben beides.', travel: 'ca. 25 Minuten'}
+          ],
+          faq: [
+            {q: 'Zahlt die Versicherung den Sturmschaden?', a: 'In vielen Fällen ja. Wir machen Fotos, beschreiben den Schaden und schicken Ihnen alles für die Meldung an die Versicherung.'},
+            {q: 'Was kostet ein neues Dach?', a: 'Für ein Einfamilienhaus rechnen Sie mit 180 bis 260 € pro m², je nach Material und Dämmung. Nach der Besichtigung bekommen Sie einen Fixpreis.'},
+            {q: 'Gibt es Förderungen?', a: 'Für die Dämmung gibt es Förderungen von Bund und Land Niederösterreich. Wir beraten Sie und helfen beim Antrag.'},
+            {q: 'Wie schnell kommen Sie?', a: 'Bei Sturmschaden am selben Tag. Für Besichtigungen und Angebote meist innerhalb einer Woche.'}
+          ],
+          steps: {
+            topic: 'Worum geht es?',
+            topics: ['Sturmschaden', 'Undichte Stelle', 'Dachrinne oder Spengler', 'Sanierung oder Dach-Check'],
+            when: 'Wie dringend ist es?',
+            whens: ['Heute, es regnet rein', 'Diese Woche', 'Hat Zeit']
+          },
+          hours: [
+            ['Mo bis Fr', '7 bis 17 Uhr'],
+            ['Samstag', 'bei Sturm'],
+            ['Notsicherung', 'am selben Tag']
+          ]
+        },
+        en: {
+          utility: 'Storm damage? Emergency cover the same day · 02243 000 000',
+          heroBadges: ['New roof in Klosterneuburg', 'over 600 roofs in the Tulln district'],
+          servicePages: [
+            {
+              slug: 'sturmschaden',
+              intro: 'After a storm every hour counts. We secure loose tiles and open spots the same day and document everything for your insurer.',
+              bullets: ['Emergency cover with tarp or spare tiles', 'Photo report for your insurer', 'Repair at a fixed price afterwards', 'Out at weekends after storms'],
+              price: 'Emergency cover from €290'
+            },
+            {
+              slug: 'dachsanierung',
+              intro: 'A new roof with good insulation saves heating costs and lasts decades. We re-roof, insulate and handle the subsidy application.',
+              bullets: ['Clay tiles, concrete tiles or metal', 'Insulation to current standards', 'Subsidy advice and application', '10-year warranty on new roofing'],
+              price: 'from €180 per m²'
+            },
+            {
+              slug: 'spenglerarbeiten',
+              intro: 'Gutters, chimney flashing, dormers and metal roofs in copper, zinc or aluminium. Made in our own sheet metal shop.',
+              bullets: ['Replacing gutters and downpipes', 'Chimney and dormer flashing', 'Standing seam roofs in copper and zinc', 'Cleaning and leaf guards'],
+              price: 'Gutter from €65 per metre'
+            },
+            {
+              slug: 'dach-check',
+              intro: 'Small damage gets expensive when nobody sees it. In a roof check we inspect every spot and send you a photo report.',
+              bullets: ['Checking tiles, gutters and flashing', 'Photo report with recommendations', 'Small repairs on the spot', 'Yearly reminder on request'],
+              price: 'Roof check €149'
+            }
+          ],
+          beforeAfter: {
+            title: 'Before and after.',
+            text: 'Missing tiles, a rusty gutter, a leaking chimney. And the same roof after renovation. On your website your own photos go here.'
+          },
+          about: {
+            title: 'Roofers and tinsmiths under one roof.',
+            text: 'In Klosterneuburg since 1996. Twelve people, our own sheet metal shop, our own scaffolding. That keeps us fast and free of subcontractors.',
+            name: 'Georg Hofer',
+            role: 'Master roofer and tinsmith',
+            quote: 'I show every customer photos of their own roof. Only when you see what is going on do you decide.'
+          },
+          reviews: [
+            {name: 'Andreas P.', place: 'Klosterneuburg', text: 'Called after the storm on Saturday, by the afternoon the roof was secured. Excellent!'},
+            {name: 'Elisabeth R.', place: 'Tulln', text: 'New roof with insulation, subsidy included. Everything on time and clean.'},
+            {name: 'Mayr property management', place: 'Vienna 19', text: 'Reliable, photo reports after every job. That is how it should be.'}
+          ],
+          locationsTitle: 'In the Tulln district and north Vienna.',
+          locationsText: 'Separate pages for the key towns. That is how you get found for “roofer Tulln”.',
+          locations: [
+            {slug: 'klosterneuburg', name: 'Klosterneuburg', text: 'Our workshop and yard are here. After storms in Klosterneuburg, Kierling or Kritzendorf we are usually on the roof within two hours.', travel: 'about 20 minutes'},
+            {slug: 'tulln', name: 'Tulln', text: 'In and around Tulln we renovate many family homes and look after farm buildings with large roof areas.', travel: 'about 35 minutes'},
+            {slug: 'wien-doebling', name: 'Vienna Döbling', text: 'Villas and period buildings in Döbling need experience with copper, dormers and heritage rules. We have both.', travel: 'about 25 minutes'}
+          ],
+          faq: [
+            {q: 'Does insurance pay for storm damage?', a: 'In many cases yes. We take photos, describe the damage and send you everything for your claim.'},
+            {q: 'What does a new roof cost?', a: 'For a family home expect €180 to €260 per m², depending on material and insulation. After the inspection you get a fixed price.'},
+            {q: 'Are there subsidies?', a: 'Insulation is subsidised by the federal government and Lower Austria. We advise you and help with the application.'},
+            {q: 'How fast can you come?', a: 'For storm damage the same day. For inspections and quotes usually within a week.'}
+          ],
+          steps: {
+            topic: 'What is it about?',
+            topics: ['Storm damage', 'Leak', 'Gutter or sheet metal', 'Renovation or roof check'],
+            when: 'How urgent is it?',
+            whens: ['Today, water is coming in', 'This week', 'No rush']
+          },
+          hours: [
+            ['Mon to Fri', '7am to 5pm'],
+            ['Saturday', 'after storms'],
+            ['Emergency cover', 'same day']
+          ]
+        }
+      })
+    },
     handwerk: {
       icon: 'house',
       serviceIcons: ['storm', 'house', 'droplets', 'shield'],
