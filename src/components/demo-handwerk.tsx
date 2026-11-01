@@ -39,7 +39,7 @@ import {formatEur} from '@/content/pricing';
 import {Link} from '@/i18n/navigation';
 import {localeLabels, localeShortLabels, routing, type Locale} from '@/i18n/routing';
 
-const icons: Record<HandwerkIcon, LucideIcon> = {
+export const handwerkIcons: Record<HandwerkIcon, LucideIcon> = {
   zap: Zap,
   wrench: Wrench,
   shield: ShieldCheck,
@@ -118,7 +118,7 @@ export function HandwerkDemo({site, locale}: {site: DemoSite; locale: Locale}) {
   const theme = config.theme;
   const [sent, setSent] = useState(false);
   const otherLocales = routing.locales.filter((item) => item !== locale);
-  const BrandIcon = icons[config.icon];
+  const BrandIcon = handwerkIcons[config.icon];
   const SecondaryIcon = config.secondaryIcon === 'calendar' ? CalendarCheck : Camera;
 
   const style = {
@@ -249,7 +249,7 @@ export function HandwerkDemo({site, locale}: {site: DemoSite; locale: Locale}) {
           <h2 className="text-[30px] leading-tight sm:text-4xl">{copy.servicesTitle}</h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
             {copy.services.map((service, index) => {
-              const Icon = icons[config.serviceIcons[index % config.serviceIcons.length]];
+              const Icon = handwerkIcons[config.serviceIcons[index % config.serviceIcons.length]];
               return (
                 <article key={service.title} className="rounded-[12px] border border-[var(--hw-border)] bg-white p-6">
                   <Icon className="h-7 w-7 text-[var(--hw-accent)]" aria-hidden="true" />
@@ -276,7 +276,7 @@ export function HandwerkDemo({site, locale}: {site: DemoSite; locale: Locale}) {
                     aria-hidden="true"
                   >
                     {(() => {
-                      const Icon = icons[config.serviceIcons[index % config.serviceIcons.length]];
+                      const Icon = handwerkIcons[config.serviceIcons[index % config.serviceIcons.length]];
                       return <Icon className="h-12 w-12 text-[var(--hw-primary)] opacity-40" strokeWidth={1.5} />;
                     })()}
                     <span className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-bold text-[var(--hw-primary)]">

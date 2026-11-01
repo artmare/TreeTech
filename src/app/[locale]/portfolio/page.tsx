@@ -6,6 +6,7 @@ import {setRequestLocale} from 'next-intl/server';
 import {FadeIn} from '@/components/motion/fade-in';
 import {PortfolioCard} from '@/components/portfolio-card';
 import {Container} from '@/components/ui/container';
+import {formatPackagePrice, getPackage, type PackageId} from '@/content/pricing';
 import {portfolioProjects, siteContent} from '@/content/site';
 import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
@@ -40,6 +41,45 @@ const portfolioBrief = {
     ]
   }
 } satisfies Record<Locale, {title: string; items: string[]}>;
+
+const tiers = {
+  de: [
+    {
+      ids: ['websiteBusiness'],
+      title: 'Website Business',
+      lead: 'Eigenes Design für Ihren Betrieb, bis zu 10 Seiten: eine Seite pro Leistung und pro Ort, Vorher-nachher-Galerie, Bewertungen, Fragen und Antworten, Anfrage in drei Schritten. Klicken Sie sich durch die Unterseiten.'
+    },
+    {
+      ids: ['websiteStart', 'websiteAbo'],
+      title: 'Website Start und Website-Abo',
+      lead: 'Eine klare Seite im bewährten Aufbau für Handwerk: Anruf-Knopf, Leistungen, Einsatzgebiet, Anfrage mit Foto. Schnell online, Farben und Inhalte für Ihren Betrieb.'
+    }
+  ],
+  en: [
+    {
+      ids: ['websiteBusiness'],
+      title: 'Website Business',
+      lead: 'A design of its own for your business, up to 10 pages: one page per service and per town, before/after gallery, reviews, FAQ and a three-step inquiry. Click through the sub pages.'
+    },
+    {
+      ids: ['websiteStart', 'websiteAbo'],
+      title: 'Website Start and website subscription',
+      lead: 'One clear page in a proven layout for trades: call button, services, service area, inquiry with photo. Live fast, with colours and content for your business.'
+    }
+  ],
+  ru: [
+    {
+      ids: ['websiteBusiness'],
+      title: 'Website Business',
+      lead: 'Собственный дизайн под ваш бизнес, до 10 страниц: страница на каждую услугу и каждый район, галерея «до и после», отзывы, вопросы и ответы, заявка в три шага. Пощёлкайте по подстраницам.'
+    },
+    {
+      ids: ['websiteStart', 'websiteAbo'],
+      title: 'Website Start и Website-Abo',
+      lead: 'Одна понятная страница в проверенной структуре для ремесленников: кнопка звонка, услуги, район выезда, заявка с фото. Быстрый запуск, цвета и тексты под ваш бизнес.'
+    }
+  ]
+} satisfies Record<Locale, {ids: PackageId[]; title: string; lead: string}[]>;
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const rawLocale = (await params).locale;
@@ -88,19 +128,33 @@ export default async function PortfolioPage({params}: PageProps) {
         </Container>
       </section>
 
-      <section className="py-16">
+      {tiers[locale].map((tier, tierIndex) => {
+        const projects = portfolioProjects.filter((project) => (tier.ids as PackageId[]).includes(project.packageId));
+        const price = (tier.ids as PackageId[]).map((id) => formatPackagePrice(getPackage(id), locale)).join(' · ');
+        return (
+          <section key={tier.title} className={tierIndex === 0 ? 'pt-16' : 'pt-20'}>
+            <Container>
+              <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-5">
+                <div className="max-w-3xl">
+                  <h2 className="text-3xl text-foreground sm:text-4xl">{tier.title}</h2>
+                  <p className="mt-3 text-base leading-7 text-muted">{tier.lead}</p>
+                </div>
+                <p className="rounded-full border border-border bg-surface px-4 py-2 text-sm font-bold text-foreground">{price}</p>
+              </div>
+              <div className="mt-8 grid gap-5 lg:grid-cols-2 [&>*]:min-w-0">
+                {projects.map((project, index) => (
+                  <FadeIn key={project.slug} delay={index * 0.06}>
+                    <PortfolioCard project={project} locale={locale} cta={content.common.viewProject} />
+                  </FadeIn>
+                ))}
+              </div>
+            </Container>
+          </section>
+        );
+      })}
+
+      <section className="pb-16">
         <Container>
-          <div className="grid gap-5 lg:grid-cols-2 [&>*]:min-w-0">
-            {portfolioProjects.map((project, index) => (
-              <FadeIn key={project.slug} delay={index * 0.06}>
-                <PortfolioCard
-                  project={project}
-                  locale={locale}
-                  cta={content.common.viewProject}
-                />
-              </FadeIn>
-            ))}
-          </div>
           <p className="mt-8 max-w-3xl rounded-[1rem] border border-border bg-surface px-4 py-3 text-sm leading-7 text-muted">
             {content.portfolio.disclaimer}
           </p>

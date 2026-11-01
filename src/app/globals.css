@@ -288,3 +288,18 @@ main h2[data-size='sm'] {
   font-weight: 800;
   letter-spacing: 0;
 }
+
+/* Business demos bring their own typography (see demo-business.tsx). */
+.demo-business .bz-heading,
+.demo-business h1,
+.demo-business h2 {
+  font-family: var(--bz-heading);
+  font-weight: var(--bz-heading-weight);
+  font-stretch: 100%;
+  letter-spacing: var(--bz-tracking);
+  text-transform: var(--bz-case);
+}
+
+.demo-business .bz-btn {
+  border-radius: var(--bz-btn-radius);
+}
