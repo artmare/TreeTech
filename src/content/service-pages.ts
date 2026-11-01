@@ -17,6 +17,8 @@ export type ServicePage = {
   faq?: Record<Locale, Array<{q: string; a: string}>>;
   /** Niche pages for the main audience: CTA leads to the free preview. */
   primary?: boolean;
+  /** Example site (demo slug) that fits this audience, linked from the hero. */
+  exampleSlug?: string;
 };
 
 const startPrice = getPackage('websiteStart').oneTime ?? 0;
@@ -85,6 +87,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
   {
     slug: 'websites-fuer-handwerker',
     primary: true,
+    exampleSlug: 'elektro-huber',
     title: {
       de: 'Websites für Handwerker in Wien und Niederösterreich',
       en: 'Websites for tradespeople in Vienna and Lower Austria',
@@ -150,6 +153,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
   {
     slug: 'websites-fuer-kfz-werkstaetten',
     primary: true,
+    exampleSlug: 'kfz-berger',
     title: {
       de: 'Websites für Kfz-Werkstätten in Wien und Niederösterreich',
       en: 'Websites for car workshops in Vienna and Lower Austria',

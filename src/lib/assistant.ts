@@ -68,6 +68,7 @@ export function buildAssistantInstructions(locale: Locale) {
     `Websites for tradespeople: ${siteConfig.url}/${locale}/websites-fuer-handwerker`,
     `Websites for car workshops: ${siteConfig.url}/${locale}/websites-fuer-kfz-werkstaetten`,
     `Example website of an electrician: ${siteConfig.url}/${locale}/portfolio/elektro-huber/site`,
+    `Example websites for other trades (plumber, car repair shop, joinery, painter, roofer): ${siteConfig.url}/${locale}/portfolio`,
     `Guides (website costs, Google Business Profile, checklist): ${siteConfig.url}/${locale}/blog`,
     '',
     'ABOUT US',

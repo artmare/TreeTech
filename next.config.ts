@@ -66,6 +66,14 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 31536000
   },
+  async redirects() {
+    // Old non-trade examples were replaced by Handwerk demos; keep their links working.
+    const removedDemos = ['alpendent', 'vienna-legal', 'bergblick-hotel', 'greenhaus-immobilien', 'kraftwerk-fitness'];
+    return removedDemos.flatMap((slug) => [
+      {source: `/:locale(de|en|ru)/portfolio/${slug}`, destination: '/:locale/portfolio', permanent: true},
+      {source: `/:locale(de|en|ru)/portfolio/${slug}/site`, destination: '/:locale/portfolio', permanent: true}
+    ]);
+  },
   async headers() {
     return [
       {

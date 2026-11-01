@@ -1,4 +1,4 @@
-import {ArrowLeft, CheckCircle2, ChevronDown, Phone, Target, UsersRound, Wrench} from 'lucide-react';
+import {ArrowLeft, ArrowRight, CheckCircle2, ChevronDown, Phone, Target, UsersRound, Wrench} from 'lucide-react';
 import type {Metadata} from 'next';
 import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
@@ -20,23 +20,26 @@ type PageProps = {
 const serviceDetailLabels = {
   de: {
     viewExamples: 'Beispielprojekte ansehen',
+    viewExample: 'Beispiel-Website ansehen',
     allPrices: 'Alle Pakete und Preise',
     faqTitle: 'Häufige Fragen',
     faqLead: 'Antworten auf typische Fragen zu Kosten, Ablauf, bestehenden Tools und Support.'
   },
   en: {
     viewExamples: 'View example projects',
+    viewExample: 'View an example website',
     allPrices: 'All packages and prices',
     faqTitle: 'Frequently asked questions',
     faqLead: 'Answers to common questions about cost, process, existing tools, and support.'
   },
   ru: {
     viewExamples: 'Посмотреть примеры проектов',
+    viewExample: 'Открыть пример сайта',
     allPrices: 'Все пакеты и цены',
     faqTitle: 'Частые вопросы',
     faqLead: 'Ответы на типичные вопросы о стоимости, процессе, существующих инструментах и поддержке.'
   }
-} satisfies Record<Locale, {viewExamples: string; allPrices: string; faqTitle: string; faqLead: string}>;
+} satisfies Record<Locale, {viewExamples: string; viewExample: string; allPrices: string; faqTitle: string; faqLead: string}>;
 
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) =>
@@ -125,6 +128,15 @@ export default async function ServiceLandingPage({params}: PageProps) {
               </ButtonLink>
             )}
           </div>
+          {page.exampleSlug ? (
+            <Link
+              href={`/portfolio/${page.exampleSlug}/site`}
+              className="mt-4 inline-flex items-center gap-1.5 text-base font-bold text-accent underline-offset-4 hover:underline"
+            >
+              {labels.viewExample}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          ) : null}
         </Container>
       </section>
 
