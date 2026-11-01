@@ -10,7 +10,10 @@
     "menu": "Menü öffnen",
     "close": "Menü schließen",
     "language": "Sprache wechseln",
-    "call": "Anrufen"
+    "call": "Anrufen",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "terms": "AGB"
   },
   "footer": {
     "tagline": "Websites für Handwerk und Werkstätten in Wien und Niederösterreich. Fixpreise, Texte inklusive, in 7 Tagen online.",
@@ -51,7 +54,9 @@
     "phone": "Telefon",
     "reachableHint": "Telefon oder E-Mail genügt.",
     "optional": "optional",
-    "phonePlaceholder": "0660 123 45 67"
+    "phonePlaceholder": "0660 123 45 67",
+    "privacyNote": "Mit dem Absenden stimmen Sie zu, dass wir Ihre Angaben zur Bearbeitung der Anfrage verwenden. Mehr dazu in der",
+    "privacyLink": "Datenschutzerklärung"
   },
   "assistant": {
     "open": "Frage stellen",
@@ -118,6 +123,8 @@
     "requestCare": "Seite ansehen lassen",
     "callShort": "Anrufen",
     "showQuestions": "Schnell-Check",
-    "previewShort": "Vorschau anfordern"
+    "previewShort": "Vorschau anfordern",
+    "privacyNote": "Ihre Angaben verwenden wir nur für Ihre Anfrage.",
+    "privacyLink": "Datenschutz"
   }
 }

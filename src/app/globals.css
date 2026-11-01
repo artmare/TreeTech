@@ -280,3 +280,11 @@ main h2 {
     font-size: min(1.875rem, 8vw) !important;
   }
 }
+
+/* Small section headings (legal pages): calmer than the display headings. */
+main h2[data-size='sm'] {
+  font-size: 1.25rem !important;
+  font-stretch: 100%;
+  font-weight: 800;
+  letter-spacing: 0;
+}

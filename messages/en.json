@@ -10,7 +10,10 @@
     "menu": "Open menu",
     "close": "Close menu",
     "language": "Switch language",
-    "call": "Call"
+    "call": "Call",
+    "imprint": "Legal notice",
+    "privacy": "Privacy",
+    "terms": "Terms"
   },
   "footer": {
     "tagline": "Websites for trades and workshops in Vienna and Lower Austria. Fixed prices, copy included, live in 7 days.",
@@ -51,7 +54,9 @@
     "phone": "Phone",
     "reachableHint": "Phone or email is enough.",
     "optional": "optional",
-    "phonePlaceholder": "+43 660 123 45 67"
+    "phonePlaceholder": "+43 660 123 45 67",
+    "privacyNote": "By sending, you agree that we use your details to handle your request. More in our",
+    "privacyLink": "privacy policy"
   },
   "assistant": {
     "open": "Ask a question",
@@ -118,6 +123,8 @@
     "requestCare": "Have us look at my site",
     "callShort": "Call",
     "showQuestions": "Quick check",
-    "previewShort": "Get preview"
+    "previewShort": "Get preview",
+    "privacyNote": "We only use your details for your request.",
+    "privacyLink": "Privacy"
   }
 }

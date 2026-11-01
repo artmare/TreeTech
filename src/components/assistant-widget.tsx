@@ -9,7 +9,7 @@ import {phoneHref, whatsappHref} from '@/content/contact-links';
 import {phonePattern} from '@/lib/contact-options';
 import {isDemoSitePath} from '@/lib/demo-routes';
 import {cn} from '@/lib/utils';
-import {usePathname} from '@/i18n/navigation';
+import {Link, usePathname} from '@/i18n/navigation';
 import type {Locale} from '@/i18n/routing';
 
 type ChatMessage = {
@@ -641,6 +641,12 @@ function LeadForm({values, setValues, status, sending, t, onClose, onSubmit}: Le
         {sending ? <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> : <Send className="h-5 w-5" aria-hidden="true" />}
         {sending ? t('sending') : t('sendLead')}
       </button>
+      <p className="mt-2 text-[13px] leading-snug text-muted">
+        {t('privacyNote')}{' '}
+        <Link href="/datenschutz" className="font-semibold text-accent underline underline-offset-2">
+          {t('privacyLink')}
+        </Link>
+      </p>
       {status === 'invalid' || status === 'error' ? (
         <p className="mt-3 rounded-[10px] bg-red-50 px-3 py-2 text-sm font-semibold text-red-700" role="status">
           {status === 'invalid' ? t('leadError') : t('leadSendError')}

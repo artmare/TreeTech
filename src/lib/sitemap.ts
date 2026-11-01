@@ -7,7 +7,7 @@ import {portfolioProjects, siteConfig} from '@/content/site';
 import type {Locale} from '@/i18n/routing';
 import {routing} from '@/i18n/routing';
 
-const staticPaths = ['', '/about', '/services', '/blog', '/portfolio', '/contact'];
+const staticPaths = ['', '/about', '/services', '/blog', '/portfolio', '/contact', '/impressum', '/datenschutz', '/agb'];
 
 const sitemapPaths = [
   ...staticPaths,
