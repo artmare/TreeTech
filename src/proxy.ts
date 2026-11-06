@@ -5,27 +5,38 @@ import {routing} from './i18n/routing';
 
 const intlMiddleware = createMiddleware(routing);
 
-// Client website previews, served as static files from public/previews/<slug>/
-// on their own subdomain, e.g. wegscheider.treetech.at → /previews/wegscheider/index.html.
-// Add a slug here after creating its folder.
-const PREVIEW_SLUGS = new Set(['wegscheider']);
+// Client websites on their own subdomain of treetech.at:
+// - static previews: public/previews/<slug>/index.html
+// - CMS-backed sites (editable under /admin/sites): src/app/sites/[slug]
+const STATIC_PREVIEWS = new Set(['wegscheider']);
+const CMS_SITES = new Set(['weg-i']);
 const PREVIEW_HOST = /^([a-z0-9-]+)\.treetech\.at$/;
 
-function previewSlug(request: NextRequest): string | null {
+function subdomain(request: NextRequest): string | null {
   const host = (request.headers.get('host') ?? '').toLowerCase().split(':')[0];
-  const match = PREVIEW_HOST.exec(host);
-  if (!match || !PREVIEW_SLUGS.has(match[1])) return null;
-  return match[1];
+  return PREVIEW_HOST.exec(host)?.[1] ?? null;
+}
+
+function noindex(response: NextResponse) {
+  response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  return response;
 }
 
 export default function proxy(request: NextRequest) {
-  const slug = previewSlug(request);
-  if (slug) {
-    const url = request.nextUrl.clone();
+  const slug = subdomain(request);
+  const url = request.nextUrl.clone();
+
+  if (slug && STATIC_PREVIEWS.has(slug)) {
     url.pathname = `/previews/${slug}/index.html`;
-    const response = NextResponse.rewrite(url);
-    response.headers.set('X-Robots-Tag', 'noindex, nofollow');
-    return response;
+    return noindex(NextResponse.rewrite(url));
+  }
+  if (slug && CMS_SITES.has(slug)) {
+    url.pathname = `/sites/${slug}`;
+    return noindex(NextResponse.rewrite(url));
+  }
+  // Direct access on the main domain (treetech.at/sites/weg-i) bypasses the locale routing.
+  if (request.nextUrl.pathname.startsWith('/sites/')) {
+    return noindex(NextResponse.next());
   }
   return intlMiddleware(request);
 }

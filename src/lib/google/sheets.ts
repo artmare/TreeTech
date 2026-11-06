@@ -24,6 +24,17 @@ export async function updateValues(range: string, values: string[][]) {
   await googleFetch(url, {method: 'PUT', body: JSON.stringify({values})});
 }
 
+/** Creates a sheet tab (with an optional header row) if it does not exist yet. */
+export async function ensureSheet(title: string, header?: string[]) {
+  const {spreadsheetId} = getGoogleConfiguration();
+  const metaUrl = `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}?fields=sheets.properties.title`;
+  const meta = (await (await googleFetch(metaUrl)).json()) as {sheets?: {properties?: {title?: string}}[]};
+  if (meta.sheets?.some((sheet) => sheet.properties?.title === title)) return;
+  const batchUrl = `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}:batchUpdate`;
+  await googleFetch(batchUrl, {method: 'POST', body: JSON.stringify({requests: [{addSheet: {properties: {title}}}]})});
+  if (header) await updateValues(`${title}!A1`, [header]);
+}
+
 async function googleFetch(url: string, init: RequestInit = {}) {
   let lastError: Error | null = null;
 
