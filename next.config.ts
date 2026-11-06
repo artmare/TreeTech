@@ -69,10 +69,17 @@ const nextConfig: NextConfig = {
   async redirects() {
     // Old non-trade examples were replaced by Handwerk demos; keep their links working.
     const removedDemos = ['alpendent', 'vienna-legal', 'bergblick-hotel', 'greenhaus-immobilien', 'kraftwerk-fitness'];
-    return removedDemos.flatMap((slug) => [
+    // Client sites live on <slug>.treetech.at (see src/proxy.ts). The TreeTech CRM must never be reachable
+    // there: send /admin on any client subdomain to the main domain.
+    const clientHost = {type: 'host' as const, value: '(?!www\\.)[a-z0-9-]+\\.treetech\\.at'};
+    const adminOnClientHost = [
+      {source: '/admin', has: [clientHost], destination: 'https://treetech.at/admin', permanent: false},
+      {source: '/admin/:path*', has: [clientHost], destination: 'https://treetech.at/admin/:path*', permanent: false}
+    ];
+    return [...adminOnClientHost, ...removedDemos.flatMap((slug) => [
       {source: `/:locale(de|en|ru)/portfolio/${slug}`, destination: '/:locale/portfolio', permanent: true},
       {source: `/:locale(de|en|ru)/portfolio/${slug}/site`, destination: '/:locale/portfolio', permanent: true}
-    ]);
+    ])];
   },
   async headers() {
     return [
