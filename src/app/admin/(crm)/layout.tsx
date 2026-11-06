@@ -1,10 +1,10 @@
-import {Archive, KanbanSquare, LayoutDashboard, ListTodo, LogOut, Settings, Users} from 'lucide-react';
+import {Archive, Globe, KanbanSquare, LayoutDashboard, ListTodo, LogOut, Settings, Users} from 'lucide-react';
 import Link from 'next/link';
 import {redirect} from 'next/navigation';
 import {isAdminAuthenticated} from '@/lib/admin-auth';
 import {logoutAction} from '../actions';
 
-const links = [{href:'/admin',label:'Übersicht',icon:LayoutDashboard},{href:'/admin/leads',label:'Leads',icon:Users},{href:'/admin/pipeline',label:'Pipeline',icon:KanbanSquare},{href:'/admin/tasks',label:'Aufgaben',icon:ListTodo},{href:'/admin/archive',label:'Archiv',icon:Archive},{href:'/admin/settings',label:'Einstellungen',icon:Settings}];
+const links = [{href:'/admin',label:'Übersicht',icon:LayoutDashboard},{href:'/admin/leads',label:'Leads',icon:Users},{href:'/admin/pipeline',label:'Pipeline',icon:KanbanSquare},{href:'/admin/tasks',label:'Aufgaben',icon:ListTodo},{href:'/admin/archive',label:'Archiv',icon:Archive},{href:'/admin/sites',label:'Kunden-Websites',icon:Globe},{href:'/admin/settings',label:'Einstellungen',icon:Settings}];
 
 export default async function CrmLayout({children}: {children: React.ReactNode}) {
   if (!(await isAdminAuthenticated())) redirect('/admin/login');
