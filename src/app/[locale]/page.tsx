@@ -47,6 +47,11 @@ const CheckIcon = () => (
     <path d="M20 6 9 17l-5-5" />
   </svg>
 );
+const MenuIcon = () => (
+  <svg {...icon}>
+    <path d="M4 7h16M4 12h16M4 17h16" />
+  </svg>
+);
 const ChevronIcon = () => (
   <svg {...icon}>
     <path d="m6 9 6 6 6-6" />
@@ -150,6 +155,20 @@ export default async function HomePage({params}: PageProps) {
     </div>
   );
 
+  // Phones: call and WhatsApp as a light text row under the main button, not two more big buttons.
+  const quickLinks = (
+    <p className={s.quick}>
+      <a href={phoneHref} data-track="phone_click">
+        <PhoneIcon />
+        {copy.hero.call}
+      </a>
+      <a href={whatsapp} target="_blank" rel="noopener noreferrer" data-track="whatsapp_click">
+        <ChatIcon />
+        {copy.hero.whatsapp}
+      </a>
+    </p>
+  );
+
   return (
     <div className={s.tt}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(faqJsonLd)}} />
@@ -183,6 +202,19 @@ export default async function HomePage({params}: PageProps) {
             <span className={s.label}>{copy.hero.call}</span>
             <span className={s.num}>&nbsp;{siteConfig.phone}</span>
           </a>
+          {/* Phones: the section links live in a small drop-down instead of the header row. */}
+          <details className={s.menu}>
+            <summary aria-label={nav('menu')}>
+              <MenuIcon />
+            </summary>
+            <nav className={s.menuPanel} aria-label="Mobile navigation">
+              <a href="#ablauf">{copy.nav.process}</a>
+              <a href="#preise">{copy.nav.prices}</a>
+              <Link href="/portfolio">{copy.nav.examples}</Link>
+              <a href="#fragen">{copy.nav.faq}</a>
+              <Link href="/contact">{nav('contact')}</Link>
+            </nav>
+          </details>
         </div>
       </header>
 
@@ -195,11 +227,12 @@ export default async function HomePage({params}: PageProps) {
               {copy.hero.cta}
             </Link>
             {contactButtons(true)}
+            {quickLinks}
           </div>
           <p className={s.micro}>{copy.hero.micro}</p>
         </div>
 
-        <figure className={s.stage} aria-label={copy.preview.label} style={{margin: 0}}>
+        <figure className={s.stage} aria-label={copy.preview.label}>
           <div className={s.phonewrap}>
             {/* Invented example business, labelled as an example below. */}
             <div className={s.phone} aria-hidden="true">
@@ -380,6 +413,7 @@ export default async function HomePage({params}: PageProps) {
               {copy.hero.cta}
             </Link>
             {contactButtons(false)}
+            {quickLinks}
           </div>
           <p className={s.micro}>{copy.final.micro}</p>
         </div>
