@@ -76,7 +76,20 @@ const nextConfig: NextConfig = {
       {source: '/admin', has: [clientHost], destination: 'https://treetech.at/admin', permanent: false},
       {source: '/admin/:path*', has: [clientHost], destination: 'https://treetech.at/admin/:path*', permanent: false}
     ];
-    return [...adminOnClientHost, ...removedDemos.flatMap((slug) => [
+    // General AI posts were removed from the blog in favour of trade-focused guides.
+    const removedPosts = [
+      'business-processes-to-automate-first',
+      'ai-tools-for-companies',
+      'crm-automation-for-small-businesses',
+      'modern-websites-for-austrian-businesses',
+      'save-time-with-ai-automation'
+    ];
+    const removedPostRedirects = removedPosts.map((slug) => ({
+      source: `/:locale(de|en|ru)/blog/${slug}`,
+      destination: '/:locale/blog',
+      permanent: true
+    }));
+    return [...adminOnClientHost, ...removedPostRedirects, ...removedDemos.flatMap((slug) => [
       {source: `/:locale(de|en|ru)/portfolio/${slug}`, destination: '/:locale/portfolio', permanent: true},
       {source: `/:locale(de|en|ru)/portfolio/${slug}/site`, destination: '/:locale/portfolio', permanent: true}
     ])];
