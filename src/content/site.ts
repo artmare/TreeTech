@@ -1400,7 +1400,8 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     },
     gradient: 'from-stone-800 via-stone-500 to-amber-200',
     accent: 'bg-blue-700',
-    liveUrl: process.env.NEXT_PUBLIC_AHORN_SHOP_URL || undefined,
+    // Clickable static demo under public/demos/ahorn; NEXT_PUBLIC_AHORN_SHOP_URL points to the full deployment instead.
+    liveUrl: process.env.NEXT_PUBLIC_AHORN_SHOP_URL || '/demos/ahorn',
     stack: ['Next.js', 'Python / FastAPI', 'HubSpot CRM API', 'Stripe', 'Vercel'],
     gallery: [
       {src: '/portfolio/ahorn/home.webp', width: 1600, height: 1000, caption: {de: 'Startseite mit Maßlinie als Erkennungszeichen', en: 'Home page with the dimension line as a signature', ru: 'Главная страница с размерной линией как фирменным элементом'}},
