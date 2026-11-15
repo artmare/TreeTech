@@ -63,7 +63,8 @@ export default async function BlogPage({params}: PageProps) {
     readingTime: post.readingTime[locale],
     cover: post.cover
   });
-  const posts = localePosts.filter((post) => post.slug !== featuredPost.slug).map(toCard);
+  // The featured post stays in the list too, so "All articles" really shows every post.
+  const posts = localePosts.map(toCard);
   const blogJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
