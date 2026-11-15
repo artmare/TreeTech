@@ -81,6 +81,16 @@ const nextConfig: NextConfig = {
       {source: `/:locale(de|en|ru)/portfolio/${slug}/site`, destination: '/:locale/portfolio', permanent: true}
     ])];
   },
+  async rewrites() {
+    // Static export of the Ahorn Holzwerkstatt shop (portfolio live demo), built from artmare/ahorn-shop
+    // with `npm run build:demo`. Pages are exported as <route>.html; map the clean URLs onto them.
+    // Plain array = afterFiles: real files (JS, images, .txt) are served first.
+    return [
+      {source: '/demos/ahorn', destination: '/demos/ahorn/index.html'},
+      {source: '/demos/ahorn.txt', destination: '/demos/ahorn/index.txt'},
+      {source: '/demos/ahorn/:path*', destination: '/demos/ahorn/:path*.html'}
+    ];
+  },
   async headers() {
     return [
       {
