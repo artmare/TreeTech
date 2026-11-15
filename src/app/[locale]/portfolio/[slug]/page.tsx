@@ -1,4 +1,5 @@
-import {ArrowLeft, CheckCircle2, ExternalLink, Target, TrendingUp, Wrench} from 'lucide-react';
+import {ArrowLeft, ArrowUpRight, CheckCircle2, ExternalLink, Target, TrendingUp, Wrench} from 'lucide-react';
+import Image from 'next/image';
 import type {Metadata} from 'next';
 import {hasLocale} from 'next-intl';
 import {setRequestLocale} from 'next-intl/server';
@@ -8,7 +9,7 @@ import {FadeIn} from '@/components/motion/fade-in';
 import {ProjectPreview} from '@/components/project-preview';
 import {ButtonLink} from '@/components/ui/button-link';
 import {Container} from '@/components/ui/container';
-import {demoSiteLabels} from '@/content/demo-sites';
+import {demoSiteLabels, getDemoSiteBySlug} from '@/content/demo-sites';
 import {formatPackagePrice, getPackage} from '@/content/pricing';
 import {getPortfolioCaseStudy, getProjectBySlug, portfolioProjects, siteContent} from '@/content/site';
 import {Link} from '@/i18n/navigation';
@@ -16,6 +17,11 @@ import {routing, type Locale} from '@/i18n/routing';
 import {createPageMetadata} from '@/lib/seo';
 
 const packageLabel = {de: 'Paket', en: 'Package', ru: 'Пакет'} satisfies Record<Locale, string>;
+const caseLabels = {
+  de: {openLive: 'Live-Demo öffnen', liveSoon: 'Die Live-Demo zeigen wir Ihnen gern im Gespräch.', screens: 'So sieht es aus', stack: 'Technik', testNote: 'Testmodus: Bezahlen mit der Testkarte 4242 4242 4242 4242, es wird nichts abgebucht.'},
+  en: {openLive: 'Open live demo', liveSoon: 'We are happy to show you the live demo in a call.', screens: 'What it looks like', stack: 'Technology', testNote: 'Test mode: pay with the test card 4242 4242 4242 4242, nothing is charged.'},
+  ru: {openLive: 'Открыть живое демо', liveSoon: 'Живое демо с удовольствием покажем на созвоне.', screens: 'Как это выглядит', stack: 'Технологии', testNote: 'Тестовый режим: оплата тестовой картой 4242 4242 4242 4242, деньги не списываются.'}
+} satisfies Record<Locale, Record<string, string>>;
 
 type PageProps = {
   params: Promise<{locale: string; slug: string}>;
@@ -58,6 +64,23 @@ export default async function PortfolioDetailPage({params}: PageProps) {
   }
 
   const caseStudy = getPortfolioCaseStudy(project);
+  const labels = caseLabels[locale];
+  const hasDemoSite = Boolean(getDemoSiteBySlug(project.slug));
+  const demoButton = project.liveUrl ? (
+    <a
+      href={project.liveUrl}
+      target="_blank"
+      rel="noopener"
+      className="inline-flex min-h-14 items-center justify-center gap-2 rounded-[12px] bg-accent px-6 py-3.5 text-base font-bold text-white transition hover:bg-[var(--accent-strong)]"
+    >
+      <span>{labels.openLive}</span>
+      <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+    </a>
+  ) : hasDemoSite ? (
+    <ButtonLink href={`/portfolio/${project.slug}/site`} variant="accent">
+      {demoLabels.viewDemo}
+    </ButtonLink>
+  ) : null;
   const projectPackage = getPackage(project.packageId);
   const storyCards = [
     {label: content.portfolio.problem, text: caseStudy.problem[locale], icon: Target},
@@ -95,13 +118,16 @@ export default async function PortfolioDetailPage({params}: PageProps) {
                 {project.description[locale]}
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <ButtonLink href={`/portfolio/${project.slug}/site`} variant="accent">
-                  {demoLabels.viewDemo}
-                </ButtonLink>
+                {demoButton}
                 <ButtonLink href="/contact" variant="secondary">
                   {content.common.primaryCta}
                 </ButtonLink>
               </div>
+              {project.liveUrl ? (
+                <p className="mt-4 text-sm leading-6 text-muted">{labels.testNote}</p>
+              ) : !hasDemoSite ? (
+                <p className="mt-4 text-sm leading-6 text-muted">{labels.liveSoon}</p>
+              ) : null}
               <div className="mt-8 grid grid-cols-2 gap-4 border-t border-border pt-6">
                 <div>
                   <p className="text-sm text-muted">{content.portfolio.location}</p>
@@ -170,6 +196,43 @@ export default async function PortfolioDetailPage({params}: PageProps) {
         </Container>
       </section>
 
+      {project.gallery?.length ? (
+        <section className="py-16">
+          <Container>
+            <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-5">
+              <h2 className="text-3xl font-semibold text-foreground">{labels.screens}</h2>
+              {project.stack?.length ? (
+                <p className="text-sm text-muted">
+                  <span className="font-semibold text-foreground">{labels.stack}:</span> {project.stack.join(', ')}
+                </p>
+              ) : null}
+            </div>
+            <div className="mt-8 grid gap-8 md:grid-cols-2">
+              {project.gallery.map((shot, index) => {
+                const portrait = shot.height > shot.width;
+                return (
+                  <FadeIn key={shot.src} delay={(index % 2) * 0.06} className={portrait ? 'md:row-span-2' : undefined}>
+                    <figure className="grid gap-3">
+                      <div className="overflow-hidden rounded-[1rem] border border-border bg-surface shadow-[0_18px_50px_rgba(16,21,18,0.12)]">
+                        <Image
+                          src={shot.src}
+                          alt={shot.caption[locale]}
+                          width={shot.width}
+                          height={shot.height}
+                          sizes="(min-width: 768px) 50vw, 100vw"
+                          className={portrait ? 'mx-auto h-auto w-full max-w-[360px]' : 'h-auto w-full'}
+                        />
+                      </div>
+                      <figcaption className="text-sm text-muted">{shot.caption[locale]}</figcaption>
+                    </figure>
+                  </FadeIn>
+                );
+              })}
+            </div>
+          </Container>
+        </section>
+      ) : null}
+
       <section className="py-20">
         <Container>
           <FadeIn className="dark-band relative overflow-hidden rounded-[1.5rem] p-6 text-foreground shadow-[0_24px_80px_rgba(16,21,18,0.2)] sm:p-8 lg:p-10">
@@ -184,9 +247,7 @@ export default async function PortfolioDetailPage({params}: PageProps) {
                 </h2>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
-                <ButtonLink href={`/portfolio/${project.slug}/site`} variant="accent">
-                  {demoLabels.viewDemo}
-                </ButtonLink>
+                {demoButton}
                 <Link
                   href="/contact"
                   className="inline-flex min-h-14 items-center justify-center gap-2 rounded-[12px] border-2 border-foreground bg-surface px-6 py-3.5 text-base font-bold text-foreground transition-colors hover:bg-background"

@@ -91,6 +91,12 @@ export type PortfolioProject = {
   metric: LocalizedText;
   gradient: string;
   accent: string;
+  /** Link to a separately hosted live demo (e.g. a shop with its own backend). */
+  liveUrl?: string;
+  /** Screenshots shown on the case page. Paths under /public. */
+  gallery?: {src: string; width: number; height: number; caption: LocalizedText}[];
+  /** Technologies used, shown as a short list on the case page. */
+  stack?: string[];
 };
 
 export type PortfolioCaseStudy = {
@@ -1324,6 +1330,86 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     },
     gradient: 'from-slate-800 via-slate-600 to-orange-300',
     accent: 'bg-orange-600'
+  },
+  {
+    slug: 'ahorn-holzwerkstatt',
+    name: 'Ahorn Holzwerkstatt',
+    year: '2026',
+    location: 'Wien',
+    packageId: 'webApp',
+    industry: {
+      de: 'Onlineshop mit CRM-Anbindung',
+      en: 'Online shop connected to a CRM',
+      ru: 'Интернет-магазин с подключённой CRM'
+    },
+    description: {
+      de: 'Ein kompletter Onlineshop für eine Holzwerkstatt: Katalog, Warenkorb, Kassa mit Kartenzahlung. Jede Bestellung landet automatisch als Kontakt und Auftrag in HubSpot.',
+      en: 'A complete online shop for a woodworking studio: catalogue, cart, checkout with card payment. Every order lands in HubSpot automatically as a contact and a deal.',
+      ru: 'Полноценный интернет-магазин для столярной мастерской: каталог, корзина, оформление заказа с оплатой картой. Каждый заказ автоматически попадает в HubSpot как контакт и сделка.'
+    },
+    problem: {
+      de: 'Kleine Betriebe verkaufen online oft über ein Formular und eine Excel-Liste. Bestellungen, Zahlungen und abgebrochene Warenkörbe sieht niemand an einem Ort, nachgefasst wird nach Gefühl.',
+      en: 'Small businesses often sell online through a form and a spreadsheet. Nobody sees orders, payments and abandoned carts in one place, and follow-ups happen by gut feeling.',
+      ru: 'Небольшие фирмы часто продают онлайн через форму и Excel-таблицу. Заказы, оплаты и брошенные корзины никто не видит в одном месте, а перезванивают «на глаз».'
+    },
+    solution: {
+      de: 'Ein eigener Shop mit Python-Backend, das jede Bestellung in eine HubSpot-Pipeline schreibt: vom offenen Warenkorb über „Bezahlt“ bis „Zugestellt“. Bezahlt wird über Stripe, der Betrieb schiebt Aufträge danach am Handy weiter.',
+      en: 'A custom shop with a Python backend that writes every order into a HubSpot pipeline: from open cart to paid to delivered. Payment runs through Stripe, and the business moves orders along on the phone.',
+      ru: 'Собственный магазин с бэкендом на Python, который записывает каждый заказ в воронку HubSpot: от брошенной корзины до «Оплачен» и «Доставлен». Оплата через Stripe, а дальше владелец двигает заказы прямо с телефона.'
+    },
+    features: {
+      de: [
+        'Warenkorb mit Animation und Fortschritt bis zum Gratisversand',
+        'Produktseite mit Größenwahl und Live-Vorschau der Gravur',
+        'Kassa mit Kartenzahlung über Stripe, EPS und Vorauskasse',
+        'Abgebrochene Warenkörbe erscheinen im CRM',
+        'Bezahlte Bestellungen springen in HubSpot automatisch auf „Bezahlt“',
+        'Filter, Suche und Handy-Ansicht mit fixer Kaufleiste'
+      ],
+      en: [
+        'Animated cart with progress towards free shipping',
+        'Product page with size options and a live engraving preview',
+        'Checkout with card payment via Stripe, EPS and bank transfer',
+        'Abandoned carts show up in the CRM',
+        'Paid orders move to "Paid" in HubSpot automatically',
+        'Filters, search and a mobile view with a sticky buy bar'
+      ],
+      ru: [
+        'Анимированная корзина с прогрессом до бесплатной доставки',
+        'Страница товара с выбором размера и живым превью гравировки',
+        'Оформление заказа с оплатой картой через Stripe, EPS и переводом',
+        'Брошенные корзины видны в CRM',
+        'Оплаченные заказы сами переходят в HubSpot в «Оплачен»',
+        'Фильтры, поиск и мобильная версия с закреплённой кнопкой покупки'
+      ]
+    },
+    visualStyle: {
+      de: 'Weiß wie die Werkstattwand, Holzton nur hinter den Produkten, Graphit für Schrift. Maßlinien wie auf einer Tischlerzeichnung zeigen die echte Größe jedes Stücks.',
+      en: 'White like the workshop wall, wood tones only behind the products, graphite for type. Dimension lines like on a joiner\'s drawing show the real size of every piece.',
+      ru: 'Белый, как стена мастерской, тёплый тон дерева только под товарами, графит для текста. Размерные линии, как на столярном чертеже, показывают настоящий размер каждой вещи.'
+    },
+    cta: {
+      de: 'Sie verkaufen online und wollen jede Bestellung im CRM sehen? Wir bauen das für Ihren Betrieb.',
+      en: 'You sell online and want every order in your CRM? We build it for your business.',
+      ru: 'Продаёте онлайн и хотите видеть каждый заказ в CRM? Сделаем это для вашего бизнеса.'
+    },
+    metric: {
+      de: 'Jede Bestellung und jeder offene Warenkorb an einem Ort.',
+      en: 'Every order and every open cart in one place.',
+      ru: 'Каждый заказ и каждая брошенная корзина в одном месте.'
+    },
+    gradient: 'from-stone-800 via-stone-500 to-amber-200',
+    accent: 'bg-blue-700',
+    liveUrl: process.env.NEXT_PUBLIC_AHORN_SHOP_URL || undefined,
+    stack: ['Next.js', 'Python / FastAPI', 'HubSpot CRM API', 'Stripe', 'Vercel'],
+    gallery: [
+      {src: '/portfolio/ahorn/home.webp', width: 1600, height: 1000, caption: {de: 'Startseite mit Maßlinie als Erkennungszeichen', en: 'Home page with the dimension line as a signature', ru: 'Главная страница с размерной линией как фирменным элементом'}},
+      {src: '/portfolio/ahorn/warenkorb.webp', width: 1600, height: 1000, caption: {de: 'Warenkorb mit Gratisversand-Fortschritt und Empfehlung', en: 'Cart with free-shipping progress and a suggestion', ru: 'Корзина с прогрессом до бесплатной доставки и рекомендацией'}},
+      {src: '/portfolio/ahorn/produkt.webp', width: 1600, height: 1000, caption: {de: 'Gravur erscheint direkt auf dem Foto', en: 'The engraving appears right on the photo', ru: 'Гравировка появляется прямо на фото'}},
+      {src: '/portfolio/ahorn/kassa.webp', width: 1600, height: 1000, caption: {de: 'Kassa mit Kartenzahlung', en: 'Checkout with card payment', ru: 'Оформление заказа с оплатой картой'}},
+      {src: '/portfolio/ahorn/danke.webp', width: 1600, height: 1000, caption: {de: 'Bestätigung mit Bestellstatus', en: 'Confirmation with order status', ru: 'Подтверждение со статусом заказа'}},
+      {src: '/portfolio/ahorn/mobil.webp', width: 600, height: 1298, caption: {de: 'Produktseite am Handy', en: 'Product page on a phone', ru: 'Страница товара на телефоне'}}
+    ]
   }
 ]);
 

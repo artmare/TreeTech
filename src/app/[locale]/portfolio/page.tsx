@@ -45,6 +45,11 @@ const portfolioBrief = {
 const tiers = {
   de: [
     {
+      ids: ['webApp'],
+      title: 'Onlineshop mit CRM',
+      lead: 'Ein Shop, der nicht nur verkauft: Bestellungen, Zahlungen und offene Warenkörbe landen automatisch im CRM. Mit Kartenzahlung über Stripe und einem Backend in Python.'
+    },
+    {
       ids: ['websiteBusiness'],
       title: 'Website Business',
       lead: 'Eigenes Design für Ihren Betrieb, bis zu 10 Seiten: eine Seite pro Leistung und pro Ort, Vorher-nachher-Galerie, Bewertungen, Fragen und Antworten, Anfrage in drei Schritten. Klicken Sie sich durch die Unterseiten.'
@@ -57,6 +62,11 @@ const tiers = {
   ],
   en: [
     {
+      ids: ['webApp'],
+      title: 'Online shop with CRM',
+      lead: 'A shop that does more than sell: orders, payments and open carts land in the CRM automatically. With card payment via Stripe and a Python backend.'
+    },
+    {
       ids: ['websiteBusiness'],
       title: 'Website Business',
       lead: 'A design of its own for your business, up to 10 pages: one page per service and per town, before/after gallery, reviews, FAQ and a three-step inquiry. Click through the sub pages.'
@@ -68,6 +78,11 @@ const tiers = {
     }
   ],
   ru: [
+    {
+      ids: ['webApp'],
+      title: 'Интернет-магазин с CRM',
+      lead: 'Магазин, который не только продаёт: заказы, оплаты и брошенные корзины автоматически попадают в CRM. С оплатой картой через Stripe и бэкендом на Python.'
+    },
     {
       ids: ['websiteBusiness'],
       title: 'Website Business',
