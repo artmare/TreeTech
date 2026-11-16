@@ -84,10 +84,10 @@ export function AnalyticsLoader() {
   }
 
   return (
-    <div className="fixed inset-x-4 bottom-[168px] z-[65] mx-auto max-w-xl rounded-[14px] border-2 border-[#1C2220] bg-white p-4 text-sm text-[#1C2220] shadow-[4px_4px_0_#1C2220] sm:left-5 sm:right-auto sm:mx-0 md:bottom-5">
+    <div className="fixed inset-x-3 bottom-[calc(var(--mobile-bar,0px)+12px)] z-[75] mx-auto max-w-xl rounded-[14px] border-2 border-[#1C2220] bg-white p-3.5 text-sm transition-[bottom] duration-200 ease-out motion-reduce:transition-none sm:p-4 text-[#1C2220] shadow-[4px_4px_0_#1C2220] sm:left-5 sm:right-auto sm:mx-0 md:bottom-5">
       <p className="font-semibold">{consentCopy.title}</p>
-      <p className="mt-1.5 leading-5 text-[#59625E]">{consentCopy.body}</p>
-      <div className="mt-3 grid grid-cols-2 gap-2 sm:flex">
+      <p className="mt-1 text-[13px] leading-[18px] text-[#59625E] sm:mt-1.5 sm:text-sm sm:leading-5">{consentCopy.body}</p>
+      <div className="mt-2.5 grid grid-cols-2 gap-2 sm:mt-3 sm:flex">
         <button
           type="button"
           onClick={() => updateConsent('granted')}

@@ -73,7 +73,7 @@
 .hero > *, .ctas2 > * { min-width: 0; }
 .ctas2 .btn { padding-left: 12px; padding-right: 12px; }
 .micro { font-size: 15px; color: var(--stein); margin: var(--s2) 0 0; text-align: center; }
-.stage { display: flex; flex-direction: column; align-items: center; gap: var(--s3); padding: var(--s1) 0 0; }
+.stage { margin: 0; display: flex; flex-direction: column; align-items: center; gap: var(--s3); padding: var(--s1) 0 0; }
 .phonewrap { position: relative; padding: 0 28px 22px 0; }
 .phone { width: min(248px, calc(100vw - 96px)); border: 10px solid var(--graphit); border-radius: 34px; background: #fff; overflow: hidden; box-shadow: 0 30px 60px -30px rgba(28, 34, 32, .45); }
 .phBar { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px 10px; border-bottom: 1px solid #e6e9e5; }
@@ -202,4 +202,104 @@
 /* Two columns in the hero only when there is room for the buttons and the phone. */
 @media (min-width: 980px) {
   .hero { grid-template-columns: 1.15fr .85fr; align-items: center; }
+}
+
+/* ------------------------------------------------------------------
+   Mobile layout (below 760px). Desktop rules above stay untouched.
+   One idea carries the phone version: the preview grows out of a
+   green band at the end of the hero, everything else stays quiet.
+   ------------------------------------------------------------------ */
+.menu, .quick { display: none; }
+
+@media (max-width: 759px) {
+  .tt { --g: 20px; font-size: 16px; }
+
+  /* Header: logo, languages, menu. Calling lives in the hero and the bottom bar. */
+  .top { position: relative; padding-top: 10px; padding-bottom: 10px; gap: var(--s1); }
+  .tt a.logo { font-size: 20px; }
+  .logo i { width: 10px; height: 20px; }
+  .tt a.callchip { display: none; }
+  .langs { gap: 0; }
+  .tt .langs a { min-width: 40px; font-size: 13px; }
+
+  /* Hero */
+  .hero { gap: 0; padding-top: var(--s3); padding-bottom: 0; }
+  .hero h1 { font-size: 40px; line-height: 1; }
+  .sub { font-size: 17px; line-height: 1.5; margin-top: var(--s3); }
+  .ctas { margin-top: var(--s4); gap: var(--s1); }
+  .ctas2 { display: none; }
+  .quick { display: flex; justify-content: center; gap: var(--s4); margin: 2px 0 0; }
+  .tt .quick a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 4px; font-weight: 700; font-size: 16px; color: var(--graphit); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; text-decoration-color: var(--fuge); }
+  .quick svg { width: 18px; height: 18px; color: var(--tanne); }
+  .micro { font-size: 14px; margin-top: 4px; }
+
+  /* The preview rises out of a full-bleed green band and is cropped at the bottom. */
+  .stage { position: relative; margin: var(--s5) calc(var(--g) * -1) 0; padding: 0; height: 330px; overflow: hidden; background: var(--tanne); border-top: 2px solid var(--graphit); justify-content: flex-start; gap: 0; }
+  .caption { order: -1; align-self: stretch; padding: 14px var(--g) 0; color: rgba(255, 255, 255, .78); font-size: 13px; font-weight: 600; }
+  .phonewrap { padding: 0; margin-top: 18px; }
+  .phone { width: 252px; border-bottom: 0; border-radius: 34px 34px 0 0; box-shadow: 0 -2px 0 rgba(0, 0, 0, .04); }
+  .stamp { right: -46px; bottom: auto; top: 214px; transform: rotate(-7deg); padding: 8px 12px 7px; }
+  .stamp b { font-size: 17px; }
+  .stamp small { font-size: 10.5px; }
+
+  /* Sections */
+  .sec { padding: 40px 0 44px; }
+  .h2 { font-size: 28px; line-height: 1.08; }
+  .lead { font-size: 16px; }
+
+  .pains { margin-top: var(--s3); gap: var(--s1); }
+  .pain, .pain:last-child { grid-template-columns: 40px 1fr; gap: 14px; padding: 18px 0; border-top: 0; border-bottom: 1px solid var(--fuge); }
+  .pain:last-child { border-bottom: 0; }
+  .pain svg { width: 40px; height: 40px; padding: 9px; margin: 0; border-radius: 10px; background: var(--signal); color: var(--graphit); }
+  .pain h3 { font-size: 18px; }
+  .pain p { font-size: 15px; }
+
+  .steps { margin-top: var(--s4); }
+  .step { padding: 0 0 var(--s4) 48px; }
+  .step::before { left: 15px; top: 34px; }
+  .n { width: 32px; height: 32px; font-size: 15px; }
+  .step h3 { padding-top: 4px; font-size: 18px; }
+  .step p { font-size: 15px; }
+
+  .checks { gap: 0; margin-top: var(--s3); border-top: 1px solid var(--fuge); }
+  .checks li { font-size: 16px; padding: 12px 0; border-bottom: 1px solid var(--fuge); }
+  .trades { font-size: 15px; }
+
+  .prices { grid-auto-columns: 84%; padding-inline: var(--g); scroll-padding-inline: var(--g); }
+  .price { padding: 20px; }
+  .amt { font-size: 36px; }
+  .swipe { font-size: 13px; }
+
+  .promises { gap: var(--s4); margin-top: var(--s4); }
+  .prom { border-left: 4px solid var(--graphit); padding-left: 14px; }
+  .prom h3 { font-size: 20px; }
+  .prom p { font-size: 15px; }
+
+  .faq summary { font-size: 17px; padding: 14px 0; }
+  .faq details p { font-size: 15px; }
+
+  .final .h2 { font-size: 30px; }
+  .final p { font-size: 16px; }
+  .tt .final .quick a { color: #fff; text-decoration-color: rgba(255, 255, 255, .4); }
+  .final .quick svg { color: var(--signal); }
+  .final p.micro { text-align: center; color: rgba(255, 255, 255, .7); }
+
+  .foot { padding-top: var(--s4); padding-bottom: var(--s4); font-size: 13px; gap: 4px; }
+  .foot nav { gap: 0 16px; }
+}
+
+/* The drop-down menu covers phones and tablets: below 980px the header has no room for the links. */
+@media (max-width: 979px) {
+  .top { position: relative; }
+  .menu { display: block; }
+  .menu summary { list-style: none; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--graphit); border-radius: 10px; background: var(--weiss); }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu summary svg { width: 20px; height: 20px; }
+  .menu[open] summary { background: var(--graphit); color: #fff; }
+  .menuPanel { position: absolute; z-index: 40; top: calc(100% - 2px); left: var(--g); right: var(--g); display: grid; background: var(--weiss); border: 2px solid var(--graphit); border-radius: 14px; box-shadow: 4px 4px 0 var(--graphit); padding: 6px 0; }
+  .tt .menuPanel a { color: var(--graphit); font-weight: 700; font-size: 18px; padding: 0 18px; min-height: 52px; display: flex; align-items: center; }
+  .tt .menuPanel a + a { border-top: 1px solid var(--fuge); }
+}
+@media (min-width: 760px) and (max-width: 979px) {
+  .menuPanel { left: auto; width: 320px; }
 }

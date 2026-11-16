@@ -315,9 +315,9 @@ export function AssistantWidget({locale}: AssistantWidgetProps) {
   return (
     <div
       className={cn(
-        'pointer-events-none fixed inset-x-4 z-[70] sm:inset-x-auto sm:right-5 md:bottom-4',
-        // On phones the sticky contact bar sits at the bottom, so the closed launcher floats above it.
-        open ? 'bottom-4' : 'bottom-[100px]'
+        'pointer-events-none fixed inset-x-4 z-[70] transition-[bottom] duration-200 ease-out motion-reduce:transition-none sm:inset-x-auto sm:right-5 md:bottom-4',
+        // On phones the closed launcher floats just above the contact bar (its height is --mobile-bar).
+        open ? 'bottom-4' : 'bottom-[calc(var(--mobile-bar,0px)+14px)]'
       )}
       style={open && viewport ? {top: viewport.top + 8, bottom: 'auto'} : undefined}
     >
