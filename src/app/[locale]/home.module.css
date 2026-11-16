@@ -221,14 +221,6 @@
   .tt a.callchip { display: none; }
   .langs { gap: 0; }
   .tt .langs a { min-width: 40px; font-size: 13px; }
-  .menu { display: block; }
-  .menu summary { list-style: none; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--graphit); border-radius: 10px; background: var(--weiss); }
-  .menu summary::-webkit-details-marker { display: none; }
-  .menu summary svg { width: 20px; height: 20px; }
-  .menu[open] summary { background: var(--graphit); color: #fff; }
-  .menuPanel { position: absolute; z-index: 40; top: calc(100% - 2px); left: var(--g); right: var(--g); display: grid; background: var(--weiss); border: 2px solid var(--graphit); border-radius: 14px; box-shadow: 4px 4px 0 var(--graphit); padding: 6px 0; }
-  .tt .menuPanel a { color: var(--graphit); font-weight: 700; font-size: 18px; padding: 0 18px; min-height: 52px; display: flex; align-items: center; }
-  .tt .menuPanel a + a { border-top: 1px solid var(--fuge); }
 
   /* Hero */
   .hero { gap: 0; padding-top: var(--s3); padding-bottom: 0; }
@@ -294,4 +286,20 @@
 
   .foot { padding-top: var(--s4); padding-bottom: var(--s4); font-size: 13px; gap: 4px; }
   .foot nav { gap: 0 16px; }
+}
+
+/* The drop-down menu covers phones and tablets: below 980px the header has no room for the links. */
+@media (max-width: 979px) {
+  .top { position: relative; }
+  .menu { display: block; }
+  .menu summary { list-style: none; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--graphit); border-radius: 10px; background: var(--weiss); }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu summary svg { width: 20px; height: 20px; }
+  .menu[open] summary { background: var(--graphit); color: #fff; }
+  .menuPanel { position: absolute; z-index: 40; top: calc(100% - 2px); left: var(--g); right: var(--g); display: grid; background: var(--weiss); border: 2px solid var(--graphit); border-radius: 14px; box-shadow: 4px 4px 0 var(--graphit); padding: 6px 0; }
+  .tt .menuPanel a { color: var(--graphit); font-weight: 700; font-size: 18px; padding: 0 18px; min-height: 52px; display: flex; align-items: center; }
+  .tt .menuPanel a + a { border-top: 1px solid var(--fuge); }
+}
+@media (min-width: 760px) and (max-width: 979px) {
+  .menuPanel { left: auto; width: 320px; }
 }

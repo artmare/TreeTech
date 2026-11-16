@@ -183,6 +183,7 @@ export default async function HomePage({params}: PageProps) {
           <a href="#preise">{copy.nav.prices}</a>
           <Link href="/portfolio">{copy.nav.examples}</Link>
           <a href="#fragen">{copy.nav.faq}</a>
+          <Link href="/blog">{nav('blog')}</Link>
         </nav>
         <div className={s.topRight}>
           <div className={s.langs} aria-label={nav('language')}>
@@ -212,6 +213,7 @@ export default async function HomePage({params}: PageProps) {
               <a href="#preise">{copy.nav.prices}</a>
               <Link href="/portfolio">{copy.nav.examples}</Link>
               <a href="#fragen">{copy.nav.faq}</a>
+              <Link href="/blog">{nav('blog')}</Link>
               <Link href="/contact">{nav('contact')}</Link>
             </nav>
           </details>
@@ -428,6 +430,7 @@ export default async function HomePage({params}: PageProps) {
         <nav aria-label="Footer">
           <Link href="/services">{nav('services')}</Link>
           <Link href="/portfolio">{nav('portfolio')}</Link>
+          <Link href="/blog">{nav('blog')}</Link>
           <Link href="/about">{nav('about')}</Link>
           <Link href="/contact">{nav('contact')}</Link>
           <Link href="/impressum">{nav('imprint')}</Link>
