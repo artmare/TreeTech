@@ -54,8 +54,8 @@ export type DemoSite = {
   /** Trade demos (Handwerk) are rendered by `HandwerkDemo` from this config. */
   handwerk: HandwerkConfig;
   /**
-   * Present on "Website Business" demos: a richer multi-page site with its own look.
-   * Without it the demo is a one-page "Website Start".
+   * Present on "Firmenwebsite" demos: a richer multi-page site with its own look.
+   * Without it the demo is a one-page "Onepager".
    */
   business?: BusinessConfig;
 };

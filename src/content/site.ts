@@ -1,7 +1,7 @@
 import {contactEmail, contactPhone, phoneHref, whatsappHref} from '@/content/contact-links';
 import type {Locale} from '@/i18n/routing';
 import {withLocaleFallbacks} from '@/i18n/localized';
-import {formatEur, formatPackagePrice, founderOffer, getPackage, hourlyRate, type PackageId} from '@/content/pricing';
+import {formatEur, formatInstallments, formatPackagePrice, getPackage, hourlyRate, type PackageId} from '@/content/pricing';
 
 export const siteConfig = {
   name: 'TreeTech',
@@ -600,7 +600,7 @@ export const audienceItems: AudienceItem[] = withLocaleFallbacks([
 ]);
 
 // Generated from src/content/pricing.ts — change prices there, not here.
-const homePricePackageIds: PackageId[] = ['websiteStart', 'websiteBusiness', 'pflege', 'anfrageAutomation'];
+const homePricePackageIds: PackageId[] = ['onepager', 'firmenwebsite', 'pflege', 'anfrageAutomation'];
 const allLocales: Locale[] = ['de', 'en', 'ru'];
 const perLocale = (build: (locale: Locale) => string): LocalizedText =>
   Object.fromEntries(allLocales.map((locale) => [locale, build(locale)])) as LocalizedText;
@@ -611,34 +611,34 @@ export const pricePackages: PricePackage[] = homePricePackageIds.map((id) => {
     name: perLocale(() => pkg.name),
     price: perLocale((locale) => formatPackagePrice(pkg, locale)),
     description: perLocale((locale) => {
-      const founder = id === founderOffer.packageId
-        ? ({de: ` Gründerpreis ${formatEur(founderOffer.price, 'de')} für die ersten ${founderOffer.slots} Betriebe.`, en: ` Founding price ${formatEur(founderOffer.price, 'en')} for the first ${founderOffer.slots} businesses.`, ru: ` Цена основателя ${formatEur(founderOffer.price, 'ru')} для первых ${founderOffer.slots} бизнесов.`})[locale]
-        : '';
+      const rates = pkg.installments ? ` ${formatInstallments(pkg, locale).charAt(0).toUpperCase()}${formatInstallments(pkg, locale).slice(1)}.` : '';
       const delivery = pkg.delivery ? ` ${pkg.delivery[locale].charAt(0).toUpperCase()}${pkg.delivery[locale].slice(1)}.` : '';
-      return `${pkg.tagline[locale]}${delivery}${founder}`;
+      return `${pkg.tagline[locale]}${delivery}${rates}`;
     })
   };
 });
 
 function websitePriceAnswer(locale: Locale): string {
-  const start = formatPackagePrice(getPackage('websiteStart'), locale);
-  const business = formatPackagePrice(getPackage('websiteBusiness'), locale);
-  const abo = formatPackagePrice(getPackage('websiteAbo'), locale);
+  const onepager = formatPackagePrice(getPackage('onepager'), locale);
+  const firmenwebsite = formatPackagePrice(getPackage('firmenwebsite'), locale);
+  const rates = formatInstallments(getPackage('firmenwebsite'), locale);
+  const page = formatEur(getPackage('weitereSeite').oneTime ?? 0, locale);
+  const language = formatEur(getPackage('weitereSprache').oneTime ?? 0, locale);
+  const google = formatEur(getPackage('googleProfil').oneTime ?? 0, locale);
   const care = formatPackagePrice(getPackage('pflege'), locale);
-  const founder = formatEur(founderOffer.price, locale);
   const hourly = formatEur(hourlyRate, locale);
   return {
-    de: `Website Start kostet ${start}, Website Business ${business} — Fixpreise inklusive Texten. Ohne große Anfangsinvestition: Website-Abo ${abo}. Pflege ab ${care}. Für die ersten ${founderOffer.slots} Betriebe gilt der Gründerpreis von ${founder}. Zusätzliche Arbeiten: ${hourly} pro Stunde, immer vorher abgesprochen.`,
-    en: `Website Start costs ${start}, Website Business ${business} — fixed prices including copywriting. No large upfront cost: Website subscription ${abo}. Care plans from ${care}. The first ${founderOffer.slots} businesses get the founding price of ${founder}. Extra work: ${hourly} per hour, always agreed in advance.`,
-    ru: `Website Start стоит ${start}, Website Business — ${business}; цены фиксированные, тексты включены. Без крупной оплаты на старте: Website-Abo ${abo}. Pflege — от ${care}. Для первых ${founderOffer.slots} бизнесов действует цена основателя ${founder}. Дополнительные работы — ${hourly} в час, всегда по предварительной договорённости.`
+    de: `Ein Onepager kostet ${onepager}, eine Firmenwebsite mit bis zu 5 Seiten ${firmenwebsite} (${rates}) — Fixpreise inklusive Texten. Extras: weitere Seite ${page}, weitere Sprache ${language}, Google-Profil einrichten ${google}. Pflege ab ${care}. Zusätzliche Arbeiten: ${hourly} pro Stunde, immer vorher abgesprochen.`,
+    en: `A Onepager costs ${onepager}, a Firmenwebsite with up to 5 pages ${firmenwebsite} (${rates}) — fixed prices including copywriting. Extras: extra page ${page}, extra language ${language}, Google profile setup ${google}. Care plans from ${care}. Extra work: ${hourly} per hour, always agreed in advance.`,
+    ru: `Одностраничный сайт (Onepager) стоит ${onepager}, сайт компании (Firmenwebsite) до 5 страниц — ${firmenwebsite} (${rates}); цены фиксированные, тексты включены. Дополнительно: ещё страница ${page}, ещё язык ${language}, настройка профиля Google ${google}. Pflege — от ${care}. Дополнительные работы — ${hourly} в час, всегда по предварительной договорённости.`
   }[locale];
 }
 
 export const faqItems: FaqItem[] = withLocaleFallbacks([
   {question: {de: 'Was kostet eine Website?', en: 'What does a website cost?', ru: 'Сколько стоит сайт?'}, answer: perLocale((locale) => websitePriceAnswer(locale))},
-  {question: {de: 'Wie lange dauert ein Projekt?', en: 'How long does a project take?', ru: 'Сколько длится проект?'}, answer: {de: 'Website Start ist in 7 Tagen online, Website Business in 14 Tagen — gerechnet ab dem 30-Minuten-Gespräch, nicht ab dem Tag, an dem Sie uns Texte schicken. Automationen dauern 3 Tage bis 2 Wochen, individuelle Software 4–8 Wochen.', en: 'Website Start goes live in 7 days, Website Business in 14 days — counted from our 30-minute call, not from when you send us copy. Automations take 3 days to 2 weeks, custom software 4–8 weeks.', ru: 'Website Start запускается за 7 дней, Website Business — за 14, считая от 30-минутного разговора, а не от момента, когда вы пришлёте тексты. Автоматизации — от 3 дней до 2 недель, индивидуальное ПО — 4–8 недель.'}},
+  {question: {de: 'Wie lange dauert ein Projekt?', en: 'How long does a project take?', ru: 'Сколько длится проект?'}, answer: {de: 'Onepager und Firmenwebsite sind in 7 Tagen online — gerechnet ab dem 30-Minuten-Gespräch, nicht ab dem Tag, an dem Sie uns Texte schicken. Automationen dauern 3 Tage bis 2 Wochen, individuelle Software 4–8 Wochen.', en: 'Onepager and Firmenwebsite go live in 7 days — counted from our 30-minute call, not from when you send us copy. Automations take 3 days to 2 weeks, custom software 4–8 weeks.', ru: 'Одностраничный сайт и сайт компании запускаются за 7 дней, считая от 30-минутного разговора, а не от момента, когда вы пришлёте тексты. Автоматизации — от 3 дней до 2 недель, индивидуальное ПО — 4–8 недель.'}},
   {question: {de: 'Können bestehende Websites verbessert werden?', en: 'Can existing websites be improved?', ru: 'Можно улучшить существующий сайт?'}, answer: {de: 'Ja. Struktur, Texte, Anfrageführung und CRM-Anbindung können oft ohne kompletten Neustart verbessert werden.', en: 'Yes. Structure, copy, inquiry guidance, and CRM connection can often be improved without a full rebuild.', ru: 'Да. Структуру, тексты, путь заявки и CRM-подключение часто можно улучшить без полного перезапуска.'}},
-  {question: {de: 'Können wir klein starten?', en: 'Can we start small?', ru: 'Можно начать с малого?'}, answer: {de: 'Ja. Website Start oder das Website-Abo ohne große Anfangsinvestition, später bei Bedarf eine Anfrage-Automation. Pflege-Pakete sind monatlich kündbar.', en: 'Yes. Start with Website Start or the Website subscription without a large upfront cost, and add inquiry automation later if needed. Care plans can be cancelled monthly.', ru: 'Да. Начните с Website Start или Website-Abo без крупной оплаты на старте, а автоматизацию заявок добавьте позже. Пакеты Pflege расторгаются помесячно.'}},
+  {question: {de: 'Können wir klein starten?', en: 'Can we start small?', ru: 'Можно начать с малого?'}, answer: {de: 'Ja. Mit einem Onepager ab 200 € oder einer Firmenwebsite in 12 Monatsraten, später bei Bedarf eine Anfrage-Automation. Pflege-Pakete sind monatlich kündbar.', en: 'Yes. Start with a Onepager or a Firmenwebsite paid in 12 monthly instalments, and add inquiry automation later if needed. Care plans can be cancelled monthly.', ru: 'Да. Начните с одностраничного сайта или сайта компании в рассрочку на 12 месяцев, а автоматизацию заявок добавьте позже. Пакеты Pflege расторгаются помесячно.'}},
   {question: {de: 'Arbeitet TreeTech mit bestehenden Tools?', en: 'Does TreeTech work with existing tools?', ru: 'TreeTech работает с уже существующими инструментами?'}, answer: {de: 'Ja. Wenn möglich verbinden wir bestehende Website, Formulare, E-Mail, CRM und Kalender.', en: 'Yes. Where possible, we connect existing website, forms, email, CRM, and calendar.', ru: 'Да. Если возможно, мы связываем существующий сайт, формы, e-mail, CRM и календарь.'}},
   {question: {de: 'Ist AI-Automation DSGVO-konform?', en: 'Is AI automation GDPR-compliant?', ru: 'AI-автоматизация соответствует GDPR?'}, answer: {de: 'Das hängt vom Prozess ab. TreeTech plant AI-Flows DSGVO-bewusst mit Datenminimierung und menschlicher Kontrolle.', en: 'It depends on the process. TreeTech plans AI flows with GDPR awareness, data minimization, and human review.', ru: 'Это зависит от процесса. TreeTech проектирует AI-flow с учетом GDPR, минимизации данных и человеческого контроля.'}}
 ]);
@@ -648,13 +648,13 @@ export const siteContent = withLocaleFallbacks({
     metadata: {
       homeTitle: 'Website für Handwerker & Werkstätten in Wien und NÖ | TreeTech',
       homeDescription:
-        `Websites für Elektriker, Installateure, Dachdecker, Maler und Kfz-Werkstätten in Wien und Niederösterreich. Fixpreis ab ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'de')}, Texte inklusive, online in 7 Tagen — Vorschau vor der Zahlung.`,
+        `Websites für Elektriker, Installateure, Dachdecker, Maler und Kfz-Werkstätten in Wien und Niederösterreich. Fixpreis ab ${formatEur(getPackage('onepager').oneTime ?? 0, 'de')}, Texte inklusive, online in 7 Tagen — Vorschau vor der Zahlung.`,
       aboutTitle: 'Über TreeTech | Digitalstudio für österreichische Betriebe',
       aboutDescription:
         'TreeTech ist ein modernes Digitalstudio für Betriebe, die Prozesse automatisieren, Web-Software bauen und digital besser arbeiten möchten.',
       servicesTitle: 'Leistungen und Preise | TreeTech',
       servicesDescription:
-        `Alle Pakete mit Fixpreis: Websites ab ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'de')}, Pflege ab ${formatEur(getPackage('pflege').monthly ?? 0, 'de')} im Monat, Anfrage-Automation und eigene Software. Für Handwerk und Werkstätten in Wien und Niederösterreich.`,
+        `Alle Pakete mit Fixpreis: Websites ab ${formatEur(getPackage('onepager').oneTime ?? 0, 'de')}, Pflege ab ${formatEur(getPackage('pflege').monthly ?? 0, 'de')} im Monat, Anfrage-Automation und eigene Software. Für Handwerk und Werkstätten in Wien und Niederösterreich.`,
       portfolioTitle: 'Portfolio | TreeTech Webstudio',
       portfolioDescription:
         'Beispiel-Websites für Handwerksbetriebe in Wien und Niederösterreich: Elektriker, Installateur, Kfz-Werkstatt, Tischlerei, Maler und Dachdecker. So sieht Ihre kostenlose Vorschau aus.',
@@ -778,13 +778,13 @@ export const siteContent = withLocaleFallbacks({
     metadata: {
       homeTitle: 'Websites for trades & workshops in Vienna and Lower Austria | TreeTech',
       homeDescription:
-        `Websites for electricians, plumbers, roofers, painters and car workshops in Vienna and Lower Austria. Fixed price from ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'en')}, copywriting included, live in 7 days — preview before you pay.`,
+        `Websites for electricians, plumbers, roofers, painters and car workshops in Vienna and Lower Austria. Fixed price from ${formatEur(getPackage('onepager').oneTime ?? 0, 'en')}, copywriting included, live in 7 days — preview before you pay.`,
       aboutTitle: 'About TreeTech | Digital studio for Austrian businesses',
       aboutDescription:
         'TreeTech is a modern digital studio for businesses that want to automate processes, build web software, and work better digitally.',
       servicesTitle: 'Services and prices | TreeTech',
       servicesDescription:
-        `Every package at a fixed price: websites from ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'en')}, care from ${formatEur(getPackage('pflege').monthly ?? 0, 'en')} a month, inquiry automation and custom software. For trades and workshops in Vienna and Lower Austria.`,
+        `Every package at a fixed price: websites from ${formatEur(getPackage('onepager').oneTime ?? 0, 'en')}, care from ${formatEur(getPackage('pflege').monthly ?? 0, 'en')} a month, inquiry automation and custom software. For trades and workshops in Vienna and Lower Austria.`,
       portfolioTitle: 'Portfolio | TreeTech web studio',
       portfolioDescription:
         'Example websites for trades in Vienna and Lower Austria: electrician, plumber, car repair shop, joinery, painter and roofer. This is what your free preview looks like.',
@@ -908,13 +908,13 @@ export const siteContent = withLocaleFallbacks({
     metadata: {
       homeTitle: 'Сайты для мастерских и автосервисов в Вене и Нижней Австрии | TreeTech',
       homeDescription:
-        `Сайты для электриков, сантехников, кровельщиков, маляров и автосервисов в Вене и Нижней Австрии. Фиксированная цена от ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'ru')}, тексты включены, онлайн за 7 дней — превью до оплаты.`,
+        `Сайты для электриков, сантехников, кровельщиков, маляров и автосервисов в Вене и Нижней Австрии. Фиксированная цена от ${formatEur(getPackage('onepager').oneTime ?? 0, 'ru')}, тексты включены, онлайн за 7 дней — превью до оплаты.`,
       aboutTitle: 'О TreeTech | Digital-студия для бизнеса в Австрии',
       aboutDescription:
         'TreeTech помогает компаниям автоматизировать процессы, создавать веб-софт и работать цифровыми инструментами эффективнее.',
       servicesTitle: 'Услуги и цены | TreeTech',
       servicesDescription:
-        `Все пакеты с фиксированной ценой: сайты от ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'ru')}, поддержка от ${formatEur(getPackage('pflege').monthly ?? 0, 'ru')} в месяц, автоматизация заявок и собственное ПО. Для мастеров и автосервисов в Вене и Нижней Австрии.`,
+        `Все пакеты с фиксированной ценой: сайты от ${formatEur(getPackage('onepager').oneTime ?? 0, 'ru')}, поддержка от ${formatEur(getPackage('pflege').monthly ?? 0, 'ru')} в месяц, автоматизация заявок и собственное ПО. Для мастеров и автосервисов в Вене и Нижней Австрии.`,
       portfolioTitle: 'Портфолио | Веб-студия TreeTech',
       portfolioDescription:
         'Примеры сайтов для ремесленных фирм в Вене и Нижней Австрии: электрик, сантехник, автомастерская, столяр, маляр и кровельщик. Так выглядит ваше бесплатное превью.',
@@ -1042,16 +1042,16 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     name: 'Elektro Huber',
     year: '2026',
     location: 'Mödling',
-    packageId: 'websiteStart',
+    packageId: 'onepager',
     industry: {
       de: 'Elektriker in Niederösterreich',
       en: 'Electrician in Lower Austria',
       ru: 'Электрик в Нижней Австрии'
     },
     description: {
-      de: 'So sieht eine Website Start für einen Elektriker aus: Anruf-Knopf immer sichtbar, Anfrage mit Foto, Leistungen und Einsatzgebiet auf einen Blick.',
-      en: 'This is what Website Start looks like for an electrician: call button always visible, inquiry with photo, services and service area at a glance.',
-      ru: 'Так выглядит Website Start для электрика: кнопка звонка всегда на виду, заявка с фото, услуги и район выезда с первого взгляда.'
+      de: 'So sieht ein Onepager für einen Elektriker aus: Anruf-Knopf immer sichtbar, Anfrage mit Foto, Leistungen und Einsatzgebiet auf einen Blick.',
+      en: 'This is what a Onepager looks like for an electrician: call button always visible, inquiry with photo, services and service area at a glance.',
+      ru: 'Так выглядит одностраничный сайт для электрика: кнопка звонка всегда на виду, заявка с фото, услуги и район выезда с первого взгляда.'
     },
     problem: {
       de: 'Typisch für viele Elektriker: gute Bewertungen bei Google, aber keine eigene Website. Wer am Handy nach einem Elektriker in Mödling sucht, ruft den Mitbewerber an.',
@@ -1091,16 +1091,16 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     name: 'Installateur Novak',
     year: '2026',
     location: 'Wien Favoriten',
-    packageId: 'websiteBusiness',
+    packageId: 'firmenwebsite',
     industry: {
       de: 'Installateur in Wien',
       en: 'Plumber in Vienna',
       ru: 'Сантехник в Вене'
     },
     description: {
-      de: 'So sieht eine Website Business für einen Installateur aus: Notdienst-Hinweis ganz oben, Anfrage mit Foto und Dringlichkeit, Referenzen mit Bezirk.',
-      en: 'This is what Website Business looks like for a plumber: emergency notice at the top, inquiry with photo and urgency, references by district.',
-      ru: 'Так выглядит Website Business для сантехника: аварийный выезд в самом верху, заявка с фото и срочностью, примеры работ по районам.'
+      de: 'So sieht eine Firmenwebsite für einen Installateur aus: Notdienst-Hinweis ganz oben, Anfrage mit Foto und Dringlichkeit, Referenzen mit Bezirk.',
+      en: 'This is what a Firmenwebsite looks like for a plumber: emergency notice at the top, inquiry with photo and urgency, references by district.',
+      ru: 'Так выглядит сайт компании для сантехника: аварийный выезд в самом верху, заявка с фото и срочностью, примеры работ по районам.'
     },
     problem: {
       de: 'Bei Rohrbruch oder kalter Therme ruft man den Ersten an, der am Handy seriös wirkt. Viele Installateure sind dort nur mit einem Google-Eintrag ohne Website zu finden.',
@@ -1140,16 +1140,16 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     name: 'KFZ Berger',
     year: '2026',
     location: 'Wien Floridsdorf',
-    packageId: 'websiteAbo',
+    packageId: 'onepager',
     industry: {
       de: 'Kfz-Werkstatt in Wien',
       en: 'Car repair shop in Vienna',
       ru: 'Автомастерская в Вене'
     },
     description: {
-      de: 'So sieht das Website-Abo für eine Werkstatt aus: Richtpreise gleich im ersten Bildschirm und eine Terminanfrage mit Kennzeichen und Wunschtag.',
-      en: 'This is what the website subscription looks like for a garage: guide prices on the first screen and an appointment request with plate number and preferred day.',
-      ru: 'Так выглядит Website-Abo для автомастерской: ориентировочные цены на первом экране и запись с номером машины и желаемым днём.'
+      de: 'So sieht ein Onepager für eine Werkstatt aus: Richtpreise gleich im ersten Bildschirm und eine Terminanfrage mit Kennzeichen und Wunschtag.',
+      en: 'This is what a Onepager looks like for a garage: guide prices on the first screen and an appointment request with plate number and preferred day.',
+      ru: 'Так выглядит одностраничный сайт для автомастерской: ориентировочные цены на первом экране и запись с номером машины и желаемым днём.'
     },
     problem: {
       de: 'Werkstätten verlieren Zeit am Telefon mit denselben Fragen: Was kostet das Pickerl, wann habt ihr Zeit? Kunden ohne Antwort fahren zur Kette.',
@@ -1189,16 +1189,16 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     name: 'Tischlerei Gruber',
     year: '2026',
     location: 'Korneuburg',
-    packageId: 'websiteBusiness',
+    packageId: 'firmenwebsite',
     industry: {
       de: 'Tischlerei in Niederösterreich',
       en: 'Joinery in Lower Austria',
       ru: 'Столярная мастерская в Нижней Австрии'
     },
     description: {
-      de: 'So sieht eine Website Business für eine Tischlerei aus: Referenzgalerie im Mittelpunkt, Anfrage mit Foto oder Skizze und Maßen, Einsatzgebiet im Weinviertel.',
-      en: 'This is what Website Business looks like for a joinery: project gallery at the centre, inquiry with photo or sketch and measurements, service area in the Weinviertel.',
-      ru: 'Так выглядит Website Business для столярной мастерской: галерея работ в центре, заявка с фото или эскизом и размерами, район работы в Вайнфиртеле.'
+      de: 'So sieht eine Firmenwebsite für eine Tischlerei aus: Referenzgalerie im Mittelpunkt, Anfrage mit Foto oder Skizze und Maßen, Einsatzgebiet im Weinviertel.',
+      en: 'This is what a Firmenwebsite looks like for a joinery: project gallery at the centre, inquiry with photo or sketch and measurements, service area in the Weinviertel.',
+      ru: 'Так выглядит сайт компании для столярной мастерской: галерея работ в центре, заявка с фото или эскизом и размерами, район работы в Вайнфиртеле.'
     },
     problem: {
       de: 'Maßmöbel verkauft man über Bilder. Gute Tischlereien zeigen ihre Arbeiten oft nur auf Instagram oder gar nicht, und Anfragen kommen ohne Maße und Fotos.',
@@ -1238,16 +1238,16 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     name: 'Malerei Steiner',
     year: '2026',
     location: 'Wien Donaustadt',
-    packageId: 'websiteStart',
+    packageId: 'onepager',
     industry: {
       de: 'Malerbetrieb in Wien',
       en: 'Painter in Vienna',
       ru: 'Маляр в Вене'
     },
     description: {
-      de: 'So sieht eine Website Start für einen Maler aus: ein Richtpreis-Rechner gleich oben, Anfrage mit Fotos der Räume und ein klarer Ablauf.',
-      en: 'This is what Website Start looks like for a painter: a price estimator right at the top, an inquiry with photos of the rooms and a clear process.',
-      ru: 'Так выглядит Website Start для маляра: калькулятор цены прямо наверху, заявка с фото комнат и понятный порядок работы.'
+      de: 'So sieht ein Onepager für einen Maler aus: ein Richtpreis-Rechner gleich oben, Anfrage mit Fotos der Räume und ein klarer Ablauf.',
+      en: 'This is what a Onepager looks like for a painter: a price estimator right at the top, an inquiry with photos of the rooms and a clear process.',
+      ru: 'Так выглядит одностраничный сайт для маляра: калькулятор цены прямо наверху, заявка с фото комнат и понятный порядок работы.'
     },
     problem: {
       de: 'Die erste Frage ist immer: Was kostet das ungefähr? Ohne Antwort holen Kunden drei Angebote ein, und der Maler fährt umsonst zu Besichtigungen.',
@@ -1287,16 +1287,16 @@ export const portfolioProjects: PortfolioProject[] = withLocaleFallbacks([
     name: 'Dach Hofer',
     year: '2026',
     location: 'Klosterneuburg',
-    packageId: 'websiteBusiness',
+    packageId: 'firmenwebsite',
     industry: {
       de: 'Dachdecker in Niederösterreich',
       en: 'Roofer in Lower Austria',
       ru: 'Кровельщик в Нижней Австрии'
     },
     description: {
-      de: 'So sieht eine Website Business für einen Dachdecker aus: Sturmschaden-Hinweis, Anfrage mit Foto und Dringlichkeit, Referenzen vorher und nachher.',
-      en: 'This is what Website Business looks like for a roofer: storm damage notice, inquiry with photo and urgency, before-and-after references.',
-      ru: 'Так выглядит Website Business для кровельщика: срочный выезд после бури, заявка с фото и срочностью, примеры работ до и после.'
+      de: 'So sieht eine Firmenwebsite für einen Dachdecker aus: Sturmschaden-Hinweis, Anfrage mit Foto und Dringlichkeit, Referenzen vorher und nachher.',
+      en: 'This is what a Firmenwebsite looks like for a roofer: storm damage notice, inquiry with photo and urgency, before-and-after references.',
+      ru: 'Так выглядит сайт компании для кровельщика: срочный выезд после бури, заявка с фото и срочностью, примеры работ до и после.'
     },
     problem: {
       de: 'Nach einem Sturm suchen viele gleichzeitig nach einem Dachdecker. Wer dann nur eine alte Seite ohne klare Kontaktmöglichkeit hat, bekommt den Auftrag nicht.',

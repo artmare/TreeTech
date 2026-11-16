@@ -50,13 +50,13 @@ const tiers = {
       lead: 'Ein Shop, der nicht nur verkauft: Bestellungen, Zahlungen und offene Warenkörbe landen automatisch im CRM. Mit Kartenzahlung über Stripe und einem Backend in Python.'
     },
     {
-      ids: ['websiteBusiness'],
-      title: 'Website Business',
-      lead: 'Eigenes Design für Ihren Betrieb, bis zu 10 Seiten: eine Seite pro Leistung und pro Ort, Vorher-nachher-Galerie, Bewertungen, Fragen und Antworten, Anfrage in drei Schritten. Klicken Sie sich durch die Unterseiten.'
+      ids: ['firmenwebsite'],
+      title: 'Firmenwebsite',
+      lead: 'Eigenes Design für Ihren Betrieb, bis zu 5 Seiten, weitere Seiten pro Leistung oder Ort möglich: Vorher-nachher-Galerie, Bewertungen, Fragen und Antworten, Anfrage in drei Schritten. Klicken Sie sich durch die Unterseiten.'
     },
     {
-      ids: ['websiteStart', 'websiteAbo'],
-      title: 'Website Start und Website-Abo',
+      ids: ['onepager'],
+      title: 'Onepager',
       lead: 'Eine klare Seite im bewährten Aufbau für Handwerk: Anruf-Knopf, Leistungen, Einsatzgebiet, Anfrage mit Foto. Schnell online, Farben und Inhalte für Ihren Betrieb.'
     }
   ],
@@ -67,13 +67,13 @@ const tiers = {
       lead: 'A shop that does more than sell: orders, payments and open carts land in the CRM automatically. With card payment via Stripe and a Python backend.'
     },
     {
-      ids: ['websiteBusiness'],
-      title: 'Website Business',
-      lead: 'A design of its own for your business, up to 10 pages: one page per service and per town, before/after gallery, reviews, FAQ and a three-step inquiry. Click through the sub pages.'
+      ids: ['firmenwebsite'],
+      title: 'Firmenwebsite',
+      lead: 'A design of its own for your business, up to 5 pages, with extra pages per service or town available: before/after gallery, reviews, FAQ and a three-step inquiry. Click through the sub pages.'
     },
     {
-      ids: ['websiteStart', 'websiteAbo'],
-      title: 'Website Start and website subscription',
+      ids: ['onepager'],
+      title: 'Onepager',
       lead: 'One clear page in a proven layout for trades: call button, services, service area, inquiry with photo. Live fast, with colours and content for your business.'
     }
   ],
@@ -84,13 +84,13 @@ const tiers = {
       lead: 'Магазин, который не только продаёт: заказы, оплаты и брошенные корзины автоматически попадают в CRM. С оплатой картой через Stripe и бэкендом на Python.'
     },
     {
-      ids: ['websiteBusiness'],
-      title: 'Website Business',
-      lead: 'Собственный дизайн под ваш бизнес, до 10 страниц: страница на каждую услугу и каждый район, галерея «до и после», отзывы, вопросы и ответы, заявка в три шага. Пощёлкайте по подстраницам.'
+      ids: ['firmenwebsite'],
+      title: 'Сайт компании',
+      lead: 'Собственный дизайн под ваш бизнес, до 5 страниц, можно добавить страницы под услуги и районы: галерея «до и после», отзывы, вопросы и ответы, заявка в три шага. Пощёлкайте по подстраницам.'
     },
     {
-      ids: ['websiteStart', 'websiteAbo'],
-      title: 'Website Start и Website-Abo',
+      ids: ['onepager'],
+      title: 'Одностраничный сайт',
       lead: 'Одна понятная страница в проверенной структуре для ремесленников: кнопка звонка, услуги, район выезда, заявка с фото. Быстрый запуск, цвета и тексты под ваш бизнес.'
     }
   ]

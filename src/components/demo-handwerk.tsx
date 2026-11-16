@@ -104,7 +104,7 @@ const euro = (value: number, lang: Locale) => formatEur(value, lang);
 /**
  * One template for every trade demo. The trade-specific parts (colours, icons, form fields,
  * price list, calculator, references) come from the site's `handwerk` config, so the demos
- * stay consistent with what we actually deliver as "Website Start" and "Website Business".
+ * stay consistent with what we actually deliver as "Onepager" and "Firmenwebsite".
  */
 export function HandwerkDemo({site, locale}: {site: DemoSite; locale: Locale}) {
   const config = site.handwerk;

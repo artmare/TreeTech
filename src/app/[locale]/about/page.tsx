@@ -168,15 +168,15 @@ const copy: Record<Locale, AboutCopy> = {
 const aboutMeta: Record<Locale, {title: string; description: string}> = {
   de: {
     title: 'Über uns | TreeTech, Websites für Handwerk',
-    description: `Kleines Webstudio für Handwerk und Werkstätten in Wien und Niederösterreich. Fixpreis ab ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'de')}, Texte inklusive, Vorschau kostenlos.`
+    description: `Kleines Webstudio für Handwerk und Werkstätten in Wien und Niederösterreich. Fixpreis ab ${formatEur(getPackage('onepager').oneTime ?? 0, 'de')}, Texte inklusive, Vorschau kostenlos.`
   },
   en: {
     title: 'About us | TreeTech, websites for trades',
-    description: `Small web studio for trades and workshops in Vienna and Lower Austria. Fixed price from ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'en')}, copy included, free preview.`
+    description: `Small web studio for trades and workshops in Vienna and Lower Austria. Fixed price from ${formatEur(getPackage('onepager').oneTime ?? 0, 'en')}, copy included, free preview.`
   },
   ru: {
     title: 'О нас | TreeTech, сайты для мастеров',
-    description: `Небольшая веб-студия для мастеров и автосервисов в Вене и Нижней Австрии. Фиксированная цена от ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'ru')}, тексты включены, превью бесплатно.`
+    description: `Небольшая веб-студия для мастеров и автосервисов в Вене и Нижней Австрии. Фиксированная цена от ${formatEur(getPackage('onepager').oneTime ?? 0, 'ru')}, тексты включены, превью бесплатно.`
   }
 };
 

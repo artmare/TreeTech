@@ -6,7 +6,7 @@ import {notFound} from 'next/navigation';
 import type {ReactNode} from 'react';
 
 import {homeHandwerk} from '@/content/home-handwerk';
-import {formatEur, founderOffer, getPackage, hourlyRate, type PackageId} from '@/content/pricing';
+import {featuredPackageId, formatEur, formatEurCents, getPackage, hourlyRate, type PackageId} from '@/content/pricing';
 import {phoneHref, siteConfig, siteContent, whatsappHref} from '@/content/site';
 import {teamMembers} from '@/content/team';
 import {Link} from '@/i18n/navigation';
@@ -72,7 +72,7 @@ const painIcons: ReactNode[] = [
   </svg>
 ];
 
-const priceCards: PackageId[] = ['websiteStart', 'websiteBusiness', 'websiteAbo', 'pflege'];
+const priceCards: PackageId[] = ['onepager', 'firmenwebsite', 'weitereSeite', 'pflege'];
 
 const footerCopy: Record<Locale, {tagline: string}> = {
   de: {
@@ -117,11 +117,13 @@ export default async function HomePage({params}: PageProps) {
   const eur = (amount: number) => formatEur(amount, locale);
   const fill = (text: string) =>
     text
-      .replace('{start}', eur(getPackage('websiteStart').oneTime ?? 0))
+      .replace('{start}', eur(getPackage('onepager').oneTime ?? 0))
       .replace('{care}', `${eur(getPackage('pflege').monthly ?? 0)} ${copy.prices.perMonth}`)
       .replace('{hourly}', eur(hourlyRate))
-      .replace('{founder}', eur(founderOffer.price))
-      .replace('{setup}', eur(getPackage('websiteAbo').oneTime ?? 0));
+      .replace('{rate}', formatEurCents(getPackage('firmenwebsite').installments?.amount ?? 0, locale))
+      .replace('{page}', eur(getPackage('weitereSeite').oneTime ?? 0))
+      .replace('{language}', eur(getPackage('weitereSprache').oneTime ?? 0))
+      .replace('{google}', eur(getPackage('googleProfil').oneTime ?? 0));
   const whatsapp = whatsappHref(copy.whatsappMessage);
   const otherLocales = routing.locales.filter((item) => item !== locale);
   const previewHref = '/contact#audit-call';
@@ -330,17 +332,19 @@ export default async function HomePage({params}: PageProps) {
               const pkg = getPackage(id);
               const monthlyOnly = pkg.monthly !== undefined;
               const amount = monthlyOnly ? pkg.monthly ?? 0 : pkg.oneTime ?? 0;
-              const featured = id === founderOffer.packageId;
+              const featured = id === featuredPackageId;
+              const extras = pkg.category === 'extras';
 
               return (
                 <article key={id} className={`${s.price} ${featured ? s.priceTop : ''}`}>
-                  <h3>{pkg.name}</h3>
+                  <h3>{extras ? copy.prices.extrasName : pkg.name}</h3>
                   <p className={s.amt}>
+                    {extras ? <span className={s.per}>{copy.prices.from} </span> : null}
                     {eur(amount)}
                     {monthlyOnly ? <span className={s.per}> {copy.prices.perMonth}</span> : null}
                   </p>
                   <p className={s.desc}>{fill(copy.prices.cards[id as keyof typeof copy.prices.cards])}</p>
-                  {featured ? <span className={s.tag}>{fill(copy.prices.founderTag)}</span> : null}
+                  {featured ? <span className={s.tag}>{fill(copy.prices.featuredTag)}</span> : null}
                 </article>
               );
             })}

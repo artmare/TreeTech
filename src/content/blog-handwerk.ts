@@ -1,5 +1,5 @@
 import type {Locale} from '@/i18n/routing';
-import {formatEur, getPackage, hourlyRate} from '@/content/pricing';
+import {formatEur, getPackage, hourlyRate, formatEurCents} from '@/content/pricing';
 
 /**
  * Blog posts for the main audience (trades and workshops in Vienna and Lower Austria).
@@ -23,11 +23,11 @@ export type HandwerkPost = {
 };
 
 const eur = (amount: number, locale: Locale) => formatEur(amount, locale);
-const start = getPackage('websiteStart').oneTime ?? 0;
-const business = getPackage('websiteBusiness').oneTime ?? 0;
+const start = getPackage('onepager').oneTime ?? 0;
+const business = getPackage('firmenwebsite').oneTime ?? 0;
 const care = getPackage('pflege').monthly ?? 0;
-const aboSetup = getPackage('websiteAbo').oneTime ?? 0;
-const aboMonthly = getPackage('websiteAbo').monthly ?? 0;
+const rate = getPackage('firmenwebsite').installments?.amount ?? 0;
+const extraPage = getPackage('weitereSeite').oneTime ?? 0;
 
 export const handwerkPosts: HandwerkPost[] = [
   {
@@ -139,15 +139,15 @@ export const handwerkPosts: HandwerkPost[] = [
         heading: {de: 'Unsere Preise zum Vergleich', en: 'Our prices for comparison', ru: 'Наши цены для сравнения'},
         body: {
           de: [
-            `Bei TreeTech kostet Website Start ${eur(start, 'de')}: bis 5 Seiten, Texte inklusive, online in 7 Tagen. Website Business mit eigenen Seiten pro Leistung und Ort kostet ${eur(business, 'de')}. Ohne große Zahlung am Anfang gibt es das Website-Abo um ${eur(aboSetup, 'de')} zum Start und ${eur(aboMonthly, 'de')} im Monat.`,
+            `Bei TreeTech kostet ein Onepager ${eur(start, 'de')}: eine Seite mit allen Leistungen, Texte inklusive, online in 7 Tagen. Eine Firmenwebsite mit bis zu 5 Seiten kostet ${eur(business, 'de')}, auf Wunsch in 12 Monatsraten à ${formatEurCents(rate, 'de')} ohne Aufpreis. Jede weitere Seite kostet ${eur(extraPage, 'de')}.`,
             `Pflege mit Hosting und kleinen Änderungen per WhatsApp kostet ${eur(care, 'de')} im Monat. Alles außerhalb der Pakete nur nach Absprache, ${eur(hourlyRate, 'de')} pro Stunde. Die Vorschau Ihrer Website ist kostenlos.`
           ],
           en: [
-            `At TreeTech, Website Start costs ${eur(start, 'en')}: up to 5 pages, copy included, live in 7 days. Website Business with pages per service and town costs ${eur(business, 'en')}. Without a large upfront payment there is the website subscription at ${eur(aboSetup, 'en')} to start and ${eur(aboMonthly, 'en')} a month.`,
+            `At TreeTech, a Onepager costs ${eur(start, 'en')}: one page with all your services, copy included, live in 7 days. A Firmenwebsite with up to 5 pages costs ${eur(business, 'en')}, or 12 monthly instalments of ${formatEurCents(rate, 'en')} at no extra cost. Each extra page costs ${eur(extraPage, 'en')}.`,
             `Care with hosting and small changes via WhatsApp costs ${eur(care, 'en')} a month. Anything outside the packages only after agreement, ${eur(hourlyRate, 'en')} per hour. The preview of your website is free.`
           ],
           ru: [
-            `В TreeTech Website Start стоит ${eur(start, 'ru')}: до 5 страниц, тексты включены, онлайн за 7 дней. Website Business с отдельными страницами под услуги и города стоит ${eur(business, 'ru')}. Без крупной оплаты сразу есть подписка: ${eur(aboSetup, 'ru')} на старте и ${eur(aboMonthly, 'ru')} в месяц.`,
+            `В TreeTech одностраничный сайт (Onepager) стоит ${eur(start, 'ru')}: одна страница со всеми услугами, тексты включены, онлайн за 7 дней. Сайт компании (Firmenwebsite) до 5 страниц стоит ${eur(business, 'ru')}, можно в рассрочку: 12 × ${formatEurCents(rate, 'ru')} без переплаты. Каждая дополнительная страница — ${eur(extraPage, 'ru')}.`,
             `Поддержка с хостингом и мелкими правками через WhatsApp стоит ${eur(care, 'ru')} в месяц. Всё вне пакетов только по договорённости, ${eur(hourlyRate, 'ru')} в час. Превью вашего сайта бесплатно.`
           ]
         }
@@ -363,15 +363,15 @@ export const handwerkPosts: HandwerkPost[] = [
         body: {
           de: [
             'Fehlen mehr als drei Punkte, verlieren Sie wahrscheinlich Anfragen an Mitbewerber. Die gute Nachricht: Alles davon lässt sich in wenigen Tagen lösen.',
-            'Bei jeder Website Start von TreeTech sind alle zehn Punkte dabei. Wollen Sie sehen, wie das für Ihren Betrieb aussieht? Fordern Sie die kostenlose Vorschau an.'
+            'Bei jeder Website von TreeTech sind alle zehn Punkte dabei. Wollen Sie sehen, wie das für Ihren Betrieb aussieht? Fordern Sie die kostenlose Vorschau an.'
           ],
           en: [
             'If more than three points are missing, you are probably losing inquiries to competitors. The good news: all of it can be fixed in a few days.',
-            'Every TreeTech Website Start includes all ten points. Want to see how that looks for your business? Request the free preview.'
+            'Every TreeTech website includes all ten points. Want to see how that looks for your business? Request the free preview.'
           ],
           ru: [
             'Если не хватает больше трёх пунктов, вы, скорее всего, теряете заявки в пользу конкурентов. Хорошая новость: всё это решается за несколько дней.',
-            'В каждом Website Start от TreeTech есть все десять пунктов. Хотите увидеть, как это будет выглядеть для вашего бизнеса? Запросите бесплатное превью.'
+            'В каждом сайте от TreeTech есть все десять пунктов. Хотите увидеть, как это будет выглядеть для вашего бизнеса? Запросите бесплатное превью.'
           ]
         }
       }
