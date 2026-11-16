@@ -1156,7 +1156,7 @@ function MobileBar({ctx}: {ctx: Ctx}) {
   );
 }
 
-/** LocalBusiness data, as Website Business includes it for Google. */
+/** LocalBusiness data, as a Firmenwebsite includes it for Google. */
 function StructuredData({ctx}: {ctx: Ctx}) {
   const {site, bz, copy, lang} = ctx;
   const data = {

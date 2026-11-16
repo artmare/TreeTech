@@ -21,7 +21,7 @@ export type ServicePage = {
   exampleSlug?: string;
 };
 
-const startPrice = getPackage('websiteStart').oneTime ?? 0;
+const startPrice = getPackage('onepager').oneTime ?? 0;
 const startDe = formatEur(startPrice, 'de');
 const startEn = formatEur(startPrice, 'en');
 const startRu = formatEur(startPrice, 'ru');
@@ -109,9 +109,9 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
       ru: 'Клиенты ищут с телефона «электрик Мёдлинг» или «сантехник Вена». Без нормального сайта звонок уходит другому, даже при хороших отзывах.'
     },
     solution: {
-      de: 'Wir bauen eine schnelle Website mit Ihren Leistungen, Ihrem Einsatzgebiet und einem Anruf-Knopf, der am Handy immer sichtbar ist. Die Texte schreiben wir nach einem 30-Minuten-Gespräch. Google-Profil, Impressum und Datenschutz richten wir mit ein.',
-      en: 'We build a fast website with your services, your service area and a call button that is always visible on mobile. We write the copy after a 30-minute call and set up your Google profile, legal notice and privacy policy.',
-      ru: 'Делаем быстрый сайт с вашими услугами, районом выезда и кнопкой звонка, которая всегда видна с телефона. Тексты пишем после 30-минутного разговора. Профиль в Google, Impressum и Datenschutz настраиваем сами.'
+      de: 'Wir bauen eine schnelle Website mit Ihren Leistungen, Ihrem Einsatzgebiet und einem Anruf-Knopf, der am Handy immer sichtbar ist. Die Texte schreiben wir nach einem 30-Minuten-Gespräch. Impressum und Datenschutz richten wir mit ein, Ihr Google-Profil verbinden wir mit der Seite.',
+      en: 'We build a fast website with your services, your service area and a call button that is always visible on mobile. We write the copy after a 30-minute call set up the legal notice and privacy policy and link your Google profile.',
+      ru: 'Делаем быстрый сайт с вашими услугами, районом выезда и кнопкой звонка, которая всегда видна с телефона. Тексты пишем после 30-минутного разговора. Impressum и Datenschutz оформляем сами, профиль в Google связываем с сайтом.'
     },
     result: {
       de: 'Kunden finden Sie, sehen in Sekunden, was Sie machen und wo, und rufen an oder schicken ein Foto vom Schaden.',
@@ -123,30 +123,30 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
       en: 'An electrician from Mödling gets pages for emergency service, safety checks and solar, a page each for Mödling and Baden, and a form where customers can send a photo.',
       ru: 'Электрик из Мёдлинга получает страницы для аварийных вызовов, проверок и солнечных панелей, отдельные страницы для Мёдлинга и Бадена и форму, через которую клиенты присылают фото.'
     },
-    price: priceLine('websiteStart', 'websiteBusiness', 'pflege'),
+    price: priceLine('onepager', 'firmenwebsite', 'pflege'),
     deliverables: {
-      de: ['Bis 5 Seiten, Texte inklusive', 'Anruf- und WhatsApp-Knopf, Anfrage mit Foto', 'Google-Profil eingerichtet und verbunden', 'Impressum und Datenschutz', 'Online in 7 Tagen nach dem Gespräch'],
-      en: ['Up to 5 pages, copy included', 'Call and WhatsApp button, inquiry with photo', 'Google profile set up and linked', 'Legal notice and privacy policy', 'Live 7 days after the call'],
-      ru: ['До 5 страниц, тексты включены', 'Кнопки звонка и WhatsApp, заявка с фото', 'Профиль в Google настроен и связан с сайтом', 'Impressum и Datenschutz', 'Онлайн через 7 дней после разговора']
+      de: ['Bis 5 Seiten, Texte inklusive', 'Anruf- und WhatsApp-Knopf, Anfrage mit Foto', 'Mit Ihrem Google-Profil verbunden', 'Impressum und Datenschutz', 'Online in 7 Tagen nach dem Gespräch'],
+      en: ['Up to 5 pages, copy included', 'Call and WhatsApp button, inquiry with photo', 'Linked to your Google profile', 'Legal notice and privacy policy', 'Live 7 days after the call'],
+      ru: ['До 5 страниц, тексты включены', 'Кнопки звонка и WhatsApp, заявка с фото', 'Связка с вашим профилем в Google', 'Impressum и Datenschutz', 'Онлайн через 7 дней после разговора']
     },
     faq: {
       de: [
         {q: 'Ich habe keine Fotos von meinen Arbeiten.', a: 'Dann nehmen wir passende Bilder, bis Sie eigene machen. Ein paar Handyfotos von fertigen Arbeiten reichen später völlig.'},
         {q: 'Brauche ich als Handwerker wirklich ein Impressum?', a: 'Ja, in Österreich braucht jede Firmenwebsite ein Impressum. Wir richten es mit Ihren Daten ein, ebenso die Datenschutzerklärung.'},
         {q: 'Kann ich die Seite später selbst ändern?', a: 'Kleine Änderungen schicken Sie uns einfach per WhatsApp. Mit der Pflege sind sie inklusive.'},
-        {q: 'Was ist, wenn ich mehrere Orte habe?', a: 'Dann passt Website Business. Dort bekommt jeder Ort und jede Leistung eine eigene Seite, damit Sie bei Google dort gefunden werden.'}
+        {q: 'Was ist, wenn ich mehrere Orte habe?', a: 'Dann passt die Firmenwebsite. Jede weitere Seite, etwa für einen Ort oder eine Leistung, kostet 50 €, damit Sie bei Google dort gefunden werden.'}
       ],
       en: [
         {q: 'I have no photos of my work.', a: 'Then we use suitable images until you take your own. A few phone photos of finished jobs are plenty later on.'},
         {q: 'Do I really need a legal notice?', a: 'Yes, every business website in Austria needs one. We set it up with your details, along with the privacy policy.'},
         {q: 'Can I change the site later?', a: 'Simply send small changes via WhatsApp. With the care plan they are included.'},
-        {q: 'What if I work in several towns?', a: 'Then Website Business fits. Every town and service gets its own page so Google shows you there.'}
+        {q: 'What if I work in several towns?', a: 'Then the Firmenwebsite fits. Each extra page, for a town or a service, costs €50, so Google shows you there.'}
       ],
       ru: [
         {q: 'У меня нет фото моих работ.', a: 'Тогда поставим подходящие картинки, пока не появятся ваши. Потом хватит нескольких фото с телефона.'},
         {q: 'Мастеру правда нужен Impressum?', a: 'Да, в Австрии он нужен на каждом сайте компании. Мы оформим его с вашими данными, как и Datenschutz.'},
         {q: 'Смогу ли я потом менять сайт?', a: 'Мелкие правки просто присылайте в WhatsApp. С поддержкой они включены.'},
-        {q: 'А если я работаю в нескольких городах?', a: 'Тогда подойдёт Website Business. У каждого города и услуги будет своя страница, чтобы Google показывал вас там.'}
+        {q: 'А если я работаю в нескольких городах?', a: 'Тогда подойдёт сайт компании. Каждая дополнительная страница, например под город или услугу, стоит 50 €, чтобы Google показывал вас там.'}
       ]
     }
   },
@@ -189,7 +189,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
       en: 'A workshop in Vienna-Floridsdorf gets pages for inspection, service, tyres and air conditioning, plus a form asking for plate, preferred date and phone number.',
       ru: 'Автосервис во Флоридсдорфе получает страницы для Pickerl, сервиса, шин и кондиционера и форму с номером машины, желаемой датой и телефоном.'
     },
-    price: priceLine('websiteStart', 'websiteBusiness', 'anfrageAutomation'),
+    price: priceLine('onepager', 'firmenwebsite', 'anfrageAutomation'),
     deliverables: {
       de: ['Seiten für Pickerl, Service, Reifen und mehr', 'Terminwunsch mit Kennzeichen und Wunschtermin', 'Öffnungszeiten, Anfahrt, Google-Profil', 'Impressum und Datenschutz', 'Online in 7 Tagen nach dem Gespräch'],
       en: ['Pages for inspection, service, tyres and more', 'Booking request with plate and preferred date', 'Opening hours, directions, Google profile', 'Legal notice and privacy policy', 'Live 7 days after the call'],
@@ -234,7 +234,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
     solution: {de: 'TreeTech entwickelt Struktur, Texte, Design, responsive Umsetzung, SEO-Grundlagen und auf Wunsch Formular- oder CRM-Anbindung.', en: 'TreeTech develops structure, copy, design, responsive implementation, SEO basics, and optional form or CRM connection.', ru: 'TreeTech разрабатывает структуру, тексты, дизайн, адаптивную реализацию, SEO-основу и при необходимости подключение форм или CRM.'},
     result: {de: 'Ein Webauftritt, der klarer verkauft, Vertrauen aufbaut und Anfragen sauberer erfasst.', en: 'A website that sells more clearly, builds trust, and captures inquiries more cleanly.', ru: 'Сайт, который понятнее продает, вызывает доверие и аккуратнее собирает заявки.'},
     example: {de: 'Aus einer unklaren Firmenwebsite wird eine mehrseitige Business Website mit Leistungsseiten, Anfrage-CTA und besserer mobiler Führung.', en: 'An unclear company website becomes a multi-page business website with service pages, inquiry CTA, and better mobile guidance.', ru: 'Неясный сайт компании превращается в многостраничный Business Website со страницами услуг, CTA на заявку и лучшей мобильной навигацией.'},
-    price: priceLine('websiteStart', 'websiteBusiness', 'websiteAbo'),
+    price: priceLine('onepager', 'firmenwebsite', 'weitereSeite'),
     deliverables: {de: ['Informationsarchitektur', 'Texte und Seitenstruktur', 'Responsive Website', 'Kontakt- und Anfrageführung'], en: ['Information architecture', 'Copy and page structure', 'Responsive website', 'Contact and inquiry flow'], ru: ['Информационная архитектура', 'Тексты и структура страниц', 'Адаптивный сайт', 'Путь контакта и заявки']}
   },
   {
@@ -246,7 +246,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
     solution: {de: 'TreeTech strukturiert Zimmer, Angebote, Region, FAQs und Anfrage-CTAs so, dass Gäste schneller verstehen und anfragen können.', en: 'TreeTech structures rooms, offers, region, FAQs, and inquiry CTAs so guests understand faster and can inquire easily.', ru: 'TreeTech структурирует номера, предложения, регион, FAQ и CTA так, чтобы гости быстрее понимали и проще отправляли запрос.'},
     result: {de: 'Mehr Direktanfragen, weniger Standardfragen und ein professioneller Auftritt für Saison und Region.', en: 'More direct inquiries, fewer standard questions, and a professional presence for season and region.', ru: 'Больше прямых заявок, меньше стандартных вопросов и профессиональная подача сезона и региона.'},
     example: {de: 'Ein Anfrageformular fragt Reisedaten, Personenanzahl und Interessen ab und sendet die Daten direkt an das Team oder CRM.', en: 'An inquiry form asks for travel dates, number of guests, and interests, then sends the data directly to the team or CRM.', ru: 'Форма заявки спрашивает даты поездки, количество гостей и интересы, а затем отправляет данные команде или в CRM.'},
-    price: priceLine('websiteBusiness'),
+    price: priceLine('firmenwebsite'),
     deliverables: {de: ['Startseite', 'Zimmer- oder Angebotsseiten', 'Direktanfrage-Flow', 'Regionale SEO-Grundlagen'], en: ['Homepage', 'Room or offer pages', 'Direct inquiry flow', 'Regional SEO basics'], ru: ['Главная страница', 'Страницы номеров или предложений', 'Flow прямой заявки', 'Базовое региональное SEO']}
   },
   {
@@ -258,7 +258,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
     solution: {de: 'TreeTech baut eine ruhige, vertrauenswürdige Struktur mit Leistungsseiten, FAQ, Kontaktführung und klaren mobilen Wegen.', en: 'TreeTech builds a calm, trustworthy structure with service pages, FAQ, contact guidance, and clear mobile paths.', ru: 'TreeTech строит спокойную, надежную структуру со страницами услуг, FAQ, контактным маршрутом и понятными мобильными путями.'},
     result: {de: 'Weniger wiederholte Fragen, mehr Vertrauen vor dem Erstkontakt und klarere Termin- oder Anfragewege.', en: 'Fewer repeated questions, more trust before first contact, and clearer appointment or inquiry paths.', ru: 'Меньше повторяющихся вопросов, больше доверия до первого контакта и понятнее путь к записи или заявке.'},
     example: {de: 'Neue Patientinnen sehen sofort Leistungen, Ablauf und Kontaktoptionen und können gezielt eine Anfrage senden.', en: 'New patients immediately see services, process, and contact options and can send a targeted inquiry.', ru: 'Новые пациенты сразу видят услуги, процесс и варианты контакта и могут отправить точную заявку.'},
-    price: priceLine('websiteStart', 'websiteBusiness'),
+    price: priceLine('onepager', 'firmenwebsite'),
     deliverables: {de: ['Leistungsstruktur', 'FAQ', 'Kontakt- und Terminführung', 'Mobile Optimierung'], en: ['Service structure', 'FAQ', 'Contact and appointment guidance', 'Mobile optimization'], ru: ['Структура услуг', 'FAQ', 'Путь контакта и записи', 'Мобильная оптимизация']}
   },
   {
@@ -270,7 +270,7 @@ export const servicePages: ServicePage[] = withLocaleFallbacks([
     solution: {de: 'TreeTech strukturiert Leistungen, Erstkontakt, Vertrauen und Sprache so, dass passende Mandanten schneller erkennen, ob die Kanzlei passt.', en: 'TreeTech structures services, first contact, trust, and copy so suitable clients understand faster whether the firm fits.', ru: 'TreeTech структурирует услуги, первый контакт, доверие и тексты так, чтобы подходящие клиенты быстрее понимали, подходит ли фирма.'},
     result: {de: 'Mehr qualifizierte Erstkontakte und weniger unklare Anfragen.', en: 'More qualified first contacts and fewer unclear inquiries.', ru: 'Больше квалифицированных первых контактов и меньше неясных заявок.'},
     example: {de: 'Ein Fachgebiet erhält eine eigene Seite mit typischen Fällen, Ablauf und diskretem Anfrageformular.', en: 'A practice area receives its own page with typical cases, process, and discreet inquiry form.', ru: 'Отдельная специализация получает свою страницу с типичными случаями, процессом и дискретной формой заявки.'},
-    price: priceLine('websiteBusiness'),
+    price: priceLine('firmenwebsite'),
     deliverables: {de: ['Fachgebietsseiten', 'Vertrauensstruktur', 'Diskrete Kontaktführung', 'SEO-Grundlagen'], en: ['Practice area pages', 'Trust structure', 'Discreet contact guidance', 'SEO basics'], ru: ['Страницы направлений', 'Структура доверия', 'Дискретный контактный путь', 'SEO-основа']}
   },
   {

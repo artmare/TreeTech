@@ -7,8 +7,9 @@ import {notFound} from 'next/navigation';
 import {ButtonLink} from '@/components/ui/button-link';
 import {Container} from '@/components/ui/container';
 import {
+  featuredPackageId,
+  formatInstallments,
   formatPackagePrice,
-  founderOffer,
   formatEur,
   hourlyRate,
   packages,
@@ -30,7 +31,7 @@ type ServicesCopy = {
   title: string;
   lead: string;
   categories: Record<PackageCategory, {title: string; lead: string}>;
-  founder: string;
+  extrasNote: string;
   minTerm: string;
   months: string;
   tradesTitle: string;
@@ -49,11 +50,12 @@ const copy: Record<Locale, ServicesCopy> = {
     lead: 'Alle Pakete mit Fixpreis. Sie wissen vorher, was es kostet, und zahlen für die Website erst, wenn Ihnen die Vorschau gefällt.',
     categories: {
       websites: {title: 'Websites', lead: 'Für Betriebe, die gefunden und angerufen werden wollen.'},
+      extras: {title: 'Extras', lead: 'Zu jeder Website dazu buchbar.'},
       care: {title: 'Pflege', lead: 'Wir halten Ihre Seite aktuell, sicher und schnell. Änderungen schicken Sie per WhatsApp.'},
       automation: {title: 'Anfragen und Automatisierung', lead: 'Damit keine Anfrage liegen bleibt, auch wenn Sie auf der Baustelle sind.'},
       software: {title: 'Eigene Software', lead: 'Wenn Standardlösungen nicht passen.'}
     },
-    founder: 'Für die ersten {slots} Betriebe: {price}',
+    extrasNote: 'einmalig',
     minTerm: 'Mindestlaufzeit',
     months: 'Monate',
     tradesTitle: 'Für Ihr Gewerk',
@@ -73,11 +75,12 @@ const copy: Record<Locale, ServicesCopy> = {
     lead: 'Every package has a fixed price. You know the cost upfront and only pay for the website once you like the preview.',
     categories: {
       websites: {title: 'Websites', lead: 'For businesses that want to be found and called.'},
+      extras: {title: 'Extras', lead: 'Can be added to any website.'},
       care: {title: 'Care', lead: 'We keep your site up to date, secure and fast. Send changes via WhatsApp.'},
       automation: {title: 'Inquiries and automation', lead: 'So no inquiry gets lost, even when you are on site.'},
       software: {title: 'Custom software', lead: 'When off-the-shelf tools do not fit.'}
     },
-    founder: 'First {slots} businesses: {price}',
+    extrasNote: 'one-time',
     minTerm: 'minimum term',
     months: 'months',
     tradesTitle: 'For your trade',
@@ -97,11 +100,12 @@ const copy: Record<Locale, ServicesCopy> = {
     lead: 'У каждого пакета фиксированная цена. Вы заранее знаете стоимость и платите за сайт, только если понравилось превью.',
     categories: {
       websites: {title: 'Сайты', lead: 'Для бизнеса, которому нужно, чтобы его находили и звонили.'},
+      extras: {title: 'Дополнительно', lead: 'Можно добавить к любому сайту.'},
       care: {title: 'Поддержка', lead: 'Держим сайт актуальным, защищённым и быстрым. Правки присылаете в WhatsApp.'},
       automation: {title: 'Заявки и автоматизация', lead: 'Чтобы ни одна заявка не потерялась, даже когда вы на объекте.'},
       software: {title: 'Собственное ПО', lead: 'Когда готовые решения не подходят.'}
     },
-    founder: 'Первым {slots} бизнесам: {price}',
+    extrasNote: 'разово',
     minTerm: 'минимальный срок',
     months: 'мес.',
     tradesTitle: 'Для вашей сферы',
@@ -118,7 +122,7 @@ const copy: Record<Locale, ServicesCopy> = {
   }
 };
 
-const categoryOrder: PackageCategory[] = ['websites', 'care', 'automation', 'software'];
+const categoryOrder: PackageCategory[] = ['websites', 'extras', 'care', 'automation', 'software'];
 
 export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   const rawLocale = (await params).locale;
@@ -182,7 +186,7 @@ export default async function ServicesPage({params}: PageProps) {
               <p className="mt-2 max-w-[38em] text-[17px] text-muted">{text.categories[category].lead}</p>
               <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {items.map((pkg) => {
-                  const featured = pkg.id === founderOffer.packageId;
+                  const featured = pkg.id === featuredPackageId;
 
                   return (
                     <article
@@ -199,6 +203,7 @@ export default async function ServicesPage({params}: PageProps) {
                       </p>
                       <p className={featured ? 'mt-1 text-sm text-white/80' : 'mt-1 text-sm text-muted'}>
                         {[
+                          pkg.category === 'extras' ? text.extrasNote : '',
                           pkg.delivery?.[locale],
                           pkg.minTermMonths ? `${text.minTerm} ${pkg.minTermMonths} ${text.months}` : ''
                         ]
@@ -220,11 +225,9 @@ export default async function ServicesPage({params}: PageProps) {
                           </li>
                         ))}
                       </ul>
-                      {featured ? (
+                      {featured && pkg.installments ? (
                         <span className="mt-5 self-start rounded-[6px] bg-[var(--signal)] px-2.5 py-1.5 text-sm font-bold text-foreground">
-                          {text.founder
-                            .replace('{slots}', String(founderOffer.slots))
-                            .replace('{price}', formatEur(founderOffer.price, locale))}
+                          {formatInstallments(pkg, locale).replace(/^./, (c) => c.toUpperCase())}
                         </span>
                       ) : null}
                     </article>

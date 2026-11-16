@@ -50,15 +50,15 @@ export default async function LocaleLayout({children, params}: Props) {
     logo: `${siteConfig.url}/icon-512.png`,
     image: `${siteConfig.url}/og-image.png`,
     description: siteContent[locale as Locale].metadata.homeDescription,
-    priceRange: `ab ${formatEur(getPackage('websiteStart').oneTime ?? 0, 'de')}`,
+    priceRange: `ab ${formatEur(getPackage('onepager').oneTime ?? 0, 'de')}`,
     areaServed: [
       {'@type': 'City', name: 'Wien'},
       {'@type': 'State', name: 'Niederösterreich'}
     ],
     knowsLanguage: ['de', 'en', 'ru'],
     serviceType: ['Webdesign', 'Website für Handwerker', 'Website-Pflege', 'Google-Unternehmensprofil'],
-    makesOffer: ['websiteStart', 'websiteBusiness', 'pflege'].map((id) => {
-      const pkg = getPackage(id as 'websiteStart' | 'websiteBusiness' | 'pflege');
+    makesOffer: (['onepager', 'firmenwebsite', 'pflege'] as const).map((id) => {
+      const pkg = getPackage(id);
       return {
         '@type': 'Offer',
         name: pkg.name,

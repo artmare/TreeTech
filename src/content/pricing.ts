@@ -14,9 +14,11 @@ import type {Locale} from '@/i18n/routing';
 type Text = Record<Locale, string>;
 
 export type PackageId =
-  | 'websiteStart'
-  | 'websiteBusiness'
-  | 'websiteAbo'
+  | 'onepager'
+  | 'firmenwebsite'
+  | 'weitereSeite'
+  | 'weitereSprache'
+  | 'googleProfil'
   | 'relaunch'
   | 'pflege'
   | 'pflegePlus'
@@ -26,7 +28,7 @@ export type PackageId =
   | 'analyseWorkshop'
   | 'webApp';
 
-export type PackageCategory = 'websites' | 'care' | 'automation' | 'software';
+export type PackageCategory = 'websites' | 'extras' | 'care' | 'automation' | 'software';
 
 export type PricePackageDefinition = {
   id: PackageId;
@@ -40,28 +42,22 @@ export type PricePackageDefinition = {
   from?: boolean;
   /** Minimum contract term in months for subscriptions. */
   minTermMonths?: number;
+  /** Optional payment in equal monthly instalments, without surcharge. */
+  installments?: {count: number; amount: number};
   delivery?: Text;
   tagline: Text;
   includes: Record<Locale, string[]>;
 };
 
-export const founderOffer = {
-  packageId: 'websiteStart' as PackageId,
-  price: 590,
-  slots: 3,
-  condition: {
-    de: 'für die ersten 3 Betriebe, im Austausch gegen eine ehrliche Google-Bewertung und die Erlaubnis, das Projekt als Referenz zu zeigen',
-    en: 'for the first 3 businesses, in exchange for an honest Google review and permission to show the project as a reference',
-    ru: 'для первых 3 бизнесов в обмен на честный отзыв в Google и разрешение показывать проект как кейс'
-  } satisfies Text
-};
+/** Package highlighted on the home and services pages. */
+export const featuredPackageId: PackageId = 'firmenwebsite';
 
 export const hourlyRate = 65;
 
 export const paymentTerms: Text = {
-  de: '50 % bei Auftrag, 50 % beim Launch. Auf Wunsch in 2 Raten. Pflege-Pakete monatlich kündbar.',
-  en: '50% on order, 50% at launch. Two instalments on request. Care plans can be cancelled monthly.',
-  ru: '50 % при заказе, 50 % при запуске. По запросу можно в 2 платежа. Пакеты Pflege расторгаются помесячно.'
+  de: '50 % bei Auftrag, 50 % beim Launch. Die Firmenwebsite auch in 12 Monatsraten ohne Aufpreis. Pflege-Pakete monatlich kündbar.',
+  en: '50% on order, 50% at launch. The Firmenwebsite is also available in 12 monthly instalments at no extra cost. Care plans can be cancelled monthly.',
+  ru: '50 % при заказе, 50 % при запуске. Сайт компании можно оплатить в рассрочку на 12 месяцев без переплаты. Пакеты Pflege расторгаются помесячно.'
 };
 
 // TODO(legal): once it is clear whether the owner uses the Kleinunternehmerregelung
@@ -74,57 +70,75 @@ export const vatNote: Text = {
 
 export const packages: PricePackageDefinition[] = [
   {
-    id: 'websiteStart',
+    id: 'onepager',
     category: 'websites',
-    name: 'Website Start',
-    oneTime: 990,
+    name: 'Onepager',
+    oneTime: 200,
     delivery: {de: 'online in 7 Tagen', en: 'live in 7 days', ru: 'онлайн за 7 дней'},
     tagline: {
-      de: 'Für Betriebe, die endlich professionell gefunden werden wollen.',
-      en: 'For businesses that finally want to be found professionally online.',
-      ru: 'Для бизнеса, который хочет, чтобы его наконец нормально находили в интернете.'
+      de: 'Für Selbstständige, die schnell und günstig online sein wollen.',
+      en: 'For sole traders who want to be online quickly and affordably.',
+      ru: 'Для предпринимателей, которым нужно быстро и недорого появиться в интернете.'
     },
     includes: {
-      de: ['Bis zu 5 Seiten inkl. Impressum und Datenschutz', 'Texte schreiben wir nach einem 30-Minuten-Gespräch', 'Anruf- und WhatsApp-Button, Anfrageformular, Karte', 'Einrichtung Ihres Google-Unternehmensprofils', 'Lokale SEO-Grundlagen, schnell und mobiloptimiert', '2 Korrekturrunden'],
-      en: ['Up to 5 pages incl. legal notice and privacy policy', 'We write the copy after a 30-minute call', 'Call and WhatsApp buttons, inquiry form, map', 'Google Business Profile setup', 'Local SEO basics, fast and mobile-first', '2 rounds of revisions'],
-      ru: ['До 5 страниц, включая Impressum и Datenschutz', 'Тексты пишем мы по итогам 30-минутного разговора', 'Кнопки звонка и WhatsApp, форма заявки, карта', 'Настройка профиля в Google', 'Базовое локальное SEO, быстрая мобильная версия', '2 раунда правок']
+      de: ['1 Seite mit allen Leistungen', 'Texte inklusive, nach einem 30-Minuten-Gespräch', 'Anruf- und WhatsApp-Button, Anfrageformular mit Foto und Adresse', 'Verknüpfung mit Ihrem Google-Unternehmensprofil', 'Für Handys optimiert, schnell, sichere Verbindung (HTTPS)', 'Impressum und Datenschutz'],
+      en: ['1 page with all your services', 'Copy included, written after a 30-minute call', 'Call and WhatsApp buttons, inquiry form with photo and address', 'Linked to your Google Business Profile', 'Mobile-first, fast, secure connection (HTTPS)', 'Legal notice and privacy policy'],
+      ru: ['1 страница со всеми услугами', 'Тексты включены, пишем по итогам 30-минутного разговора', 'Кнопки звонка и WhatsApp, форма заявки с фото и адресом', 'Связка с профилем компании в Google', 'Удобен на телефоне, быстрый, защищённое соединение (HTTPS)', 'Impressum и Datenschutz']
     }
   },
   {
-    id: 'websiteBusiness',
+    id: 'firmenwebsite',
     category: 'websites',
-    name: 'Website Business',
-    oneTime: 1890,
-    delivery: {de: 'online in 14 Tagen', en: 'live in 14 days', ru: 'онлайн за 14 дней'},
+    name: 'Firmenwebsite',
+    oneTime: 450,
+    installments: {count: 12, amount: 37.5},
+    delivery: {de: 'online in 7 Tagen', en: 'live in 7 days', ru: 'онлайн за 7 дней'},
     tagline: {
-      de: 'Für Betriebe mit mehreren Leistungen oder Einsatzorten, die mehr Anfragen aus Google wollen.',
-      en: 'For businesses with several services or service areas that want more inquiries from Google.',
-      ru: 'Для бизнеса с несколькими услугами или районами работы, которому нужно больше заявок из Google.'
+      de: 'Für Unternehmen mit mehreren Leistungen, die bei Google besser gefunden werden wollen.',
+      en: 'For businesses with several services that want to be found better on Google.',
+      ru: 'Для компаний с несколькими услугами, которым важно, чтобы их находили в Google.'
     },
     includes: {
-      de: ['Alles aus Website Start, bis zu 10 Seiten', 'Eigene Seite pro Leistung und bis zu 3 Orts-Seiten', 'Anfrage mit Foto-Upload und Dringlichkeit, Referenzgalerie, Bewertungen', 'Strukturierte Daten (LocalBusiness) für Google', '3 Korrekturrunden', 'Zweite Sprache optional (+390 €)'],
-      en: ['Everything in Website Start, up to 10 pages', 'One page per service and up to 3 location pages', 'Inquiry with photo upload and urgency, project gallery, reviews', 'Structured data (LocalBusiness) for Google', '3 rounds of revisions', 'Second language optional (+€390)'],
-      ru: ['Всё из Website Start, до 10 страниц', 'Отдельная страница на каждую услугу и до 3 страниц под города', 'Заявка с фото и срочностью, галерея работ, отзывы', 'Структурированные данные (LocalBusiness) для Google', '3 раунда правок', 'Второй язык по желанию (+390 €)']
+      de: ['Bis zu 5 Seiten, z. B. Start, Leistungen, Über uns, Referenzen, Kontakt', 'Texte inklusive', 'Eigene Seite für Ihre Leistungen, klare Struktur für Google', 'Anruf- und WhatsApp-Button auf jeder Seite, Anfrageformular mit Foto', 'Verknüpfung mit Ihrem Google-Unternehmensprofil', 'Impressum und Datenschutz'],
+      en: ['Up to 5 pages, e.g. home, services, about, references, contact', 'Copy included', 'A page for your services, clear structure for Google', 'Call and WhatsApp buttons on every page, inquiry form with photo', 'Linked to your Google Business Profile', 'Legal notice and privacy policy'],
+      ru: ['До 5 страниц: например, главная, услуги, о нас, работы, контакты', 'Тексты включены', 'Отдельная страница для ваших услуг, понятная структура для Google', 'Кнопки звонка и WhatsApp на каждой странице, форма заявки с фото', 'Связка с профилем компании в Google', 'Impressum и Datenschutz']
     }
   },
   {
-    id: 'websiteAbo',
-    category: 'websites',
-    name: 'Website-Abo',
-    oneTime: 199,
-    monthly: 59,
-    minTermMonths: 12,
-    delivery: {de: 'online in 7 Tagen', en: 'live in 7 days', ru: 'онлайн за 7 дней'},
+    id: 'weitereSeite',
+    category: 'extras',
+    name: 'Weitere Seite',
+    oneTime: 50,
     tagline: {
-      de: 'Website ohne große Anfangsinvestition.',
-      en: 'A website without a large upfront investment.',
-      ru: 'Сайт без крупной оплаты на старте.'
+      de: 'Zum Beispiel für eine weitere Leistung.',
+      en: 'For example, for another service.',
+      ru: 'Например, под ещё одну услугу.'
     },
-    includes: {
-      de: ['Website im Umfang von Website Start', 'Pflege inklusive', 'Mindestlaufzeit 12 Monate, danach monatlich kündbar', 'Nach 24 Monaten gehört die Website Ihnen'],
-      en: ['Website in the scope of Website Start', 'Care plan included', '12-month minimum term, then cancel monthly', 'After 24 months the website is yours'],
-      ru: ['Сайт в объёме Website Start', 'Pflege включена', 'Минимальный срок 12 месяцев, дальше помесячно', 'Через 24 месяца сайт переходит в вашу собственность']
-    }
+    includes: {de: [], en: [], ru: []}
+  },
+  {
+    id: 'weitereSprache',
+    category: 'extras',
+    name: 'Weitere Sprache',
+    oneTime: 90,
+    tagline: {
+      de: 'Ihre Website zusätzlich auf Englisch oder Russisch.',
+      en: 'Your website additionally in German, English or Russian.',
+      ru: 'Ваш сайт дополнительно на немецком, английском или русском.'
+    },
+    includes: {de: [], en: [], ru: []}
+  },
+  {
+    id: 'googleProfil',
+    category: 'extras',
+    name: 'Google-Profil',
+    oneTime: 79,
+    tagline: {
+      de: 'Einrichtung und Optimierung Ihres Google-Unternehmensprofils.',
+      en: 'Setup and optimisation of your Google Business Profile.',
+      ru: 'Создание и оформление профиля компании в Google.'
+    },
+    includes: {de: [], en: [], ru: []}
   },
   {
     id: 'relaunch',
@@ -282,13 +296,29 @@ export function formatEur(amount: number, locale: Locale): string {
   return locale === 'en' ? `€${value}` : `${value} €`;
 }
 
+/** Formats an amount with cents when needed, e.g. "37,50 €" (de), "€37.50" (en). */
+export function formatEurCents(amount: number, locale: Locale): string {
+  if (Number.isInteger(amount)) return formatEur(amount, locale);
+  const [whole, cents] = amount.toFixed(2).split('.');
+  const grouped = whole.replace(/\B(?=(\d{3})+(?!\d))/g, groupSeparator[locale]);
+  const value = locale === 'en' ? `${grouped}.${cents}` : `${grouped},${cents}`;
+  return locale === 'en' ? `€${value}` : `${value} €`;
+}
+
 const words = {
   from: {de: 'ab', en: 'from', ru: 'от'},
   perMonth: {de: '/Monat', en: '/month', ru: '/мес'},
   minTerm: {de: 'Mindestlaufzeit', en: 'minimum term', ru: 'минимальный срок'},
   months: {de: 'Monate', en: 'months', ru: 'мес.'},
-  founder: {de: 'Gründerpreis', en: 'Founding price', ru: 'Цена основателя'}
+  or: {de: 'oder', en: 'or', ru: 'или'},
+  noSurcharge: {de: 'ohne Aufpreis', en: 'at no extra cost', ru: 'без переплаты'}
 } satisfies Record<string, Text>;
+
+/** "oder 12 × 37,50 € ohne Aufpreis", or an empty string. */
+export function formatInstallments(pkg: PricePackageDefinition, locale: Locale): string {
+  if (!pkg.installments) return '';
+  return `${words.or[locale]} ${pkg.installments.count} × ${formatEurCents(pkg.installments.amount, locale)} ${words.noSurcharge[locale]}`;
+}
 
 /** Human-readable price of one package, e.g. "ab 890 € + ab 19 €/Monat". */
 export function formatPackagePrice(pkg: PricePackageDefinition, locale: Locale): string {
@@ -299,7 +329,7 @@ export function formatPackagePrice(pkg: PricePackageDefinition, locale: Locale):
   return parts.join(' + ');
 }
 
-/** "Website Start 990 €, Website Business 1.890 €" for the given packages in every locale. */
+/** "Onepager 200 €, Firmenwebsite 450 €" for the given packages in every locale. */
 export function priceLine(...ids: PackageId[]): Text {
   const build = (locale: Locale) =>
     ids.map((id) => {
@@ -309,22 +339,18 @@ export function priceLine(...ids: PackageId[]): Text {
   return {de: build('de'), en: build('en'), ru: build('ru')};
 }
 
-/** Founder price note, e.g. "Gründerpreis 590 € für die ersten 3 Betriebe …". */
-export function founderNote(locale: Locale): string {
-  return `${words.founder[locale]} ${formatEur(founderOffer.price, locale)} ${founderOffer.condition[locale]}.`;
-}
-
 /** Full plain-text price list, used by the AI assistant. */
 export function priceListText(locale: Locale): string {
   const lines = packages.map((pkg) => {
     const term = pkg.minTermMonths ? `, ${words.minTerm[locale]} ${pkg.minTermMonths} ${words.months[locale]}` : '';
     const delivery = pkg.delivery ? ` (${pkg.delivery[locale]})` : '';
-    return `- ${pkg.name}: ${formatPackagePrice(pkg, locale)}${term}${delivery}. ${pkg.tagline[locale]} ${pkg.includes[locale].join('; ')}.`;
+    const rates = pkg.installments ? `, ${formatInstallments(pkg, locale)}` : '';
+    const includes = pkg.includes[locale].length ? ` ${pkg.includes[locale].join('; ')}.` : '';
+    return `- ${pkg.name}: ${formatPackagePrice(pkg, locale)}${rates}${term}${delivery}. ${pkg.tagline[locale]}${includes}`;
   });
   const hourly = {de: 'Stundensatz für Leistungen außerhalb der Pakete', en: 'Hourly rate for work outside the packages', ru: 'Почасовая ставка для работ вне пакетов'}[locale];
   return [
     ...lines,
-    `- ${founderNote(locale)}`,
     `- ${hourly}: ${formatEur(hourlyRate, locale)}.`,
     `- ${paymentTerms[locale]}`,
     `- ${vatNote[locale]}`

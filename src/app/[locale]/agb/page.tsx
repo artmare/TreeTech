@@ -72,7 +72,7 @@ export default async function AgbPage({params}: PageProps) {
     {
       heading: '5. Fertigstellung in 7 Tagen',
       body: [
-        'Bei den Paketen Website Start und Website-Abo geht die Website innerhalb von 7 Tagen online. Die Frist beginnt mit dem Gespräch, sobald alle nötigen Angaben vorliegen. Bei den anderen Paketen gilt die Frist laut Angebot.',
+        'Bei den Paketen Onepager und Firmenwebsite geht die Website innerhalb von 7 Tagen online. Die Frist beginnt mit dem Gespräch, sobald alle nötigen Angaben vorliegen. Bei den anderen Paketen gilt die Frist laut Angebot.',
         'Liegt eine Verzögerung allein bei TreeTech, erhält die Kundin oder der Kunde drei Monate Pflege kostenlos. Weitergehende Ansprüche wegen der Verzögerung bestehen nicht, soweit gesetzlich zulässig.'
       ]
     },
@@ -81,7 +81,7 @@ export default async function AgbPage({params}: PageProps) {
       body: [
         'Es gelten die Preise laut Angebot. Sie sind Endpreise. Leistungen außerhalb des vereinbarten Umfangs werden nur nach vorheriger Absprache erbracht und mit ' +
           `${formatEur(hourlyRate, 'de')} pro Stunde abgerechnet.`,
-        'Einmalige Leistungen sind zu 50 % bei Auftrag und zu 50 % beim Online-Gang fällig, auf Wunsch auch in zwei vereinbarten Raten. Rechnungen sind innerhalb von 14 Tagen ohne Abzug zu bezahlen. Monatliche Leistungen (Pflege, Website-Abo) werden monatlich im Voraus verrechnet.'
+        'Einmalige Leistungen sind zu 50 % bei Auftrag und zu 50 % beim Online-Gang fällig, auf Wunsch auch in zwei vereinbarten Raten. Die Firmenwebsite kann auch in 12 gleichen Monatsraten ohne Aufpreis bezahlt werden. Rechnungen sind innerhalb von 14 Tagen ohne Abzug zu bezahlen. Monatliche Leistungen (Pflege) und Monatsraten werden monatlich im Voraus verrechnet.'
       ]
     },
     {
@@ -93,14 +93,14 @@ export default async function AgbPage({params}: PageProps) {
     {
       heading: '8. Rechte an der Website',
       body: [
-        'Mit vollständiger Bezahlung erhält die Kundin oder der Kunde das zeitlich und räumlich unbeschränkte Recht, die für sie oder ihn erstellten Texte, Gestaltung und den Programmcode zu nutzen und zu ändern. Die Domain wird auf den Namen der Kundin oder des Kunden registriert. Beim Website-Abo gehen diese Rechte nach 24 Monaten Laufzeit über.',
-        'TreeTech darf die Website als Referenz nennen und zeigen, sofern die Kundin oder der Kunde nicht widerspricht. Beim Gründerpreis ist die Nennung als Referenz Teil der Vereinbarung.'
+        'Mit vollständiger Bezahlung erhält die Kundin oder der Kunde das zeitlich und räumlich unbeschränkte Recht, die für sie oder ihn erstellten Texte, Gestaltung und den Programmcode zu nutzen und zu ändern. Die Domain wird auf den Namen der Kundin oder des Kunden registriert. Bei Ratenzahlung gehen diese Rechte mit der letzten Rate über.',
+        'TreeTech darf die Website als Referenz nennen und zeigen, sofern die Kundin oder der Kunde nicht widerspricht.'
       ]
     },
     {
-      heading: '9. Pflege, Website-Abo und Kündigung',
+      heading: '9. Pflege und Kündigung',
       body: [
-        'Pflege-Pakete können monatlich zum Monatsende gekündigt werden. Das Website-Abo hat eine Mindestlaufzeit von 12 Monaten und ist danach monatlich zum Monatsende kündbar. Kündigungen sind schriftlich möglich, auch per E-Mail.'
+        'Pflege-Pakete können monatlich zum Monatsende gekündigt werden. Kündigungen sind schriftlich möglich, auch per E-Mail.'
       ]
     },
     {

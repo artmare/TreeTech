@@ -6,8 +6,9 @@ import type {Locale} from '@/i18n/routing';
  * German is the master copy; EN and RU are translations of it.
  *
  * Tokens replaced at render time from src/content/pricing.ts:
- *   {start}  Website Start price      {care}   Pflege monthly price
- *   {hourly} hourly rate
+ *   {start}  Onepager price           {care}   Pflege monthly price
+ *   {hourly} hourly rate              {rate}   Firmenwebsite monthly instalment
+ *   {page} {language} {google}        extras prices
  */
 
 type Item = {title: string; text: string};
@@ -22,9 +23,11 @@ export type HomeCopy = {
   features: {title: string; tradesPrefix: string; trades: string; items: string[]};
   prices: {
     title: string;
-    founderTag: string;
+    featuredTag: string;
+    extrasName: string;
+    from: string;
     perMonth: string;
-    cards: {websiteStart: string; websiteBusiness: string; websiteAbo: string; pflege: string};
+    cards: {onepager: string; firmenwebsite: string; weitereSeite: string; pflege: string};
     swipe: string;
     note: string;
     all: string;
@@ -42,7 +45,7 @@ export const homeHandwerk: Record<Locale, HomeCopy> = {
     nav: {process: 'Ablauf', prices: 'Preise', examples: 'Beispiele', faq: 'Fragen'},
     hero: {
       title: 'Wir bauen Ihre Website, bevor Sie Ja sagen.',
-      sub: 'Für Elektriker, Installateure, Dachdecker, Maler und Werkstätten in Wien und Niederösterreich. Gefällt Ihnen die Vorschau, ist die Seite in 7 Tagen online. Fixpreis {start}, die Texte schreiben wir.',
+      sub: 'Für Elektriker, Installateure, Dachdecker, Maler und Werkstätten in Wien und Niederösterreich. Gefällt Ihnen die Vorschau, ist die Seite in 7 Tagen online. Fixpreis ab {start}, die Texte schreiben wir.',
       cta: 'Meine Vorschau anfordern',
       call: 'Anrufen',
       whatsapp: 'WhatsApp',
@@ -82,19 +85,21 @@ export const homeHandwerk: Record<Locale, HomeCopy> = {
         'Anruf- und WhatsApp-Knopf, am Handy immer sichtbar',
         'Anfrage mit Foto vom Schaden und Adresse',
         'Leistungen und Einsatzgebiet auf einen Blick',
-        'Google-Profil eingerichtet und mit der Seite verbunden',
+        'Mit Ihrem Google-Profil verbunden',
         'Impressum und Datenschutz, rechtlich sauber',
         'Lädt schnell, auch mit schlechtem Netz auf der Baustelle'
       ]
     },
     prices: {
       title: 'Was es kostet. Vorher, nicht nachher.',
-      founderTag: 'Für die ersten 3 Betriebe: {founder}',
+      featuredTag: 'Auch in 12 Raten à {rate}',
+      extrasName: 'Extras',
+      from: 'ab',
       perMonth: 'pro Monat',
       cards: {
-        websiteStart: 'Bis 5 Seiten, Texte inklusive, online in 7 Tagen.',
-        websiteBusiness: 'Bis 10 Seiten, eigene Seite für jede Leistung und jeden Ort.',
-        websiteAbo: 'Plus {setup} zum Start. Ohne große Zahlung am Anfang, 12 Monate Mindestlaufzeit.',
+        onepager: '1 Seite mit allen Leistungen, Texte inklusive, online in 7 Tagen.',
+        firmenwebsite: 'Bis 5 Seiten, eigene Seite für Ihre Leistungen, Texte inklusive.',
+        weitereSeite: 'Weitere Seite {page}, weitere Sprache {language}, Google-Profil einrichten {google}.',
         pflege: 'Hosting, kleine Änderungen per WhatsApp, jeden Monat ein Bericht. Monatlich kündbar.'
       },
       swipe: 'Zur Seite wischen für alle Pakete',
@@ -136,7 +141,7 @@ export const homeHandwerk: Record<Locale, HomeCopy> = {
     nav: {process: 'How it works', prices: 'Prices', examples: 'Examples', faq: 'Questions'},
     hero: {
       title: 'We build your website before you say yes.',
-      sub: 'For electricians, plumbers, roofers, painters and workshops in Vienna and Lower Austria. If you like the preview, the site goes live in 7 days. Fixed price {start}, and we write the copy.',
+      sub: 'For electricians, plumbers, roofers, painters and workshops in Vienna and Lower Austria. If you like the preview, the site goes live in 7 days. Fixed price from {start}, and we write the copy.',
       cta: 'Get my preview',
       call: 'Call',
       whatsapp: 'WhatsApp',
@@ -176,19 +181,21 @@ export const homeHandwerk: Record<Locale, HomeCopy> = {
         'Call and WhatsApp button, always visible on mobile',
         'Inquiries with a photo of the problem and the address',
         'Services and service area at a glance',
-        'Google profile set up and linked to your site',
+        'Linked to your Google profile',
         'Legal notice and privacy policy done properly',
         'Loads fast, even with poor signal on site'
       ]
     },
     prices: {
       title: 'What it costs. Before, not after.',
-      founderTag: 'First 3 businesses: {founder}',
+      featuredTag: 'Also in 12 instalments of {rate}',
+      extrasName: 'Extras',
+      from: 'from',
       perMonth: 'per month',
       cards: {
-        websiteStart: 'Up to 5 pages, copywriting included, live in 7 days.',
-        websiteBusiness: 'Up to 10 pages, a page for each service and each location.',
-        websiteAbo: 'Plus {setup} to start. No large upfront payment, 12-month minimum term.',
+        onepager: '1 page with all your services, copywriting included, live in 7 days.',
+        firmenwebsite: 'Up to 5 pages, a page for your services, copywriting included.',
+        weitereSeite: 'Extra page {page}, extra language {language}, Google profile setup {google}.',
         pflege: 'Hosting, small changes via WhatsApp, a report every month. Cancel monthly.'
       },
       swipe: 'Swipe to see all packages',
@@ -230,7 +237,7 @@ export const homeHandwerk: Record<Locale, HomeCopy> = {
     nav: {process: 'Как работаем', prices: 'Цены', examples: 'Примеры', faq: 'Вопросы'},
     hero: {
       title: 'Мы делаем ваш сайт до того, как вы скажете «да».',
-      sub: 'Для электриков, сантехников, кровельщиков, маляров и автосервисов в Вене и Нижней Австрии. Понравится превью, и через 7 дней сайт будет онлайн. Фиксированная цена {start}, тексты пишем мы.',
+      sub: 'Для электриков, сантехников, кровельщиков, маляров и автосервисов в Вене и Нижней Австрии. Понравится превью, и через 7 дней сайт будет онлайн. Фиксированная цена от {start}, тексты пишем мы.',
       cta: 'Получить превью',
       call: 'Позвонить',
       whatsapp: 'WhatsApp',
@@ -270,19 +277,21 @@ export const homeHandwerk: Record<Locale, HomeCopy> = {
         'Кнопки звонка и WhatsApp всегда на виду с телефона',
         'Заявка с фото поломки и адресом',
         'Услуги и район выезда с первого взгляда',
-        'Профиль в Google настроен и связан с сайтом',
+        'Связка с вашим профилем в Google',
         'Impressum и Datenschutz, всё по закону',
         'Быстро грузится даже при слабой связи на объекте'
       ]
     },
     prices: {
       title: 'Сколько стоит. Заранее, а не потом.',
-      founderTag: 'Первым 3 бизнесам: {founder}',
+      featuredTag: 'Можно в рассрочку: 12 × {rate}',
+      extrasName: 'Дополнительно',
+      from: 'от',
       perMonth: 'в месяц',
       cards: {
-        websiteStart: 'До 5 страниц, тексты включены, онлайн за 7 дней.',
-        websiteBusiness: 'До 10 страниц, отдельная страница на каждую услугу и каждый город.',
-        websiteAbo: 'Плюс {setup} на старте. Без крупной оплаты сразу, минимальный срок 12 месяцев.',
+        onepager: '1 страница со всеми услугами, тексты включены, онлайн за 7 дней.',
+        firmenwebsite: 'До 5 страниц, отдельная страница для ваших услуг, тексты включены.',
+        weitereSeite: 'Ещё страница {page}, ещё язык {language}, настройка профиля Google {google}.',
         pflege: 'Хостинг, мелкие правки через WhatsApp, отчёт каждый месяц. Расторжение помесячно.'
       },
       swipe: 'Листайте вбок, чтобы увидеть все пакеты',

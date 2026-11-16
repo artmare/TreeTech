@@ -1,7 +1,7 @@
 import 'server-only';
 
 import {homeHandwerk} from '@/content/home-handwerk';
-import {formatEur, founderOffer, getPackage, hourlyRate, priceListText} from '@/content/pricing';
+import {formatEur, formatEurCents, getPackage, hourlyRate, priceListText} from '@/content/pricing';
 import {siteConfig} from '@/content/site';
 import type {Locale} from '@/i18n/routing';
 
@@ -13,11 +13,13 @@ const language = {de: 'German (Austrian usage, formal "Sie")', en: 'English', ru
 /** Same token replacement as on the home page, so the assistant never quotes a different price. */
 function fill(text: string, locale: Locale) {
   return text
-    .replace('{start}', formatEur(getPackage('websiteStart').oneTime ?? 0, locale))
+    .replace('{start}', formatEur(getPackage('onepager').oneTime ?? 0, locale))
     .replace('{care}', formatEur(getPackage('pflege').monthly ?? 0, locale))
     .replace('{hourly}', formatEur(hourlyRate, locale))
-    .replace('{founder}', formatEur(founderOffer.price, locale))
-    .replace('{setup}', formatEur(getPackage('websiteAbo').oneTime ?? 0, locale));
+    .replace('{rate}', formatEurCents(getPackage('firmenwebsite').installments?.amount ?? 0, locale))
+    .replace('{page}', formatEur(getPackage('weitereSeite').oneTime ?? 0, locale))
+    .replace('{language}', formatEur(getPackage('weitereSprache').oneTime ?? 0, locale))
+    .replace('{google}', formatEur(getPackage('googleProfil').oneTime ?? 0, locale));
 }
 
 export function buildAssistantInstructions(locale: Locale) {
